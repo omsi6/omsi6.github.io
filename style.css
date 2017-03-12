@@ -1,0 +1,75 @@
+.ok:hover {
+    animation: okay 2.9s 1 cubic-bezier(0, 1.07, 1, -0.74);
+    transform: scale(3);
+    filter: blur(0px);
+}
+body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: black;
+    color: white;
+    overflow: hidden;
+    font-family: comic sans ms;
+    width: 100%;
+}
+
+.enter {
+    color: white;
+    text-decoration: none;
+    transition: all ease-in-out 0.5s;
+    font-weight: bold;
+}
+
+.enter:hover {
+    font-size: 300px;
+}
+
+#entry {
+    transform: scale(1);
+    position: absolute;
+    transition: all ease-in-out 0.5s;
+}
+
+#content {
+    display: flex;
+    opacity: 0;
+    transition: all ease-in-out 0.5s;
+}
+
+.entered #content {
+    opacity: 1;
+    z-index: 1;
+}
+
+.entered #entry {
+    transform: scale(0);
+    opacity: 0;
+    z-index: 0;
+}
+
+header {
+    position: absolute;
+    top: 10%;
+}
+
+.ok {
+    filter: blur(10px);
+    align-self: center;
+}
+
+@keyframes okay {
+    0% {
+        transform: scale(1);
+        filter: blur(10px);
+    }
+    5% {
+        transform: scale(1);
+        filter: blur(10px);
+    }
+    80% {
+        transform: scale(3) rotate(10deg);
+        filter: blur(0px);
+    }
+}
