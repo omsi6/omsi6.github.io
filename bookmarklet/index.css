@@ -40,6 +40,7 @@ a:hover, a:active {
 
 .button {
 	color: #fff;
+	font-size: 0;
 	padding: 15px;
 	background: #e8175d;
 	border-radius: 10px;
@@ -51,4 +52,9 @@ a:hover, a:active {
 	background: #ea2e6d;
 	box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 	text-decoration: none;
+}
+
+#bookmarklet-button::before {
+	content: "Drag me to your bookmark bar!";
+	font-size: 1rem;
 }
