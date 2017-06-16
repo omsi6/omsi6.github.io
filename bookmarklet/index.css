@@ -27,11 +27,19 @@ a:hover, a:active {
 	font-weight: bold;
 }
 
+.loaded #loading {
+	display: none;
+}
+
 #content {
-	display: flex;
+	display: none;
 	flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.loaded #content {
+	display: flex;
 }
 
 #content-text {
