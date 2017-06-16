@@ -6,6 +6,7 @@ $(".ok").addEventListener("mouseover", (e) => {
 
 $(".enter").addEventListener("click", (e) => {
     document.body.classList.add("entered");
+
     var elem = document.body;
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
@@ -16,5 +17,6 @@ $(".enter").addEventListener("click", (e) => {
     } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
     }
+
     e.preventDefault();
 })
