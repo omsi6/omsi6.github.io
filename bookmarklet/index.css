@@ -50,14 +50,14 @@ a:hover, a:active {
 	color: #fff;
 	font-size: 0;
 	padding: 15px;
-	background: #e8175d;
+	background: #673AB7;
 	border-radius: 10px;
 	box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
 	transition: all 0.2s ease;
 }
 
 .button:hover, .button:active {
-	background: #ea2e6d;
+	background: #6A42B5;
 	box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 	text-decoration: none;
 }
