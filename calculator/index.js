@@ -1,8 +1,10 @@
+var test;
+
 function getRates() {
-    var x = document.getElementById("frm1");
-    var text = "";
-    var i;
-    for (i = 0; i < x.length ;i++) {
-        text += x.elements[i].value + "<br>";
+    var result = {};
+    var elements = document.forms.frm1.getElementsByTagName("input");
+    for(var i = 0; i < elements.length; i++)
+    {
+       test = i
     }
 }

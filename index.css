@@ -46,16 +46,22 @@ body {
 
 header {
     position: absolute;
-    top: 10%;
+    top: 5%;
+}
+
+.entered .ok {
+    display: block;
 }
 
 .ok {
+    display: none;
     filter: blur(10px);
     align-self: center;
+    width: 500px;
 }
 
 .ok:hover {
-    animation: okay 2.9s 1 cubic-bezier(0, 1.07, 1, -0.74);
+    animation: okay 3s 1 cubic-bezier(0, 1.07, 1, -0.74);
     transform: scale(3);
     filter: blur(0px);
 }

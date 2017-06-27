@@ -1,7 +1,8 @@
 const $ = document.querySelector.bind(document);
 
 $(".ok").addEventListener("mouseover", (e) => {
-    e.target.setAttribute("src", e.target.attributes.src.value);
+    e.target.play();
+    e.target.currentTime=0;
 })
 
 $(".enter").addEventListener("click", (e) => {
