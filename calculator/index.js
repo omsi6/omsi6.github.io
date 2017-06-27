@@ -1,10 +1,17 @@
 var test;
 
 function getRates() {
+
     var result = {};
-    var elements = document.forms.frm1.getElementsByTagName("input");
-    for(var i = 0; i < elements.length; i++)
+    var form = document.querySelector("#rates");
+    var inputs = form.querySelectorAll("input");
+    var rates = {};
+
+    for(var input of inputs)
     {
-       test = i
+        rates[input.name] = input.valueAsNumber;
     }
+
+    console.log(rates);
+
 }
