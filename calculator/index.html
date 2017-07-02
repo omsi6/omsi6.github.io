@@ -1,20 +1,52 @@
 <html>
 <head>
     <title>Anti-Idle Droprate Calculator</title>
+    <link rel="stylesheet" href="index.css" />
 
 </head>
 
 <body>
-    <form id="rates">
-  Droprate: <input value="0" type="number" name="dropRate"><br>
-  Rare Rate: <input value="0" type="number" name="rareRate"><br><br>
-  Epic Rate: <input value="0" type="number" name="epicRate"><br><br>
-    </form> 
+    <form class="rates">
+        <div class="columns">
+            <div class="column">
+                Droprate: <input value="0" type="number" name="dropRate">
+                Rare Rate: <input value="0" type="number" name="rareRate">
+                Epic Rate: <input value="0" type="number" name="epicRate">
+                Spawnrate: <input value="0" type="number" name="spawnRate">
+                Enemy Name Color: <input placeholder="Yellow/White/Red/Purple" type="text" name="enemyNameColor">
+                Enemy Level: <input value="0" type="number" name="enemyLevel">
+                Enemy Droprate Multiplier <input placeholder="??? = 3, CHAOS = 9, etc" type="number" name="enemyMulti">
+            </div>
+            <div class="column">
+                Enemies in Area: <input placeholder="# of enemies in area" type="number" name="areaEnemyAmount">
+                Area Spawnrate: <input placeholder="Seconds per spawn" type="number" name="areaSpawnRate">
+                Area Epic Rate: <input value="0" type="number" name="areaEpicRate">
+                Area Epic Rate (Worst Moon): <input value="0" type="number" name="areaEpicRateWM">
+                Area Rare Rate: <input value="0" type="number" name="areaRareRate">
+                Area IA Chance: <input value="0" type="number" name="areaIARate">
+                Bestiary Level: <input value="0" type="number" name="bestiaryLevel">
+            </div>
+            <canvas class="column canvas"></canvas>
+        </div>
 
-    <button onclick="getRates()">Update rates</button>
+        <a href="#" class="button updateButton">Update rates</a>
+    </form>
+
+    <pre class="footer">
+        <h2>Enemy Droprate Multipliers:</h2>Corrupted Giant Treeman: 9x
+CHAOS: 9x
+Chaos: 6x
+Chuck Norris: 6x
+Boss of DOOOOOOM: 6x
+THE MEGABOSS: 3x
+???: 3x
+Foodlandistan: 0.3x
+Secret Crystal (1): (0.25 + Crystal level / 3000)x
+Secret Crystal (2): (0.25 + Crystal level / 300)x
+    </pre>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     <script src="index.js"></script>
 </body>
-
-
 
 </html>

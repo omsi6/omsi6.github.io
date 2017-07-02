@@ -1,0 +1,71 @@
+@font-face {
+    font-family: "Maiandra GD";
+    font-weight: normal;
+    src: url("./assets/Maiandra-GD-Regular.ttf");
+}
+
+html, body {
+    font-family: "Maiandra GD";
+    background-color: #212121;
+    color: #fff;
+    position: relative;
+}
+
+a {
+	color: #a8a7a8;
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 5px 0;
+}
+
+.rates .columns {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.rates .column {
+    margin-right: 10px;
+}
+
+.rates .canvas {
+    flex: 1;
+    margin-right: 0;
+    visibility: hidden;
+}
+
+.rates input {
+    box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+    background-color: #424242;
+    border: 1px solid black;
+    color: #fff;
+    display: block;
+    margin-bottom: 4px;
+    padding-left: 4px;
+}
+
+.footer {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+}
+
+.button {
+	color: #fff;
+	padding: 5px;
+	background: #512DA8;
+	border-radius: 5px;
+	box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
+	transition: all 0.2s ease;
+}
+
+.button:hover, .button:active {
+	background: #5E35B1;
+	box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
+	text-decoration: none;
+}
