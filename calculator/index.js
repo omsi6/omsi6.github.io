@@ -97,8 +97,8 @@ function getFormValues() {
     return values;
 }
 
-var IAMastered;
-var worstMoon;
+var IAMastered = 1;
+var worstMoon = 1;
 
 function calculateRates(values) {
 
