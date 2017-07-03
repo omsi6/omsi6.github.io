@@ -16,16 +16,22 @@ var chart = new Chart(ctx, {
             "6 Hours"
         ],
         datasets: [{
-            label: "Theoretical Max Chips/Hour",
+            label: "Yellow Chips",
             data: [],
             backgroundColor: "transparent",
-            borderColor: "#512DA8",
+            borderColor: "#FFD600",
             borderWidth: 2
         }, {
-            label: "Current Chips/Hour",
+            label: "Green Chips",
             data: [],
             backgroundColor: "transparent",
-            borderColor: "#9C27B0",
+            borderColor: "#64DD17",
+            borderWidth: 2
+        }, {
+            label: "Red Chips",
+            data: [],
+            backgroundColor: "transparent",
+            borderColor: "#D50000",
             borderWidth: 2
         }]
     },
@@ -58,8 +64,9 @@ function onButtonClick(e) {
     rates = calculateRates(values);
     canvas.style.visibility = "visible";
 
-    chart.data.datasets[0].data = rates.theoreticalChipsPerHour;
-    chart.data.datasets[1].data = rates.currentChipsPerHour;
+    chart.data.datasets[0].data = rates.yellowChips;
+    chart.data.datasets[1].data = rates.greenChips;
+    chart.data.datasets[2].data = rates.redChips;
     chart.update();
 }
 
@@ -94,6 +101,7 @@ function getFormValues() {
         values.bestiaryMulti = 3
     }
 
+    console.log(values)
     return values;
 }
 
@@ -123,8 +131,12 @@ function calculateRates(values) {
         var epicChance = Math.min(values.areaEpicRate * (values.epicRate / 100), 100);
     }
 
+    values.realSpawnRate = values.areaSpawnRate / (values.spawnRate / 100);
+    console.log(values.realSpawnRate)
+
     return {
-        currentChipsPerHour: [20, 4, 56, 25, 4, 34],
-        theoreticalChipsPerHour: [12, 19, 3, 5, 2, 3]
+        yellowChips: [5, 10, 15, 20, 25, 30],
+        greenChips: [4, 8, 12, 16, 20, 24],
+        redChips: [3, 6, 9, 12, 15, 18]
     };
 }
