@@ -1,0 +1,20 @@
+body {
+    background-color: #212121;
+    color: #fff;
+}
+
+.rotmg-icon {
+    border-radius: 50%;
+    height: 1/4;
+    width: 1/4;
+}
+
+.rotmg-icon2 {
+    border-radius: 50%;
+    height: 1/4;
+    width: 1/4;
+}
+
+.kol-icon {
+    border-radius: 50%;
+}
