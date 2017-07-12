@@ -7,14 +7,18 @@ body {
     border-radius: 50%;
     height: 1/4;
     width: 1/4;
-}
-
-.rotmg-icon2 {
-    border-radius: 50%;
-    height: 1/4;
-    width: 1/4;
+    transition: all 0.2s ease;
+    border: 1px solid black;
+    user-select: none;
 }
 
 .kol-icon {
     border-radius: 50%;
+    transition: all 0.2s ease;
+    border: 1px solid black;
+    user-select: none;
+}
+
+.kol-icon:hover, .rotmg-icon:hover, .rotmg-icon2:hover {
+    transform: rotate(10deg) scale(1.1);
 }
