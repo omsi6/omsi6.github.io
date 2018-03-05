@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>Steam Market Bookmarklet</title>
+
+	<link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+	<div id="content">
+		<p id="content-text">
+			Type a number in this box to see what it looks like in all sorts of different notations.
+		</p>
+		<div style="display: flex;">
+			<input value="1" id="valuetoformat" onchange="updateValues()" style="margin-right: 5px; margin-bottom: 15px;">
+			commas:
+			<input id="commas" onchange="updateValues()" type="checkbox" style="border:2px dotted #00f;display:block;background:#ff0000;" />
+		</div>
+		<span id="standard"></span>
+		<span id="cancer"></span>
+		<span id="mixed scientific"></span>
+		<span id="mixed engineering"></span>
+		<span id="logarithm"></span>
+		<span id="scientific"></span>
+		<span id="engineering"></span>
+		<span id="letters"></span>
+	</div>
+
+	<footer id="footer">
+		<a href="https://omsi6.github.io/notations/source.js">Source</a>
+	</footer>
+
+	<script src="breakinfinity.js"></script>
+	<script src="index.js"></script>
+</body>
+</html>
