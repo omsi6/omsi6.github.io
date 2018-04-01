@@ -192,6 +192,11 @@ function formatValue(notation, value, places, placesUnder1000) {
 		if (power > 100000  && commas) return (matissa + "e" + power.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		return (matissa + "e" + power);
 	}
+	if (notation === "Infinity") {
+		if ((power + matissa / 10) / 308 < 1000) var infPlaces = 4
+		else var infPlaces = 3
+		return ((power + matissa / 10) / 308.25471555991675).toFixed(Math.max(infPlaces, places)) + "∞"
+  }
 	if (notation.includes("engineering") || notation.includes("Engineering")) pow = power - (power % 3)
 	else pow = power
 	if (power > 100000  && !commas) pow = formatValue(notation, pow, 3, 3)
@@ -201,6 +206,26 @@ function formatValue(notation, value, places, placesUnder1000) {
 		if (power > 100000  && !commas) return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
 		if (power > 100000  && commas) return "e"+Decimal.log10(value).toFixed(places).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		else return "e"+Decimal.log10(value).toFixed(places)
+	}
+
+	if (notation === "Brackets") {
+		var table = [")", "[", "{", "]", "(", "}"];
+		var log6 = Math.LN10 / Math.log(6) * Decimal.log10(value);
+		var wholePartOfLog = Math.floor(log6);
+		var decimalPartOfLog = log6 - wholePartOfLog;
+		//Easier to convert a number between 0-35 to base 6 than messing with fractions and shit
+		var decimalPartTimes36 = Math.floor(decimalPartOfLog * 36);
+		var string = "";
+		while (wholePartOfLog >= 6) {
+			var remainder = wholePartOfLog % 6;
+			wholePartOfLog -= remainder;
+			wholePartOfLog /= 6;
+			string = table[remainder] + string;
+		}
+		string = "e" + table[wholePartOfLog] + string + ".";
+		string += table[Math.floor(decimalPartTimes36 / 6)];
+		string += table[decimalPartTimes36 % 6];
+		return string;
 	}
 
 	matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)
@@ -239,4 +264,6 @@ function updateValues() {
 	document.getElementById("scientific").innerHTML = "Scientific: " + "<b>" + formatValue("Scientific", valueToFormat, 2, 0) + "</b>"
 	document.getElementById("engineering").innerHTML = "Engineering: " + "<b>" + formatValue("Engineering", valueToFormat, 2, 0) + "</b>"
 	document.getElementById("letters").innerHTML = "Letters: " + "<b>" +formatValue("Letters", valueToFormat, 2, 0) + "</b>"
+	document.getElementById("infinity").innerHTML = "Infinity: " + "<b>" + formatValue("Infinity", valueToFormat, 2, 0) + "</b>"
+	document.getElementById("brackets").innerHTML = "Brackets: " + "<b>" +formatValue("Brackets", valueToFormat, 2, 0) + "</b>"
 }
