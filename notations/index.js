@@ -69,69 +69,69 @@ if (!String.prototype.includes) {
     });
   }
 
-  function fromValue(value) {
-	if (value.includes(" ")) {
-	  let FormatList = [' K',' M',' B']
-	  for (let i=0;i<3;i++) {
-		  if (value.includes(FormatList[i])) return Decimal.fromMantissaExponent(parseFloat(value), i*3+3)
-		  //return parseFloat(value) + "e" + (i*3+3)
-	  }
-	  const prefixes = [['', 'U', 'D', 'T', 'Qd', 'Qt', 'Sx', 'Sp', 'O', 'N'],
-	  ['', 'Dc', 'Vg', 'Tg', 'Qa', 'Qi', 'Se', 'St', 'Og', 'Nn'],
-	  ['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
-	  const prefixes2 = ['', 'MI', 'MC', 'NA', 'PC', 'FM', ' ']
-	  let e = 0;
-	  let m,k,l;
-	  for (let i=1;i<5;i++) {
-		  if (value.includes(prefixes2[i])) {
-			  m = value.split(prefixes2[i])[1]
-			  for (k=0;k<3;k++) {
-				  for (l=1;l<10;l++) {
-					  if (m.includes(prefixes[k][l])) break;
-				  }   
-				  if (l != 10) e += Math.pow(10,k)*l;
-			  }
-			  break;
-		  }
-	  }
-	  for (let i=1;i<=5;i++) {
-		  if (value.includes(prefixes2[i])) {
-			  for (let j=1;j+i<6;j++) {
-				  if (value.includes(prefixes2[i+j])) {
-					  m=value.split(prefixes2[i+j])[1].split(prefixes2[i])[0]
-					  if (m == "") e += Math.pow(1000,i);
-					  else {
-						  for (k=0;k<3;k++) {
-							  for (l=1;l<10;l++) {
-								  if (m.includes(prefixes[k][l])) break;
-							  }   
-							  if (l != 10) e += Math.pow(10,k+i*3)*l;
-						  }
-					  }
-					  break;
-				  }
-			  }
-		  }
-	  }
-	  return Decimal.fromMantissaExponent(parseFloat(value), i*3+3)
-	  //return parseFloat(value) + "e" + (e*3+3)
+	function fromValue(value) {
+		if (value.includes(" ")) {
+			let FormatList = [' K',' M',' B']
+			for (let i=0;i<3;i++) {
+					if (value.includes(FormatList[i])) return Decimal.fromMantissaExponent(parseFloat(value), i*3+3)
+					//return parseFloat(value) + "e" + (i*3+3)
+			}
+			const prefixes = [['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
+			['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
+			['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
+			const prefixes2 = ['', 'MI', 'MC', 'NA', 'PC', 'FM', ' ']
+			let e = 0;
+			let m,k,l;
+			for (let i=1;i<5;i++) {
+					if (value.includes(prefixes2[i])) {
+							m = value.split(prefixes2[i])[1]
+							for (k=0;k<3;k++) {
+									for (l=1;l<10;l++) {
+											if (m.includes(prefixes[k][l])) break;
+									}
+									if (l != 10) e += Math.pow(10,k)*l;
+							}
+							break;
+					}
+			}
+			for (let i=1;i<=5;i++) {
+					if (value.includes(prefixes2[i])) {
+							for (let j=1;j+i<6;j++) {
+									if (value.includes(prefixes2[i+j])) {
+											m=value.split(prefixes2[i+j])[1].split(prefixes2[i])[0]
+											if (m == "") e += Math.pow(1000,i);
+											else {
+													for (k=0;k<3;k++) {
+															for (l=1;l<10;l++) {
+																	if (m.includes(prefixes[k][l])) break;
+															}
+															if (l != 10) e += Math.pow(10,k+i*3)*l;
+													}
+											}
+											break;
+									}
+							}
+					}
+			}
+			return Decimal.fromMantissaExponent(parseFloat(value), i*3+3)
+			//return parseFloat(value) + "e" + (e*3+3)
+		}
+		if (!isFinite(parseFloat(value[value.length-1]))) { //needs testing
+			const l = " abcdefghijklmnopqrstuvwxyz"
+			const v = value.replace(parseFloat(value),"")
+			let e = 0;
+			for (let i=0;i<v.length;i++) {
+					for (let j=1;j<27;j++) {
+							if (v[i] == l[j]) e += Math.pow(26,v.length-i-1)*j
+					}
+			}
+			return Decimal.fromMantissaExponent(parseFloat(value), e*3)
+			//return parseFloat(value) + "e" + (e*3)
+		}
+		value = value.replace(',','')
+		if (value.split("e")[0] === "") return Decimal.fromMantissaExponent(Math.pow(10,parseFloat(value.split("e")[1])%1), parseInt(value.split("e")[1]))
+		return Decimal.fromString(value)
 	}
-	if (!isFinite(parseFloat(value[value.length-1]))) { //needs testing
-	  const l = " abcdefghijklmnopqrstuvwxyz"
-	  const v = value.replace(parseFloat(value),"")
-	  let e = 0;
-	  for (let i=0;i<v.length;i++) {
-		  for (let j=1;j<27;j++) {
-			  if (v[i] == l[j]) e += Math.pow(26,i)*j
-		  }
-	  }
-	  return Decimal.fromMantissaExponent(parseFloat(value), e*3)
-	  //return parseFloat(value) + "e" + (e*3)
-	}
-	value = value.replace(',','')
-	if (value.split("e")[0] === "") return Decimal.fromMantissaExponent(Math.pow(10,parseFloat(value.split("e")[1])%1), parseInt(value.split("e")[1]))
-	return Decimal.fromString(value)
-  }
 
 	var FormatList = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'UDc', 'DDc', 'TDc', 'QaDc', 'QtDc', 'SxDc', 'SpDc', 'ODc', 'NDc', 'Vg', 'UVg', 'DVg', 'TVg', 'QaVg', 'QtVg', 'SxVg', 'SpVg', 'OVg', 'NVg', 'Tg', 'UTg', 'DTg', 'TTg', 'QaTg', 'QtTg', 'SxTg', 'SpTg', 'OTg', 'NTg', 'Qd', 'UQd', 'DQd', 'TQd', 'QaQd', 'QtQd', 'SxQd', 'SpQd', 'OQd', 'NQd', 'Qi', 'UQi', 'DQi', 'TQi', 'QaQi', 'QtQi', 'SxQi', 'SpQi', 'OQi', 'NQi', 'Se', 'USe', 'DSe', 'TSe', 'QaSe', 'QtSe', 'SxSe', 'SpSe', 'OSe', 'NSe', 'St', 'USt', 'DSt', 'TSt', 'QaSt', 'QtSt', 'SxSt', 'SpSt', 'OSt', 'NSt', 'Og', 'UOg', 'DOg', 'TOg', 'QaOg', 'QtOg', 'SxOg', 'SpOg', 'OOg', 'NOg', 'Nn', 'UNn', 'DNn', 'TNn', 'QaNn', 'QtNn', 'SxNn', 'SpNn', 'ONn', 'NNn', 'Ce',];
 
