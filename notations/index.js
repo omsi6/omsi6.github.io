@@ -255,7 +255,7 @@ function formatValue(notation, value, places, placesUnder1000) {
 
 function updateValues() {
 	var valueToFormat = fromValue(document.getElementById("valuetoformat").value)
-	if (document.getElementById("commas").value === "on") commas = true;
+	if (document.getElementById("commas").checked) commas = true;
 	else commas = false;
 	document.getElementById("standard").innerHTML = "Standard: " + "<b>" + formatValue("Standard", valueToFormat, 2, 0) + "</b>"
 	document.getElementById("cancer").innerHTML = "Emojis: " + "<b>" + formatValue("Emojis", valueToFormat, 2, 0) + "</b>"
