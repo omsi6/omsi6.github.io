@@ -1,24 +1,110 @@
 body {
     background-color: #212121;
-    color: #fff;
+    color: #919191;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
 }
 
-.rotmg-icon {
+.specialA {
+    width: 50px;
+    height: 50px;
+    margin: 3px;
     border-radius: 50%;
-    height: 1/4;
-    width: 1/4;
+    padding: 3px;
+}
+
+a {
+    color: #2196F3;
+}
+
+a:visited {
+    color: #673AB7;
+}
+
+.flex-container {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     transition: all 0.2s ease;
     border: 1px solid black;
     user-select: none;
 }
 
-.kol-icon {
-    border-radius: 50%;
-    transition: all 0.2s ease;
-    border: 1px solid black;
-    user-select: none;
-}
-
-.kol-icon:hover, .rotmg-icon:hover, .rotmg-icon2:hover {
+.icon:hover {
     transform: rotate(10deg) scale(1.1);
+}
+
+.textbox {
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 3px;
+    margin: 3px;
+    width: 400px;
+    height: 50px;
+    background: #333;
+}
+
+[ach-tooltip] {
+    position: relative;
+    z-index: 2;
+}
+
+[ach-tooltip]:before,
+[ach-tooltip]:after {
+    visibility: hidden;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+[ach-tooltip]:before {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: 5px;
+    margin-left: -80px;
+    padding: 7px;
+    width: 160px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #000;
+    background-color: hsla(0, 0%, 5%, 0.9);
+    color: #fff;
+    content: attr(ach-tooltip);
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.2;
+    transition-duration: .5s;
+}
+
+[ach-tooltip]:after {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    border-top: 5px solid #000;
+    border-top: 5px solid hsla(0, 0%, 5%, 0.9);
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: " ";
+    font-size: 0;
+    line-height: 0;
+    transition-duration: .5s;
+}
+
+[ach-tooltip]:hover:before,
+[ach-tooltip]:hover:after {
+    visibility: visible;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
 }
