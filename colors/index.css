@@ -1,0 +1,32 @@
+body {
+    background-color: #fff;
+    color: #000;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+}
+
+*:focus {
+    outline: none;
+}
+
+.flex-container {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+}
+
+.resourcename {
+    font-size: 16px;
+}
+
+button {
+    border: 1px solid black;
+    transition-duration: 0.2s;
+    box-shadow: 1px 1px 0px black;
+    user-select: none;
+}
+
+button:hover {
+    background: #efefef;
+    cursor: pointer;
+}
