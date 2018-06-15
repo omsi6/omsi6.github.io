@@ -365,6 +365,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 .sp-replacer {
     margin:0;
     margin-top: -1px;
+    margin-left: -1px;
     overflow:hidden;
     cursor:pointer;
     padding: 2px;

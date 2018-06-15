@@ -32,7 +32,7 @@ $(".picker").spectrum({
     
     },
     change: function() {
-        
+        updateBookmarklet()
     },
     palette: [
         ["rgb(0, 0, 0)", "rgb(67, 67, 67)", "rgb(102, 102, 102)",
@@ -59,7 +59,7 @@ function pickTheme() {
         document.body.style.color = "#000";
         document.getElementById("themebtn").innerHTML = "Color scheme:<br>Classic";
         for (var i=0; i<34; i++) {
-            if (document.getElementsByClassName("sp-input")[i].value === "rgb(220, 220, 220)") $(".picker").eq(i).spectrum("set", "#000")
+            if (document.getElementsByClassName("sp-input")[i].value === "rgb(220, 220, 220)" && document.getElementsByClassName("sp-input")[i+34].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+136].value === "rgba(0, 0, 0, 0)") $(".picker").eq(i).spectrum("set", "#000")
         }
     }
     if (theme === 1) {
@@ -67,7 +67,7 @@ function pickTheme() {
         document.body.style.color = "#eee";
         document.getElementById("themebtn").innerHTML = "Color scheme:<br>Inverted";
         for (var i=0; i<34; i++) {
-            if (document.getElementsByClassName("sp-input")[i].value === "rgb(0, 0, 0)") $(".picker").eq(i).spectrum("set", "#DCDCDC")
+            if (document.getElementsByClassName("sp-input")[i].value === "rgb(0, 0, 0)" && document.getElementsByClassName("sp-input")[i+34].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+136].value === "rgba(0, 0, 0, 0)") $(".picker").eq(i).spectrum("set", "#DCDCDC")
         }
     }
     if (theme === 2) {
@@ -75,7 +75,7 @@ function pickTheme() {
         document.body.style.color = "#000";
         document.getElementById("themebtn").innerHTML = "Color scheme:<br>Grassy";
         for (var i=0; i<34; i++) {
-            if (document.getElementsByClassName("sp-input")[i].value === "rgb(220, 220, 220)") $(".picker").eq(i).spectrum("set", "#000")
+            if (document.getElementsByClassName("sp-input")[i].value === "rgb(220, 220, 220)" && document.getElementsByClassName("sp-input")[i+34].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+136].value === "rgba(0, 0, 0, 0)") $(".picker").eq(i).spectrum("set", "#000")
         }
     }
     if (theme === 3) {
@@ -83,7 +83,7 @@ function pickTheme() {
         document.body.style.background = "linear-gradient(to right, #0d0d0d 0%, #1c1917 24%, #1c1917 76%, #0d0d0d 100%)";
         document.getElementById("themebtn").innerHTML = "Color scheme:<br>Sleek";
         for (var i=0; i<34; i++) {
-            if (document.getElementsByClassName("sp-input")[i].value === "rgb(0, 0, 0)") $(".picker").eq(i).spectrum("set", "#DCDCDC")
+            if (document.getElementsByClassName("sp-input")[i].value === "rgb(0, 0, 0)" && document.getElementsByClassName("sp-input")[i+34].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value === "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+136].value === "rgba(0, 0, 0, 0)") $(".picker").eq(i).spectrum("set", "#DCDCDC")
         }
     }
     theme++;
@@ -91,40 +91,96 @@ function pickTheme() {
 }
 
 function updateColors() {
-    for (i=0; i<document.getElementsByClassName("sp-input").length/2; i++) {
-        document.getElementById("resource"+(i+1)).style.color = document.getElementsByClassName("sp-input")[i].value
-        document.getElementById("resource"+(i+1)).style.textShadow = "1px 0px 10px "+document.getElementsByClassName("sp-input")[i+34].value
+    for (var i=0; i<34; i++) {
+        if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+136].value !== "rgba(0, 0, 0, 0)") {
+            document.getElementById("resource"+(i+1)).style.background = "-webkit-linear-gradient(360deg, "+document.getElementsByClassName("sp-input")[i].value+" 0%, "+document.getElementsByClassName("sp-input")[i+34].value+" 25%, "+document.getElementsByClassName("sp-input")[i+68].value+" 50%, "+document.getElementsByClassName("sp-input")[i+102].value+" 75%, "+document.getElementsByClassName("sp-input")[i+136].value+" 100%)"
+            document.getElementById("resource"+(i+1)).style.webkitBackgroundClip = "text"
+            document.getElementById("resource"+(i+1)).style.webkitTextFillColor = "transparent"
+        } else if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value !== "rgba(0, 0, 0, 0)") {
+            document.getElementById("resource"+(i+1)).style.background = "-webkit-linear-gradient(360deg, "+document.getElementsByClassName("sp-input")[i].value+" 0%, "+document.getElementsByClassName("sp-input")[i+34].value+" 33%, "+document.getElementsByClassName("sp-input")[i+68].value+" 66%, "+document.getElementsByClassName("sp-input")[i+102].value+" 100%)"
+            document.getElementById("resource"+(i+1)).style.webkitBackgroundClip = "text"
+            document.getElementById("resource"+(i+1)).style.webkitTextFillColor = "transparent"
+        } else if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value !== "rgba(0, 0, 0, 0)") {
+            document.getElementById("resource"+(i+1)).style.background = "-webkit-linear-gradient(360deg, "+document.getElementsByClassName("sp-input")[i].value+" 0%, "+document.getElementsByClassName("sp-input")[i+34].value+" 50%, "+document.getElementsByClassName("sp-input")[i+68].value+" 100%)"
+            document.getElementById("resource"+(i+1)).style.webkitBackgroundClip = "text"
+            document.getElementById("resource"+(i+1)).style.webkitTextFillColor = "transparent"
+        } else if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)") {
+            document.getElementById("resource"+(i+1)).style.background = "-webkit-linear-gradient(360deg, "+document.getElementsByClassName("sp-input")[i].value+" 0%, "+document.getElementsByClassName("sp-input")[i+34].value+" 100%)"
+            document.getElementById("resource"+(i+1)).style.webkitBackgroundClip = "text"
+            document.getElementById("resource"+(i+1)).style.webkitTextFillColor = "transparent"
+        } else {
+            document.getElementById("resource"+(i+1)).style.color = document.getElementsByClassName("sp-input")[i].value
+        }
+        document.getElementById("resource"+(i+1)).style.textShadow = "1px 0px 10px "+document.getElementsByClassName("sp-input")[i+170].value
     }
 }
 
 function importTemplate() {
-    var input = prompt("Paste your command here:")
+    var input = prompt("Paste your command here/drag your bookmarklet here:")
     var colors = JSON.parse(input.split("//")[1])
     for (var i=0; i<34; i++) {
-        $(".picker").eq(i).spectrum("set", colors.textColors[i])
-        $(".picker").eq(i+34).spectrum("set", colors.shadowColors[i])
+        $(".picker").eq(i).spectrum("set", colors.textColors1[i])
+        $(".picker").eq(i+34).spectrum("set", colors.textColors2[i])
+        $(".picker").eq(i+68).spectrum("set", colors.textColors3[i])
+        $(".picker").eq(i+102).spectrum("set", colors.textColors4[i])
+        $(".picker").eq(i+136).spectrum("set", colors.textColors5[i])
+        $(".picker").eq(i+170).spectrum("set", colors.shadowColors[i])
     }
 }
 
-function exportTemplate() {
-    var textColors = [];
+function getJavascript() {
+    var textColors1 = [];
+    var textColors2 = [];
+    var textColors3 = [];
+    var textColors4 = [];
+    var textColors5 = [];
     var shadowColors = [];
     var str = 'function color() { var res = $(".resTable"); '
     for (var i=0; i<34; i++) {
-        textColors[i] = document.getElementsByClassName("sp-input")[i].value;
-        shadowColors[i] = document.getElementsByClassName("sp-input")[i+34].value;
-        str+='res.find(":nth-child('+(i+1)+') .resource-name").css("color", "'+document.getElementsByClassName("sp-input")[i].value+'"); '
-        str+='res.find(":nth-child('+(i+1)+') .resource-name").css("text-shadow", "'+document.getElementsByClassName("sp-input")[i+34].value+' 1px 0px 10px"); '
+        textColors1[i] = document.getElementsByClassName("sp-input")[i].value;
+        textColors2[i] = document.getElementsByClassName("sp-input")[i+34].value;
+        textColors3[i] = document.getElementsByClassName("sp-input")[i+68].value;
+        textColors4[i] = document.getElementsByClassName("sp-input")[i+102].value;
+        textColors5[i] = document.getElementsByClassName("sp-input")[i+136].value;
+        shadowColors[i] = document.getElementsByClassName("sp-input")[i+170].value;
+        //TODO for gradients
+        if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+136].value !== "rgba(0, 0, 0, 0)") {
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("background", "-webkit-linear-gradient(360deg, '+document.getElementsByClassName("sp-input")[i].value+' 0%, '+document.getElementsByClassName("sp-input")[i+34].value+' 25%, '+document.getElementsByClassName("sp-input")[i+68].value+' 50%, '+document.getElementsByClassName("sp-input")[i+102].value+' 75%, '+document.getElementsByClassName("sp-input")[i+136].value+' 100%)"); '
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-background-clip", "text");'
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-text-fill-color", "transparent");'
+        } else if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+102].value !== "rgba(0, 0, 0, 0)") {
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("background", "-webkit-linear-gradient(360deg, '+document.getElementsByClassName("sp-input")[i].value+' 0%, '+document.getElementsByClassName("sp-input")[i+34].value+' 33%, '+document.getElementsByClassName("sp-input")[i+68].value+' 66%, '+document.getElementsByClassName("sp-input")[i+102].value+' 100%)"); '
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-background-clip", "text");'
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-text-fill-color", "transparent");'
+        } else if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)" && document.getElementsByClassName("sp-input")[i+68].value !== "rgba(0, 0, 0, 0)") {
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("background", "-webkit-linear-gradient(360deg, '+document.getElementsByClassName("sp-input")[i].value+' 0%, '+document.getElementsByClassName("sp-input")[i+34].value+' 50%, '+document.getElementsByClassName("sp-input")[i+68].value+' 100%)"); '
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-background-clip", "text");'
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-text-fill-color", "transparent");'
+        } else if (document.getElementsByClassName("sp-input")[i+34].value !== "rgba(0, 0, 0, 0)") {
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("background", "-webkit-linear-gradient(360deg, '+document.getElementsByClassName("sp-input")[i].value+' 0%, '+document.getElementsByClassName("sp-input")[i+34].value+' 100%)"); '
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-background-clip", "text");'
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("-webkit-text-fill-color", "transparent");'
+        } else {
+            str+='res.find(":nth-child('+(i+1)+') .resource-name").css("color", "'+document.getElementsByClassName("sp-input")[i].value+'"); '
+        }
+        str+='res.find(":nth-child('+(i+1)+') .resource-name").css("text-shadow", "'+document.getElementsByClassName("sp-input")[i+170].value+' 1px 0px 10px"); '
     }
     str += '}game.ui.render=function(){var game=this.game; var midColumn=dojo.byId("midColumn"); var scrollPosition=midColumn.scrollTop; var container=dojo.byId(this.containerId); dojo.empty(container); var tabNavigationDiv=dojo.create("div",{className:"tabsContainer"},container); this.toolbar.render(dojo.byId("headerToolbar")); game.resTable.render(); game.craftTable.render(); game.calendar.render(); var visibleTabs=[]; for(var i=0; i<game.tabs.length; i++){var tab=game.tabs[i]; tab.domNode=null; if(tab.visible){visibleTabs.push(tab)}}for(var i=0; i<visibleTabs.length; i++){var tab=visibleTabs[i]; tab.updateTab(); var tabLink=dojo.create("a",{href:"#",innerHTML:tab.tabName,className:"tab",style:{whiteSpace:"nowrap"}},tabNavigationDiv); tab.domNode=tabLink; if(this.activeTabId==tab.tabId){dojo.addClass(tabLink,"activeTab")}dojo.connect(tabLink,"onclick",this,dojo.partial(function(tab){this.activeTabId=tab.tabId; this.render()},tab)); if(i<visibleTabs.length-1){dojo.create("span",{innerHTML:" | "},tabNavigationDiv)}}for(var i=0; i<game.tabs.length; i++){var tab=game.tabs[i]; if(this.activeTabId==tab.tabId){var divContainer=dojo.create("div",{className:"tabInner"},container); tab.render(divContainer); break}}if(!this.calenderDivTooltip){var calendarDiv=dojo.byId("calendarDiv"); this.calenderDivTooltip=UIUtils.attachTooltip(game,calendarDiv,0,320,dojo.hitch(game.calendar,function(){var tooltip=""; if(this.year>100000){tooltip=$I("calendar.year")+" "+this.year.toLocaleString()}if(game.science.get("paradoxalKnowledge").researched){var trueYear=Math.trunc(this.year-game.time.flux); if(trueYear>100000){trueYear=trueYear.toLocaleString()}tooltip+="<br>"+$I("calendar.trueYear")+" "+trueYear}return tooltip}))}if(!this.calendarSignSpanTooltip){var calendarSignSpan=dojo.byId("calendarSign"); this.calendarSignSpanTooltip=UIUtils.attachTooltip(game,calendarSignSpan,0,320,dojo.hitch(game.calendar,function(){var cycle=this.cycles[this.cycle]; if(!cycle){return""}var tooltip=dojo.create("div",{className:"button_tooltip"},null); var cycleSpan=dojo.create("div",{innerHTML:cycle.title+" ("+$I("calendar.year")+" "+this.cycleYear+")",style:{textAlign:"center",clear:"both"}},tooltip); if(game.prestige.getPerk("numerology").researched){dojo.setStyle(cycleSpan,"borderBottom","1px solid gray"); dojo.setStyle(cycleSpan,"paddingBottom","4px"); var cycleSpan=dojo.create("div",{innerHTML:"Cycle Effects:",style:{textAlign:"center",paddingTop:"4px"}},tooltip); var effects=cycle.effects; for(var effect in effects){var effectItemNode=dojo.create("div",null,tooltip); var effectMeta=game.getEffectMeta(effect); var effectTitle=effectMeta.title+":"; var nameSpan=dojo.create("span",{innerHTML:effectTitle,style:{float:"left",fontSize:"16px"}},effectItemNode); var effectMod=effects[effect]>1?"+":""; effectMod+=((effects[effect]-1)*100).toFixed(0)+"%"; var effectSpan=dojo.create("span",{innerHTML:effectMod,style:{float:"right",fontSize:"16px",paddingLeft:"6px"}},effectItemNode); dojo.create("span",{innerHTML:"&nbsp; ",style:{clear:"both"}},effectItemNode)}}if(game.prestige.getPerk("numeromancy").researched&&this.festivalDays){var cycleSpan=dojo.create("div",{innerHTML:"Cycle Festival Effects:",style:{textAlign:"center"}},tooltip); var effects=cycle.festivalEffects; for(var effect in effects){var effectItemNode=dojo.create("div",null,tooltip); var effectMeta=game.getEffectMeta(effect); var effectTitle=effectMeta.title+":"; var nameSpan=dojo.create("span",{innerHTML:effectTitle,style:{float:"left",fontSize:"16px"}},effectItemNode); var effectMod=effects[effect]>1?"+":""; effectMod+=((effects[effect]-1)*100).toFixed(0)+"%"; var effectSpan=dojo.create("span",{innerHTML:effectMod,style:{float:"right",fontSize:"16px",paddingLeft:"6px"}},effectItemNode); dojo.create("span",{innerHTML:"&nbsp; ",style:{clear:"both"}},effectItemNode)}}return tooltip.outerHTML}))}midColumn.scrollTop=scrollPosition; this.update(); $(".console-intro").html($I("console.intro")); color();}; color();'
-    str += '//{"textColors":' + JSON.stringify(textColors) + ',"shadowColors":' + JSON.stringify(shadowColors) + '}';
-    document.getElementById("exportOutput").innerHTML = str;
+    str += '//{"textColors1":' + JSON.stringify(textColors1) + ',"textColors2":' + JSON.stringify(textColors2)+ ',"textColors3":' + JSON.stringify(textColors3)+ ',"textColors4":' + JSON.stringify(textColors4)+ ',"textColors5":' + JSON.stringify(textColors5)+ ',"shadowColors":' + JSON.stringify(shadowColors) + '}';
+    return str
+}
+
+function exportCommand() {
+    document.getElementById("exportOutput").textContent = getJavascript();
     document.getElementById("exportOutput").focus();
     document.getElementById("exportOutput").select();
     document.execCommand('copy');
-    document.getElementById("exportOutput").innerHTML = "";
+    document.getElementById("exportOutput").textContent = "";
 }
 
+function updateBookmarklet() {
+    document.getElementById("exportbtn2").href = "javascript:"+getJavascript()
+}
 
-
+updateBookmarklet();
 setInterval(updateColors, 50)
