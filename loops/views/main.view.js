@@ -144,7 +144,7 @@ function View() {
     };
 
     this.updateBuff = function(buff) {
-        if(buffs[buff].exp === 0) {
+        if(buffs[buff].amt === 0) {
             document.getElementById("buff" + buff + "Container").style.display = "none";
             return;
         } else {
@@ -1009,13 +1009,13 @@ function addStatColors(theDiv, stat) {
     } else if(stat === "Int") {
         theDiv.style.backgroundColor = "#2640b2";
     } else if(stat === "Cha") {
-        theDiv.style.backgroundColor = "#ea9ce0";
+        theDiv.style.backgroundColor = "#F48FB1";
     } else if(stat === "Spd") {
         theDiv.style.backgroundColor = "#f6e300";
     } else if(stat === "Luck") {
         theDiv.style.backgroundColor = "#3feb53";
     } else if(stat === "Soul") {
-        theDiv.style.backgroundColor = "#737388";
+        theDiv.style.backgroundColor = "#AB47BC";
     }
 }
 

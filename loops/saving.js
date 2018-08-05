@@ -12,6 +12,11 @@ function startGame () {
     load();
 }
 
+function cheat() {
+    if (gameSpeed === 1) gameSpeed = 20;
+    else gameSpeed = 1;
+}
+
 let mainTickLoop;
 let isFileSystem = !!location.href.match("file");
 let isBeta = !!location.href.match(/beta/i);
@@ -103,6 +108,12 @@ function load() {
         }
     }
 
+    for(let property in toLoad.buffs) {
+        if (toLoad.buffs.hasOwnProperty(property)) {
+            buffs[property].amt = toLoad.buffs[property].amt;
+        }
+    }
+
     maxTown = toLoad.maxTown !== undefined ? toLoad.maxTown : 0;
     actionTownNum = toLoad.actionTownNum !== undefined ? toLoad.actionTownNum : 0;
 
@@ -123,7 +134,7 @@ function load() {
     town.expHermit = toLoad.expHermit !== undefined ? toLoad.expHermit : 0;
     town.expThicket = toLoad.expThicket !== undefined ? toLoad.expThicket : 0;
     town.expWitch = toLoad.expWitch !== undefined ? toLoad.expWitch : 0;
-    town.ritualBonus = toLoad.ritualBonus !== undefined ? toLoad.ritualBonus : 0;
+    town.totalDarkRitual = toLoad.totalDarkRitual !== undefined ? toLoad.totalDarkRitual : 0;
 
     towns[2] = new Town(2);
     town = towns[2];
@@ -250,6 +261,7 @@ function save() {
     let town = towns[0];
     toSave.stats = stats;
     toSave.skills = skills;
+    toSave.buffs = buffs ;
     toSave.expWander = town.expWander;
     toSave.expMet = town.expMet;
     toSave.expSecrets = town.expSecrets;
@@ -263,7 +275,7 @@ function save() {
     toSave.expHermit = town.expHermit;
     toSave.expThicket = town.expThicket;
     toSave.expWitch = town.expWitch;
-    toSave.ritualBonus = town.ritualBonus;
+    toSave.totalDarkRitual = town.totalDarkRitual
 
     town = towns[2];
     toSave.expCity = town.expCity;

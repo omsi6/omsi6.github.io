@@ -50,7 +50,7 @@ function tick() {
         if(timer % (300*gameSpeed) === 0) {
             save();
         }
-        gameTicksLeft -= (1000 / 50) / gameSpeed / bonusSpeed;
+        gameTicksLeft -= ((1000 / 50) / (gameSpeed * 1+0.1*buffs["Ritual"].amt) / bonusSpeed);
         if(bonusSpeed > 1) {
             addOffline(-1 * gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed));
         }

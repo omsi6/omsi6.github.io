@@ -634,7 +634,7 @@
         <dark_magic>
             <label>Dark Magic</label>
             <tooltip><![CDATA[
-        Embrace the dark arts to more efficiently harvest mana. But at what cost?<br>Unlocked with both 20% Witch Knowledge and 100 Magic.
+        Embrace the dark arts to more efficiently harvest mana. But at what cost?<br>Requires a reputation of 0 or lower.<br>Unlocked with both 20% Witch Knowledge and 100 Magic.
       ]]></tooltip>
         </dark_magic>
         <dark_ritual>
@@ -643,7 +643,7 @@
             <label_complete>Completed Label Complete</label_complete>
             <label_part>Small Dungeon</label_part>
             <tooltip><![CDATA[
-        Sacrifice your soulstones to the dark gods, granting a permanant speed 10% boost to all actions in Beginnersville.<br>Unlocked with both 90% Thicket Cleared and 50 Dark Magic.
+        Sacrifice an increasing amount of soulstones to the dark gods, granting a permanant speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of 0 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Cleared and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
       ]]></tooltip>
             <completed_tooltip><![CDATA[
         Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
@@ -654,6 +654,7 @@
                 <name>Clear the area</name>
                 <name>Prepare the altar</name>
                 <name>Summon the dark gods</name>
+                <name>Why are you getting this</name>
             </segment_names>
         </dark_ritual>
         <continue_on>

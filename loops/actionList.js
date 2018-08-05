@@ -276,7 +276,7 @@ function ExploreForest() {
     };
 }
 function adjustWildMana() {
-    towns[1].totalWildMana = towns[1].getLevel("Forest") * 5;
+    towns[1].totalWildMana = towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Thicket") * 5;
 }
 function adjustHunt() {
     towns[1].totalHunt = towns[1].getLevel("Forest") * 2;
@@ -1043,6 +1043,7 @@ function ClearThicket() {
     };
     this.finish = function() {
         towns[1].finishProgress(this.varName, 100, function() {
+            adjustWildMana();
         });
     };
 }
@@ -1092,6 +1093,9 @@ function DarkMagic() {
     this.manaCost = function() {
         return Math.ceil(6000 / (1 + towns[1].getLevel("Witch")/100));
     };
+    this.canStart = function() {
+        return reputation <= 0;
+    };
     this.visible = function() {
         return towns[1].getLevel("Witch") >= 10;
     };
@@ -1123,31 +1127,56 @@ function DarkRitual() {
     this.manaCost = function() {
         return 50000;
     };
+    this.allowed = function() {
+        return 1;
+    };
     this.canStart = function() {
-        return reputation <= 2;
+        var tempCost = (towns[1].totalDarkRitual+1) * 50
+        var tempCanStart = true;
+        for(var i=0; i<9; i++) {
+            if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
+        }
+        return reputation <= 0 && towns[1].DarkRitualLoopCounter === 0;
     };
     this.loopCost = function(segment) {
-        return 1000000 * (segment+1);
+        return 1000000 * (segment*2+1);
     };
     this.tickProgress = function(offset) {
-        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[0].FightLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + towns[0].totalFight/100);
+        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter+offset) % this.loopStats.length])/100);
     };
     this.loopsFinished = function() {
-        addBuffAmt("Ritual")
+        addBuffAmt("Ritual", 1)
+        var tempSoulstonesSacrificed = 0;
+        var tempSoulstonesToSacrifice = Math.ceil((towns[1].totalDarkRitual * 50) / 9);
+        for(var i=0; i<9; i++) {
+            if (tempSoulstonesSacrificed + tempSoulstonesToSacrifice > towns[1].totalDarkRitual * 50) tempSoulstonesToSacrifice = towns[1].totalDarkRitual * 50 - tempSoulstonesSacrificed
+            tempSoulstonesSacrificed += tempSoulstonesToSacrifice
+            stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
+        }
+        view.updateSoulstones();
     };
     this.getPartName = function() {
         return "Perform Dark Ritual";
     };
     this.getSegmentName = function(segment) {
-        return _txtsObj("actions>dark_ritual>segment_names>name")[segment].textContent;
+        let segments = [];
+        $(_txtsObj("actions>dark_ritual>segment_names>name")).each(function(x,segmentName) {
+          segments.push($(segmentName).text());
+        })
+        return segments[segment % 3];
     };
     this.visible = function() {
         return towns[1].getLevel("Thicket") >= 50;
     };
     this.unlocked = function() {
-        return towns[1].getLevel("Thicket") >= 90 && getSkillLevel("Dark") >= 50;
+        let toUnlock = towns[1].getLevel("Thicket") >= 90 && getSkillLevel("Dark") >= 50;
+        if(toUnlock && !isVisible(document.getElementById("buffList"))) {
+            document.getElementById("buffList").style.display = "inline-block";
+        }
+        return toUnlock;
     };
     this.finish = function() {
+        view.updateBuff("Ritual");
     };
 }
 
@@ -2225,7 +2254,7 @@ function ExploreMountain() {
         return true;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1), function() {
+        towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1), function() {
             adjustSuckers();
         });
     };

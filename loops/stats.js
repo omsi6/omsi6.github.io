@@ -30,7 +30,7 @@ function initializeBuffs() {
 
 function addNewBuff(name) {
     buffs[name] = {};
-    buffs[name].exp = 0;
+    buffs[name].amt = 0;
 }
 
 function getLevel(stat) {
@@ -84,7 +84,7 @@ function getSkillLevel(skill) {
 }
 
 function getBuffLevel(buff) {
-    return buffs[buff].exp;
+    return buffs[buff].amt;
 }
 
 function getSelfCombat() {
@@ -108,7 +108,7 @@ function addSkillExp(name, amount) {
 }
 
 function addBuffAmt(name, amount) {
-    buffs[name].exp += amount;
+    buffs[name].amt += amount;
     view.updateBuff(name);
 }
 
