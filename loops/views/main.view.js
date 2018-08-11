@@ -648,7 +648,19 @@ function View() {
             townInfos[3].removeChild(townInfos[3].firstChild);
         }
 
-        tempObj = new ExploreMountain();
+        tempObj = new ClimbMountain();
+        this.createTownAction(tempObj);
+        this.createActionProgress(tempObj);
+
+        tempObj = new ManaGeyser();
+        this.createTownAction(tempObj);
+        this.createTownInfo(tempObj);
+
+        tempObj = new DecipherRunes();
+        this.createTownAction(tempObj);
+        this.createActionProgress(tempObj);
+
+        tempObj = new ExploreCavern();
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
     };

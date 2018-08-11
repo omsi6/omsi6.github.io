@@ -394,12 +394,16 @@
         </town0>
         <town1>
             <name>Forest Path</name>
-            <desc>A forever green forest. You feel mana flowing around...</desc>
+            <desc>A forever green forest. You feel mana flowing around, but hiding in the dark, you sense an evil presence...</desc>
         </town1>
         <town2>
             <name>Merchanton</name>
-            <desc>A town that would need a better description.</desc>
+            <desc>Merchanton! A modest town bustling with activity. You can find many attractions here, such as the library, the adventuring guild, the crafting guild, and the bazaar. Oh, and did I mention there's loads of suckers to swindle?</desc>
         </town2>
+        <town3>
+            <name>Mt. Olympus</name>
+            <desc>A town that would need a better description.</desc>
+        </town3>
     </towns>
     <actions>
         <title>Action Options</title>
@@ -503,7 +507,7 @@
             <label>Get Drunk</label>
             <label_done>Rumors Heard</label_done>
             <tooltip><![CDATA[
-        Sometimes you just need a drink.<br>Requires reputation of at least -3.<br>Has 3x exp<br>Costs 1 reputation.<br>Unlocked at 20% City Explored.
+        Sometimes you just need a drink.<br>Requires reputation of at least -3.<br>Has 3x exp/talent gain<br>Costs 1 reputation.<br>Unlocked at 20% City Explored.
       ]]></tooltip>
         </get_drunk>
         <apprentice>
@@ -749,9 +753,12 @@
             <info_text1>Sources with loot left</info_text1>
             <info_text2>Sources with loot total</info_text2>
             <info_text3>Sources to check for loot</info_text3>
-            <tooltip><![CDATA[
-          They're out of sight of most travellers, but you have time to find and harvest them.<br>Every good mana spot has 250 mana.<br>Every 10 mana spots have good mana.
+                        <tooltip><![CDATA[
+          They're out of sight of most travellers, but you have time to find and harvest them.<br>Every good mana spot has 
       ]]></tooltip>
+            <tooltip2><![CDATA[
+           mana.<br>Every 10 mana spots have good mana.
+      ]]></tooltip2>
         </wild_mana>
         <gather_herbs>
             <label>Gather Herbs</label>
@@ -909,13 +916,37 @@
         Begin your trek to the top of Mt. Olympus.
       ]]></tooltip>
         </start_trek>
-        <explore_mountain>
-            <label>Explore Mountain</label>
+        <climb_mountain>
+            <label>Climb Mountain</label>
             <label_done>Mountain Explored</label_done>
             <tooltip><![CDATA[
-        Traversing the mountain will be difficult, but you can use your pickaxe to help you get around.<br>2x progress with pickaxe.
+        Traversing the mountain will be difficult, but you can use your pickaxe as a makeshift climbing pick of sorts to help you get around.<br>2x progress with pickaxe.
       ]]></tooltip>
-        </explore_mountain>
+        </climb_mountain>
+        <mana_geyser>
+            <label>Mana Geyser</label>
+            <label_done>Weak Spots Checked</label_done>
+            <info_text1>Spots with loot left</info_text1>
+            <info_text2>Spots with loot total</info_text2>
+            <info_text3>Spots to check for loot</info_text3>
+            <tooltip><![CDATA[
+          Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
+      ]]></tooltip>
+        </mana_geyser>
+        <decipher_runes>
+            <label>Decipher Runes</label>
+            <label_done>Runic Symbols Deciphered</label_done>
+            <tooltip><![CDATA[
+        There are many different runic markings on weathered headstones around the mountain, perhaps you can glean some sort of knowledge from them.<br>2x progress with glasses.
+      ]]></tooltip>
+        </decipher_runes>
+        <explore_cavern>
+            <label>Explore Cavern</label>
+            <label_done>Cavern Explored</label_done>
+            <tooltip><![CDATA[
+        Explore the expansive and twisting cavern beneath the mountain, who knows what wonders you'll find down there. You'll need a pickaxe to clear out the debris from the entrance.<br>Requires pickaxe.
+      ]]></tooltip>
+        </explore_cavern>
     </actions>
     <spells>
         <title>Spells</title>

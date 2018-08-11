@@ -10,7 +10,7 @@ body {
     user-select: none;
     font-family:Arial, Helvetica, serif;
     color:black;
-    font-size:14px;
+    font-size: 14px;
     height:100%;
     margin:0;
     background-color: #e4ece5;
@@ -61,7 +61,7 @@ body {
 }
 
 .superLargeIcon {
-    width:30px;
+    width: 34px;
     height:30px;
 }
 .largeIcon {

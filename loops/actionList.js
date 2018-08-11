@@ -111,10 +111,12 @@ function translateClassNames(name) {
     }
 
     // town 4 
-    if(name === "Explore Mountain") {
-        return new ExploreMountain();
-    } else if(name === "Mine Mana Crystals") {
-        return new MineManaCrystals();
+    if(name === "Climb Mountain") {
+        return new ClimbMountain();
+    } else if(name === "Mana Geyser") {
+        return new ManaGeyser();
+    } else if(name === "Decipher Runes") {
+        return new DecipherRunes();
     }
     console.log('error trying to create ' + name);
 }
@@ -1567,6 +1569,7 @@ function WildMana() {
     this.expMult = 1;
     this.townNum = 1;
     this.tooltip = _txt("actions>wild_mana>tooltip");
+    this.tooltip2 = _txt("actions>wild_mana>tooltip2");
     this.label = _txt("actions>wild_mana>label");
     this.labelDone = _txt("actions>wild_mana>label_done");
     this.infoText = _txt("actions>wild_mana>info_text1") +
@@ -1594,10 +1597,14 @@ function WildMana() {
     };
     this.finish = function() {
         towns[1].finishRegular(this.varName, 10, function() {
-            addMana(250);
-            return 250;
+            addMana(goldCostWildMana());
+            return goldCostWildMana();
         })
     };
+}
+function goldCostWildMana() {
+    let dark = getSkillLevel("Dark");
+    return Math.floor(250 * (1 + dark/100));
 }
 
 function GatherHerbs() {
@@ -2227,13 +2234,13 @@ function StartTrek() {
     };
 }
 
-function ExploreMountain() {
-    this.name = "Explore Mountain";
+function ClimbMountain() {
+    this.name = "Climb Mountain";
     this.expMult = 1;
     this.townNum = 3;
-    this.tooltip = _txt("actions>explore_mountain>tooltip");
-    this.label = _txt("actions>explore_mountain>label");
-    this.labelDone = _txt("actions>explore_mountain>label_done");
+    this.tooltip = _txt("actions>climb_mountain>tooltip");
+    this.label = _txt("actions>climb_mountain>label");
+    this.labelDone = _txt("actions>climb_mountain>label_done");
 
     this.varName = "Mountain";
     this.stats = {
@@ -2255,7 +2262,109 @@ function ExploreMountain() {
     };
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1), function() {
-            adjustSuckers();
+
+        });
+    };
+}
+
+function ManaGeyser() {
+    this.varName = "ManaGeyser";
+    this.name = "Mana Geyser";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>mana_geyser>tooltip");
+    this.label = _txt("actions>mana_geyser>label");
+    this.labelDone = _txt("actions>mana_geyser>label_done");
+    this.infoText = _txt("actions>mana_geyser>info_text1") +
+      " <i class='fa fa-arrow-left'></i> " +
+      _txt("actions>mana_geyser>info_text2") +
+      " <i class='fa fa-arrow-left'></i> " +
+      _txt("actions>mana_geyser>info_text3") +
+      "<br><div class='bold'>" +
+      _txt("actions>tooltip>total_found") +
+       "</div> <div id='total"+this.varName+"'></div>";
+
+    this.stats = {
+        Str:.6,
+        Per:.3,
+        Int:.1,
+    };
+    this.affectedBy = ["Buy Pickaxe"];
+    this.manaCost = function() {
+        return 2000;
+    };
+    this.visible = function() {
+        return true;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Mountain") >= 2;
+    };
+    this.finish = function() {
+        towns[1].finishRegular(this.varName, 10, function() {
+
+        })
+    };
+}
+
+function DecipherRunes() {
+    this.name = "Decipher Runes";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>decipher_runes>tooltip");
+    this.label = _txt("actions>decipher_runes>label");
+    this.labelDone = _txt("actions>decipher_runes>label_done");
+
+    this.varName = "Runes";
+    this.stats = {
+        Per:.3,
+        Int:.7
+    };
+    this.affectedBy = ["Buy Glasses"];
+    this.manaCost = function() {
+        return 700;
+    };
+    this.visible = function() {
+        return towns[0].getLevel("Wander") >= 10;
+    };
+    this.unlocked = function() {
+        return towns[0].getLevel("Wander") >= 22;
+    };
+    this.finish = function() {
+        towns[0].finishProgress(this.varName, 200, function() {
+            adjustSQuests();
+        });
+    };
+}
+
+function ExploreCavern() {
+    this.name = "ExploreCavern";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>explore_cavern>tooltip");
+    this.label = _txt("actions>explore_cavern>label");
+    this.labelDone = _txt("actions>explore_cavern>label_done");
+
+    this.varName = "Cavern";
+    this.stats = {
+        Dex:.1,
+        Str:.3,
+        Con:.2,
+        Per:.3,
+        Spd:.1
+    };
+    this.affectedBy = ["Buy Pickaxe"];
+    this.manaCost = function() {
+        return 1500;
+    };
+    this.visible = function() {
+        return true;
+    };
+    this.unlocked = function() {
+        return true;
+    };
+    this.finish = function() {
+        towns[3].finishProgress(this.varName, 100 * (pickaxe ? 1 : 0), function() {
+
         });
     };
 }
