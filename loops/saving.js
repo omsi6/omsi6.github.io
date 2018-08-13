@@ -46,6 +46,7 @@ let potions = 0;
 let teamNum = 0;
 let guild = "";
 let armor = 0;
+let pickaxe = 0;
 
 let curLoadout = 0;
 let loadouts = [];
@@ -150,6 +151,8 @@ function load() {
     towns[3] = new Town(3);
     town = towns[3];
     town.expMountain = toLoad.expMountain !== undefined ? toLoad.expMountain : 0;
+    town.expRunes = toLoad.expRunes !== undefined ? toLoad.expRunes : 0;
+    town.expCavern = toLoad.expCavern !== undefined ? toLoad.expCavern : 0;
 
     actions.next = [];
     if(toLoad.nextList) {
@@ -287,6 +290,12 @@ function save() {
     toSave.expApprentice = town.expApprentice;
     toSave.expMason = town.expMason;
     toSave.expArchitect = town.expArchitect;
+
+    town = towns[3];
+    toSave.expMountain = town.expMountain;
+    toSave.expRunes = town.expRunes;
+    toSave.expCavern = town.expCavern;
+
 
     for(let i = 0; i < towns.length; i++) {
         town = towns[i];

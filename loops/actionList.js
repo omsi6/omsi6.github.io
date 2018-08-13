@@ -117,6 +117,8 @@ function translateClassNames(name) {
         return new ManaGeyser();
     } else if(name === "Decipher Runes") {
         return new DecipherRunes();
+    } else if(name === "Explore Cavern") {
+        return new ExploreCavern();
     }
     console.log('error trying to create ' + name);
 }
@@ -131,7 +133,7 @@ function isTraining(name) {
     return name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books";
 }
 
-let townNames = ["Beginnersville", "Forest Path", "Merchanton"];
+let townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus"];
 
 
 //Progress actions
@@ -2262,13 +2264,13 @@ function ClimbMountain() {
     };
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1), function() {
-
+            adjustGeysers()
         });
     };
 }
 
 function ManaGeyser() {
-    this.varName = "ManaGeyser";
+    this.varName = "Geysers";
     this.name = "Mana Geyser";
     this.expMult = 1;
     this.townNum = 3;
@@ -2293,6 +2295,9 @@ function ManaGeyser() {
     this.manaCost = function() {
         return 2000;
     };
+    this.canStart = function() {
+        return pickaxe;
+    };
     this.visible = function() {
         return true;
     };
@@ -2300,10 +2305,14 @@ function ManaGeyser() {
         return towns[3].getLevel("Mountain") >= 2;
     };
     this.finish = function() {
-        towns[1].finishRegular(this.varName, 10, function() {
-
+        towns[3].finishRegular(this.varName, 100, function() {
+            addMana(5000);
+            return 5000;
         })
     };
+}
+function adjustGeysers() {
+    towns[3].totalGeysers = towns[3].getLevel("Mountain") * 10;
 }
 
 function DecipherRunes() {
@@ -2321,23 +2330,23 @@ function DecipherRunes() {
     };
     this.affectedBy = ["Buy Glasses"];
     this.manaCost = function() {
-        return 700;
+        return 1200;
     };
     this.visible = function() {
-        return towns[0].getLevel("Wander") >= 10;
+        return true;
     };
     this.unlocked = function() {
-        return towns[0].getLevel("Wander") >= 22;
+        return towns[3].getLevel("Mountain") >= 20;
     };
     this.finish = function() {
-        towns[0].finishProgress(this.varName, 200, function() {
-            adjustSQuests();
+        towns[3].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
+
         });
     };
 }
 
 function ExploreCavern() {
-    this.name = "ExploreCavern";
+    this.name = "Explore Cavern";
     this.expMult = 1;
     this.townNum = 3;
     this.tooltip = _txt("actions>explore_cavern>tooltip");
@@ -2356,14 +2365,17 @@ function ExploreCavern() {
     this.manaCost = function() {
         return 1500;
     };
+    this.canStart = function() {
+        return pickaxe;
+    };
     this.visible = function() {
-        return true;
+        return towns[3].getLevel("Mountain") >= 10;
     };
     this.unlocked = function() {
-        return true;
+        return towns[3].getLevel("Mountain") >= 40;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100 * (pickaxe ? 1 : 0), function() {
+        towns[3].finishProgress(this.varName, 100, function() {
 
         });
     };

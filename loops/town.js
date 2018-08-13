@@ -148,9 +148,11 @@ function Town(index) {
         this.createProgressVars("Apprentice");
         this.createProgressVars("Mason");
         this.createProgressVars("Architect");
-    } else if(this.index === 2) {
-        this.createVars("Veins");
+    } else if(this.index === 3) {
+        this.createVars("Geysers");
         this.createProgressVars("Mountain");
+        this.createProgressVars("Runes");
+        this.createProgressVars("Cavern");
     }
 
 }
