@@ -119,6 +119,8 @@ function translateClassNames(name) {
         return new DecipherRunes();
     } else if(name === "Explore Cavern") {
         return new ExploreCavern();
+    } else if(name === "Chronomancy") {
+        return new Chronomancy();
     }
     console.log('error trying to create ' + name);
 }
@@ -2333,7 +2335,7 @@ function DecipherRunes() {
         return 1200;
     };
     this.visible = function() {
-        return true;
+        return towns[3].getLevel("Mountain") >= 2;
     };
     this.unlocked = function() {
         return towns[3].getLevel("Mountain") >= 20;
@@ -2378,5 +2380,33 @@ function ExploreCavern() {
         towns[3].finishProgress(this.varName, 100, function() {
 
         });
+    };
+}
+
+function Chronomancy() {
+    this.name = "Chronomancy";
+    this.expMult = 2;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>chronomancy>tooltip");
+    this.label = _txt("actions>chronomancy>label");
+
+    this.varName = "trChronomancy";
+    this.stats = {
+        Soul:.1,
+        Spd:.3,
+        Int:.6
+    };
+    this.manaCost = function() {
+        return Math.ceil(10000 / (1 + towns[3].getLevel("Runes")/100));
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Runes") >= 8;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Runes") >= 30 && getSkillLevel("Magic") >= 150;
+    };
+    this.finish = function() {
+        addSkillExp("Chronomancy", 100);
+        view.updateProgressActions();
     };
 }

@@ -50,7 +50,7 @@ let pickaxe = 0;
 
 let curLoadout = 0;
 let loadouts = [];
-let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark"];
+let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy"];
 let skills = {};
 let buffList = ["Ritual"];
 let buffs = {};

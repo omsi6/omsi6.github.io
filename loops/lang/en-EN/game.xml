@@ -372,6 +372,11 @@
             <desc>Use various dark arts to help you harvest mana.</desc>
             <desc2><![CDATA[Smash Pots and Gather Wild Mana give 1% more mana per level (rounded down).]]></desc2>
         </dark_magic>
+        <chronomancy>
+            <label>Chronomancy</label>
+            <desc>Harness the magic of time to, well, speed up time.</desc>
+            <desc2><![CDATA[Speed in all zones is 0.5% faster per level.]]></desc2>
+        </chronomancy>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart>Skills last through resets.</no_reset_on_restart>
@@ -952,6 +957,12 @@
         Explore the expansive and twisting cavern beneath the mountain, who knows what wonders you'll find down there. You'll need a pickaxe to clear out the debris from the entrance.<br>Requires pickaxe.<br>Unlocked at 40% Mountain Explored.
       ]]></tooltip>
         </explore_cavern>
+        <chronomancy>
+            <label>Chronomancy</label>
+            <tooltip><![CDATA[
+        Controling time seems like it would great idea, and thankfully for you the runes around here contain lots of information on the art of Chronomancy. <br>Unlocked with both 30% Runic Symbols Deciphered and 150 Magic.
+      ]]></tooltip>
+        </chronomancy>
     </actions>
     <spells>
         <title>Spells</title>

@@ -663,6 +663,8 @@ function View() {
         tempObj = new ExploreCavern();
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
+
+        this.createTownAction(new Chronomancy());
     };
 
     this.createActionProgress = function(action) {
