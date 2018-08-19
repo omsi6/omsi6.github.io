@@ -375,7 +375,7 @@
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Speed in all zones is 0.5% faster per level.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are sqrt(1 + level / 100) times faster.]]></desc2>
         </chronomancy>
         <tooltip>
             <level>Level</level>
@@ -386,7 +386,7 @@
         <title>Buffs</title>
         <dark_ritual>
             <label>Dark Ritual</label>
-            <desc>Provides a 10% speed multiplier in Beginnersville per ritual from 1-20</desc>
+            <desc>Actions are 10% faster in Beginnersville per ritual from 1-20</desc>
         </dark_ritual>
         <tooltip>
             <level>Level</level>
@@ -715,8 +715,11 @@
             <info_text2>Pots with loot total</info_text2>
             <info_text3>Pots to check for loot</info_text3>
             <tooltip><![CDATA[
-          They're just sitting there, unbroken, full of potential.<br>Pots with loot in them have 100 mana.<br>Every 10 pots have mana.
+          They're just sitting there, unbroken, full of potential.<br>Pots with loot in them have 
       ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana.<br>Every 10 pots have mana.
+      ]]></tooltip2>
         </smash_pots>
         <locks>
             <label>Pick Locks</label>

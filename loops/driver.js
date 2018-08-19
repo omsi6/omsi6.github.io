@@ -50,7 +50,11 @@ function tick() {
         if(timer % (300*gameSpeed) === 0) {
             save();
         }
-        gameTicksLeft -= ((1000 / 50) / (gameSpeed * 1+0.1*buffs["Ritual"].amt) / bonusSpeed);
+        curTown
+        var speedMult = 1;
+        if (curTown === 0) speedMult *= 1+0.1*Math.min(buffs["Ritual"].amt, 20)
+        speedMult *= Math.sqrt(1+getSkillLevel("Chronomancy") / 100)
+        gameTicksLeft -= ((1000 / 50) / (gameSpeed * speedMult) / bonusSpeed);
         if(bonusSpeed > 1) {
             addOffline(-1 * gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed));
         }

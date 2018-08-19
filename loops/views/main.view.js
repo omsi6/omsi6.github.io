@@ -762,6 +762,8 @@ function View() {
         this.adjustGoldCost("Locks", goldCostLocks());
         this.adjustGoldCost("SQuests", goldCostSQuests());
         this.adjustGoldCost("LQuests", goldCostLQuests());
+        this.adjustGoldCost("Pots", goldCostSmashPots());
+        this.adjustGoldCost("WildMana", goldCostWildMana());
     };
 
     this.createTownInfo = function(action) {

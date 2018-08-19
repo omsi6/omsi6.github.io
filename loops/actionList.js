@@ -126,7 +126,7 @@ function translateClassNames(name) {
 }
 
 function hasCap(name) {
-    return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble");
+    return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Geysers");
 }
 function getTravelNum(name) {
     return (name === "Start Journey" || name === "Continue On" || name === "Start Trek") ? 1 : 0;
@@ -1386,6 +1386,7 @@ function SmashPots() {
     this.expMult = 1;
     this.townNum = 0;
     this.tooltip = _txt("actions>smash_pots>tooltip");
+    this.tooltip2 = _txt("actions>smash_pots>tooltip2");
     this.label = _txt("actions>smash_pots>label");
     this.labelDone = _txt("actions>smash_pots>label_done");
     this.infoText = _txt("actions>smash_pots>info_text1") +
@@ -1413,10 +1414,13 @@ function SmashPots() {
     };
     this.finish = function() {
         towns[0].finishRegular(this.varName, 10, function() {
-            addMana(100);
-            return 100;
+            addMana(goldCostSmashPots());
+            return goldCostSmashPots();
         })
     };
+}
+function goldCostSmashPots() {
+    return Math.floor(100 * (1 + getSkillLevel("Dark")/100));
 }
 
 function PickLocks() {
@@ -1607,8 +1611,7 @@ function WildMana() {
     };
 }
 function goldCostWildMana() {
-    let dark = getSkillLevel("Dark");
-    return Math.floor(250 * (1 + dark/100));
+    return Math.floor(250 * (1 + getSkillLevel("Dark")/100));
 }
 
 function GatherHerbs() {
