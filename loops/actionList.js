@@ -1131,7 +1131,7 @@ function DarkRitual() {
     this.loopStats = ["Spd", "Int", "Soul"];
     this.segments = 3;
     this.manaCost = function() {
-        return 50000;
+        return Math.ceil(50000 / (1 + towns[1].getLevel("Witch")/100));
     };
     this.allowed = function() {
         return 1;
