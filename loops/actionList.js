@@ -1079,6 +1079,8 @@ function TalkToWitch() {
     };
     this.finish = function() {
         towns[1].finishProgress(this.varName, 100, function() {
+            view.adjustManaCost("Dark Magic");
+            view.adjustManaCost("Dark Ritual");
         });
     };
 }
