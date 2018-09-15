@@ -1112,7 +1112,8 @@ function DarkMagic() {
     };
     this.finish = function() {
         addSkillExp("Dark", 100);
-        view.updateProgressActions();
+        view.adjustGoldCost("Pots", goldCostSmashPots());
+        view.adjustGoldCost("WildMana", goldCostWildMana());
     };
 }
 
