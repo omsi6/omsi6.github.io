@@ -126,7 +126,7 @@ function translateClassNames(name) {
 }
 
 function hasCap(name) {
-    return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Geysers");
+    return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser");
 }
 function getTravelNum(name) {
     return (name === "Start Journey" || name === "Continue On" || name === "Start Trek") ? 1 : 0;
