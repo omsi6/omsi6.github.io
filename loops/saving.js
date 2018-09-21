@@ -47,10 +47,11 @@ let teamNum = 0;
 let guild = "";
 let armor = 0;
 let pickaxe = 0;
+let blood = 0;
 
 let curLoadout = 0;
 let loadouts = [];
-let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy"];
+let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy"];
 let skills = {};
 let buffList = ["Ritual"];
 let buffs = {};
@@ -133,6 +134,7 @@ function load() {
     town.expForest = toLoad.expForest !== undefined ? toLoad.expForest : 0;
     town.expShortcut = toLoad.expShortcut !== undefined ? toLoad.expShortcut : 0;
     town.expHermit = toLoad.expHermit !== undefined ? toLoad.expHermit : 0;
+    town.expFlowers = toLoad.expFlowers !== undefined ? toLoad.expFlowers : 0;
     town.expThicket = toLoad.expThicket !== undefined ? toLoad.expThicket : 0;
     town.expWitch = toLoad.expWitch !== undefined ? toLoad.expWitch : 0;
     town.totalDarkRitual = toLoad.totalDarkRitual !== undefined ? toLoad.totalDarkRitual : 0;
@@ -153,6 +155,7 @@ function load() {
     town.expMountain = toLoad.expMountain !== undefined ? toLoad.expMountain : 0;
     town.expRunes = toLoad.expRunes !== undefined ? toLoad.expRunes : 0;
     town.expCavern = toLoad.expCavern !== undefined ? toLoad.expCavern : 0;
+    town.totalHuntTrolls = toLoad.totalHuntTrolls !== undefined ? toLoad.totalHuntTrolls : 0;
 
     actions.next = [];
     if(toLoad.nextList) {
@@ -276,6 +279,7 @@ function save() {
     toSave.expForest = town.expForest;
     toSave.expShortcut = town.expShortcut;
     toSave.expHermit = town.expHermit;
+    toSave.expFlowers = town.expFlowers;
     toSave.expThicket = town.expThicket;
     toSave.expWitch = town.expWitch;
     toSave.totalDarkRitual = town.totalDarkRitual
@@ -295,6 +299,7 @@ function save() {
     toSave.expMountain = town.expMountain;
     toSave.expRunes = town.expRunes;
     toSave.expCavern = town.expCavern;
+    toSave.totalHuntTrolls = town.totalHuntTrolls
 
 
     for(let i = 0; i < towns.length; i++) {

@@ -138,6 +138,8 @@ function Actions() {
         window.curCraftGuildSegment = 0;
         towns[2].LDungeon = 0;
         towns[2].LDungeonLoopCounter = 0;
+        towns[3].HuntTrolls = 0;
+        towns[3].HuntTrollsLoopCounter = 0;
         guild = "";
         if(document.getElementById("currentListActive").checked) {
             this.currentPos = 0;
