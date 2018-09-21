@@ -1043,10 +1043,10 @@ function FollowFlowers() {
         return 300;
     };
     this.visible = function() {
-        return true;
+        return towns[1].getLevel("Forest") >= 30;
     };
     this.unlocked = function() {
-        return true;
+        return towns[1].getLevel("Forest") >= 50;
     };
     this.finish = function() {
         towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
