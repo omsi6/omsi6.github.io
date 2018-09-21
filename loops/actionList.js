@@ -134,13 +134,13 @@ function translateClassNames(name) {
 }
 
 function hasCap(name) {
-    return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Geysers" || name === "Mine Soulstones");
+  return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser" || name === "Mine Soulstones");
 }
 function getTravelNum(name) {
     return (name === "Start Journey" || name === "Continue On" || name === "Start Trek") ? 1 : 0;
 }
 function isTraining(name) {
-    return name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books";
+    return (name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books");
 }
 
 let townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus"];
@@ -466,7 +466,6 @@ function Apprentice() {
         towns[2].finishProgress(this.varName, 30 * getCraftGuildRank().bonus, function() {
         });
         addSkillExp("Crafting", 10 * (1 + towns[2].getLevel(this.varName)/100));
-        view.updateSkill("Crafting");
     };
 }
 
@@ -501,7 +500,6 @@ function Mason() {
         towns[2].finishProgress(this.varName, 20 * getCraftGuildRank().bonus, function() {
         });
         addSkillExp("Crafting", 20 * (1 + towns[2].getLevel(this.varName)/100));
-        view.updateSkill("Crafting");
     };
 }
 
@@ -536,7 +534,6 @@ function Architect() {
         towns[2].finishProgress(this.varName, 10 * getCraftGuildRank().bonus, function() {
         });
         addSkillExp("Crafting", 40 * (1 + towns[2].getLevel(this.varName)/100));
-        view.updateSkill("Crafting");
     };
 }
 
@@ -663,7 +660,7 @@ function ThrowParty() {
     };
     this.finish = function() {
         towns[0].finishProgress("Met", 3200, function() {
-            towns[0].totalSQuests = towns[0].getLevel("Met");
+            adjustSQuests();
         });
     };
 }
@@ -698,7 +695,6 @@ function WarriorLessons() {
     };
     this.finish = function() {
         addSkillExp("Combat", 100);
-        view.updateProgressActions();
     };
 }
 
@@ -732,7 +728,6 @@ function MageLessons() {
     };
     this.finish = function() {
         addSkillExp("Magic", 100 * (1 + getSkillLevel("Alchemy")/100));
-        view.updateProgressActions();
     };
 }
 
@@ -900,7 +895,6 @@ function PracticalMagic() {
         view.adjustManaCost("Wild Mana");
         view.adjustManaCost("Smash Pots");
         view.adjustGoldCosts();
-        view.updateProgressActions();
     };
 }
 
@@ -2314,7 +2308,7 @@ function ClimbMountain() {
     };
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1), function() {
-            adjustGeysers()
+            adjustGeysers();
         });
     };
 }
@@ -2390,7 +2384,8 @@ function DecipherRunes() {
     };
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
-
+            view.adjustManaCost("Chronomancy");
+            view.adjustManaCost("Pyromancy");
         });
     };
 }
@@ -2419,7 +2414,6 @@ function Chronomancy() {
     };
     this.finish = function() {
         addSkillExp("Chronomancy", 100);
-        view.updateProgressActions();
     };
 }
 
@@ -2526,7 +2520,6 @@ function Pyromancy() {
     };
     this.finish = function() {
         addSkillExp("Pyromancy", 100);
-        view.updateProgressActions();
     };
 }
 
