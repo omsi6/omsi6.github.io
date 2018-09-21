@@ -7,22 +7,22 @@
                 <version_prefix>Version</version_prefix>
             </meta>
             <version verNum=".78"><![CDATA[
-            * Descriptions, flavor text, and tooltips have been changed in various places.
-            * New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls
-            * Dark Ritual exp bonus 2000% -> 1000%
-            * Dark Magic now reduced your reputation by 1 per completion.
-            * Dark Ritual reputation requirement 0 or less -> 5 or less
-            * Clear Thicket unlock 60% Forest Explored -> 20% Flower Trail Followed
-            * Clear Thicket mana cost 300 -> 500
-            * Explore Cavern no longer requires the pickaxe.
+            * Descriptions, flavor text, and tooltips have been changed in various places.<br>
+            * New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls<br>
+            * Dark Ritual exp bonus 2000% -> 1000%<br>
+            * Dark Magic now reduced your reputation by 1 per completion.<br>
+            * Dark Ritual reputation requirement 0 or less -> 5 or less<br>
+            * Clear Thicket unlock 60% Forest Explored -> 20% Flower Trail Followed<br>
+            * Clear Thicket mana cost 300 -> 500<br>
+            * Explore Cavern no longer requires the pickaxe.<br>
             * The font size on actions has been reduced by 1 pixel.
         ]]></version>
             <version verNum=".77"><![CDATA[
-            * New actions - Clear Thicket, Talk to Witch, Dark Magic, Dark Ritual, Buy Pickaxe
-            * Removed actions - Tournament
-            * New zone - Mt. Olympus
-            * Changed the colors for soul and charisma
-            * Old Shortcut mana cost 1200 -> 800
+            * New actions - Clear Thicket, Talk to Witch, Dark Magic, Dark Ritual, Buy Pickaxe<br>
+            * Removed actions - Tournament<br>
+            * New zone - Mt. Olympus<br>
+            * Changed the colors for soul and charisma<br>
+            * Old Shortcut mana cost 1200 -> 800<br>
             * Talk to Hermit mana cost 2000 -> 1200
         ]]></version>
             <version verNum=".76"><![CDATA[
