@@ -315,7 +315,7 @@ function OldShortcut() {
         Luck:.1
     };
     this.manaCost = function() {
-        return 1200;
+        return 800;
     };
     this.visible = function() {
         return true;
