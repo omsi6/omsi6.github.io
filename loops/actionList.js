@@ -2385,6 +2385,7 @@ function DecipherRunes() {
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
             view.adjustManaCost("Chronomancy");
+            view.adjustManaCost("Pyromancy");
         });
     };
 }
@@ -2413,7 +2414,6 @@ function Chronomancy() {
     };
     this.finish = function() {
         addSkillExp("Chronomancy", 100);
-        view.updateProgressActions();
     };
 }
 
@@ -2520,7 +2520,6 @@ function Pyromancy() {
     };
     this.finish = function() {
         addSkillExp("Pyromancy", 100);
-        view.updateProgressActions();
     };
 }
 
