@@ -6,11 +6,30 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".78"><![CDATA[
+            * Descriptions, flavor text, and tooltips have been changed in various places.<br>
+            * New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls<br>
+            * Dark Ritual exp bonus 2000% -> 1000%<br>
+            * Dark Magic now reduced your reputation by 1 per completion.<br>
+            * Dark Ritual reputation requirement 0 or less -> 5 or less<br>
+            * Clear Thicket unlock 60% Forest Explored -> 20% Flower Trail Followed<br>
+            * Clear Thicket mana cost 300 -> 500<br>
+            * Explore Cavern no longer requires the pickaxe.<br>
+            * The font size on actions has been reduced by 1 pixel.
+        ]]></version>
+            <version verNum=".77"><![CDATA[
+            * New actions - Clear Thicket, Talk to Witch, Dark Magic, Dark Ritual, Buy Pickaxe<br>
+            * Removed actions - Tournament<br>
+            * New zone - Mt. Olympus<br>
+            * Changed the colors for soul and charisma<br>
+            * Old Shortcut mana cost 1200 -> 800<br>
+            * Talk to Hermit mana cost 2000 -> 1200
+        ]]></version>
             <version verNum=".76"><![CDATA[
             * Ranks start at F now instead of E<br>
             * Fixed wild mana tooltip<br>
             * Added Tournament, which uses self combat.
-      ]]></version>
+        ]]></version>
             <version verNum=".75"><![CDATA[
             * Skill training actions have 150% exp.<br>
             * Practical magic updates the gold cost tooltip correctly<br>
@@ -31,14 +50,14 @@
             * Training caps reduced to 10 (action coming soon to improve this), and all trainings have 2000 mana cost.<br>
             * Train Dex/Train Speed to zone 2.<br>
             * Soulstones recover half as fast (because there's more of them)
-      ]]></version>
+        ]]></version>
             <version verNum=".74"><![CDATA[
             * Radar chart - different and confusing way to visualize your data!<br>
             * Some tooltip changes<br>
             * Glasses icons on relevant actions<br>
             * Offline progress!<br>
             * Showing Hunt again (still useless)
-      ]]></version>
+        ]]></version>
             <version verNum=".73"><![CDATA[
             * Changed formula for how Old Shortcut reduces Continue On<br>
             * Repeat last action on list saves now<br>
@@ -48,7 +67,7 @@
             * 2 more story parts, unlocked at Small Dungeon completion<br>
             * Re-arrange icon/loop count order on lists<br>
             * Get Drunk removes 2 gold instead of adding it
-      ]]></version>
+        ]]></version>
             <version verNum=".72"><![CDATA[
             * Sound on pause available in options<br>
             * training limit set to 50 from 10 (for now)<br>
@@ -56,7 +75,7 @@
             * Travel Action styling change<br>
             * Saving in town 3<br>
             * DRAG AND DROP (Thanks to Hunter)
-      ]]></version>
+        ]]></version>
             <version verNum=".71"><![CDATA[
             * Tooltip on reset button<br>
             * Glasses give x2 to forest<br>
@@ -64,21 +83,21 @@
             * Trainings are capped at 10 per loop<br>
             * New actions! Brew Potions, Continue On, Explore City, Gamble, Get Drunk, Purchase Mana, Sell Potions<br>
             * Some new actions are usless at the moment.
-      ]]></version>
+        ]]></version>
             <version verNum=".70"><![CDATA[
             * Reverted skill nerf (too harsh)<br>
             * Actually capped glasses<br>
             * Sell Gold -> Buy Mana<br>
             * Double soulstone recovery<br>
             * Nerfed practical magic (more uses for it later)
-      ]]></version>
+        ]]></version>
             <version verNum=".69"><![CDATA[
             * Nerfed the soulstone nerf<br>
             * Cleared additional purple bars on exp<br>
             * Corrected glasses/throw party tooltips<br>
             * Actually nerfed skill growth - it's cheaper than before for level 2 - 23, and about 4x harder at level 100<br>
             * Add action to top of list option
-      ]]></version>
+        ]]></version>
         </changelog>
         <save>
             <meta>
@@ -204,6 +223,11 @@
             <title>Pickaxe</title>
             <id>pickaxe</id>
             <desc>It's heavy, but you can make use of it.</desc>
+        </resource>
+        <resource initially_hidden="true">
+            <title>Blood</title>
+            <id>blood</id>
+            <desc>Regailed for it's regenerative properties. You might be able to fetch a pretty penny for it.</desc>
         </resource>
     </tracked_resources>
     <time_controls>
@@ -338,7 +362,7 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = Combat skill * (1 + armor * Crafting Guild Rank / 5)</desc>
+            <desc>Self Combat = Combat skill * (Pyromancy skill * 10) * (1 + armor * Crafting Guild Rank / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
@@ -377,6 +401,11 @@
             <desc>Harness the magic of time to, well, speed up time.</desc>
             <desc2><![CDATA[Actions in all zones are sqrt(1 + level / 100) times faster.]]></desc2>
         </chronomancy>
+        <pyromancy>
+            <label>Pyromancy</label>
+            <desc>Fireball, Firebolt, Fire Shield, Burning Rays, just a veritable assortment of flaming fun!</desc>
+            <desc2><![CDATA[Increases self combat with 10x the efficiency of the combat skill.]]></desc2>
+        </pyromancy>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart>Skills last through resets.</no_reset_on_restart>
@@ -475,181 +504,188 @@
             <label>Meet People</label>
             <label_done>People Met</label_done>
             <tooltip><![CDATA[
-        They won't let you get away with a simple chat.<br>Unlocked at 22% Explored.
-      ]]></tooltip>
+            They won't let you get away with a simple chat.<br>Unlocked at 22% Explored.
+        ]]></tooltip>
         </meet_people>
         <investigate>
             <label>Investigate</label>
             <label_done>Investigated</label_done>
             <tooltip><![CDATA[
-        You've been hearing some rumors...<br>Unlocked at 25% People Met.
-      ]]></tooltip>
+            You've been hearing some rumors...<br>Unlocked at 25% People Met.
+        ]]></tooltip>
         </investigate>
         <explore_forest>
             <label>Explore Forest</label>
             <label_done>Forest Explored</label_done>
             <tooltip><![CDATA[
-        What a pleasant area.<br>2x progress with glasses.
-      ]]></tooltip>
+            What a pleasant area.<br>2x progress with glasses.
+        ]]></tooltip>
         </explore_forest>
         <old_shortcut>
             <label>Old Shortcut</label>
             <label_done>Shortcut Explored</label_done>
             <tooltip><![CDATA[
-        No one has come down this way in quite some time.<br>Gives some additional herbs.<br>Old men are a pain unless you know something they care about. Get 1% reward for Talk to Hermit result per 1% Shortcut Explored.<br>Unlocked at 20% Forest Explored.
-      ]]></tooltip>
+            No one has come down this way in quite some time.<br>Gives some additional herbs.<br>Old men are a pain unless you know something they care about. Get 1% reward for Talk to Hermit result per 1% Shortcut Explored.<br>Unlocked at 20% Forest Explored.
+        ]]></tooltip>
         </old_shortcut>
         <hermit>
             <label>Talk To Hermit</label>
             <label_done>Hermit Knowledge Learned</label_done>
             <tooltip><![CDATA[
-        This old man is happy to have a listening ear, surely he has some useful knowledge. You hope. He's initially confrontational, but opens up once you start talking about the road.<br>Speed is 1% faster for Gather Herbs, Practical Magic, and Learn Alchemy per 1% of Hermit Knowledge.<br>Unlocked with both 20% Shortcut Explored and 40 Magic.
-      ]]></tooltip>
+            This old man is happy to have a listening ear, surely he has some useful knowledge. You hope. He's initially confrontational, but opens up once you start talking about the road.<br>Speed is 1% faster for Gather Herbs, Practical Magic, and Learn Alchemy per 1% of Hermit Knowledge.<br>Unlocked with both 20% Shortcut Explored and 40 Magic.
+        ]]></tooltip>
         </hermit>
         <explore_city>
             <label>Explore City</label>
             <label_done>City Explored</label_done>
             <tooltip><![CDATA[
-        Everyone is so busy, and there's so much to do.<br>2x progress with glasses.
-      ]]></tooltip>
+            Everyone is so busy, and there's so much to do.<br>2x progress with glasses.
+        ]]></tooltip>
         </explore_city>
         <get_drunk>
             <label>Get Drunk</label>
             <label_done>Rumors Heard</label_done>
             <tooltip><![CDATA[
-        Sometimes you just need a drink.<br>Requires reputation of at least -3.<br>Has 3x exp/talent gain<br>Costs 1 reputation.<br>Unlocked at 20% City Explored.
-      ]]></tooltip>
+            Sometimes you just need a drink.<br>Requires reputation of at least -3.<br>Has 3x exp/talent gain<br>Costs 1 reputation.<br>Unlocked at 20% City Explored.
+        ]]></tooltip>
         </get_drunk>
         <apprentice>
             <label>Apprentice</label>
-            <label_done>Books Studied</label_done>
+            <label_done>Apprenticeship</label_done>
             <tooltip><![CDATA[
-        You decided that knowing more about construction would help. You use your Crafting Guild license to hit the books.<br>Goes faster with a higher rank bonus.<br>Gives 10-20 exp to Crafting for 0-100%<br>Requires Crafting Guild.<br>Unlocked at 40% Rumors heard.
-      ]]></tooltip>
+            You decided that knowing more about construction would help. You use your Crafting Guild license to hit the books.<br>Goes faster with a higher rank bonus.<br>Gives 10-20 exp to Crafting for 0-100%<br>Requires Crafting Guild.<br>Unlocked at 40% Rumors heard.
+        ]]></tooltip>
         </apprentice>
         <mason>
             <label>Mason</label>
             <label_done>Buildings Built</label_done>
             <tooltip><![CDATA[
-        You have the theoretical knowledge - now you need to get hands on.<br>Goes faster with a higher rank bonus.<br>Requires Crafting Guild.<br>Gives 20-40 exp to Crafting for 0-100%<br>Unlocked at 60% Rumors heard and 100% Apprentice.
-      ]]></tooltip>
+            You've completed your apprenticeship and have the theoretical knowledge - now you need to get hands on.<br>Goes faster with a higher rank bonus.<br>Requires Crafting Guild.<br>Gives 20-40 exp to Crafting for 0-100%<br>Unlocked at 60% Rumors heard and 100% Apprenticeship.
+        ]]></tooltip>
         </mason>
         <architect>
             <label>Architect</label>
             <label_done>Projects Planned</label_done>
             <tooltip><![CDATA[
-        Now that you know how things work, it's better to learn how to design them.<br>Goes faster with a higher rank bonus.<br>Requires Crafting Guild.<br>Gives 40-80 exp to Crafting for 0-100%<br>Unlocked at 80% Rumors heard and 100% Mason.
-      ]]></tooltip>
+            Now that you know how things work, it's better to learn how to design them.<br>Goes faster with a higher rank bonus.<br>Requires Crafting Guild.<br>Gives 40-80 exp to Crafting for 0-100%<br>Unlocked at 80% Rumors heard and 100% Buildings Built.
+        ]]></tooltip>
         </architect>
         <buy_glasses>
             <label>Buy Glasses</label>
             <tooltip><![CDATA[
-        That's not fair. There was time now. There was all the time I needed.<br>Now you have to get new glasses again for 10 gold!<br>Causes Wander to be 4x as effective for the rest of the loop.<br>Affects any action with the glasses icon<br>Can only have 1 Buy Glasses action.<br>Unlocked at 20% explored.
-      ]]></tooltip>
+            That's not fair. There was time now. There was all the time I needed.<br>Now you have to get new glasses again for 10 gold!<br>Causes Wander to be 4x as effective for the rest of the loop.<br>Affects any action with the glasses icon<br>Can only have 1 Buy Glasses action.<br>Unlocked at 20% explored.
+        ]]></tooltip>
         </buy_glasses>
         <buy_mana>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
-        1 gold = 50 mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
-      ]]></tooltip>
+            1 gold = 50 mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
+        ]]></tooltip>
         </buy_mana>
         <train_str>
             <label>Train Strength</label>
             <tooltip><![CDATA[
-        Build up those muscles. Again.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitStr'></div> times per reset<br>Unlocked at 5% People Met.
-      ]]></tooltip>
+            Build up those muscles. Again.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitStr'></div> times per reset<br>Unlocked at 5% People Met.
+        ]]></tooltip>
         </train_str>
         <throw_party>
             <label>Throw Party</label>
             <tooltip><![CDATA[
-        Take a break and socialize.<br>8x people met % over Meet People for equivalent mana cost.<br>Costs 2 reputation.<br>Unlocked at 30% Investigated.
-      ]]></tooltip>
+            Take a break and socialize.<br>8x people met % over Meet People for equivalent mana cost.<br>Costs 2 reputation.<br>Unlocked at 30% Investigated.
+        ]]></tooltip>
         </throw_party>
         <warrior_lesson>
             <label>Warrior Lessons</label>
             <tooltip><![CDATA[
-        Learning to fight is probably important; you have a long journey ahead of you.<br>Requires 2 reputation.<br>Unlocked at 20% Investigated.
-      ]]></tooltip>
+            Learning to fight is probably important; you have a long journey ahead of you.<br>Requires 2 reputation.<br>Unlocked at 20% Investigated.
+        ]]></tooltip>
         </warrior_lesson>
         <mage_lesson>
             <label>Mage Lessons</label>
             <tooltip><![CDATA[
-        The mystic got you into this mess, maybe it can help you get out of it.<br>Requires 2 reputation.<br>Unlocked at 20% Investigated.
-      ]]></tooltip>
+            The mystic got you into this mess, maybe it can help you get out of it.<br>Requires 2 reputation.<br>Unlocked at 20% Investigated.
+        ]]></tooltip>
         </mage_lesson>
         <buy_supplies>
             <label>Buy Supplies</label>
             <tooltip><![CDATA[
-          Prepare to move on.<br>Costs <div id='suppliesCost'></div> gold.<br>You only need one set of supplies.<br>Unlocks at a combined skill of 35.
-      ]]></tooltip>
+            Prepare to move on.<br>Costs <div id='suppliesCost'></div> gold.<br>You only need one set of supplies.<br>Unlocks at a combined skill of 35.
+        ]]></tooltip>
         </buy_supplies>
         <haggle>
             <label>Haggle</label>
             <tooltip><![CDATA[
-          They won't like you as much, but hey - you're leaving.<br>Costs 1 reputation to reduce the price of supplies by 20. <br>Unlocks at a combined skill of 35.
-      ]]></tooltip>
+            They won't like you as much, but hey - you're leaving.<br>Costs 1 reputation to reduce the price of supplies by 20. <br>Unlocks at a combined skill of 35.
+        ]]></tooltip>
         </haggle>
         <start_journey>
             <label>Start Journey</label>
             <tooltip><![CDATA[
-          Follow the trail to end up at the next town. You need to keep moving until you can learn how to shut these loops off.<br>Costs 1 supplies. Finish once to unlock Forest Path's actions, then finish this in order to use Forest Path's actions.<br>Unlocks at a combined skill of 35.
-      ]]></tooltip>
+            Follow the trail to end up at the next town. You need to keep moving until you can learn how to shut these loops off.<br>Costs 1 supplies. Finish once to unlock Forest Path's actions, then finish this in order to use Forest Path's actions.<br>Unlocks at a combined skill of 35.
+        ]]></tooltip>
         </start_journey>
         <train_soul>
             <label>Sit By Waterfall</label>
             <tooltip><![CDATA[
-        It's peaceful here. Loud, but peaceful.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSoul'></div> times per reset<br>Unlocked at 70% Forest Explored.
-      ]]></tooltip>
+            It's peaceful here. Loud, but peaceful.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSoul'></div> times per reset<br>Unlocked at 70% Forest Explored.
+        ]]></tooltip>
         </train_soul>
         <practical_magic>
             <label>Practical Magic</label>
             <tooltip><![CDATA[
-        Such simple uses to help out with everyday tasks. Genius, really. It's like pulling teeth getting this knowledge from the Hermit though.<br>Unlocked with both 20% Hermit Knowledge and 50 Magic.
-      ]]></tooltip>
+            Such simple uses to help out with everyday tasks. Genius, really. It's like pulling teeth getting this knowledge from the Hermit though.<br>Unlocked with both 20% Hermit Knowledge and 50 Magic.
+        ]]></tooltip>
         </practical_magic>
         <learn_alchemy>
             <label>Learn Alchemy</label>
             <tooltip><![CDATA[
-          You can listen to him yammer while making light healing and remedy potions.<br>You're starting to think the potion that caused you to loop time was a complex one.<br>You provide the ingredients; costs 10 herbs.<br>Gives alchemy and magic skill.<br>Unlocked with both 40% Hermit Knowledge and 60 Magic.
-      ]]></tooltip>
+            You can listen to him yammer while making light healing and remedy potions.<br>You're starting to think the potion that caused you to loop time was a complex one.<br>You provide the ingredients; costs 10 herbs.<br>Gives alchemy and magic skill.<br>Unlocked with both 40% Hermit Knowledge and 60 Magic.
+        ]]></tooltip>
         </learn_alchemy>
         <brew_potions>
             <label>Brew Potions</label>
             <tooltip><![CDATA[
-          Bubbles and Flasks. Potions and Magic.<br>Requires 5 reputation or he won't let you near his stuff.<br>Creates a potion from 10 herbs to sell at the next town.<br>Gives alchemy and magic skill.<br>Unlocked with 10 Alchemy.
-      ]]></tooltip>
+            Bubbles and Flasks. Potions and Magic.<br>Requires 5 reputation or he won't let you near his stuff.<br>Creates a potion from 10 herbs to sell at the next town.<br>Gives alchemy and magic skill.<br>Unlocked with 10 Alchemy.
+        ]]></tooltip>
         </brew_potions>
         <train_dex>
             <label>Train Dex</label>
             <tooltip><![CDATA[
-        There's a nice array of rocks to hop between. It's a lot of fun.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitDex'></div> times per reset<br>Unlocked at 60% Forest Explored.
-      ]]></tooltip>
+            There's a nice array of rocks to hop between. It's a lot of fun.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitDex'></div> times per reset<br>Unlocked at 60% Forest Explored.
+        ]]></tooltip>
         </train_dex>
         <train_spd>
             <label>Train Speed</label>
             <tooltip><![CDATA[
-        A forest run is fantastic. You feel like you're learning a lot as you push your limits.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSpd'></div> times per reset<br>Unlocked at 80% Forest Explored.
-      ]]></tooltip>
+            A forest run is fantastic. You feel like you're learning a lot as you push your limits.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSpd'></div> times per reset<br>Unlocked at 80% Forest Explored.
+        ]]></tooltip>
         </train_spd>
+        <follow_flowers>
+            <label>Follow Flowers</label>
+            <label_done>Flower Trail Followed</label_done>
+            <tooltip><![CDATA[
+            You've located an oddly out of place trail of flowers, why not see where it leads. You can find more herbs along the path.<br>2x progress with glasses.<br>Unlocked at 50% Forest Explored.
+        ]]></tooltip>
+        </follow_flowers>
         <clear_thicket>
             <label>Clear Thicket</label>
-            <label_done>Thicket Cleared</label_done>
+            <label_done>Thicket Explored</label_done>
             <tooltip><![CDATA[
-        Clear out the thicket to find some more wild mana.<br>Unlocked at 60% forest explored.
-      ]]></tooltip>
+            The path of flowers has lead you to a thicket, seemingly in the middle of nowhere. Perhaps it's some strange magic. You can clear out the thicket to find some more wild mana.<br>Unlocked at 20% Flower Trail Followed.
+        ]]></tooltip>
         </clear_thicket>
         <witch>
             <label>Talk To Witch</label>
             <label_done>Witch Knowledge Learned</label_done>
             <tooltip><![CDATA[
-        Talk to the witch to learn her secrets of the dark arts.<br>Unlocked with both 60% Thicket Cleared and 80 Magic.<br>Speed is 1% faster for Dark Magic, and Dark Ritual per 1% of Witch Knowledge.
-      ]]></tooltip>
+            Talk to the witch to learn her secrets of the dark arts.<br>Unlocked with both 60% Thicket Explored and 80 Magic.<br>Speed is 1% faster for Dark Magic, and Dark Ritual per 1% of Witch Knowledge.
+        ]]></tooltip>
         </witch>
         <dark_magic>
             <label>Dark Magic</label>
             <tooltip><![CDATA[
-        Embrace the dark arts to more efficiently harvest mana. But at what cost?<br>Requires a reputation of 0 or lower.<br>Unlocked with both 20% Witch Knowledge and 100 Magic.
-      ]]></tooltip>
+            Embrace the dark arts to more efficiently harvest mana. But at what cost?<br>Adds 1 negative reputation.<br>Requires a reputation of 0 or lower.<br>Unlocked with both 20% Witch Knowledge and 100 Magic.
+        ]]></tooltip>
         </dark_magic>
         <dark_ritual>
             <label>Dark Ritual</label>
@@ -657,11 +693,8 @@
             <label_complete>Completed Label Complete</label_complete>
             <label_part>Small Dungeon</label_part>
             <tooltip><![CDATA[
-        Sacrifice an increasing amount of soulstones to the dark gods, granting a permanant speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of 0 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Cleared and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
-      ]]></tooltip>
-            <completed_tooltip><![CDATA[
-        Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
-      ]]></completed_tooltip>
+            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanant speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
+        ]]></tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last Stat</last_stat_label>
             <segment_names>
@@ -674,65 +707,65 @@
         <continue_on>
             <label>Continue On</label>
             <tooltip><![CDATA[
-          Keep walking to the next town, Merchanton.<br>Mana cost reduced by 60 per Old Shortcut %.
-      ]]></tooltip>
+            Keep walking to the next town, Merchanton.<br>Mana cost reduced by 60 per Old Shortcut %.
+        ]]></tooltip>
         </continue_on>
         <purchase_mana>
             <label>Purchase Mana</label>
             <tooltip><![CDATA[
-          1 gold = 50 mana. Buys all the mana you can.
-      ]]></tooltip>
+            1 gold = 50 mana. Buys all the mana you can.
+        ]]></tooltip>
         </purchase_mana>
         <sell_potions>
             <label>Sell Potions</label>
             <tooltip><![CDATA[
-        Potions are worth 1 gold per alchemy skill, but it takes a bit to find a seller.
-    ]]></tooltip>
+            Potions are worth 1 gold per alchemy skill, but it takes a bit to find a seller.
+        ]]></tooltip>
         </sell_potions>
         <read_books>
             <label>Read Books</label>
             <tooltip><![CDATA[
-        There's a library! You always loved reading.<br>Discover new worlds and perspectives, get ideas from fiction characters, and empathize with the desire to be stronger.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset<br>Unlocks at 50% city explored.
-      ]]></tooltip>
+            There's a library! You always loved reading.<br>Discover new worlds and perspectives, get ideas from fiction characters, and empathize with the desire to be stronger.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset<br>Unlocks at 50% city explored.
+        ]]></tooltip>
         </read_books>
         <gather_team>
             <label>Gather Team</label>
             <tooltip><![CDATA[
-        You don't have to take them on by yourself.<br>Max 5 other team members.<br>Costs <div id='teamCost'></div>
-         gold, and the cost goes up by 200 gold per member.<br>Each member adds (Rank Mult) * (Combat Skill + Magic Skill)/2 to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocks at 20% city explored.
-      ]]></tooltip>
+            You don't have to take them on by yourself.<br>Max 5 other team members.<br>Costs <div id='teamCost'></div>
+            gold, and the cost goes up by 200 gold per member.<br>Each member adds (Rank Mult) * (Combat Skill + Magic Skill)/2 to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocks at 20% city explored.
+        ]]></tooltip>
         </gather_team>
         <craft_armor>
             <label>Craft Armor</label>
             <tooltip><![CDATA[
-        Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% city explored.
-      ]]></tooltip>
+            Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% city explored.
+        ]]></tooltip>
         </craft_armor>
         <smash_pots>
             <label>Smash Pots</label>
             <label_done>Pots Smashed</label_done>
-            <info_text1>Pots with loot left</info_text1>
-            <info_text2>Pots with loot total</info_text2>
-            <info_text3>Pots to check for loot</info_text3>
+            <info_text1>Pots with mana left</info_text1>
+            <info_text2>Pots with mana total</info_text2>
+            <info_text3>Pots to check mana loot</info_text3>
             <tooltip><![CDATA[
-          They're just sitting there, unbroken, full of potential.<br>Pots with loot in them have 
-      ]]></tooltip>
+            They're just sitting there, unbroken, full of potential.<br>Pots with loot in them have 
+        ]]></tooltip>
             <tooltip2><![CDATA[
             mana.<br>Every 10 pots have mana.
-      ]]></tooltip2>
+        ]]></tooltip2>
         </smash_pots>
         <locks>
             <label>Pick Locks</label>
             <label_done>Locks Picked</label_done>
-            <info_text1>Houses with loot left</info_text1>
-            <info_text2>Houses with loot total</info_text2>
-            <info_text3>Houses to check for loot</info_text3>
+            <info_text1>Houses with valuables left</info_text1>
+            <info_text2>Houses with valuables total</info_text2>
+            <info_text3>Houses to check for valuables</info_text3>
             <tooltip><![CDATA[
-          Don't worry; they won't remember.<br>Houses with loot in them have 
-      ]]></tooltip>
+            Don't worry; they won't remember.<br>Houses with loot in them have 
+        ]]></tooltip>
             <tooltip2><![CDATA[
-           gold.<br>Every 10 houses have gold.<br>Unlocked at 20% Explored.
-      ]]></tooltip2>
+            gold.<br>Every 10 houses have gold.<br>Unlocked at 20% Explored.
+        ]]></tooltip2>
         </locks>
         <short_quest>
             <label>Short Quest</label>
@@ -741,11 +774,11 @@
             <info_text2>Quests with loot total</info_text2>
             <info_text3>Quests to finish</info_text3>
             <tooltip><![CDATA[
-          Be a hero! ...If the reward is good and it doesn't take too long.<br>Short Quests with loot give 
-      ]]></tooltip>
+            Be a hero! ...If the reward is good and it doesn't take too long.<br>Short Quests with loot give 
+        ]]></tooltip>
             <tooltip2><![CDATA[
-           gold as a reward.<br>Every 5 Short Quests have loot.<br>Unlocked at 5% People Met.
-      ]]></tooltip2>
+            gold as a reward.<br>Every 5 Short Quests have loot.<br>Unlocked at 5% People Met.
+        ]]></tooltip2>
         </short_quest>
         <long_quest>
             <label>Long Quest</label>
@@ -754,44 +787,44 @@
             <info_text2>Quests with loot total</info_text2>
             <info_text3>Quests to finish</info_text3>
             <tooltip><![CDATA[
-          Be a more impressive hero! ...As long as someone is watching.<br>Long Quests with loot give 
-      ]]></tooltip>
+            Be a more impressive hero! ...As long as someone is watching.<br>Long Quests with loot give 
+        ]]></tooltip>
             <tooltip2><![CDATA[
-           gold and 1 reputation as a reward.<br>Every 5 Long Quests have loot.<br>Unlocked at 10% Investigated.
-      ]]></tooltip2>
+            gold and 1 reputation as a reward.<br>Every 5 Long Quests have loot.<br>Unlocked at 10% Investigated.
+        ]]></tooltip2>
         </long_quest>
         <wild_mana>
             <label>Wild Mana</label>
             <label_done>Mana Sources Tapped</label_done>
-            <info_text1>Sources with loot left</info_text1>
-            <info_text2>Sources with loot total</info_text2>
-            <info_text3>Sources to check for loot</info_text3>
-                        <tooltip><![CDATA[
-          They're out of sight of most travellers, but you have time to find and harvest them.<br>Every good mana spot has 
-      ]]></tooltip>
+            <info_text1>Sources with mana left</info_text1>
+            <info_text2>Sources with mana total</info_text2>
+            <info_text3>Sources to check for mana</info_text3>
+            <tooltip><![CDATA[
+            They're out of sight of most travellers, but you have time to find and harvest them.<br>Every good mana spot has 
+        ]]></tooltip>
             <tooltip2><![CDATA[
-           mana.<br>Every 10 mana spots have good mana.
-      ]]></tooltip2>
+            mana.<br>Every 10 mana spots have good mana.
+        ]]></tooltip2>
         </wild_mana>
         <gather_herbs>
             <label>Gather Herbs</label>
             <label_done>Funny Plants Uprooted</label_done>
-            <info_text1>Plants with loot left</info_text1>
-            <info_text2>Plants with loot total</info_text2>
-            <info_text3>Plants to check for loot</info_text3>
+            <info_text1>Plants with use left</info_text1>
+            <info_text2>Plants with use total</info_text2>
+            <info_text3>Plants to check for use</info_text3>
             <tooltip><![CDATA[
-          Might as well dig up anything useful you find.<br>Every 10 funny plants are herbs.<br>Unlocked at 10% Forest Explored.
-      ]]></tooltip>
+            Might as well dig up anything useful you find.<br>Every 10 funny plants are herbs.<br>Unlocked at 10% Forest Explored.
+        ]]></tooltip>
         </gather_herbs>
         <hunt>
             <label>Hunt</label>
             <label_done>Animals Skinned</label_done>
-            <info_text1>Animals with loot left</info_text1>
-            <info_text2>Animals with loot total</info_text2>
-            <info_text3>Animals to check for loot</info_text3>
+            <info_text1>Animals with hides left</info_text1>
+            <info_text2>Animals with hides total</info_text2>
+            <info_text3>Animals to check for hides</info_text3>
             <tooltip><![CDATA[
-          The forest provides.<br>Every 10 animals have good hides.<br>Unlocked at 40% Forest Explored.
-      ]]></tooltip>
+            The forest provides.<br>Every 10 animals have good hides.<br>Unlocked at 40% Forest Explored.
+        ]]></tooltip>
         </hunt>
         <gamble>
             <label>Gamble</label>
@@ -800,16 +833,16 @@
             <info_text2>Suckers total</info_text2>
             <info_text3>People to check if they're suckers</info_text3>
             <tooltip><![CDATA[
-          The cards still somehow come out different every time.<br>Has 2x exp/talent gain<br>Costs 20 gold and 1 reputation.<br>Requires reputation greater than -5.<br>You win against every 10 suckers, and get 60 gold for winning.
-      ]]></tooltip>
+            The cards still somehow come out different every time.<br>Has 2x exp/talent gain<br>Costs 20 gold and 1 reputation.<br>Requires reputation greater than -5.<br>You win against every 10 suckers, and get 60 gold for winning.
+        ]]></tooltip>
         </gamble>
         <heal_sick>
             <label>Heal The Sick</label>
             <label_done>Healed</label_done>
             <label_part>Patient</label_part>
             <tooltip><![CDATA[
-          You won't be able to heal them all, but they'll be thankful for doing what you can.<br>Healing is always 3 parts, each with a main stat - Diagnose (Per), Treat (Int), Inform (Cha).<br>Gives (magic skill) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires 12 Magic skill and 1 reputation.<br>Gives 3 reputation upon patient completion.
-      ]]></tooltip>
+            You won't be able to heal them all, but they'll be thankful for doing what you can.<br>Healing is always 3 parts, each with a main stat - Diagnose (Per), Treat (Int), Inform (Cha).<br>Gives (magic skill) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires 12 Magic skill and 1 reputation.<br>Gives 3 reputation upon patient completion.
+        ]]></tooltip>
             <segment_names>
                 <name>Diagnose</name>
                 <name>Treat</name>
@@ -820,8 +853,8 @@
             <label>Fight Monsters</label>
             <label_done>Killed</label_done>
             <tooltip><![CDATA[
-          Slowly, you're figuring out their patterns.<br>Fighting rotates between 3 types of battles, each with a main stat - Quick (Spd), Defensive (Str), Aggressive (Con).<br>Gives (combat skill) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires 10 Combat skill and 2 reputation.<br>Gives 20 gold per fight segment completion.
-      ]]></tooltip>
+            Slowly, you're figuring out their patterns.<br>Fighting rotates between 3 types of battles, each with a main stat - Quick (Spd), Defensive (Str), Aggressive (Con).<br>Gives (self combat skill) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires 10 Combat skill and 2 reputation.<br>Gives 20 gold per fight segment completion.
+        ]]></tooltip>
             <segment_names>
                 <name>Deer</name>
                 <name>Giant Turtles</name>
@@ -863,11 +896,11 @@
             <label_complete>Completed</label_complete>
             <label_part>Small Dungeon</label_part>
             <tooltip><![CDATA[
-          There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple dungeons if your stats are high enough.<br>Gives (magic + combat skill) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a combined skill of 35, and 2 reputation.<br>Gives 1 soulstone per completion - hover over Completed for info.
-      ]]></tooltip>
+            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple dungeons if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a combined skill of 35, and 2 reputation.<br>Gives 1 soulstone per completion - hover over Completed for info.
+        ]]></tooltip>
             <completed_tooltip><![CDATA[
-        Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
-      ]]></completed_tooltip>
+            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
+        ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last Stat</last_stat_label>
             <segment_names>
@@ -886,11 +919,11 @@
             <label_complete>Completed</label_complete>
             <label_part>Large Dungeon</label_part>
             <tooltip><![CDATA[
-          With your party, you set out to accomplish great feats of dungeoneering that you couldn't have done while alone.<br>Gives (magic + team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires at least one other party member.<br>Gives 10 soulstones per completion - hover over Completed for info.
-      ]]></tooltip>
+            With your party, you set out to accomplish great feats of dungeoneering that you couldn't have done while alone.<br>Gives (magic + team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires at least one other party member.<br>Gives 10 soulstones per completion - hover over Completed for info.
+        ]]></tooltip>
             <completed_tooltip><![CDATA[
-        Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/10).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
-      ]]></completed_tooltip>
+            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/10).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
+        ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last Stat</last_stat_label>
             <segment_names>
@@ -907,65 +940,97 @@
             <label>Adventure Guild</label>
             <label_done>Impressed</label_done>
             <tooltip><![CDATA[
-          The one stop shop for all your adventuring needs.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 200 mana per rank.<br>Gives ((magic skill)/2 + (self combat)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocks at 20% rumors heard.
-      ]]></tooltip>
+            The one stop shop for all your adventuring needs.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 200 mana per rank.<br>Gives ((magic skill)/2 + (self combat)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocks at 20% rumors heard.
+        ]]></tooltip>
         </adventure_guild>
         <craft_guild>
             <label>Crafting Guild</label>
             <label_done>Cried From Beauty</label_done>
             <tooltip><![CDATA[
-          Learn to use your hands to build big structures.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 50 Crafting exp and 10 gold per rank.<br>Gives ((magic skill)/2 + (crafting skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocks at 30% rumors heard
-      ]]></tooltip>
+            Learn to use your hands to build big structures.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 50 Crafting exp and 10 gold per rank.<br>Gives ((magic skill)/2 + (crafting skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocks at 30% rumors heard
+        ]]></tooltip>
         </craft_guild>
         <buy_pickaxe>
             <label>Buy Pickaxe</label>
             <tooltip><![CDATA[
-        Getting the pickaxe vendor to talk to you is a tricky task, but at least he'll offer it to you for 200 gold after some convincing.<br>Affects any action with the pickaxe icon.<br>Can only have 1 Buy Pickaxe action.<br>Unlocked at 90% City Explored.
-      ]]></tooltip>
+            Getting the pickaxe vendor to talk to you is a tricky task, but at least he'll offer it to you for 200 gold after some convincing.<br>Affects any action with the pickaxe icon.<br>Can only have 1 Buy Pickaxe action.<br>Unlocked at 90% City Explored.
+        ]]></tooltip>
         </buy_pickaxe>
         <start_trek>
             <label>Start Trek</label>
             <tooltip><![CDATA[
-        Begin your trek to the top of Mt. Olympus.
-      ]]></tooltip>
+            Begin your trek to the top of Mt. Olympus.
+        ]]></tooltip>
         </start_trek>
         <climb_mountain>
             <label>Climb Mountain</label>
             <label_done>Mountain Explored</label_done>
             <tooltip><![CDATA[
-        Traversing the mountain will be difficult, but you can use your pickaxe as a makeshift climbing pick of sorts to help you get around.<br>2x progress with pickaxe.
-      ]]></tooltip>
+            Traversing the mountain will be difficult, but you can use your pickaxe as a makeshift climbing pick of sorts to help you get around.<br>2x progress with pickaxe.
+        ]]></tooltip>
         </climb_mountain>
         <mana_geyser>
             <label>Mana Geyser</label>
             <label_done>Weak Spots Checked</label_done>
-            <info_text1>Spots with loot left</info_text1>
-            <info_text2>Spots with loot total</info_text2>
-            <info_text3>Spots to check for loot</info_text3>
+            <info_text1>Spots with geysers left</info_text1>
+            <info_text2>Spots with geysers total</info_text2>
+            <info_text3>Spots to check for geysers</info_text3>
             <tooltip><![CDATA[
-          Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
-      ]]></tooltip>
+            Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
+        ]]></tooltip>
         </mana_geyser>
         <decipher_runes>
             <label>Decipher Runes</label>
             <label_done>Runic Symbols Deciphered</label_done>
             <tooltip><![CDATA[
-        There are many different runic markings on weathered headstones around the mountain, perhaps you can glean some sort of knowledge from them.<br>2x progress with glasses.<br>Unlocked at 20% Mountain Explored.
-      ]]></tooltip>
+            There are many different runic markings on weathered headstones around the mountain, perhaps you can glean some sort of knowledge from them.<br>Speed is 1% faster for Chronomancy and Pyromancy per 1% of Glyphs Deciphered.<br>2x progress with glasses.<br>Unlocked at 20% Mountain Explored.
+        ]]></tooltip>
         </decipher_runes>
+        <chronomancy>
+            <label>Chronomancy</label>
+            <tooltip><![CDATA[
+            Controling time seems like it would great idea, and thankfully for you the runes around here contain lots of information on the art of Chronomancy.<br>Unlocked with both 30% Runic Symbols Deciphered and 150 Magic.
+        ]]></tooltip>
+        </chronomancy>
         <explore_cavern>
             <label>Explore Cavern</label>
             <label_done>Cavern Explored</label_done>
             <tooltip><![CDATA[
-        Explore the expansive and twisting cavern beneath the mountain, who knows what wonders you'll find down there. You'll need a pickaxe to clear out the debris from the entrance.<br>Requires pickaxe.<br>Unlocked at 40% Mountain Explored.
-      ]]></tooltip>
+            Explore the expansive and twisting cavern beneath the mountain, who knows what wonders (or terrors) you'll find down there.<br>Unlocked at 40% Mountain Explored.
+        ]]></tooltip>
         </explore_cavern>
-        <chronomancy>
-            <label>Chronomancy</label>
+        <mine_soulstones>
+            <label>Mine Soulstones</label>
+            <label_done>Shiny Spots Checked</label_done>
+            <info_text1>Spots with soulstones left</info_text1>
+            <info_text2>Spots with soulstones total</info_text2>
+            <info_text3>Spots to check for soulstones</info_text3>
             <tooltip><![CDATA[
-        Controling time seems like it would great idea, and thankfully for you the runes around here contain lots of information on the art of Chronomancy. <br>Unlocked with both 30% Runic Symbols Deciphered and 150 Magic.
-      ]]></tooltip>
-        </chronomancy>
+            Extract soulstones lodged in the walls of the tunnels in the massive underground cavern.<br>Every 10 shiny spots has a soulstone.<br>Requires pickaxe.<br>Unlocked with 20% Cavern Explored.
+        ]]></tooltip>
+        </mine_soulstones>
+        <pyromancy>
+            <label>Pyromancy</label>
+            <tooltip><![CDATA[
+            Conjure the power of feverishly forceful and furiously firey flickering flames to aid you in combat. And yeah, the runes contain some stuff about this too. <br>Unlocked with both 60% Runic Symbols Deciphered and 200 Magic.
+        ]]></tooltip>
+        </pyromancy>
+        <hunt_trolls>
+            <label>Hunt Trolls</label>
+            <label_done>Slain</label_done>
+            <tooltip><![CDATA[
+            The caverns seem to be teeming with trolls, but thankfully they appear to by friendly from the encounters you've had with them. However, you could do with some troll's blood.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked with 50% Cavern Explored.
+        ]]></tooltip>
+            <chance_label>Chance</chance_label>
+            <last_stat_label>Last Stat</last_stat_label>
+            <segment_names>
+                <name>Find a Hiding Spot</name>
+                <name>Scream Very Loudly to Lure Out the Troll</name>
+                <name>Pounce on the Troll</name>
+                <name>Fight the Troll</name>
+                <name>Drain the Troll's Blood</name>
+            </segment_names>
+        </hunt_trolls>
     </actions>
     <spells>
         <title>Spells</title>

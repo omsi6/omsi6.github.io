@@ -200,6 +200,10 @@ function View() {
     this.updatePickaxe = function() {
         document.getElementById("pickaxeDiv").style.display = pickaxe ? "inline-block" : "none";
     };
+    this.updateBlood = function() {
+        document.getElementById("bloodDiv").style.display = blood ? "inline-block" : "none";
+        document.getElementById("blood").innerHTML = blood;
+    };
     this.updateTeamCombat = function() {
         if(maxTown >= 2) {
             document.getElementById("skillSCombatContainer").style.display = "inline-block";
@@ -570,6 +574,10 @@ function View() {
         this.createTownAction(new TrainDex());
         this.createTownAction(new TrainSpd());
 
+        tempObj = new FollowFlowers();
+        this.createTownAction(tempObj);
+        this.createActionProgress(tempObj);
+
         tempObj = new ClearThicket();
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
@@ -660,11 +668,22 @@ function View() {
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
 
+        this.createTownAction(new Chronomancy());
+
         tempObj = new ExploreCavern();
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
 
-        this.createTownAction(new Chronomancy());
+        tempObj = new MineSoulstones();
+        this.createTownAction(tempObj);
+        this.createTownInfo(tempObj);
+
+        this.createTownAction(new Pyromancy());
+
+        tempObj = new HuntTrolls();
+        this.createTownAction(tempObj);
+        this.createMultiPartPBar(tempObj);
+
     };
 
     this.createActionProgress = function(action) {
@@ -843,6 +862,10 @@ function View() {
         this.updateMultiPartSegments(tempObj);
 
         tempObj = new CraftingGuild();
+        this.updateMultiPart(tempObj);
+        this.updateMultiPartSegments(tempObj);
+
+        tempObj = new HuntTrolls();
         this.updateMultiPart(tempObj);
         this.updateMultiPartSegments(tempObj);
     };

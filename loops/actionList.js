@@ -64,6 +64,8 @@ function translateClassNames(name) {
         return new TrainDex();
     } else if(name === "Train Speed") {
         return new TrainSpd();
+    } else if(name === "Follow Flowers") {
+        return new FollowFlowers();
     } else if(name === "Clear Thicket") {
         return new ClearThicket();
     } else if(name === "Talk To Witch") {
@@ -117,16 +119,22 @@ function translateClassNames(name) {
         return new ManaGeyser();
     } else if(name === "Decipher Runes") {
         return new DecipherRunes();
-    } else if(name === "Explore Cavern") {
-        return new ExploreCavern();
     } else if(name === "Chronomancy") {
         return new Chronomancy();
-    }
+    } else if(name === "Explore Cavern") {
+        return new ExploreCavern();
+    } else if(name === "Mine Soulstones") {
+        return new MineSoulstones();
+    } else if(name === "Pyromancy") {
+        return new Pyromancy();
+    } else if(name === "Hunt Trolls") {
+        return new HuntTrolls();
+    } 
     console.log('error trying to create ' + name);
 }
 
 function hasCap(name) {
-    return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser");
+  return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser" || name === "Mine Soulstones");
 }
 function getTravelNum(name) {
     return (name === "Start Journey" || name === "Continue On" || name === "Start Trek") ? 1 : 0;
@@ -288,7 +296,7 @@ function adjustHunt() {
     towns[1].totalHunt = towns[1].getLevel("Forest") * 2;
 }
 function adjustHerbs() {
-    towns[1].totalHerbs = towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Shortcut") * 2;
+    towns[1].totalHerbs = towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Shortcut") * 2 + towns[1].getLevel("Flowers") * 13;
 }
 
 function OldShortcut() {
@@ -1016,6 +1024,37 @@ function TrainSpd() {
     };
 }
 
+function FollowFlowers() {
+    this.name = "Follow Flowers";
+    this.expMult = 1;
+    this.townNum = 1;
+    this.tooltip = _txt("actions>follow_flowers>tooltip");
+    this.label = _txt("actions>follow_flowers>label");
+    this.labelDone = _txt("actions>follow_flowers>label_done");
+
+    this.varName = "Flowers";
+    this.stats = {
+        Per:.7,
+        Con:.1,
+        Spd:.2
+    };
+    this.affectedBy = ["Buy Glasses"];
+    this.manaCost = function() {
+        return 300;
+    };
+    this.visible = function() {
+        return true;
+    };
+    this.unlocked = function() {
+        return true;
+    };
+    this.finish = function() {
+        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
+            adjustHerbs();
+        });
+    };
+}
+
 function ClearThicket() {
     this.name = "Clear Thicket";
     this.expMult = 1;
@@ -1033,13 +1072,13 @@ function ClearThicket() {
         Spd:.2
     };
     this.manaCost = function() {
-        return 300;
+        return 500;
     };
     this.visible = function() {
-        return towns[1].getLevel("Forest") >= 20;
+        return towns[1].getLevel("Flowers") >= 10;
     };
     this.unlocked = function() {
-        return towns[1].getLevel("Forest") >= 60;
+        return towns[1].getLevel("Flowers") >= 20;
     };
     this.finish = function() {
         towns[1].finishProgress(this.varName, 100, function() {
@@ -1098,6 +1137,9 @@ function DarkMagic() {
     this.canStart = function() {
         return reputation <= 0;
     };
+    this.cost = function() {
+        addReputation(-1);
+    };
     this.visible = function() {
         return towns[1].getLevel("Witch") >= 10;
     };
@@ -1114,7 +1156,7 @@ function DarkMagic() {
 function DarkRitual() {
     this.varName = "DarkRitual";
     this.name = "Dark Ritual";
-    this.expMult = 20;
+    this.expMult = 10;
     this.townNum = 1;
     this.tooltip = _txt("actions>dark_ritual>tooltip");
     this.label = _txt("actions>dark_ritual>label");
@@ -1139,7 +1181,7 @@ function DarkRitual() {
         for(var i=0; i<9; i++) {
             if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
         }
-        return reputation <= 0 && towns[1].DarkRitualLoopCounter === 0;
+        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0;
     };
     this.loopCost = function(segment) {
         return 1000000 * (segment*2+1);
@@ -1819,7 +1861,7 @@ function FightMonsters() {
         return fibonacci(Math.floor((towns[0].FightLoopCounter+segment) - towns[0].FightLoopCounter/3+.0000001)) * 10000;
     };
     this.tickProgress = function(offset) {
-        return getSkillLevel("Combat") * (1 + getLevel(this.loopStats[(towns[0].FightLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + towns[0].totalFight/100);
+        return getSelfCombat() * (1 + getLevel(this.loopStats[(towns[0].FightLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + towns[0].totalFight/100);
     };
     this.loopsFinished = function() {
     };
@@ -1903,7 +1945,7 @@ function SmallDungeon() {
     };
     this.tickProgress = function(offset) {
         let floor = Math.floor((towns[this.townNum].SDungeonLoopCounter)/this.segments+.0000001);
-        return (getSkillLevel("Combat")+getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
+        return (getSelfCombat()+getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     };
     this.loopsFinished = function() {
         let curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter)/this.segments+.0000001-1);
@@ -2347,42 +2389,6 @@ function DecipherRunes() {
     };
 }
 
-function ExploreCavern() {
-    this.name = "Explore Cavern";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt("actions>explore_cavern>tooltip");
-    this.label = _txt("actions>explore_cavern>label");
-    this.labelDone = _txt("actions>explore_cavern>label_done");
-
-    this.varName = "Cavern";
-    this.stats = {
-        Dex:.1,
-        Str:.3,
-        Con:.2,
-        Per:.3,
-        Spd:.1
-    };
-    this.affectedBy = ["Buy Pickaxe"];
-    this.manaCost = function() {
-        return 1500;
-    };
-    this.canStart = function() {
-        return pickaxe;
-    };
-    this.visible = function() {
-        return towns[3].getLevel("Mountain") >= 10;
-    };
-    this.unlocked = function() {
-        return towns[3].getLevel("Mountain") >= 40;
-    };
-    this.finish = function() {
-        towns[3].finishProgress(this.varName, 100, function() {
-
-        });
-    };
-}
-
 function Chronomancy() {
     this.name = "Chronomancy";
     this.expMult = 2;
@@ -2407,5 +2413,166 @@ function Chronomancy() {
     };
     this.finish = function() {
         addSkillExp("Chronomancy", 100);
+        view.updateProgressActions();
+    };
+}
+
+function ExploreCavern() {
+    this.name = "Explore Cavern";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>explore_cavern>tooltip");
+    this.label = _txt("actions>explore_cavern>label");
+    this.labelDone = _txt("actions>explore_cavern>label_done");
+
+    this.varName = "Cavern";
+    this.stats = {
+        Dex:.1,
+        Str:.3,
+        Con:.2,
+        Per:.3,
+        Spd:.1
+    };
+    this.manaCost = function() {
+        return 1500;
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Mountain") >= 10;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Mountain") >= 40;
+    };
+    this.finish = function() {
+        towns[3].finishProgress(this.varName, 100, function() {
+
+        });
+    };
+}
+
+function MineSoulstones() {
+    this.varName = "MineSoulstones";
+    this.name = "Mine Soulstones";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>mine_soulstones>tooltip");
+    this.label = _txt("actions>mine_soulstones>label");
+    this.labelDone = _txt("actions>mine_soulstones>label_done");
+    this.infoText = _txt("actions>mine_soulstones>info_text1") +
+      " <i class='fa fa-arrow-left'></i> " +
+      _txt("actions>mine_soulstones>info_text2") +
+      " <i class='fa fa-arrow-left'></i> " +
+      _txt("actions>mine_soulstones>info_text3") +
+      "<br><div class='bold'>" +
+      _txt("actions>tooltip>total_found") +
+       "</div> <div id='total"+this.varName+"'></div>";
+
+    this.stats = {
+        Str:.6,
+        Dex:.1,
+        Con:.3,
+    };
+    this.affectedBy = ["Buy Pickaxe"];
+    this.manaCost = function() {
+        return 2500;
+    };
+    this.canStart = function() {
+        return pickaxe;
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Cavern") >= 2;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Cavern") >= 20;
+    };
+    this.finish = function() {
+        towns[3].finishRegular(this.varName, 10, function() {
+            let statToAdd = statList[Math.floor(Math.random() * statList.length)];
+            stats[statToAdd].soulstone += 1;
+            view.updateSoulstones();
+        })
+    };
+}
+function adjustMineSoulstones() {
+    towns[3].totalMineSoulstones = towns[3].getLevel("Cavern") * 3;
+}
+
+function Pyromancy() {
+    this.name = "Pyromancy";
+    this.expMult = 2;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>pyromancy>tooltip");
+    this.label = _txt("actions>pyromancy>label");
+
+    this.varName = "trPyromancy";
+    this.stats = {
+        Per:.2,
+        Int:.7,
+        Soul:.1
+    };
+    this.manaCost = function() {
+        return Math.ceil(12000 / (1 + towns[3].getLevel("Runes")/100));
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Runes") >= 16;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Runes") >= 60 && getSkillLevel("Magic") >= 150;
+    };
+    this.finish = function() {
+        addSkillExp("Pyromancy", 100);
+        view.updateProgressActions();
+    };
+}
+
+function HuntTrolls() {
+    this.varName = "HuntTrolls";
+    this.name = "Hunt Trolls";
+    this.expMult = 1.5;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>hunt_trolls>tooltip");
+    this.label = _txt("actions>hunt_trolls>label");
+    this.labelDone = _txt("actions>hunt_trolls>label_done");
+
+    this.stats = {
+        Str:.3,
+        Dex:.3,
+        Con:.2,
+        Per:.1,
+        Int:.1
+    };
+    this.loopStats = ["Per", "Con", "Dex", "Str", "Int"];
+    this.segments = 5;
+    this.manaCost = function() {
+        return 8000;
+    };
+    this.loopCost = function(segment) {
+        return precision3(Math.pow(2, Math.floor((towns[this.townNum].HuntTrollsLoopCounter+segment)/this.segments+.0000001)) * 1e6);
+    };
+    this.tickProgress = function(offset) {
+        return (getSelfCombat() * (1 + getLevel(this.loopStats[(towns[3].HuntTrollsLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + towns[3].totalHuntTrolls/100));
+    };
+    this.loopsFinished = function() {
+        addSkillExp("Combat", 1000);
+        addBlood(1)
+    };
+    this.segmentFinished = function() {
+    };
+    this.getPartName = function() {
+        return "Hunt Troll";
+    };
+    this.getSegmentName = function(segment) {
+        let segments = [];
+        $(_txtsObj("actions>hunt_trolls>segment_names>name")).each(function(x,segmentName) {
+          segments.push($(segmentName).text());
+        })
+        return segments[segment % 5];
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Cavern") >= 5;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Cavern") >= 50;
+    };
+    this.finish = function() {
     };
 }

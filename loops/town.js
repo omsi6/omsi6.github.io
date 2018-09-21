@@ -131,6 +131,7 @@ function Town(index) {
         this.createProgressVars("Forest");
         this.createProgressVars("Shortcut");
         this.createProgressVars("Hermit");
+        this.createProgressVars("Flowers");
         this.createProgressVars("Thicket");
         this.createProgressVars("Witch");
         this.DarkRitual= 0;
@@ -153,6 +154,9 @@ function Town(index) {
         this.createProgressVars("Mountain");
         this.createProgressVars("Runes");
         this.createProgressVars("Cavern");
+        this.createVars("MineSoulstones");
+        this.HuntTrolls = 0;
+        this.HuntTrollsLoopCounter = 0;
     }
 
 }

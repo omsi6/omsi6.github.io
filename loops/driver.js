@@ -122,6 +122,8 @@ function restart() {
     addPotions(-potions);
     addTeamNum(-teamNum);
     addArmor(-armor);
+    addPickaxe(-pickaxe);
+    addBlood(-blood);
     restartStats();
     for(let i = 0; i < towns.length; i++) {
         towns[i].restart();
@@ -216,6 +218,11 @@ function addPickaxe(amount) {
     view.updatePickaxe();
 }
 
+function addBlood(amount) {
+    blood += amount;
+    view.updateBlood();
+}
+
 function changeActionAmount(amount, num) {
     actions.addAmount = amount;
     view.updateAddAmount(num);
@@ -274,6 +281,8 @@ function adjustAll() {
     adjustHerbs();
     adjustHunt();
     adjustSuckers();
+    adjustGeysers();
+    adjustMineSoulstones();
     view.adjustManaCost("Continue On");
 }
 
