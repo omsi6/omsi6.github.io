@@ -525,7 +525,7 @@
             <label>Old Shortcut</label>
             <label_done>Shortcut Explored</label_done>
             <tooltip><![CDATA[
-            No one has come down this way in quite some time.<br>Gives some additional herbs.<br>Old men are a pain unless you know something they care about. Get 1% reward for Talk to Hermit result per 1% Shortcut Explored.<br>Unlocked at 20% Forest Explored.
+            No one has come down this way in quite some time.<br>Gives some additional herbs.<br>Old men are a pain unless you know something they care about. Get 1% reward for Talk to Hermit result per 3% Shortcut Explored.<br>Unlocked at 20% Forest Explored.
         ]]></tooltip>
         </old_shortcut>
         <hermit>
