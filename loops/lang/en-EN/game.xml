@@ -976,7 +976,7 @@
             <info_text2>Spots with geysers total</info_text2>
             <info_text3>Spots to check for geysers</info_text3>
             <tooltip><![CDATA[
-            Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Spots with geyseys have 5000 mana.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
+            Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Spots with geysers have 5000 mana.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
         ]]></tooltip>
         </mana_geyser>
         <decipher_runes>
