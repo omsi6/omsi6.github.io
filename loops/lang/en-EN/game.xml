@@ -11,7 +11,7 @@
             * New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls<br>
             * Dark Ritual exp bonus 2000% -> 1000%<br>
             * Dark Magic now reduced your reputation by 1 per completion.<br>
-            * Dark Ritual reputation requirement 0 or less -> 5 or less<br>
+            * Dark Ritual reputation requirement 0 or less -> -5 or less<br>
             * Clear Thicket unlock 60% Forest Explored -> 20% Flower Trail Followed<br>
             * Clear Thicket mana cost 300 -> 500<br>
             * Explore Cavern no longer requires the pickaxe.<br>
@@ -362,7 +362,7 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = Combat skill * (Pyromancy skill * 10) * (1 + armor * Crafting Guild Rank / 5)</desc>
+            <desc>Self Combat = (Combat skill + Pyromancy skill * 10) * (1 + armor * Crafting Guild Rank / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
@@ -525,7 +525,7 @@
             <label>Old Shortcut</label>
             <label_done>Shortcut Explored</label_done>
             <tooltip><![CDATA[
-            No one has come down this way in quite some time.<br>Gives some additional herbs.<br>Old men are a pain unless you know something they care about. Get 1% reward for Talk to Hermit result per 1% Shortcut Explored.<br>Unlocked at 20% Forest Explored.
+            No one has come down this way in quite some time.<br>Gives some additional herbs.<br>Old men are a pain unless you know something they care about. Get 1% reward for Talk to Hermit result per 3% Shortcut Explored.<br>Unlocked at 20% Forest Explored.
         ]]></tooltip>
         </old_shortcut>
         <hermit>
