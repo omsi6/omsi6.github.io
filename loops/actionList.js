@@ -2444,7 +2444,7 @@ function ExploreCavern() {
     };
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100, function() {
-
+            adjustMineSoulstones();
         });
     };
 }
@@ -2492,6 +2492,7 @@ function MineSoulstones() {
         })
     };
 }
+
 function adjustMineSoulstones() {
     towns[3].totalMineSoulstones = towns[3].getLevel("Cavern") * 3;
 }
