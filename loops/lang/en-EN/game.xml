@@ -748,7 +748,7 @@
             <info_text2>Pots with mana total</info_text2>
             <info_text3>Pots to check mana loot</info_text3>
             <tooltip><![CDATA[
-            They're just sitting there, unbroken, full of potential.<br>Pots with loot in them have 
+            They're just sitting there, unbroken, full of potential.<br>Pots with mana in them have 
         ]]></tooltip>
             <tooltip2><![CDATA[
             mana.<br>Every 10 pots have mana.
@@ -761,7 +761,7 @@
             <info_text2>Houses with valuables total</info_text2>
             <info_text3>Houses to check for valuables</info_text3>
             <tooltip><![CDATA[
-            Don't worry; they won't remember.<br>Houses with loot in them have 
+            Don't worry; they won't remember.<br>Houses with valuables in them have 
         ]]></tooltip>
             <tooltip2><![CDATA[
             gold.<br>Every 10 houses have gold.<br>Unlocked at 20% Explored.
@@ -976,7 +976,7 @@
             <info_text2>Spots with geysers total</info_text2>
             <info_text3>Spots to check for geysers</info_text3>
             <tooltip><![CDATA[
-            Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
+            Search the ground for weak points in the hopes of revealing massive mana geysers.<br>Spots with geyseys have 5000 mana.<br>Every 100 weak points has a mana geyser.<br>Requires pickaxe.
         ]]></tooltip>
         </mana_geyser>
         <decipher_runes>

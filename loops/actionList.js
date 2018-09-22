@@ -355,7 +355,7 @@ function TalkToHermit() {
         return towns[1].getLevel("Shortcut") >= 20 && getSkillLevel("Magic") >= 40;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 50 * (1 + towns[1].getLevel("Shortcut")/300), function() {
+        towns[1].finishProgress(this.varName, 50 * (1 + towns[1].getLevel("Shortcut")/100), function() {
             view.adjustManaCost("Learn Alchemy");
             view.adjustManaCost("Gather Herbs");
             view.adjustManaCost("Practical Magic");
