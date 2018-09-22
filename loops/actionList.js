@@ -882,7 +882,7 @@ function PracticalMagic() {
         Int:.5
     };
     this.manaCost = function() {
-        return Math.ceil(4000 / (1 + towns[1].getLevel("Hermit")/100));
+        return Math.ceil(4000 * (1 - towns[1].getLevel("Hermit") * .005))
     };
     this.visible = function() {
         return towns[1].getLevel("Hermit") >= 10;
@@ -919,7 +919,7 @@ function LearnAlchemy() {
         addHerbs(-10);
     };
     this.manaCost = function() {
-        return Math.ceil(5000 / (1 + towns[1].getLevel("Hermit")/100));
+        return Math.ceil(5000 * (1 - towns[1].getLevel("Hermit") * .005))
     };
     this.visible = function() {
         return towns[1].getLevel("Hermit") >= 10;
@@ -1676,7 +1676,7 @@ function GatherHerbs() {
         Int:.3
     };
     this.manaCost = function() {
-        return Math.ceil(200 / (1 + towns[1].getLevel("Hermit")/100));
+        return Math.ceil(200 * (1 - towns[1].getLevel("Hermit") * .005))
     };
     this.visible = function() {
         return towns[1].getLevel("Forest") >= 2;
@@ -1831,6 +1831,8 @@ function HealTheSick() {
         return getSkillLevel("Magic") >= 12;
     };
     this.finish = function() {
+        addSkillExp("Magic", 10);
+        view.updateProgressActions();
     };
 }
 
@@ -1887,6 +1889,8 @@ function FightMonsters() {
         return getSkillLevel("Combat") >= 10;
     };
     this.finish = function() {
+        addSkillExp("Combat", 10);
+        view.updateProgressActions();
     };
 }
 function monsterNames(FightLoopCounter) { //spd, defensive, aggressive
@@ -1974,6 +1978,9 @@ function SmallDungeon() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
     };
     this.finish = function() {
+        addSkillExp("Magic", 5);
+        addSkillExp("Combat", 5);
+        view.updateProgressActions();
     };
 }
 function finishDungeon(dungeonNum, floorNum) {
@@ -2136,6 +2143,9 @@ function LargeDungeon() {
         return towns[2].getLevel("Drunk") >= 20;
     };
     this.finish = function() {
+        addSkillExp("Magic", 15);
+        addSkillExp("Combat", 15);
+        view.updateProgressActions();
     };
 }
 
