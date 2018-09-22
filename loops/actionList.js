@@ -1181,7 +1181,7 @@ function DarkRitual() {
         for(var i=0; i<9; i++) {
             if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
         }
-        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0;
+        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart;
     };
     this.loopCost = function(segment) {
         return 1000000 * (segment*2+1);
