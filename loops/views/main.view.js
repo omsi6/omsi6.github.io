@@ -169,12 +169,12 @@ function View() {
         document.getElementById("glassesDiv").style.display = glasses ? "inline-block" : "none";
     };
     this.updateReputation = function() {
+        document.getElementById("reputationDiv").style.display = reputation ? "inline-block" : "none";
         document.getElementById("reputation").innerHTML = reputation;
     };
     this.updateSupplies = function() {
         document.getElementById("suppliesDiv").style.display = supplies ? "inline-block" : "none";
         document.getElementById("suppliesCost").innerHTML = towns[0].suppliesCost+"";
-        document.getElementById("supplies").innerHTML = supplies;
     };
     this.updateHerbs = function() {
         document.getElementById("herbsDiv").style.display = herbs ? "inline-block" : "none";
@@ -203,6 +203,9 @@ function View() {
     this.updateBlood = function() {
         document.getElementById("bloodDiv").style.display = blood ? "inline-block" : "none";
         document.getElementById("blood").innerHTML = blood;
+    };
+    this.updateLoopingPotion = function() {
+        document.getElementById("loopingPotionDiv").style.display = loopingPotion ? "inline-block" : "none";
     };
     this.updateTeamCombat = function() {
         if(maxTown >= 2) {
@@ -669,6 +672,7 @@ function View() {
         this.createActionProgress(tempObj);
 
         this.createTownAction(new Chronomancy());
+        this.createTownAction(new LoopingPotion());
 
         tempObj = new ExploreCavern();
         this.createTownAction(tempObj);
@@ -683,6 +687,8 @@ function View() {
         tempObj = new HuntTrolls();
         this.createTownAction(tempObj);
         this.createMultiPartPBar(tempObj);
+
+
 
     };
 

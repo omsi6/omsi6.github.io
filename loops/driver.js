@@ -52,8 +52,10 @@ function tick() {
         }
         curTown
         var speedMult = 1;
-        if (curTown === 0) speedMult *= 1 + Math.min(buffs["Ritual"].amt, 20) / 10;
-        speedMult *= Math.sqrt(1+getSkillLevel("Chronomancy") / 100)
+        if (curTown === 0 && getBuffLevel("Ritual") > 0) speedMult *= 1 + Math.min(getBuffLevel("Ritual"), 20) / 10;
+        else if (curTown === 1 && getBuffLevel("Ritual") > 20) speedMult *= 1 + Math.min(getBuffLevel("Ritual")-20, 20) / 20;
+        else if (curTown === 2 && getBuffLevel("Ritual") > 40) speedMult *= 1 + Math.min(getBuffLevel("Ritual")-40, 20) / 40;
+        speedMult *= Math.sqrt(1 + getSkillLevel("Chronomancy") / 200)
         gameTicksLeft -= ((1000 / 50) / (gameSpeed * speedMult) / bonusSpeed);
         if(bonusSpeed > 1) {
             addOffline(-1 * gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed));
@@ -94,10 +96,6 @@ function pauseGame() {
 function prepareRestart() {
     if(document.getElementById("pauseBeforeRestart").checked) {
         pauseGame();
-        if (document.getElementById("audioCueToggle").checked) {
-            beep(250);
-            setTimeout(function () {beep(250)},500)
-        }
     } else {
         restart();
     }
@@ -124,6 +122,7 @@ function restart() {
     addArmor(-armor);
     addPickaxe(-pickaxe);
     addBlood(-blood);
+    addLoopingPotion(-loopingPotion);
     restartStats();
     for(let i = 0; i < towns.length; i++) {
         towns[i].restart();
@@ -221,6 +220,11 @@ function addPickaxe(amount) {
 function addBlood(amount) {
     blood += amount;
     view.updateBlood();
+}
+
+function addLoopingPotion(amount) {
+    loopingPotion += amount;
+    view.updateLoopingPotion();
 }
 
 function changeActionAmount(amount, num) {

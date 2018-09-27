@@ -121,6 +121,8 @@ function translateClassNames(name) {
         return new DecipherRunes();
     } else if(name === "Chronomancy") {
         return new Chronomancy();
+    } else if(name === "Looping Potion") {
+        return new LoopingPotion();
     } else if(name === "Explore Cavern") {
         return new ExploreCavern();
     } else if(name === "Mine Soulstones") {
@@ -1105,7 +1107,7 @@ function TalkToWitch() {
         return 1500;
     };
     this.visible = function() {
-        return towns[1].getLevel("Forest") >= 20;
+        return towns[1].getLevel("Thicket") >= 20;
     };
     this.unlocked = function() {
         return towns[1].getLevel("Thicket") >= 60 && getSkillLevel("Magic") >= 80;
@@ -1147,7 +1149,7 @@ function DarkMagic() {
         return towns[1].getLevel("Witch") >= 20 && getSkillLevel("Magic") >= 100;
     };
     this.finish = function() {
-        addSkillExp("Dark", 100);
+        addSkillExp("Dark", Math.floor(100 * (1 + getBuffLevel("Ritual") / 100)));
         view.adjustGoldCost("Pots", goldCostSmashPots());
         view.adjustGoldCost("WildMana", goldCostWildMana());
     };
@@ -2424,6 +2426,40 @@ function Chronomancy() {
     };
     this.finish = function() {
         addSkillExp("Chronomancy", 100);
+    };
+}
+
+function LoopingPotion() {
+    this.varName = "LoopingPotion";
+    this.name = "Looping Potion";
+    this.expMult = 2;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>looping_potion>tooltip");
+    this.label = _txt("actions>looping_potion>label");
+
+    this.stats = {
+        Dex:.2,
+        Int:.7,
+        Soul:.1,
+    };
+    this.canStart = function() {
+        return herbs >= 200;
+    };
+    this.cost = function() {
+        addHerbs(-200);
+    };
+    this.manaCost = function() {
+        return Math.ceil(30000);
+    };
+    this.visible = function() {
+        return getSkillLevel("Alchemy") >= 10 && getSkillLevel("Chronomancy") >= 20;
+    };
+    this.unlocked = function() {
+        return getSkillLevel("Alchemy") >= 60 && getSkillLevel("Chronomancy") >= 100;
+    };
+    this.finish = function() {
+        addLoopingPotion(1);
+        addSkillExp("Alchemy", 100);
     };
 }
 

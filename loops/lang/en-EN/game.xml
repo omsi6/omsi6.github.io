@@ -6,6 +6,15 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".80"><![CDATA[
+            * New action - Looping Potion.<br>
+            * Dark Ritual now has bonuses for rituals 21-60, and a new unlimited per ritual bonus.<br>
+            * Chronomancy speed bonus sqrt(1 + level / 100) > sqrt(1 + level / 200).<br>
+            * The short forms of stat names have been capitalized.<br>
+            * Checkboxes have been vertically aligned.<br>
+            * Colons have been added to the end of resources with counts.<br>
+            * Fixed various minor bugs.
+        ]]></version>
             <version verNum=".79"><![CDATA[
             * Descriptions, flavor text, and tooltips have been changed in various places.<br>
             * New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls<br>
@@ -170,46 +179,49 @@
         </options>
     </menu>
     <tutorial><![CDATA[
-      TUTORIAL<br>
+      TUTORIAL:<br>
       Click the Wander action and click Play to start.<br>
       Wander for a bit, then smash pots.<br>
       Watch the numbers change, read all the tooltips.<br>
       Complete the town, go to the next one.<br><br>
+      Hey there, it looks like you're starting the game on omsi6.github.io.<br>
+      Before you start, you should know that this is a fanmade modification<br>
+      for the original game, located <a href="http://stopsign.github.io/idleLoops/">here.</a> Thanks for playing, and have fun!<br><br>
       ]]></tutorial>
     <tracked_resources>
         <reset_on_restart_txt>Resets when the loop restarts.</reset_on_restart_txt>
         <resource no_reset_on_restart="true">
-            <title>Mana</title>
+            <title>Mana:</title>
             <id>timer</id>
             <desc>Your main resource. The higher your mana, the more you can do before reset.</desc>
         </resource>
         <resource>
-            <title>Gold</title>
+            <title>Gold:</title>
             <id>gold</id>
             <desc>Sell for mana, or use for actions.</desc>
         </resource>
-        <resource>
-            <title>Reputation</title>
+        <resource initially_hidden="true">
+            <title>Reputation:</title>
             <id>reputation</id>
             <desc>The influence you have over the people in town.</desc>
         </resource>
-        <resource initially_hidden="true">
+        <resource initially_hidden="true" no_count="true">
             <title>Supplies</title>
             <id>supplies</id>
             <desc>Needed to go to the next town.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Herbs</title>
+            <title>Herbs:</title>
             <id>herbs</id>
             <desc>The beneficial plants you've found.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Hide</title>
+            <title>Hide:</title>
             <id>hide</id>
             <desc>Results of successful hunting.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Potions</title>
+            <title>Potions:</title>
             <id>potions</id>
             <desc>Rare, but not complex. Worth some money.</desc>
         </resource>
@@ -219,12 +231,12 @@
             <desc>Woah, trees have so many leaves on them.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Team Members</title>
+            <title>Team Members:</title>
             <id>teamNum</id>
             <desc>You know their personalities and fighting style. They don't know your name.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Armor</title>
+            <title>Armor:</title>
             <id>armor</id>
             <desc>Crafted by your own hand, it protects you from dangers.</desc>
         </resource>
@@ -234,9 +246,14 @@
             <desc>It's heavy, but you can make use of it.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Blood</title>
+            <title>Blood:</title>
             <id>blood</id>
             <desc>Regailed for it's regenerative properties. You might be able to fetch a pretty penny for it.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title>Looping Potion</title>
+            <id>loopingPotion</id>
+            <desc>It's a potion made with the very same formula that got you into this mess!</desc>
         </resource>
     </tracked_resources>
     <time_controls>
@@ -245,6 +262,7 @@
         <pause_before_restart>Pause before restart</pause_before_restart>
         <restart_button>Restart</restart_button>
         <restart_text>Resets the loop. Not a hard reset.</restart_text>
+        <talents_button>Talents</talents_button>
         <story_title>Story</story_title>
         <stories>
             <story num="0">
@@ -294,47 +312,47 @@
         <dex>
             <blurb>Know your body.</blurb>
             <long_form>Dexterity</long_form>
-            <short_form>dex</short_form>
+            <short_form>Dex</short_form>
         </dex>
         <str>
             <blurb>Train your body.</blurb>
             <long_form>Strength</long_form>
-            <short_form>str</short_form>
+            <short_form>Str</short_form>
         </str>
         <con>
             <blurb>Just a little longer. Just a little more.</blurb>
             <long_form>Constitution</long_form>
-            <short_form>con</short_form>
+            <short_form>Con</short_form>
         </con>
         <spd>
             <blurb>Gotta go fast.</blurb>
             <long_form>Speed</long_form>
-            <short_form>spd</short_form>
+            <short_form>Spd</short_form>
         </spd>
         <per>
             <blurb>Look a little closer...</blurb>
             <long_form>Perception</long_form>
-            <short_form>per</short_form>
+            <short_form>Per</short_form>
         </per>
         <cha>
             <blurb>Conversation is a battle.</blurb>
             <long_form>Charisma</long_form>
-            <short_form>cha</short_form>
+            <short_form>Cha</short_form>
         </cha>
         <int>
             <blurb>Learning to learn.</blurb>
             <long_form>Intelligence</long_form>
-            <short_form>int</short_form>
+            <short_form>Int</short_form>
         </int>
         <luck>
             <blurb>Opportunity favors the fortunate.</blurb>
             <long_form>Luck</long_form>
-            <short_form>luck</short_form>
+            <short_form>Luck</short_form>
         </luck>
         <soul>
             <blurb>You are the captain.</blurb>
             <long_form>Soul</long_form>
-            <short_form>soul</short_form>
+            <short_form>Soul</short_form>
         </soul>
         <tooltip>
             <level>Level</level>
@@ -396,9 +414,7 @@
         <alchemy>
             <label>Alchemy</label>
             <desc>Brewing potions is hard work! It's a good thing you found a teacher.</desc>
-            <desc2>The Magic teacher in Beginnersville adores alchemists. +1% to Mage Lessons (rounded down) per
-                level.
-            </desc2>
+            <desc2>The Magic teacher in Beginnersville adores alchemists. +1% to Mage Lessons Magic exp gain (rounded down) per level.</desc2>
         </alchemy>
         <dark_magic>
             <label>Dark Magic</label>
@@ -408,7 +424,7 @@
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Actions in all zones are sqrt(1 + level / 100) times faster.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are sqrt(1 + level / 200) times faster.]]></desc2>
         </chronomancy>
         <pyromancy>
             <label>Pyromancy</label>
@@ -424,7 +440,11 @@
         <title>Buffs</title>
         <dark_ritual>
             <label>Dark Ritual</label>
-            <desc>Actions are 10% faster in Beginnersville per ritual from 1-20</desc>
+            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic Dark Magic exp gain (rounded down) per ritual.</desc>
+            <desc2><![CDATA[<br>Actions are 10% faster in Beginnersville per ritual from 1-20.<br>
+            Actions are 5% faster in the Forest Path per ritual from 21-40.<br>
+            Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>]]>
+            </desc2>
         </dark_ritual>
         <tooltip>
             <level>Level</level>
@@ -699,7 +719,6 @@
         <dark_ritual>
             <label>Dark Ritual</label>
             <label_done>Completed</label_done>
-            <label_complete>Completed Label Complete</label_complete>
             <tooltip><![CDATA[
             Sacrifice an increasing amount of soulstones to the dark gods, granting a permanant speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
         ]]></tooltip>
@@ -709,7 +728,6 @@
                 <name>Clear the area</name>
                 <name>Prepare the altar</name>
                 <name>Summon the dark gods</name>
-                <name>Why are you getting this</name>
             </segment_names>
         </dark_ritual>
         <continue_on>
@@ -1039,6 +1057,12 @@
                 <name>Drain the Troll's Blood</name>
             </segment_names>
         </hunt_trolls>
+        <looping_potion>
+            <label>Looping Potion</label>
+            <tooltip><![CDATA[
+            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it.<br>Requires 200 herbs.<br>Unlocked with both 60 Alchemy and 100 Chronomancy.
+        ]]></tooltip>
+        </looping_potion>
     </actions>
     <spells>
         <title>Spells</title>

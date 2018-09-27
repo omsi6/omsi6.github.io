@@ -37,6 +37,14 @@ function getLevel(stat) {
     return getLevelFromExp(stats[stat].exp);
 }
 
+function getTotalTalentLevel() {
+    return Math.floor(Math.pow(totalTalent, 0.2));
+}
+
+function getTotalTalentPrc() {
+    return (Math.pow(totalTalent, 0.2) - Math.floor(Math.pow(totalTalent, 0.2))) * 100;
+}
+
 function getLevelFromExp(exp) {
     return Math.floor((Math.sqrt(8*exp/100+1)-1)/2);
 }
@@ -115,6 +123,7 @@ function addBuffAmt(name, amount) {
 function addExp(name, amount) {
     stats[name].exp += amount;
     stats[name].talent += amount / 100;
+    totalTalent += amount / 100;
 }
 
 function restartStats() {

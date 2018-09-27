@@ -22,6 +22,9 @@ let isFileSystem = !!location.href.match("file");
 let isBeta = !!location.href.match(/beta/i);
 let saveName = !isBeta ? "idleLoops1" :  "idleLoopsBeta";
 
+//this is to hide the cheat button if you aren't supposed to cheat
+if (window.location.href !== "http://10.0.0.3:8080/loops/") document.getElementById("cheat").style.display = "none"
+
 let timeNeededInitial = 5 * 50;
 let timer = timeNeededInitial;
 let timeNeeded = timeNeededInitial;
@@ -33,6 +36,7 @@ let curTown = 0;
 
 let statList = ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"];
 const stats = {};
+let totalTalent = 0;
 let prevState = {};
 let shouldRestart = true;
 
@@ -48,6 +52,7 @@ let guild = "";
 let armor = 0;
 let pickaxe = 0;
 let blood = 0;
+let loopingPotion = 0;
 
 let curLoadout = 0;
 let loadouts = [];
@@ -114,6 +119,18 @@ function load() {
         if (toLoad.buffs.hasOwnProperty(property)) {
             buffs[property].amt = toLoad.buffs[property].amt;
         }
+    }
+
+    if(toLoad.totalTalent === undefined) {
+        var temptotalTalent = 0;
+        for(let property in toLoad.stats) {
+            if (toLoad.stats.hasOwnProperty(property)) {
+                temptotalTalent += toLoad.stats[property].talent * 100;
+            }
+        }
+        totalTalent = temptotalTalent;
+    } else {
+        totalTalent = toLoad.totalTalent
     }
 
     maxTown = toLoad.maxTown !== undefined ? toLoad.maxTown : 0;
@@ -266,6 +283,7 @@ function save() {
 
     let town = towns[0];
     toSave.stats = stats;
+    toSave.totalTalent = totalTalent;
     toSave.skills = skills;
     toSave.buffs = buffs ;
     toSave.expWander = town.expWander;

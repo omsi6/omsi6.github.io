@@ -108,7 +108,7 @@ function Actions() {
 
     this.getErrorMessage = function(action) {
         if(action.townNum !== curTown) {
-            return "You were in area " + (curTown+1) + " when you tried this action, and needed to be in " + (action.townNum+1);
+            return "You were in area " + (curTown+1) + " when you tried this action, and needed to be in area " + (action.townNum+1);
         }
         if(action.canStart && !action.canStart()) {
             return "You could not make the cost for the action."

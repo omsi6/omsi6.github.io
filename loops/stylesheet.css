@@ -16,6 +16,7 @@ body {
     background-color: #e4ece5;
     cursor:default;
 }
+
 .showthatH:hover .showthisH {
     display:block;
 }
@@ -78,6 +79,8 @@ input, label {
 }
 input {
     margin-right:0;
+    top: 2px;
+    position: relative;
 }
 
 /*.button {*/
@@ -332,7 +335,8 @@ input {
     position:relative;
     height:500px;
     width:100%;
-    /*border-bottom:2px solid purple;*/
+    /*border:1px solid black;*/
+    z-index: -1;
 }
 
 .resizable {

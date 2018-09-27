@@ -19,8 +19,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 </head>
 <body id="theBody" style="min-width:1210px">
+    <canvas id="talentTreeCanvas" style="display: none;"></canvas>
     <div id="timeInfo" style="width:100%;text-align:center;">
-        <button class="button showthat control" style="margin-top: 5px;" onclick="cheat()">Cheat</button>
+        <button id="cheat" class="button showthat control" style="margin-top: 5px;" onclick="cheat()">Cheat</button>
         <div style="width:100%;height:10px;background:white;text-align:center;position:relative;">
             <div id="timeBar" style="height:100%;width:20%;background-color:#8293ff;display:block;margin:auto;"></div>
         </div>
@@ -96,7 +97,6 @@
                         <span class="localized" data-lockey="skills>practical_magic>desc"></span><br><br>
                         <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillPracticalLevelExp"></div>/<div id="skillPracticalLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillPracticalLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>practical_magic>desc2"></span>
-
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillAlchemyContainer">
@@ -120,7 +120,6 @@
                         <span class="localized" data-lockey="skills>dark_magic>desc"></span><br><br>
                         <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillDarkLevelExp"></div>/<div id="skillDarkLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillDarkLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>dark_magic>desc2"></span>
-
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillCraftingContainer">
@@ -143,7 +142,6 @@
                         <span class="localized" data-lockey="skills>chronomancy>desc"></span><br><br>
                         <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillChronomancyLevelExp"></div>/<div id="skillChronomancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillChronomancyLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>chronomancy>desc2"></span>
-
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillPyromancyContainer">
@@ -156,7 +154,6 @@
                         <span class="localized" data-lockey="skills>pyromancy>desc"></span><br><br>
                         <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillPyromancyLevelExp"></div>/<div id="skillPyromancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillPyromancyLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>pyromancy>desc2"></span>
-
                     </div>
                 </div>
             </div>
@@ -171,6 +168,7 @@
                     <div style="margin-top:18px;"></div>
                     <div class="showthis">
                         <span class="localized" data-lockey="buffs>dark_ritual>desc"></span><br>
+                        <span class="localized" data-lockey="buffs>dark_ritual>desc2"></span>
                     </div>
                 </div>
             </div>
@@ -212,11 +210,11 @@
             </div>
             <div id="actionChanges" style="text-align:left;width:100%;margin-top:5px;">
                 <div>
-                    <input type="checkbox" id="currentListActive">
+                    <input type="checkbox" id="currentListActive" class="checkbox">
                     <label for="currentListActive" class="localized" data-lockey="actions>tooltip>current_list_active"></label><br>
-                    <input type="checkbox" id="repeatLastAction">
+                    <input type="checkbox" id="repeatLastAction" class="checkbox">
                     <label for="repeatLastAction" class="localized" data-lockey="actions>tooltip>repeat_last_action"></label><br>
-                    <input type="checkbox" id="addActionTop">
+                    <input type="checkbox" id="addActionTop" class="checkbox">
                     <label for="addActionTop" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
                 <div style="float:right;text-align:right;">
@@ -285,6 +283,7 @@
     <script src="actions.js?15"></script>
     <script src="actionList.js?15"></script>
     <script src="town.js?15"></script>
+    <script src="talents.js?15"></script>
     <script src="saving.js?15"></script>
     <script src="localization.js?13"></script>
     <script src="views/views.js?13"></script>
