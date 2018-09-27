@@ -2044,7 +2044,7 @@ function JoinAdvGuild() {
         return "Rank " + getAdvGuildRank().name;
     };
     this.getSegmentName = function(segment) {
-        return "Rank " + getAdvGuildRank(segment).name;
+        return "Rank " + getAdvGuildRank(segment % 3).name;
     };
     this.visible = function() {
         return towns[2].getLevel("Drunk") >= 5;
@@ -2195,7 +2195,7 @@ function CraftingGuild() {
         return "Rank " + getCraftGuildRank().name;
     };
     this.getSegmentName = function(segment) {
-        return "Rank " + getCraftGuildRank(segment).name;
+        return "Rank " + getCraftGuildRank(segment % 3).name;
     };
     this.visible = function() {
         return towns[2].getLevel("Drunk") >= 5;
