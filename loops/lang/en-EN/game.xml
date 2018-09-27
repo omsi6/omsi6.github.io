@@ -440,7 +440,7 @@
         <title>Buffs</title>
         <dark_ritual>
             <label>Dark Ritual</label>
-            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic Dark Magic exp gain (rounded down) per ritual.</desc>
+            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic exp gain (rounded down) per ritual.</desc>
             <desc2><![CDATA[<br>Actions are 10% faster in Beginnersville per ritual from 1-20.<br>
             Actions are 5% faster in the Forest Path per ritual from 21-40.<br>
             Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>]]>
