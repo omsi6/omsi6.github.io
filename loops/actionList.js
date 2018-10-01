@@ -2059,7 +2059,7 @@ function JoinAdvGuild() {
 function getAdvGuildRank(offset) {
     let name = ["F", "E", "D", "C", "B", "A", "S", "SS", "SSS", "SSSS", "U", "UU", "UUU", "UUUU"][Math.floor(window.curAdvGuildSegment/3+.00001)];
 
-    let segment = (offset === undefined ? 0 : offset) + window.curAdvGuildSegment;
+    let segment = (offset === undefined ? 0 : offset - (window.curAdvGuildSegment % 3)) + window.curAdvGuildSegment;
     let bonus = precision3(1 + segment/20 + (segment ** 2)/300);
     if(!name) {
         name = "Godlike";
@@ -2210,7 +2210,7 @@ function CraftingGuild() {
 function getCraftGuildRank(offset) {
     let name = ["F", "E", "D", "C", "B", "A", "S", "SS", "SSS", "SSSS", "U", "UU", "UUU", "UUUU"][Math.floor(window.curCraftGuildSegment/3+.00001)];
 
-    let segment = (offset === undefined ? 0 : offset) + window.curCraftGuildSegment;
+    let segment = (offset === undefined ? 0 : offset - (window.curCraftGuildSegment % 3)) + window.curCraftGuildSegment;
     let bonus = precision3(1 + segment/20 + (segment ** 2)/300);
     if(!name) {
         name = "Godlike";
