@@ -184,6 +184,9 @@ function load() {
             if(action.name === "Sell Gold") {
                 action.name = "Buy Mana";
             }
+            if(action.name === "Tournament") {
+                action.name = "Buy Pickaxe";
+            }
             actions.next.push(action);
         }
     }
@@ -200,6 +203,9 @@ function load() {
                 }
                 if(action.name === "Sell Gold") {
                     action.name = "Buy Mana";
+                }
+                if(action.name === "Tournament") {
+                    action.name = "Buy Pickaxe";
                 }
                 loadouts[i].push(action);
             }
