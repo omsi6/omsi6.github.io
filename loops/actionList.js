@@ -66,6 +66,8 @@ function translateClassNames(name) {
         return new TrainSpd();
     } else if(name === "Follow Flowers") {
         return new FollowFlowers();
+    } else if(name === "Bird Watching") {
+        return new BirdWatching();
     } else if(name === "Clear Thicket") {
         return new ClearThicket();
     } else if(name === "Talk To Witch") {
@@ -1054,6 +1056,35 @@ function FollowFlowers() {
         towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
             adjustHerbs();
         });
+    };
+}
+
+function BirdWatching() {
+    this.name = "Bird Watching";
+    this.expMult = 4;
+    this.townNum = 1;
+    this.tooltip = _txt("actions>bird_watching>tooltip");
+    this.label = _txt("actions>bird_watching>label");
+
+    this.varName = "BirdWatching";
+    this.stats = {
+        Per:.8,
+        Int:.2
+    };
+    this.affectedBy = ["Buy Glasses"];
+    this.allowed = function() {
+        return trainingLimits;
+    };
+    this.manaCost = function() {
+        return 2000;
+    };
+    this.visible = function() {
+        return towns[1].getLevel("Flowers") >= 30;
+    };
+    this.unlocked = function() {
+        return towns[1].getLevel("Flowers") >= 80;
+    };
+    this.finish = function() {
     };
 }
 

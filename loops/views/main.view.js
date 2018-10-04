@@ -581,6 +581,8 @@ function View() {
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
 
+        this.createTownAction(new BirdWatching());
+
         tempObj = new ClearThicket();
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);

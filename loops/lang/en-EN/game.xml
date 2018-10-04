@@ -6,6 +6,10 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".81"><![CDATA[
+            * New action - Bird Watching.<br>
+            * Fixed the speed bonuses Dark Ritual and Chronomancy draining bonus seconds faster.
+        ]]></version>
             <version verNum=".80"><![CDATA[
             * New action - Looping Potion.<br>
             * Dark Ritual now has bonuses for rituals 21-60, and a new unlimited per ritual bonus.<br>
@@ -614,7 +618,7 @@
         <train_str>
             <label>Train Strength</label>
             <tooltip><![CDATA[
-            Build up those muscles. Again.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitStr'></div> times per reset<br>Unlocked at 5% People Met.
+            Build up those muscles. Again.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitStr'></div> times per reset.<br>Unlocked at 5% People Met.
         ]]></tooltip>
         </train_str>
         <throw_party>
@@ -656,7 +660,7 @@
         <train_soul>
             <label>Sit By Waterfall</label>
             <tooltip><![CDATA[
-            It's peaceful here. Loud, but peaceful.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSoul'></div> times per reset<br>Unlocked at 70% Forest Explored.
+            It's peaceful here. Loud, but peaceful.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSoul'></div> times per reset.<br>Unlocked at 70% Forest Explored.
         ]]></tooltip>
         </train_soul>
         <practical_magic>
@@ -680,13 +684,13 @@
         <train_dex>
             <label>Train Dex</label>
             <tooltip><![CDATA[
-            There's a nice array of rocks to hop between. It's a lot of fun.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitDex'></div> times per reset<br>Unlocked at 60% Forest Explored.
+            There's a nice array of rocks to hop between. It's a lot of fun.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitDex'></div> times per reset.<br>Unlocked at 60% Forest Explored.
         ]]></tooltip>
         </train_dex>
         <train_spd>
             <label>Train Speed</label>
             <tooltip><![CDATA[
-            A forest run is fantastic. You feel like you're learning a lot as you push your limits.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSpd'></div> times per reset<br>Unlocked at 80% Forest Explored.
+            A forest run is fantastic. You feel like you're learning a lot as you push your limits.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSpd'></div> times per reset.<br>Unlocked at 80% Forest Explored.
         ]]></tooltip>
         </train_spd>
         <follow_flowers>
@@ -696,6 +700,12 @@
             You've located an oddly out of place trail of flowers, why not see where it leads. You can find more herbs along the path.<br>2x progress with glasses.<br>Unlocked at 50% Forest Explored.
         ]]></tooltip>
         </follow_flowers>
+        <bird_watching>
+            <label>Bird Watching</label>
+            <tooltip><![CDATA[
+            Far along the flower trail, there seems to be a large variety of birds flying about. Perhaps you could take up a new hobby.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSpd'></div> times per reset.<br>Unlocked at 80% Flower Trail Followed.
+        ]]></tooltip>
+        </bird_watching>
         <clear_thicket>
             <label>Clear Thicket</label>
             <label_done>Thicket Explored</label_done>
@@ -751,7 +761,7 @@
         <read_books>
             <label>Read Books</label>
             <tooltip><![CDATA[
-            There's a library! You always loved reading.<br>Discover new worlds and perspectives, get ideas from fiction characters, and empathize with the desire to be stronger.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset<br>Unlocks at 50% city explored.
+            There's a library! You always loved reading.<br>Discover new worlds and perspectives, get ideas from fiction characters, and empathize with the desire to be stronger.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset.<br>Unlocks at 50% city explored.
         ]]></tooltip>
         </read_books>
         <gather_team>

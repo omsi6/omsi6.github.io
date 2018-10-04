@@ -58,7 +58,7 @@ function tick() {
         speedMult *= Math.sqrt(1 + getSkillLevel("Chronomancy") / 200)
         gameTicksLeft -= ((1000 / 50) / (gameSpeed * speedMult) / bonusSpeed);
         if(bonusSpeed > 1) {
-            addOffline(-1 * gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed));
+            addOffline(-1 * (gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed)) / speedMult);
         }
     }
 
