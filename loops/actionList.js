@@ -144,7 +144,7 @@ function getTravelNum(name) {
     return (name === "Start Journey" || name === "Continue On" || name === "Start Trek") ? 1 : 0;
 }
 function isTraining(name) {
-    return (name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books");
+    return (name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books" || name === "Bird Watching");
 }
 
 let townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus"];
