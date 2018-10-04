@@ -703,7 +703,7 @@
         <bird_watching>
             <label>Bird Watching</label>
             <tooltip><![CDATA[
-            Far along the flower trail, there seems to be a large variety of birds flying about. Perhaps you could take up a new hobby.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitSpd'></div> times per reset.<br>Unlocked at 80% Flower Trail Followed.
+            Far along the flower trail, there seems to be a large variety of birds flying about. Perhaps you could take up a new hobby.<br>Requires glasses.<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitPer'></div> times per reset.<br>Unlocked at 80% Flower Trail Followed.
         ]]></tooltip>
         </bird_watching>
         <clear_thicket>
