@@ -6,6 +6,15 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".82"><![CDATA[
+            * New action - Face Judgement.<br>
+            * The talent multiplier formula has been changed to be worse at higher levels. (talent ^ 0.5 / 5) > (talent ^ 0.4 / 3)<br>
+            * Mine Soulstones mana cost 2500 > 5000.<br>
+            * Adjusted the placement of Pyromancy.<br>
+            * The currently selected loadout stays highlighted on refresh.<br>
+            * Fixed the mana cost reductions from Witch Knowledge and Runes Deciphered being applied improperly.<br>
+            * Fixed the Witch Knowledge Dark Ritual mana cost reduction not increasing the speed of the ritual to account for the reduced cost.
+        ]]></version>
             <version verNum=".81"><![CDATA[
             * New action - Bird Watching.<br>
             * Fixed the speed bonuses Dark Ritual and Chronomancy draining bonus seconds faster.
@@ -565,7 +574,7 @@
             <label>Talk To Hermit</label>
             <label_done>Hermit Knowledge Learned</label_done>
             <tooltip><![CDATA[
-            This old man is happy to have a listening ear, surely he has some useful knowledge. You hope. He's initially confrontational, but opens up once you start talking about the road.<br>Reduces mana cost of Gather Herbs, Practical Magic, and Learn Alchemy by .5% per 1% of Hermit Knowledge.<br>Unlocked with both 20% Shortcut Explored and 40 Magic.
+            This old man is happy to have a listening ear, surely he has some useful knowledge. You hope. He's initially confrontational, but opens up once you start talking about the road.<br>Reduces mana cost of Gather Herbs, Practical Magic, and Learn Alchemy by 0.5% per 1% of Hermit Knowledge.<br>Unlocked with both 20% Shortcut Explored and 40 Magic.
         ]]></tooltip>
         </hermit>
         <explore_city>
@@ -717,7 +726,7 @@
             <label>Talk To Witch</label>
             <label_done>Witch Knowledge Learned</label_done>
             <tooltip><![CDATA[
-            Talk to the witch to learn her secrets of the dark arts.<br>Unlocked with both 60% Thicket Explored and 80 Magic.<br>Speed is 1% faster for Dark Magic, and Dark Ritual per 1% of Witch Knowledge.
+            Talk to the witch to learn her secrets of the dark arts.<br>Unlocked with both 60% Thicket Explored and 80 Magic.<br>Reduces mana cost of Dark Magic and Dark Ritual by 0.5% per 1% of Witch Knowledge.
         ]]></tooltip>
         </witch>
         <dark_magic>
@@ -1019,7 +1028,7 @@
             <label>Decipher Runes</label>
             <label_done>Runic Symbols Deciphered</label_done>
             <tooltip><![CDATA[
-            There are many different runic markings on weathered headstones around the mountain, perhaps you can glean some sort of knowledge from them.<br>Speed is 1% faster for Chronomancy and Pyromancy per 1% of Glyphs Deciphered.<br>2x progress with glasses.<br>Unlocked at 20% Mountain Explored.
+            There are many different runic markings on weathered headstones around the mountain, perhaps you can glean some sort of knowledge from them.<br>Reduces mana cost of Chronomancy and Pyromancy by 0.5% per 1% of Glyphs Deciphered.<br>2x progress with glasses.<br>Unlocked at 20% Mountain Explored.
         ]]></tooltip>
         </decipher_runes>
         <chronomancy>
@@ -1028,6 +1037,18 @@
             Controling time seems like it would great idea, and thankfully for you the runes around here contain lots of information on the art of Chronomancy.<br>Unlocked with both 30% Runic Symbols Deciphered and 150 Magic.
         ]]></tooltip>
         </chronomancy>
+        <looping_potion>
+            <label>Looping Potion</label>
+            <tooltip><![CDATA[
+            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it.<br>Requires 200 herbs.<br>Unlocked with both 60 Alchemy and 100 Chronomancy.
+        ]]></tooltip>
+        </looping_potion>
+        <pyromancy>
+            <label>Pyromancy</label>
+            <tooltip><![CDATA[
+            Conjure the power of feverishly forceful and furiously firey flickering flames to aid you in combat. And yeah, the runes contain some stuff about this too. <br>Unlocked with both 60% Runic Symbols Deciphered and 200 Magic.
+        ]]></tooltip>
+        </pyromancy>
         <explore_cavern>
             <label>Explore Cavern</label>
             <label_done>Cavern Explored</label_done>
@@ -1045,12 +1066,6 @@
             Extract soulstones lodged in the walls of the tunnels in the massive underground cavern.<br>Every 10 shiny spots has a soulstone.<br>Requires pickaxe.<br>Unlocked with 20% Cavern Explored.
         ]]></tooltip>
         </mine_soulstones>
-        <pyromancy>
-            <label>Pyromancy</label>
-            <tooltip><![CDATA[
-            Conjure the power of feverishly forceful and furiously firey flickering flames to aid you in combat. And yeah, the runes contain some stuff about this too. <br>Unlocked with both 60% Runic Symbols Deciphered and 200 Magic.
-        ]]></tooltip>
-        </pyromancy>
         <hunt_trolls>
             <label>Hunt Trolls</label>
             <label_done>Slain</label_done>
@@ -1067,12 +1082,12 @@
                 <name>Drain the Troll's Blood</name>
             </segment_names>
         </hunt_trolls>
-        <looping_potion>
-            <label>Looping Potion</label>
+        <face_judgement>
+            <label>Face Judgement</label>
             <tooltip><![CDATA[
-            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it.<br>Requires 200 herbs.<br>Unlocked with both 60 Alchemy and 100 Chronomancy.
+            Face the judgement of the gods. If your reputation is 50 or higher, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or lower, you'll be cast into the shadow realm and thrown back to the beginning of your journey. (this action does nothing at the moment)
         ]]></tooltip>
-        </looping_potion>
+        </face_judgement>
     </actions>
     <spells>
         <title>Spells</title>

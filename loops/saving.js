@@ -211,6 +211,11 @@ function load() {
             }
         }
     }
+    curLoadout = toLoad.curLoadout
+    let elem = document.getElementById("load"+curLoadout);
+    if(elem) {
+        removeClassFromDiv(document.getElementById("load" + curLoadout), "unused");
+    }
 
     dungeons = [[], []];
     let level = {ssChance:1,completed:0};
@@ -283,6 +288,7 @@ function load() {
 
 function save() {
     let toSave = {};
+    toSave.curLoadout = curLoadout;
     toSave.dungeons = dungeons;
     toSave.maxTown = maxTown;
     toSave.actionTownNum = actionTownNum;

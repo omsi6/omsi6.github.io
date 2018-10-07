@@ -675,6 +675,7 @@ function View() {
 
         this.createTownAction(new Chronomancy());
         this.createTownAction(new LoopingPotion());
+        this.createTownAction(new Pyromancy());
 
         tempObj = new ExploreCavern();
         this.createTownAction(tempObj);
@@ -684,11 +685,11 @@ function View() {
         this.createTownAction(tempObj);
         this.createTownInfo(tempObj);
 
-        this.createTownAction(new Pyromancy());
-
         tempObj = new HuntTrolls();
         this.createTownAction(tempObj);
         this.createMultiPartPBar(tempObj);
+
+        this.createTravelAction(new FaceJudgement());
 
 
 

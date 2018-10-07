@@ -125,15 +125,17 @@ function translateClassNames(name) {
         return new Chronomancy();
     } else if(name === "Looping Potion") {
         return new LoopingPotion();
+    } else if(name === "Pyromancy") {
+        return new Pyromancy();
     } else if(name === "Explore Cavern") {
         return new ExploreCavern();
     } else if(name === "Mine Soulstones") {
         return new MineSoulstones();
-    } else if(name === "Pyromancy") {
-        return new Pyromancy();
     } else if(name === "Hunt Trolls") {
         return new HuntTrolls();
-    } 
+    } else if(name === "Face Judgement") {
+        return new FaceJudgement();
+    }
     console.log('error trying to create ' + name);
 }
 
@@ -141,7 +143,7 @@ function hasCap(name) {
   return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser" || name === "Mine Soulstones");
 }
 function getTravelNum(name) {
-    return (name === "Start Journey" || name === "Continue On" || name === "Start Trek") ? 1 : 0;
+    return (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Face Judgement") ? 1 : 0;
 }
 function isTraining(name) {
     return (name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books" || name === "Bird Watching");
@@ -1165,7 +1167,7 @@ function DarkMagic() {
         Soul:.3
     };
     this.manaCost = function() {
-        return Math.ceil(6000 / (1 + towns[1].getLevel("Witch")/100));
+        return Math.ceil(6000 * (1 - towns[1].getLevel("Witch") * .005));
     };
     this.canStart = function() {
         return reputation <= 0;
@@ -1203,7 +1205,7 @@ function DarkRitual() {
     this.loopStats = ["Spd", "Int", "Soul"];
     this.segments = 3;
     this.manaCost = function() {
-        return Math.ceil(50000 / (1 + towns[1].getLevel("Witch")/100));
+        return Math.ceil(50000 * (1 - towns[1].getLevel("Witch") * .005));
     };
     this.allowed = function() {
         return 1;
@@ -1220,7 +1222,7 @@ function DarkRitual() {
         return 1000000 * (segment*2+1);
     };
     this.tickProgress = function(offset) {
-        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter+offset) % this.loopStats.length])/100);
+        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter+offset) % this.loopStats.length])/100) / (1 - towns[1].getLevel("Witch") * .005);
     };
     this.loopsFinished = function() {
         addBuffAmt("Ritual", 1)
@@ -2294,7 +2296,7 @@ function BuyPickaxe() {
 }
 
 function StartTrek() {
-    this.varName = "Trek";
+    this.varName = "StartTrek";
     this.name = "Start Trek";
     this.expMult = 2;
     this.townNum = 2;
@@ -2447,7 +2449,7 @@ function Chronomancy() {
         Int:.6
     };
     this.manaCost = function() {
-        return Math.ceil(10000 / (1 + towns[3].getLevel("Runes")/100));
+        return Math.ceil(10000 * (1 - towns[3].getLevel("Runes") * .005));
     };
     this.visible = function() {
         return towns[3].getLevel("Runes") >= 8;
@@ -2491,6 +2493,33 @@ function LoopingPotion() {
     this.finish = function() {
         addLoopingPotion(1);
         addSkillExp("Alchemy", 100);
+    };
+}
+
+function Pyromancy() {
+    this.name = "Pyromancy";
+    this.expMult = 2;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>pyromancy>tooltip");
+    this.label = _txt("actions>pyromancy>label");
+
+    this.varName = "trPyromancy";
+    this.stats = {
+        Per:.2,
+        Int:.7,
+        Soul:.1
+    };
+    this.manaCost = function() {
+        return Math.ceil(12000 * (1 - towns[3].getLevel("Runes") * .005));
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Runes") >= 16;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Runes") >= 60 && getSkillLevel("Magic") >= 150;
+    };
+    this.finish = function() {
+        addSkillExp("Pyromancy", 100);
     };
 }
 
@@ -2550,7 +2579,7 @@ function MineSoulstones() {
     };
     this.affectedBy = ["Buy Pickaxe"];
     this.manaCost = function() {
-        return 2500;
+        return 5000;
     };
     this.canStart = function() {
         return pickaxe;
@@ -2572,33 +2601,6 @@ function MineSoulstones() {
 
 function adjustMineSoulstones() {
     towns[3].totalMineSoulstones = towns[3].getLevel("Cavern") * 3;
-}
-
-function Pyromancy() {
-    this.name = "Pyromancy";
-    this.expMult = 2;
-    this.townNum = 3;
-    this.tooltip = _txt("actions>pyromancy>tooltip");
-    this.label = _txt("actions>pyromancy>label");
-
-    this.varName = "trPyromancy";
-    this.stats = {
-        Per:.2,
-        Int:.7,
-        Soul:.1
-    };
-    this.manaCost = function() {
-        return Math.ceil(12000 / (1 + towns[3].getLevel("Runes")/100));
-    };
-    this.visible = function() {
-        return towns[3].getLevel("Runes") >= 16;
-    };
-    this.unlocked = function() {
-        return towns[3].getLevel("Runes") >= 60 && getSkillLevel("Magic") >= 150;
-    };
-    this.finish = function() {
-        addSkillExp("Pyromancy", 100);
-    };
 }
 
 function HuntTrolls() {
@@ -2651,5 +2653,36 @@ function HuntTrolls() {
         return towns[3].getLevel("Cavern") >= 50;
     };
     this.finish = function() {
+    };
+}
+
+function FaceJudgement() {
+    this.varName = "FaceJudgement";
+    this.name = "Face Judgement";
+    this.expMult = 2;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>face_judgement>tooltip");
+    this.label = _txt("actions>face_judgement>label");
+
+    this.stats = {
+        Cha:.3,
+        Luck:.2,
+        Soul:.5,
+    };
+    this.allowed = function() {
+        return 1;
+    };
+    this.manaCost = function() {
+        return 30000;
+    };
+    this.visible = function() {
+        return true;
+    };
+    this.unlocked = function() {
+        return true;
+    };
+    this.finish = function() {
+        //if (reputation >= 50) unlockTown(4);
+        //else if (reputation <= 50) unlockTown(5);
     };
 }
