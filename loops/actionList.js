@@ -2516,7 +2516,7 @@ function Pyromancy() {
         return towns[3].getLevel("Runes") >= 16;
     };
     this.unlocked = function() {
-        return towns[3].getLevel("Runes") >= 60 && getSkillLevel("Magic") >= 150;
+        return towns[3].getLevel("Runes") >= 60 && getSkillLevel("Magic") >= 200;
     };
     this.finish = function() {
         addSkillExp("Pyromancy", 100);
