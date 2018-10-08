@@ -130,7 +130,7 @@ function View() {
         } else {
             document.getElementById("skill" + skill + "Container").style.display = "inline-block";
         }
-        if(skill === "Combat") {
+        if(skill === "Combat" || skill === "Pyromancy") {
             this.updateTeamCombat();
         }
         const levelPrc = getPrcToNextSkillLevel(skill);
