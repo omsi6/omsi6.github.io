@@ -6,6 +6,13 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".83"><![CDATA[
+            * Added an additional loadout slot.<br>
+            * Added 100/50 buttons to the amount selections on the actions list.<br>
+            * Added buttons to the top right of the actions list that allow you to adjust its vertical length.<br>
+            * The game now centers horizontally when given more than the necessary horizontal space<br>
+            * When your loop ends during an action, your mana used that loop will now update properly.
+        ]]></version>
             <version verNum=".82"><![CDATA[
             * New action - Face Judgement.<br>
             * The talent multiplier formula has been changed to be worse at higher levels. (talent ^ 0.5 / 5) > (talent ^ 0.4 / 3)<br>

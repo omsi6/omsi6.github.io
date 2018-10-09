@@ -95,7 +95,14 @@ function pauseGame() {
 
 function prepareRestart() {
     if(document.getElementById("pauseBeforeRestart").checked) {
-        pauseGame();
+        let curAction = actions.getNextValidAction();
+        if(!curAction) {
+            pauseGame();
+        } else {
+            actions.completedTicks += actions.getNextValidAction().ticks
+            view.updateTotalTicks();
+            pauseGame();
+        }
     } else {
         restart();
     }

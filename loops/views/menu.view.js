@@ -35,9 +35,9 @@ Views.registerView('menu',{
        html += "<div class='button' onclick='importCurrentList()'>"+_txt("menu>save>import_button")+"</div><br>";
        html += _txt("menu>save>list_comment")+ "<br><br>";
       html += "<input id='exportImport'><label for='exportImport'> "+_txt("menu>save>input_label")+"</label><br>";
-      html += "<div class='button' onclick='exportSave()'>"+_txt("menu>save>export_button")+"</div><br>";
+      html += "<div class='button' style='margin-top: 5px;' onclick='exportSave()'>"+_txt("menu>save>export_button")+"</div><br>";
       html += _txt("menu>save>export_comment")+"<br>";
-      html += "<div class='button' onclick='importSave()'>"+_txt("menu>save>import_button")+"</div><br>";
+      html += "<div class='button' style='margin-top: 1px;' onclick='importSave()'>"+_txt("menu>save>import_button")+"</div><br>";
       html += _txt("menu>save>import_comment");
       html += "<div class='showthat2'>"+_txt("menu>save>import_hover_special")+"<div class='showthis2'>"+_txt("menu>save>import_hover_special_tooltip")+"</div></div><br>";
      html += "</div>";

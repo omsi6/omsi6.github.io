@@ -45,6 +45,8 @@ function Actions() {
                         view.updateMultiPart(curAction);
                     }
                     if(curAction.canStart && !curAction.canStart()) {
+                        this.completedTicks += curAction.ticks
+                        view.updateTotalTicks();
                         curAction.loopsLeft = 0;
                         curAction.ticks = 0;
                         break;

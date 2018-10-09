@@ -190,7 +190,7 @@ function load() {
             actions.next.push(action);
         }
     }
-    loadouts = [[],[],[],[],[]];
+    loadouts = [[],[],[],[],[],[]];
     if(toLoad.loadouts) {
         for (let i = 0; i < toLoad.loadouts.length; i++) {
             if(!toLoad.loadouts[i]) {

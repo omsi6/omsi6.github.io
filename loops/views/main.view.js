@@ -458,7 +458,7 @@ function View() {
     };
 
     this.updateAddAmount = function(num) {
-        for(let i = 0; i < 5; i++) {
+        for(let i = 0; i < 6; i++) {
             let elem = document.getElementById("amount" + i);
             if(elem) {
                 addClassToDiv(elem, "unused");
@@ -468,7 +468,7 @@ function View() {
     };
 
     this.updateLoadout = function(num) {
-        for(let i = 0; i < 5; i++) {
+        for(let i = 0; i < 6; i++) {
             let elem = document.getElementById("load" + i);
             if(elem) {
                 addClassToDiv(elem, "unused");
@@ -1085,4 +1085,22 @@ function draggedDecorate(i) {
 function draggedUndecorate(i) {
     if(document.getElementById("nextActionContainer" + i))
     document.getElementById("nextActionContainer" + i).classList.remove("draggedAction");
+}
+
+function adjustActionListSize(amt) {
+    if (document.getElementById("expandableList").style.height === "" && amt === 100) {
+        document.getElementById("expandableList").style.height = "600px"
+        document.getElementById("curActionsList").style.maxHeight = "557px"
+        document.getElementById("nextActionsList").style.maxHeight = "557px"
+    }
+    else if (document.getElementById("expandableList").style.height === "" && amt === -100) {
+        document.getElementById("expandableList").style.height = "500px"
+        document.getElementById("curActionsList").style.maxHeight = "457px"
+        document.getElementById("nextActionsList").style.maxHeight = "457px"
+    }
+    else {
+        document.getElementById("expandableList").style.height = Math.min(Math.max(parseInt(document.getElementById("expandableList").style.height) + amt, 500), 2000) + "px"
+        document.getElementById("curActionsList").style.maxHeight = Math.min(Math.max(parseInt(document.getElementById("curActionsList").style.maxHeight) + amt, 457), 1957) + "px"
+        document.getElementById("nextActionsList").style.maxHeight = Math.min(Math.max(parseInt(document.getElementById("nextActionsList").style.maxHeight) + amt, 457), 1957) + "px"
+    }
 }
