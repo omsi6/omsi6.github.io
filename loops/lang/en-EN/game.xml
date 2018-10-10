@@ -469,7 +469,7 @@
         </dark_ritual>
         <tooltip>
             <level>Level</level>
-            <no_reset_on_restart>Skills last through resets.</no_reset_on_restart>
+            <no_reset_on_restart>Buffs last through resets.</no_reset_on_restart>
         </tooltip>
     </buffs>
     <towns>
