@@ -17,11 +17,14 @@ body {
     cursor:default;
 }
 
+.showthat {
+    position:relative;
+}
 .showthatH:hover .showthisH {
     display:block;
 }
 .showthat:hover .showthis, .showthat2:hover .showthis2 {
-    display:block;
+    display: -webkit-box;
 }
 .showthis, .showthis2, .showthisH {
     display:none;
@@ -31,7 +34,7 @@ body {
     padding:3px 5px;
     border-radius:4px;
     margin-top:5px;
-    z-index:999;
+    z-index: 999999;
     text-align:left;
 }
 

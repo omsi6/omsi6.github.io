@@ -29,7 +29,6 @@ function View() {
         this.updateTeamCombat();
     };
 
-    this.statLocs = [{x:165, y:43}, {x:270, y:79}, {x:325, y:170}, {x:306, y:284}, {x:225, y:352}, {x:102, y:352}, {x:26, y:284}, {x:2, y:170}, {x:56, y:79}];
     this.createStats = function() {
         statGraph.init();
         let statContainer = document.getElementById("statContainer");
@@ -39,9 +38,8 @@ function View() {
         let totalStatDiv = "";
         for(let i = 0; i < statList.length; i++) {
             let stat = statList[i];
-            let loc = this.statLocs[i];
             totalStatDiv +=
-                "<div class='statRadarContainer showthat' style='left:"+loc.x+"px;top:"+loc.y+"px;' onmouseover='view.showStat(\""+stat+"\")'>" +
+                "<div class='statRadarContainer showthat' onmouseover='view.showStat(\""+stat+"\")'>" +
                     "<div class='statLabelContainer'>" +
                         "<div class='medium bold' style='margin-left:18px;margin-top:5px;'>"+_txt("stats>"+stat+">long_form")+"</div>" +
                         "<div style='color:#737373;' class='statNum'><div class='medium' id='stat"+stat+"ss'></div></div>" +
