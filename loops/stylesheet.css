@@ -28,7 +28,11 @@ body {
 }
 #townColumn .showthis {
     right: 0;
-    width: 300px;
+    width: 400px;
+}
+#trackedResources .showthis {
+    right: 0;
+    width: 250px;
 }
 
 .showthis, .showthis2, .showthisH {
@@ -332,8 +336,8 @@ input {
 }
 
 .statTooltipPerc {
-    float:right;
-    margin-left:3px;
+    position: absolute;
+    left: 180px;
 }
 
 .ssContainer {
