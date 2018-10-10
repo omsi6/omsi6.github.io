@@ -26,6 +26,11 @@ body {
 .showthat:hover .showthis, .showthat2:hover .showthis2 {
     display: -webkit-box;
 }
+#townColumn .showthis {
+    right: 0;
+    width: 300px;
+}
+
 .showthis, .showthis2, .showthisH {
     display:none;
     position:absolute;
