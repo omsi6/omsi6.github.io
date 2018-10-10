@@ -35,6 +35,10 @@ body {
     width: 250px;
 }
 
+#skillList .showthis {
+    width: 250px;
+}
+
 .showthis, .showthis2, .showthisH {
     display:none;
     position:absolute;
