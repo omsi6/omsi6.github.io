@@ -50,7 +50,7 @@ function Town(index) {
         let expOfCurLevel = this.expFromLevel(level);
         let curLevelProgress = this["exp"+varName] - expOfCurLevel;
         let nextLevelNeeds = this.expFromLevel(level+1) - expOfCurLevel;
-        return curLevelProgress / nextLevelNeeds * 100;
+        return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
     };
 
     // finishes actions that have checkable aspects

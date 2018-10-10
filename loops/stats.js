@@ -69,14 +69,14 @@ function getPrcToNextLevel(stat) {
     let expOfCurLevel = getExpOfLevel(getLevel(stat));
     let curLevelProgress = stats[stat].exp - expOfCurLevel;
     let nextLevelNeeds = getExpOfLevel(getLevel(stat)+1) - expOfCurLevel;
-    return curLevelProgress / nextLevelNeeds * 100;
+    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
 }
 
 function getPrcToNextTalent(stat) {
     let expOfCurLevel = getExpOfTalent(getTalent(stat));
     let curLevelProgress = stats[stat].talent - expOfCurLevel;
     let nextLevelNeeds = getExpOfTalent(getTalent(stat)+1) - expOfCurLevel;
-    return curLevelProgress / nextLevelNeeds * 100;
+    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
 }
 
 function getSkillLevelFromExp(exp) {
@@ -107,7 +107,7 @@ function getPrcToNextSkillLevel(skill) {
     let expOfCurLevel = getExpOfSkillLevel(getSkillLevel(skill));
     let curLevelProgress = skills[skill].exp - expOfCurLevel;
     let nextLevelNeeds = getExpOfSkillLevel(getSkillLevel(skill)+1) - expOfCurLevel;
-    return curLevelProgress / nextLevelNeeds * 100;
+    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
 }
 
 function addSkillExp(name, amount) {
