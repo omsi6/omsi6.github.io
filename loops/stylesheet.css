@@ -17,26 +17,14 @@ body {
     cursor:default;
 }
 
-.showthat {
+.showthatO {
     position:relative;
 }
 .showthatH:hover .showthisH {
-    display:block;
+    display: block;
 }
-.showthat:hover .showthis, .showthat2:hover .showthis2 {
-    display: -webkit-box;
-}
-#townColumn .showthis {
-    right: 0;
-    width: 400px;
-}
-#trackedResources .showthis {
-    right: 0;
-    width: 250px;
-}
-
-#skillList .showthis {
-    width: 250px;
+.showthat:hover .showthis, .showthat2:hover .showthis2, .showthatO:hover .showthis {
+    display: block;
 }
 
 .showthis, .showthis2, .showthisH {
@@ -341,8 +329,8 @@ input {
 }
 
 .statTooltipPerc {
-    position: absolute;
-    left: 180px;
+    float: right;
+    margin-left: 3px;
 }
 
 .ssContainer {

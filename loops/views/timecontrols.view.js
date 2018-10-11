@@ -7,7 +7,7 @@ Views.registerView('timeControls',{
       html += "<div id='pausePlay' onclick='pauseGame()'' class='button control'>"+_txt("time_controls>pause_button")+"</div>";
 
       // restart button and its hover
-      html += "<div onclick='restart()' class='button showthat control'>"+_txt('time_controls>restart_button');
+      html += "<div onclick='restart()' class='button showthatO control'>"+_txt('time_controls>restart_button');
         html += "<div class='showthis' style='color:black;width:230px;'>"+_txt('time_controls>restart_text')+"</div>";
       html += "</div>";
 
@@ -16,7 +16,7 @@ Views.registerView('timeControls',{
       html += "<div id='talentTreeBtn' style='display: none;' onclick='showTalents()'' class='button control'>"+_txt("time_controls>talents_button")+"</div>";
 
       // bonus Seconds
-      html += "<div class='button showthat control' onclick='toggleOffline()'>"+_txt('time_controls>bonus_seconds>title');
+      html += "<div class='button showthatO control' onclick='toggleOffline()'>"+_txt('time_controls>bonus_seconds>title');
         html += "<div class='showthis' style='width:230px;color:black;'>"+_txt('time_controls>bonus_seconds>main_text');
           html += "<div class='bold' id='isBonusOn'>"+_txt('time_controls>bonus_seconds>state>off')+"</div><br>";
           html += "<div class='bold'>"+_txt('time_controls>bonus_seconds>counter_text')+"</div> <div id='bonusSeconds'></div>";
@@ -24,8 +24,8 @@ Views.registerView('timeControls',{
       html +="</div>";
 
       // story
-      html += "<div class='showthat control'>";
-        html += "<div class='showthat' onmouseover='view.updateStory(storyShowing)' style='height:30px;'>";
+      html += "<div class='showthatO control'>";
+        html += "<div class='showthatO' onmouseover='view.updateStory(storyShowing)' style='height:30px;'>";
         html += "<div class='large bold'>"+_txt('time_controls>story_title')+"</div><div id='newStory' style='color:red;display:none;'>(!)</div>";
         html += "<div class='showthis' style='width:400px;'>";
           // story controls

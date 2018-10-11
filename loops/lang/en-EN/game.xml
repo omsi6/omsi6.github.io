@@ -924,14 +924,20 @@
                 <name>Orcs</name>
                 <name>Beholders</name>
                 <name>Spectres</name>
+                <name>Mimics</name>
                 <name>Shambling Mound</name>
                 <name>Corrupted Mushroomfolk</name>
                 <name>Giant Owls</name>
                 <name>Blood Trolls</name>
                 <name>Small Wyrms</name>
-                <name>Pikachus</name>
-                <name>Machokes</name>
-                <name>Alakazams</name>
+                <name>Displacer Beasts</name>
+                <name>Gibbering Mouthers</name>
+                <name>Mind Flayers</name>
+                <name>Aboleths</name>
+                <name>Ancient Dragons</name>
+                <name>Liches</name>
+                <name>Tarrasques</name>
+                <name>Demiliches</name>
             </segment_names>
             <segment_alt_names>
                 <name>Speedy Monsters</name>
