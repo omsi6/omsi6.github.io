@@ -94,8 +94,20 @@ function loadDefaults() {
     initializeBuffs();
 }
 
+function loadUISettings() {
+    document.getElementById("expandableList").style.height = localStorage.getItem("actionListHeight");
+    document.getElementById("curActionsList").style.maxHeight = parseInt(localStorage.getItem("actionListHeight"))-43+"px"
+    document.getElementById("nextActionsList").style.maxHeight = parseInt(localStorage.getItem("actionListHeight"))-43+"px"
+}
+
+function saveUISettings() {
+    if((document.getElementById("expandableList").style.height !== "")) localStorage.setItem("actionListHeight", document.getElementById("expandableList").style.height);
+    else localStorage.setItem("actionListHeight", document.getElementById("expandableList").style.height = "500px");
+}
+
 function load() {
     loadDefaults();
+    loadUISettings();
 
     let toLoad = {};
     if(window.localStorage[saveName]) { //has a save file
@@ -356,6 +368,8 @@ function save() {
     toSave.storyMax = storyMax;
     toSave.date = new Date();
     toSave.totalOfflineMs = totalOfflineMs;
+
+    saveUISettings()
 
     window.localStorage[saveName] = JSON.stringify(toSave);
 }

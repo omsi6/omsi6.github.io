@@ -6,6 +6,11 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".84"><![CDATA[
+            * Chronomancy speed bonus sqrt(1 + level / 200) > (1 + level / 60) ^ 0.25.<br>
+            * Dark Magic mana gain bonus (1 + level / 100) > (1 + level / 60) ^ 0.25.<br>
+            * The action list height now saves on reload.
+        ]]></version>
             <version verNum=".83"><![CDATA[
             * Added an additional loadout slot.<br>
             * Added 100/50 buttons to the amount selections on the actions list.<br>
@@ -439,12 +444,12 @@
         <dark_magic>
             <label>Dark Magic</label>
             <desc>Use various dark arts to help you harvest mana.</desc>
-            <desc2><![CDATA[Smash Pots and Gather Wild Mana give 1% more mana per level (rounded down).]]></desc2>
+            <desc2><![CDATA[Multiply the mana gain from Smash Pots and Wild Mana by (level / 60) ^ 0.25 (rounded down).]]></desc2>
         </dark_magic>
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Actions in all zones are sqrt(1 + level / 200) times faster.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are (level / 60) ^ 0.25 times faster.]]></desc2>
         </chronomancy>
         <pyromancy>
             <label>Pyromancy</label>

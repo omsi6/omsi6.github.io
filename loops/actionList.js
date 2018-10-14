@@ -1494,7 +1494,7 @@ function SmashPots() {
     };
 }
 function goldCostSmashPots() {
-    return Math.floor(100 * (1 + getSkillLevel("Dark")/100));
+    return Math.floor(100 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
 }
 
 function PickLocks() {
@@ -1685,7 +1685,7 @@ function WildMana() {
     };
 }
 function goldCostWildMana() {
-    return Math.floor(250 * (1 + getSkillLevel("Dark")/100));
+    return Math.floor(250 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
 }
 
 function GatherHerbs() {
