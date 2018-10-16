@@ -7,7 +7,7 @@ let gameTicksLeft = 0;
 let radarUpdateTime = 0;
 
 function getSpeedMult(zone) {
-    if (!zone) zone = curTown
+    if (isNaN(zone)) zone = curTown;
     var speedMult = 1;
 
     //dark ritual
@@ -16,9 +16,9 @@ function getSpeedMult(zone) {
     else if (zone === 2 && getBuffLevel("Ritual") > 40) speedMult *= 1 + Math.min(getBuffLevel("Ritual")-40, 20) / 40;
 
     //chronomancy
-    speedMult *= Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25)
+    speedMult *= Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25);
 
-    return speedMult
+    return speedMult;
 }
 
 function tick() {
@@ -65,7 +65,6 @@ function tick() {
         if(timer % (300*gameSpeed) === 0) {
             save();
         }
-        console.log(curTown)
         gameTicksLeft -= ((1000 / 50) / (gameSpeed * getSpeedMult()) / bonusSpeed);
         if(bonusSpeed > 1) {
             addOffline(-1 * (gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed)) / getSpeedMult());
