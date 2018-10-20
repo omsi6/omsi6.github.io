@@ -51,7 +51,7 @@ const updateCounter = (loss) => {
 		}, 10);
 	} else {
 		subtext.innerHTML = "";
-		counter.innerHTML = "";
+		if (score > 0) counter.innerHTML = "";
 		timer.classList.remove("active");
 	}
 
