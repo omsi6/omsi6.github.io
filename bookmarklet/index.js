@@ -1,6 +1,6 @@
 const $ = document.querySelector.bind(document);
 
-fetch("https://omsi.me/bookmarklet/source.js")
+fetch("./source.js")
 	.then(res => res.text())
 	.then(src => {
 		document.body.classList.add("loaded");
