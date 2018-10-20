@@ -1,0 +1,278 @@
+<html>
+    <head>
+        <title>Colors</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="index.css"/>
+        <link rel='stylesheet' href='spectrum.css' />
+    </head>
+    <body id="body">
+        <div class="flex-container" style="flex-direction: row; margin-bottom: -40px; margin-top: 10px;">
+            <span style="text-align: center;">Make your own kittens resource colors! The left color picker is the text color, and the right is the text shadow.<br>Exporting your template gives you a command that you can paste into the JS console (F12 on most browsers) in order to apply your template.<br>Importing lets you paste said template back in, and will automatically adjust your colors to that of the template.<br>The first 5 boxes are for the text color (you can make a gradient!), and the last one is for the text shadow.</span>
+        </div>
+        <div class="flex-container" style="flex-direction: row;">
+            <button id="themebtn" style="margin-bottom: 5px; margin-top: 50px;" onclick="pickTheme()">Color scheme:<br>Classic</button>
+        </div>
+        <div class="flex-container" style="flex-direction: row; margin-bottom: 5px; ">
+            <button id="importbtn" onclick="importTemplate()">Import<br>color scheme</button>
+            <button id="exportbtn" style="margin-left: 10px;" onclick="exportCommand()">Export<br>command</button>
+            <a id="exportbtn2" style="margin-left: 10px; text-align: center;" class="button" href="">Color Kittens</a>
+        </div>
+        <div class="flex-container" style="flex-direction: row;">
+            <div class="flex-container" style="flex-direction: column; margin-right: 10px;">
+                <span id=resource1 class="resourcename">catnip:</span>
+                <span id=resource2 class="resourcename">wood:</span>
+                <span id=resource3 class="resourcename">minerals:</span>
+                <span id=resource4 class="resourcename">coal:</span>
+                <span id=resource5 class="resourcename">iron:</span>
+                <span id=resource6 class="resourcename">titanium:</span>
+                <span id=resource7 class="resourcename">gold:</span>
+                <span id=resource8 class="resourcename">oil:</span>
+                <span id=resource9 class="resourcename">uranium:</span>
+                <span id=resource10 class="resourcename">unobtanium:</span>
+                <span id=resource11 class="resourcename">catpower:</span>
+                <span id=resource12 class="resourcename">science:</span>
+                <span id=resource13 class="resourcename">culture:</span>
+                <span id=resource14 class="resourcename">faith:</span>
+                <span id=resource15 class="resourcename">kittens:</span>
+                <span id=resource16 class="resourcename">zebras:</span>
+                <span id=resource17 class="resourcename">starchart:</span>
+                <span id=resource18 class="resourcename">antimatter:</span>
+                <span id=resource19 class="resourcename">furs:</span>
+                <span id=resource20 class="resourcename">ivory:</span>
+                <span id=resource21 class="resourcename">spice:</span>
+                <span id=resource22 class="resourcename">unicorns:</span>
+                <span id=resource23 class="resourcename">alicorns:</span>
+                <span id=resource24 class="resourcename">necrocorns:</span>
+                <span id=resource25 class="resourcename">tears:</span>
+                <span id=resource26 class="resourcename">karma:</span>
+                <span id=resource27 class="resourcename">paragon:</span>
+                <span id=resource28 class="resourcename">burned paragon:</span>
+                <span id=resource29 class="resourcename">time crystal:</span>
+                <span id=resource30 class="resourcename">relic:</span>
+                <span id=resource31 class="resourcename">void:</span>
+                <span id=resource32 class="resourcename">present box:</span>
+                <span id=resource33 class="resourcename">wrapping paper:</span>
+                <span id=resource34 class="resourcename">blackcoin:</span>
+            </div>
+            <div id="textColorPickers1" class="flex-container" style="flex-direction: column;">
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="rgb(78, 162, 78)"/>
+                <input type="text" class="picker" value="rgb(160, 0, 0)"/>
+                <input type="text" class="picker" value="rgb(219, 169, 1)"/>
+                <input type="text" class="picker" value="rgb(1, 169, 219)"/>
+                <input type="text" class="picker" value="rgb(223, 1, 215)"/>
+                <input type="text" class="picker" value="gray"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="black"/>
+                <input type="text" class="picker" value="rgb(154, 46, 254)"/>
+                <input type="text" class="picker" value="rgb(90, 14, 222)"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="orange"/>
+                <input type="text" class="picker" value="orange"/>
+                <input type="text" class="picker" value="rgb(224, 0, 0)"/>
+                <input type="text" class="picker" value="orange"/>
+                <input type="text" class="picker" value="orange"/>
+                <input type="text" class="picker" value="rgb(97, 65, 205)"/>
+                <input type="text" class="picker" value="rgb(73, 48, 153)"/>
+                <input type="text" class="picker" value="rgb(20, 205, 97)"/>
+                <input type="text" class="picker" value="rgb(90, 14, 222)"/>
+                <input type="text" class="picker" value="rgb(90, 14, 222)"/>
+                <input type="text" class="picker" value="rgb(250, 14, 222)"/>
+                <input type="text" class="picker" value="rgb(250, 14, 222)"/>
+                <input type="text" class="picker" value="gold"/>
+            </div>
+            <div id="textColorPickers2" class="flex-container" style="flex-direction: column;">
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+            </div>
+            <div id="textColorPickers3" class="flex-container" style="flex-direction: column;">
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+            </div>
+            <div id="textColorPickers4" class="flex-container" style="flex-direction: column;">
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+            </div>
+            <div id="textColorPickers5" class="flex-container" style="flex-direction: column;">
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+            </div>
+            <div id="shadowColorPickers" class="flex-container" style="flex-direction: column;">
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="coral"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+                <input type="text" class="picker" value="rgb(154, 46, 254)"/>
+                <input type="text" class="picker" value="rgb(154, 46, 254)"/>
+                <input type="text" class="picker" value="rgb(154, 46, 254)"/>
+                <input type="text" class="picker" value="rgb(154, 46, 254)"/>
+                <input type="text" class="picker" value="rgba(0, 0, 0, 0)"/>
+            </div>
+        </div>
+        <script src='jquery-3.3.1.min.js'></script>
+        <script src='spectrum.js'></script>
+        <script src="index.js"></script>
+    </body>
+</html>

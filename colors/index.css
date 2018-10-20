@@ -1,0 +1,52 @@
+body {
+    background-color: #fff;
+    color: #000;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 0.9rem;
+}
+
+*:focus {
+    outline: none;
+}
+
+.flex-container {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+.resourcename {
+    font-size: 16px;
+    width: 114px;
+}
+
+button, .button {
+    width: 100px;
+    border: 1px solid black;
+    transition-duration: 0.2s;
+    box-shadow: 1px 1px 0px black;
+    user-select: none;
+    background: #ccc;
+    font: 400 13.3333px Arial;
+}
+
+button:hover, .button:hover {
+    background: #eee;
+    cursor: pointer;
+}
+
+#exportbtn2 {
+    font-size: 0px;
+}
+
+#exportbtn2::before {
+    display: inline-block;
+    margin-top: 1px;
+    content: "Drag to bookmarks";
+    font: 400 13.3333px Arial;
+}
