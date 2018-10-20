@@ -33,7 +33,12 @@ a:visited {
     border-radius: 50%;
     transition: all 0.2s ease;
     border: 1px solid black;
+    user-drag: none; 
     user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 .icon:hover {
