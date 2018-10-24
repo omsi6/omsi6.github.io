@@ -1080,6 +1080,9 @@ function BirdWatching() {
     this.manaCost = function() {
         return 2000;
     };
+    this.canStart = function() {
+        return glasses;
+    };
     this.visible = function() {
         return towns[1].getLevel("Flowers") >= 30;
     };
