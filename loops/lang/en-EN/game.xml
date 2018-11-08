@@ -1153,7 +1153,7 @@
             <label>Imbue Mind</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Requires (20 * (imbuements+1)) soulstones.
+            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices (20 * (imbuements+1)) soulstones.
         ]]></tooltip>
             <segment_names>
                 <name>Submerge the Soulstones</name>
