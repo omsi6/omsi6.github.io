@@ -11,7 +11,6 @@ const rowToKey = {
 	99: rows[8]
 };
 
-let inGame = false;
 let oneKeyAgo = 103;
 let twoKeysAgo = 100;
 let nextKey = 101;
@@ -52,7 +51,7 @@ const updateCounter = (loss) => {
 		}, 10);
 	} else {
 		subtext.innerHTML = "";
-		counter.innerHTML = ``;
+		if (score > 0) counter.innerHTML = "";
 		timer.classList.remove("active");
 	}
 
@@ -85,7 +84,7 @@ function updateHighscores() {
 	for (i=1; i<6; i++) {
 		document.getElementById(`highScore${i}Display`).innerHTML = player.highScores[5-i]
 	}
-	
+
 }
 
 const save = () => {
@@ -127,7 +126,7 @@ const gameLoop = time => {
 	const delta = time - lastTime;
 	if (combo > 1) {
 		timerSpeed = combo;
-		timerTime = Math.max(0, timerTime - (timerSpeed / delta));
+		timerTime = Math.max(0, timerTime - (timerSpeed * (delta / 333.33)));
 		timer.style.width = `${timerTime}px`;
 
 		if (timerTime === 0) {
