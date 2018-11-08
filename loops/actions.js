@@ -8,6 +8,7 @@ function Actions() {
     this.totalNeeded = 0;
     this.completedTicks = 0;
     this.currentPos = 0;
+    this.timeSinceLastUpdate = 0;
 
     this.tick = function() {
         let curAction = this.getNextValidAction();
@@ -142,6 +143,8 @@ function Actions() {
         towns[2].LDungeonLoopCounter = 0;
         towns[3].HuntTrolls = 0;
         towns[3].HuntTrollsLoopCounter = 0;
+        towns[3].ImbueMind = 0;
+        towns[3].ImbueMindLoopCounter = 0;
         guild = "";
         if(document.getElementById("currentListActive").checked) {
             this.currentPos = 0;

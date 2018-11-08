@@ -41,7 +41,6 @@ let prevState = {};
 let shouldRestart = true;
 
 let gold = 0, initialGold = 0;
-let glasses = 0;
 let reputation = 0;
 let supplies = 0;
 let herbs = 0;
@@ -50,21 +49,24 @@ let potions = 0;
 let teamNum = 0;
 let guild = "";
 let armor = 0;
-let pickaxe = 0;
 let blood = 0;
+let artifacts = 0;
+
+let glasses = 0;
+let pickaxe = 0;
 let loopingPotion = 0;
 
 let curLoadout = 0;
 let loadouts = [];
 let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy"];
 let skills = {};
-let buffList = ["Ritual"];
+let buffList = ["Ritual", "Imbuement"];
 let buffs = {};
 let townShowing = 0;
 let maxTown;
 let statShowing;
 let actionTownNum;
-let trainingLimits = 10;
+let trainingLimits;
 let storyShowing = 0;
 let storyMax = 0;
 
@@ -147,6 +149,7 @@ function load() {
 
     maxTown = toLoad.maxTown !== undefined ? toLoad.maxTown : 0;
     actionTownNum = toLoad.actionTownNum !== undefined ? toLoad.actionTownNum : 0;
+    trainingLimits = toLoad.trainingLimits !== undefined ? toLoad.trainingLimits : 10;
 
     let expLimit = 505000;
     towns[0] = new Town(0);
@@ -184,7 +187,15 @@ function load() {
     town.expMountain = toLoad.expMountain !== undefined ? toLoad.expMountain : 0;
     town.expRunes = toLoad.expRunes !== undefined ? toLoad.expRunes : 0;
     town.expCavern = toLoad.expCavern !== undefined ? toLoad.expCavern : 0;
+    town.expIllusions = toLoad.expIllusions !== undefined ? toLoad.expIllusions : 0;
     town.totalHuntTrolls = toLoad.totalHuntTrolls !== undefined ? toLoad.totalHuntTrolls : 0;
+    town.totalImbueMind = toLoad.totalImbueMind !== undefined ? toLoad.totalImbueMind : 0;
+
+    towns[4] = new Town(4);
+    town = towns[4];
+
+    towns[5] = new Town(5);
+    town = towns[5];
 
     actions.next = [];
     if(toLoad.nextList) {
@@ -304,6 +315,7 @@ function save() {
     toSave.dungeons = dungeons;
     toSave.maxTown = maxTown;
     toSave.actionTownNum = actionTownNum;
+    toSave.trainingLimits = trainingLimits;
 
     let town = towns[0];
     toSave.stats = stats;
@@ -341,7 +353,13 @@ function save() {
     toSave.expMountain = town.expMountain;
     toSave.expRunes = town.expRunes;
     toSave.expCavern = town.expCavern;
+    toSave.expIllusions = town.expIllusions;
     toSave.totalHuntTrolls = town.totalHuntTrolls
+    toSave.totalImbueMind = town.totalImbueMind
+
+    town = towns[4];
+
+    town = towns[5];
 
 
     for(let i = 0; i < towns.length; i++) {

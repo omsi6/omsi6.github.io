@@ -4,7 +4,7 @@ window.Localization = {
   defaultLang : 'en-EN', //
   supportedLang : {
     'en-EN' : 'English',
-    'fr-FR' : 'Français',
+    //'fr-FR' : 'Français',
   },
   getKey : 'lg', // key used in the get parameter of the URL to set a specific language
   handle : '#localization_menu', // html selector of the div to put the localization menu in

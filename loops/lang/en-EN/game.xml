@@ -6,10 +6,22 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".85"><![CDATA[
+            * New actions - Check Walls, Take Artifacts, Imbue Mind<br>
+            * Pyromancy mana cost 12000 > 14000.<br>
+            * Pyromancy self combat per level 10 > 5.<br>
+            * Start Trek now requires 60% City Explored.<br>
+            * Chronomancy and Dark Magic now show their current bonus on their skill tooltips.<br>
+            * Added commas to certain numbers >= 1,000 but < 9,999.<br>
+            * Items that you can only get one of now display as icons always on the right side of your resources.<br>
+            * Fixed minor typos/grammatical errors.<br>
+            * Increased the icon size for actions by 4 pixels.<br>
+            * The French translation has been disabled as it is currently broken, and no longer supported.
+        ]]></version>
             <version verNum=".84"><![CDATA[
             * Chronomancy speed bonus sqrt(1 + level / 200) > (1 + level / 60) ^ 0.25.<br>
             * Dark Magic mana gain bonus (1 + level / 100) > (1 + level / 60) ^ 0.25.<br>
-            * The action list height now saves on reload.
+            * The action list height now saves on reload.<br>
         ]]></version>
             <version verNum=".83"><![CDATA[
             * Added an additional loadout slot.<br>
@@ -250,11 +262,6 @@
             <id>potions</id>
             <desc>Rare, but not complex. Worth some money.</desc>
         </resource>
-        <resource initially_hidden="true" no_count="true">
-            <title>Glasses</title>
-            <id>glasses</id>
-            <desc>Woah, trees have so many leaves on them.</desc>
-        </resource>
         <resource initially_hidden="true">
             <title>Team Members:</title>
             <id>teamNum</id>
@@ -265,20 +272,30 @@
             <id>armor</id>
             <desc>Crafted by your own hand, it protects you from dangers.</desc>
         </resource>
-        <resource initially_hidden="true" no_count="true">
-            <title>Pickaxe</title>
-            <id>pickaxe</id>
-            <desc>It's heavy, but you can make use of it.</desc>
-        </resource>
         <resource initially_hidden="true">
             <title>Blood:</title>
             <id>blood</id>
-            <desc>Regailed for it's regenerative properties. You might be able to fetch a pretty penny for it.</desc>
+            <desc>Regailed for it's regenerative properties.</desc>
+        </resource>
+        <resource initially_hidden="true">
+            <title>Artifacts:</title>
+            <id>artifacts</id>
+            <desc>Various old rings, bracelets, amulets, and pendants. You might be able to fetch a pretty penny for them.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
-            <title>Looping Potion</title>
+            <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
+            <id>glasses</id>
+            <desc>Woah, trees have so many leaves on them.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/buyPickaxe.svg" class="smallIcon">]]></title>
+            <id>pickaxe</id>
+            <desc>It's heavy, but you can make use of it.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/loopingPotion.svg" class="smallIcon">]]></title>
             <id>loopingPotion</id>
-            <desc>It's a potion made with the very same formula that got you into this mess!</desc>
+            <desc>It's a potion made with the very same formula that got you into this mess. Why exactly did you make this?</desc>
         </resource>
     </tracked_resources>
     <time_controls>
@@ -380,15 +397,15 @@
             <short_form>Soul</short_form>
         </soul>
         <tooltip>
-            <level>Level</level>
-            <level_exp>Level Exp</level_exp>
-            <talent>Talent</talent>
-            <talent_exp>Talent Exp</talent_exp>
-            <talent_multiplier>Talent Mult</talent_multiplier>
-            <soulstone>Soulstone</soulstone>
-            <soulstone_multiplier>Soulstone Mult</soulstone_multiplier>
-            <total_multiplier>Total Mult</total_multiplier>
-            <bonus_xp>Bonus XP</bonus_xp>
+            <level>Level:</level>
+            <level_exp>Level Exp:</level_exp>
+            <talent>Talent:</talent>
+            <talent_exp>Talent Exp:</talent_exp>
+            <talent_multiplier>Talent Mult:</talent_multiplier>
+            <soulstone>Soulstones:</soulstone>
+            <soulstone_multiplier>Soulstone Mult:</soulstone_multiplier>
+            <total_multiplier>Total Mult:</total_multiplier>
+            <bonus_xp>Bonus XP:</bonus_xp>
             <explanation><![CDATA[
           Each stat level reduces the relevant part of an action's mana cost by 1%.<br>
           Talent gets 1% of all level progress, and persists through loops.<br>
@@ -414,7 +431,7 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = (Combat skill + Pyromancy skill * 10) * (1 + armor * Crafting Guild Rank / 5)</desc>
+            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + armor * Crafting Guild Rank / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
@@ -444,17 +461,17 @@
         <dark_magic>
             <label>Dark Magic</label>
             <desc>Use various dark arts to help you harvest mana.</desc>
-            <desc2><![CDATA[Multiply the mana gain from Smash Pots and Wild Mana by (level / 60) ^ 0.25 (rounded down).]]></desc2>
+            <desc2><![CDATA[Multiply the mana gain from Smash Pots and Wild Mana by (level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusDark'></div>x mana gains.]]></desc2>
         </dark_magic>
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Actions in all zones are (level / 60) ^ 0.25 times faster.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are (level / 60) ^ 0.25 times faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
         </chronomancy>
         <pyromancy>
             <label>Pyromancy</label>
             <desc>Fireball, Firebolt, Fire Shield, Burning Rays, just a veritable assortment of flaming fun!</desc>
-            <desc2><![CDATA[Increases self combat with 10x the efficiency of the combat skill.]]></desc2>
+            <desc2><![CDATA[Increases self combat with 5x the efficiency of the combat skill.]]></desc2>
         </pyromancy>
         <tooltip>
             <level>Level</level>
@@ -471,6 +488,12 @@
             Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>]]>
             </desc2>
         </dark_ritual>
+        <imbue_mind>
+            <label>Imbue Mind</label>
+            <desc><![CDATA[Using power from soulstones, you can increase your training limits.<br>
+            Increases the max amount of times you can do each training action by 1 per level.]]>
+            </desc>
+        </imbue_mind>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart>Buffs last through resets.</no_reset_on_restart>
@@ -495,8 +518,16 @@
         </town2>
         <town3>
             <name>Mt. Olympus</name>
-            <desc>A town that would need a better description.</desc>
+            <desc>You could have taken that path to the other town, but no! You just <i>had</i> to go to Mt. Olympus, didn't you. But anyways, while you're here, thanks to being neither a canine nor old, you can learn a few new tricks. And kill some innocent trolls while you're at it.</desc>
         </town3>
+        <town4>
+            <name>Valhalla</name>
+            <desc>A sprawling and jolly city filled with all manner of nice things. Vikings, beer, angels, beer, blah blah blah, and beer! You can spend your time in the great hall, or in the outskirts of the city. Either way, you'll surely have a great time.</desc>
+        </town4>
+        <town5>
+            <name>Adeptsville</name>
+            <desc>A once familiar place, now crawling with shadows and ominous feelings of wasted sick days. There stands a large pillar of gloomy purple light in the center of it all, eminating from a spire surrounded by black clouds. It's emitting 10 weak beams of purple light to various points around the town, and appears to be casting all the shadows. Maybe you should check those spots out.</desc>
+        </town5>
     </towns>
     <actions>
         <title>Action Options</title>
@@ -751,14 +782,12 @@
             <label>Dark Ritual</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanant speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
+            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
         ]]></tooltip>
-            <chance_label>Chance</chance_label>
-            <last_stat_label>Last Stat</last_stat_label>
             <segment_names>
-                <name>Clear the area</name>
-                <name>Prepare the altar</name>
-                <name>Summon the dark gods</name>
+                <name>Clear the Area</name>
+                <name>Prepare the Altar</name>
+                <name>Summon the Dark Gods</name>
             </segment_names>
         </dark_ritual>
         <continue_on>
@@ -789,7 +818,7 @@
             <label>Gather Team</label>
             <tooltip><![CDATA[
             You don't have to take them on by yourself.<br>Max 5 other team members.<br>Costs <div id='teamCost'></div>
-            gold, and the cost goes up by 200 gold per member.<br>Each member adds (Rank Mult) * (Combat Skill + Magic Skill)/2 to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocks at 20% city explored.
+            gold, and the cost goes up by 200 gold per member.<br>Each member adds (Rank Mult) * (Combat Skill / 2) to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocks at 20% city explored.
         ]]></tooltip>
         </gather_team>
         <craft_armor>
@@ -1022,7 +1051,7 @@
         <start_trek>
             <label>Start Trek</label>
             <tooltip><![CDATA[
-            Begin your trek to the top of Mt. Olympus.
+            Begin your trek to the top of Mt. Olympus.<br>Unlocked at 60% City Explored.
         ]]></tooltip>
         </start_trek>
         <climb_mountain>
@@ -1052,13 +1081,13 @@
         <chronomancy>
             <label>Chronomancy</label>
             <tooltip><![CDATA[
-            Controling time seems like it would great idea, and thankfully for you the runes around here contain lots of information on the art of Chronomancy.<br>Unlocked with both 30% Runic Symbols Deciphered and 150 Magic.
+            Controling time seems like it would great idea, and thankfully for you, the runes around here contain lots of information on the art of Chronomancy.<br>Unlocked with both 30% Runic Symbols Deciphered and 150 Magic.
         ]]></tooltip>
         </chronomancy>
         <looping_potion>
             <label>Looping Potion</label>
             <tooltip><![CDATA[
-            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it.<br>Requires 200 herbs.<br>Unlocked with both 60 Alchemy and 100 Chronomancy.
+            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it. (this does nothing right now)<br>Requires 200 herbs.<br>Unlocked with both 60 Alchemy and 100 Chronomancy.
         ]]></tooltip>
         </looping_potion>
         <pyromancy>
@@ -1100,12 +1129,50 @@
                 <name>Drain the Troll's Blood</name>
             </segment_names>
         </hunt_trolls>
+        <check_walls>
+            <label>Check Walls</label>
+            <label_done>Illusory Walls Discovered</label_done>
+            <tooltip><![CDATA[
+            Now that you know the ins and outs of the cavern, you start to notice certain spots of the walls that are illusory! There seems to be all manner of goodies hidden behind them.<br>Unlocked with 80% Cavern Explored.
+        ]]></tooltip>
+        </check_walls>
+        <take_artifacts>
+            <label>Take Artifacts</label>
+            <label_done>Artifacts Taken</label_done>
+            <info_text1>Alcoves with artifacts left</info_text1>
+            <info_text2>Alcoves with artifacts total</info_text2>
+            <info_text3>Alcoves to check for artifacts</info_text3>
+            <tooltip><![CDATA[
+            Behind some of the illusory walls, there are various sorts of artifacts that seems to belong to some sort of ancient civilization. Or at least that's what you'll say if anybody comes looking for them. (these do nothing right now)<br>Every 25 alcoves has an artifact.<br>Unlocked with 5% Illusory Walls Discovered.
+        ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana.<br>Every 10 pots have mana.
+        ]]></tooltip2>
+        </take_artifacts>
+        <imbue_mind>
+            <label>Imbue Mind</label>
+            <label_done>Completed</label_done>
+            <tooltip><![CDATA[
+            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Requires (20 * (imbuements+1)) soulstones.
+        ]]></tooltip>
+            <segment_names>
+                <name>Submerge the Soulstones</name>
+                <name>Arrange the Soulstones</name>
+                <name>Absorb Knowledge</name>
+            </segment_names>
+        </imbue_mind>
         <face_judgement>
             <label>Face Judgement</label>
             <tooltip><![CDATA[
-            Face the judgement of the gods. If your reputation is 50 or higher, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or lower, you'll be cast into the shadow realm and thrown back to the beginning of your journey. (this action does nothing at the moment)
+            Face the judgement of the gods. If your reputation is 50 or higher, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or lower, you'll be cast into the shadow realm and thrown back to the beginning of your journey. (this does nothing right now)
         ]]></tooltip>
         </face_judgement>
+        <fall_from_grace>
+            <label>Fall From Grace</label>
+            <tooltip><![CDATA[
+            Looks like the only way out of this place is to make them dislike you enough to kick you out. Some moderate vandalism will probably do the job. You'll be cast into the shadow realm and thrown back to the beginning of your journey, but at least you'll go out with a bang!
+        ]]></tooltip>
+        </fall_from_grace>
     </actions>
     <spells>
         <title>Spells</title>

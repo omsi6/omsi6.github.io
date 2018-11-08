@@ -104,13 +104,13 @@ function View() {
         }
 
         if(statShowing === stat || document.getElementById("stat" + stat + "LevelExp").innerHTML === "") {
-            document.getElementById("stat" + stat + "Level2").innerHTML = getLevel(stat);
+            document.getElementById("stat" + stat + "Level2").innerHTML = intToString(getLevel(stat), 1);
             let expOfLevel = getExpOfLevel(getLevel(stat));
             document.getElementById("stat" + stat + "LevelExp").innerHTML = intToString(stats[stat].exp - expOfLevel, 1);
             document.getElementById("stat" + stat + "LevelExpNeeded").innerHTML = intToString(getExpOfLevel(getLevel(stat)+1) - expOfLevel+"", 1);
             document.getElementById("stat" + stat + "LevelProgress").innerHTML = intToString(levelPrc, 2);
 
-            document.getElementById("stat" + stat + "Talent2").innerHTML = getTalent(stat);
+            document.getElementById("stat" + stat + "Talent2").innerHTML = intToString(getTalent(stat), 1);
             let expOfTalent = getExpOfTalent(getTalent(stat));
             document.getElementById("stat" + stat + "TalentExp").innerHTML = intToString(stats[stat].talent - expOfTalent, 1);
             document.getElementById("stat" + stat + "TalentExpNeeded").innerHTML = intToString(getExpOfTalent(getTalent(stat)+1) - expOfTalent+"", 1);
@@ -139,6 +139,12 @@ function View() {
         document.getElementById("skill" + skill + "LevelExp").innerHTML = intToString(skills[skill].exp - expOfLevel, 1);
         document.getElementById("skill" + skill + "LevelExpNeeded").innerHTML = intToString(getExpOfSkillLevel(getSkillLevel(skill)+1) - expOfLevel+"", 1);
         document.getElementById("skill" + skill + "LevelProgress").innerHTML = intToString(levelPrc, 2);
+
+        if(skill === "Dark") {
+            document.getElementById("skillBonusDark").textContent = intToString(Math.pow(1 + getSkillLevel("Dark") / 60, 0.25), 4)
+        } else if (skill === "Chronomancy")  {
+            document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4)
+        }
     };
 
     this.updateBuff = function(buff) {
@@ -148,59 +154,66 @@ function View() {
         } else {
             document.getElementById("buff" + buff + "Container").style.display = "inline-block";
         }
-        document.getElementById("buff" + buff + "Level").innerHTML = getBuffLevel(buff);
+        document.getElementById("buff" + buff + "Level").textContent = getBuffLevel(buff);
+        if(buff === "Imbuement") {
+            this.updateTrainingLimits();
+        }
     };
 
     this.updateTime = function() {
         document.getElementById("timeBar").style.width = (100 - timer / timeNeeded * 100) + "%";
-        document.getElementById("timer").innerHTML =
+        document.getElementById("timer").textContent =
             intToString((timeNeeded - timer), 1) + " | " +
             intToString((timeNeeded - timer)/50, 2) + "s";
     };
     this.updateTotalTicks = function() {
-        document.getElementById("totalTicks").innerHTML = actions.completedTicks;
+        document.getElementById("totalTicks").textContent = actions.completedTicks;
     };
     this.updateGold = function() {
-        document.getElementById("gold").innerHTML = gold;
+        document.getElementById("gold").textContent = gold;
+    };
+    this.updateReputation = function() {
+        document.getElementById("reputationDiv").style.display = reputation ? "inline-block" : "none";
+        document.getElementById("reputation").textContent = reputation;
+    };
+    this.updateSupplies = function() {
+        document.getElementById("suppliesDiv").style.display = supplies ? "inline-block" : "none";
+        document.getElementById("suppliesCost").textContent = towns[0].suppliesCost+"";
+    };
+    this.updateHerbs = function() {
+        document.getElementById("herbsDiv").style.display = herbs ? "inline-block" : "none";
+        document.getElementById("herbs").textContent = herbs;
+    };
+    this.updateHide = function() {
+        document.getElementById("hideDiv").style.display = hide ? "inline-block" : "none";
+        document.getElementById("hide").textContent = hide;
+    };
+    this.updatePotions = function() {
+        document.getElementById("potionsDiv").style.display = potions ? "inline-block" : "none";
+        document.getElementById("potions").textContent = potions;
+    };
+    this.updateTeamNum = function() {
+        document.getElementById("teamNumDiv").style.display = teamNum ? "inline-block" : "none";
+        document.getElementById("teamNum").textContent = teamNum;
+        document.getElementById("teamCost").textContent = (teamNum+1)*200+"";
+    };
+    this.updateArmor = function() {
+        document.getElementById("armorDiv").style.display = armor ? "inline-block" : "none";
+        document.getElementById("armor").textContent = armor;
+    };
+    this.updateBlood = function() {
+        document.getElementById("bloodDiv").style.display = blood ? "inline-block" : "none";
+        document.getElementById("blood").textContent = blood;
+    };
+    this.updateArtifacts = function() {
+        document.getElementById("artifactsDiv").style.display = artifacts ? "inline-block" : "none";
+        document.getElementById("artifacts").textContent = artifacts;
     };
     this.updateGlasses = function() {
         document.getElementById("glassesDiv").style.display = glasses ? "inline-block" : "none";
     };
-    this.updateReputation = function() {
-        document.getElementById("reputationDiv").style.display = reputation ? "inline-block" : "none";
-        document.getElementById("reputation").innerHTML = reputation;
-    };
-    this.updateSupplies = function() {
-        document.getElementById("suppliesDiv").style.display = supplies ? "inline-block" : "none";
-        document.getElementById("suppliesCost").innerHTML = towns[0].suppliesCost+"";
-    };
-    this.updateHerbs = function() {
-        document.getElementById("herbsDiv").style.display = herbs ? "inline-block" : "none";
-        document.getElementById("herbs").innerHTML = herbs;
-    };
-    this.updateHide = function() {
-        document.getElementById("hideDiv").style.display = hide ? "inline-block" : "none";
-        document.getElementById("hide").innerHTML = hide;
-    };
-    this.updatePotions = function() {
-        document.getElementById("potionsDiv").style.display = potions ? "inline-block" : "none";
-        document.getElementById("potions").innerHTML = potions;
-    };
-    this.updateTeamNum = function() {
-        document.getElementById("teamNumDiv").style.display = teamNum ? "inline-block" : "none";
-        document.getElementById("teamNum").innerHTML = teamNum;
-        document.getElementById("teamCost").innerHTML = (teamNum+1)*200+"";
-    };
-    this.updateArmor = function() {
-        document.getElementById("armorDiv").style.display = armor ? "inline-block" : "none";
-        document.getElementById("armor").innerHTML = armor;
-    };
     this.updatePickaxe = function() {
         document.getElementById("pickaxeDiv").style.display = pickaxe ? "inline-block" : "none";
-    };
-    this.updateBlood = function() {
-        document.getElementById("bloodDiv").style.display = blood ? "inline-block" : "none";
-        document.getElementById("blood").innerHTML = blood;
     };
     this.updateLoopingPotion = function() {
         document.getElementById("loopingPotionDiv").style.display = loopingPotion ? "inline-block" : "none";
@@ -209,8 +222,8 @@ function View() {
         if(maxTown >= 2) {
             document.getElementById("skillSCombatContainer").style.display = "inline-block";
             document.getElementById("skillTCombatContainer").style.display = "inline-block";
-            document.getElementById("skillSCombatLevel").innerHTML = intToString(getSelfCombat(), 1);
-            document.getElementById("skillTCombatLevel").innerHTML = intToString(getTeamCombat(), 1);
+            document.getElementById("skillSCombatLevel").textContent = intToString(getSelfCombat(), 1);
+            document.getElementById("skillTCombatLevel").textContent = intToString(getTeamCombat(), 1);
         } else {
             document.getElementById("skillSCombatContainer").style.display = "none";
             document.getElementById("skillTCombatContainer").style.display = "none";
@@ -687,7 +700,35 @@ function View() {
         this.createTownAction(tempObj);
         this.createMultiPartPBar(tempObj);
 
+        tempObj = new CheckWalls();
+        this.createTownAction(tempObj);
+        this.createActionProgress(tempObj);
+
+        tempObj = new TakeArtifacts();
+        this.createTownAction(tempObj);
+        this.createTownInfo(tempObj);
+
+        tempObj = new ImbueMind();
+        this.createTownAction(tempObj);
+        this.createMultiPartPBar(tempObj);
+
         this.createTravelAction(new FaceJudgement());
+
+        while (actionOptionsTown[4].firstChild) {
+            actionOptionsTown[4].removeChild(actionOptionsTown[4].firstChild);
+        }
+        while(townInfos[4].firstChild) {
+            townInfos[4].removeChild(townInfos[4].firstChild);
+        }
+
+        this.createTravelAction(new FallFromGrace());
+
+        while (actionOptionsTown[5].firstChild) {
+            actionOptionsTown[5].removeChild(actionOptionsTown[5].firstChild);
+        }
+        while(townInfos[5].firstChild) {
+            townInfos[5].removeChild(townInfos[5].firstChild);
+        }
 
 
 
@@ -722,7 +763,7 @@ function View() {
         let extraImage = "";
         if(action.affectedBy) {
             for(let i = 0; i < action.affectedBy.length; i++) {
-                extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' style='position:absolute;margin-top:17px;margin-left:2px;'>";
+                extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' style='position:absolute;margin-top:17px;margin-left:5px;'>";
             }
         }
         const totalDivText =
@@ -736,7 +777,7 @@ function View() {
                     action.tooltip + "<span id='goldCost"+action.varName+"'></span>" +
                     ((typeof(action.tooltip2) === "string") ? action.tooltip2 : "")+"<br>"+
                     actionStats +
-                    "<div class='bold'>"+_txt("actions>tooltip>mana_cost")+"</div> <div id='manaCost"+action.varName+"'>"+action.manaCost()+"</div><br>" +
+                    "<div class='bold'>"+_txt("actions>tooltip>mana_cost")+"</div> <div id='manaCost"+action.varName+"'>"+formatNumber(action.manaCost())+"</div><br>" +
                     "<div class='bold'>"+_txt("actions>tooltip>exp_multiplier")+"</div> "+(action.expMult*100)+"%<br>" +
                 "</div>" +
             "</div>";
@@ -778,11 +819,11 @@ function View() {
 
     this.adjustManaCost = function(actionName) {
         let action = translateClassNames(actionName);
-        document.getElementById("manaCost"+action.varName).innerHTML = action.manaCost();
+        document.getElementById("manaCost"+action.varName).textContent = formatNumber(action.manaCost());
     };
 
     this.adjustGoldCost = function(varName, amount) {
-        document.getElementById("goldCost"+varName).innerHTML = amount;
+        document.getElementById("goldCost"+varName).textContent = amount;
     };
     this.adjustGoldCosts = function() {
         this.adjustGoldCost("Locks", goldCostLocks());
@@ -875,6 +916,10 @@ function View() {
         tempObj = new HuntTrolls();
         this.updateMultiPart(tempObj);
         this.updateMultiPartSegments(tempObj);
+
+        tempObj = new ImbueMind();
+        this.updateMultiPart(tempObj);
+        this.updateMultiPartSegments(tempObj);
     };
 
     this.updateMultiPartSegments = function(action) { //happens every tick
@@ -884,9 +929,9 @@ function View() {
         let loopCost = action.loopCost(segment);
         while(curProgress >= loopCost && segment < action.segments) {
             document.getElementById("expBar"+segment+action.varName).style.width = "0";
-            if(document.getElementById("progress"+segment+action.varName).innerHTML !== loopCost) {
-                document.getElementById("progress"+segment+action.varName).innerHTML = intToStringRound(loopCost);
-                document.getElementById("progressNeeded"+segment+action.varName).innerHTML = intToStringRound(loopCost);
+            if(document.getElementById("progress"+segment+action.varName).textContent !== loopCost) {
+                document.getElementById("progress"+segment+action.varName).textContent = intToStringRound(loopCost);
+                document.getElementById("progressNeeded"+segment+action.varName).textContent = intToStringRound(loopCost);
             }
 
             curProgress -= loopCost;
@@ -895,19 +940,19 @@ function View() {
         }
 
         //update current segments
-        if(document.getElementById("progress"+segment+action.varName) && document.getElementById("progress"+segment+action.varName).innerHTML !== curProgress) {
+        if(document.getElementById("progress"+segment+action.varName) && document.getElementById("progress"+segment+action.varName).textContent !== curProgress) {
             document.getElementById("expBar"+segment+action.varName).style.width = (100-100*curProgress/loopCost)+"%";
-            document.getElementById("progress"+segment+action.varName).innerHTML = intToStringRound(curProgress);
-            document.getElementById("progressNeeded"+segment+action.varName).innerHTML = intToStringRound(loopCost);
+            document.getElementById("progress"+segment+action.varName).textContent = intToStringRound(curProgress);
+            document.getElementById("progressNeeded"+segment+action.varName).textContent = intToStringRound(loopCost);
         }
 
         //update later segments
         for(let i = segment+1; i < action.segments; i++) {
             document.getElementById("expBar"+i+action.varName).style.width = "100%";
-            if(document.getElementById("progress"+i+action.varName).innerHTML !== "0") {
-                document.getElementById("progress"+i+action.varName).innerHTML = "0";
+            if(document.getElementById("progress"+i+action.varName).textContent !== "0") {
+                document.getElementById("progress"+i+action.varName).textContent = "0";
             }
-            document.getElementById("progressNeeded"+i+action.varName).innerHTML = intToStringRound(action.loopCost(i));
+            document.getElementById("progressNeeded"+i+action.varName).textContent = intToStringRound(action.loopCost(i));
         }
     };
 
@@ -934,7 +979,7 @@ function View() {
             let statName = statList[i];
             if(stats[statName].soulstone) {
                 document.getElementById("ss" + statName + "Container").style.display = "inline-block";
-                document.getElementById("ss"+statName).innerHTML = stats[statName].soulstone;
+                document.getElementById("ss"+statName).innerHTML = intToString(stats[statName].soulstone, 1);
                 document.getElementById("stat" + statName + "SSBonus").innerHTML = intToString(stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 0);
                 document.getElementById("stat" + statName + "ss").innerHTML = intToString(stats[statName].soulstone, 1);
             } else {
@@ -944,17 +989,17 @@ function View() {
     };
 
     this.updateMultiPart = function(action) {
-        document.getElementById("multiPartName"+action.varName).innerHTML = action.getPartName();
-        document.getElementById("completed"+action.varName).innerHTML = " " + towns[action.townNum]["total"+action.varName];
+        document.getElementById("multiPartName"+action.varName).textContent = action.getPartName();
+        document.getElementById("completed"+action.varName).textContent = " " + towns[action.townNum]["total"+action.varName];
         for(let i = 0; i < action.segments; i++) {
             let expBar = document.getElementById("expBar"+i+action.varName);
             if(!expBar) {
                 continue;
             }
             let mainStat = action.loopStats[(towns[action.townNum][action.varName+"LoopCounter"]+i) % action.loopStats.length];
-            document.getElementById("mainStat"+i+action.varName).innerHTML = _txt("stats>"+mainStat+">short_form");
+            document.getElementById("mainStat"+i+action.varName).textContent = _txt("stats>"+mainStat+">short_form");
             addStatColors(expBar, mainStat);
-            document.getElementById("segmentName"+i+action.varName).innerHTML = action.getSegmentName(towns[action.townNum][action.varName+"LoopCounter"]+i);
+            document.getElementById("segmentName"+i+action.varName).textContent = action.getSegmentName(towns[action.townNum][action.varName+"LoopCounter"]+i);
         }
     };
 
@@ -962,7 +1007,7 @@ function View() {
         for(let i = 0; i < statList.length; i++) {
             let trainingDiv = document.getElementById("trainingLimit"+statList[i]);
             if(trainingDiv) {
-                trainingDiv.innerHTML = trainingLimits;
+                trainingDiv.textContent = trainingLimits;
             }
         }
     };
@@ -1030,7 +1075,7 @@ const curActionsDiv = document.getElementById("curActionsList");
 const nextActionsDiv = document.getElementById("nextActionsList");
 const actionOptionsTown = [];
 const townInfos = [];
-for(let i = 0; i < 4; i++) {
+for(let i = 0; i < 6; i++) {
     actionOptionsTown[i] = document.getElementById("actionOptionsTown"+i);
     townInfos[i] = document.getElementById("townInfo"+i);
 }

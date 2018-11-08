@@ -1,5 +1,5 @@
 div {
-    display:inline-block;
+    display: inline-block;
 }
 
 body {
@@ -67,15 +67,15 @@ body {
 
 .superLargeIcon {
     width: 34px;
-    height:30px;
+    height: 34px;
 }
 .largeIcon {
     width:20px;
     height:20px;
 }
 .smallIcon {
-    width:16px;
-    height:16px;
+    width: 16px;
+    height: 16px;
 }
 
 input, label {
@@ -374,4 +374,10 @@ input {
 
 #trackedResources .resource, #timeControls .control {
   margin-right : 5px;
+}
+
+#trackedResources {
+    display: flex;
+    justify-content: center;
+    margin-bottom: -15px;
 }

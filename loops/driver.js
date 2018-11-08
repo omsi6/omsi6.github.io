@@ -65,7 +65,6 @@ function tick() {
         if(timer % (300*gameSpeed) === 0) {
             save();
         }
-        console.log(curTown)
         gameTicksLeft -= ((1000 / 50) / (gameSpeed * getSpeedMult()) / bonusSpeed);
         if(bonusSpeed > 1) {
             addOffline(-1 * (gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed)) / getSpeedMult());
@@ -129,7 +128,7 @@ function restart() {
     } else {
         addGold(-gold);
     }
-    addGlasses(-glasses);
+    //items
     addReputation(-reputation);
     addSupplies(-supplies);
     addHerbs(-herbs);
@@ -137,8 +136,11 @@ function restart() {
     addPotions(-potions);
     addTeamNum(-teamNum);
     addArmor(-armor);
-    addPickaxe(-pickaxe);
     addBlood(-blood);
+    addArtifacts(-artifacts);
+    //single items with icons
+    addGlasses(-glasses);
+    addPickaxe(-pickaxe);
     addLoopingPotion(-loopingPotion);
     restartStats();
     for(let i = 0; i < towns.length; i++) {
@@ -178,6 +180,8 @@ function addActionToList(name, townNum, isTravelAction) {
     view.updateLockedHidden();
 }
 
+//mana and gold
+
 function addMana(amount) {
     timeNeeded += amount;
 }
@@ -187,10 +191,7 @@ function addGold(amount) {
     view.updateGold();
 }
 
-function addGlasses(amount) {
-    glasses += amount;
-    view.updateGlasses();
-}
+//items
 
 function addReputation(amount) {
     reputation += amount;
@@ -229,14 +230,26 @@ function addArmor(amount) {
     view.updateTeamCombat();
 }
 
+function addBlood(amount) {
+    blood += amount;
+    view.updateBlood();
+}
+
+function addArtifacts(amount) {
+    artifacts += amount;
+    view.updateArtifacts();
+}
+
+//single items with icons
+
 function addPickaxe(amount) {
     pickaxe += amount;
     view.updatePickaxe();
 }
 
-function addBlood(amount) {
-    blood += amount;
-    view.updateBlood();
+function addGlasses(amount) {
+    glasses += amount;
+    view.updateGlasses();
 }
 
 function addLoopingPotion(amount) {
@@ -304,6 +317,7 @@ function adjustAll() {
     adjustSuckers();
     adjustGeysers();
     adjustMineSoulstones();
+    adjustArtifacts();
     view.adjustManaCost("Continue On");
 }
 

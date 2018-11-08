@@ -63,6 +63,13 @@ function intToStringNegative(value, amount) {
 function intToString (value, amount) {
     if (value>=10000) {
         return nFormatter(value, 3);
+    } else if (value>=1000) {
+        let baseValue = 3;
+        if(amount) {
+            baseValue = amount;
+        }
+        var returnVal = parseFloat(value).toFixed(baseValue-1)
+        return returnVal[0] + "," + returnVal.substring(1)
     } else {
         let baseValue = 3;
         if(amount) {

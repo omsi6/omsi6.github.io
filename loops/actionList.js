@@ -113,7 +113,6 @@ function translateClassNames(name) {
     } else if (name === "Start Trek") {
         return new StartTrek();
     }
-
     // town 4 
     if(name === "Climb Mountain") {
         return new ClimbMountain();
@@ -133,8 +132,25 @@ function translateClassNames(name) {
         return new MineSoulstones();
     } else if(name === "Hunt Trolls") {
         return new HuntTrolls();
+    } else if(name === "Check Walls") {
+        return new CheckWalls();
+    } else if(name === "Take Artifacts") {
+        return new TakeArtifacts();
+    } else if(name === "Imbue Mind") {
+        return new ImbueMind();
     } else if(name === "Face Judgement") {
         return new FaceJudgement();
+    }
+    // town 5
+    if(name === "Look Around") {
+        return new LookAround();
+    }
+    else if(name === "Fall From Grace") {
+        return new FallFromGrace();
+    }
+    // town 6
+    if(name === "Survey Area") {
+        return new SurveyArea();
     }
     console.log('error trying to create ' + name);
 }
@@ -143,7 +159,10 @@ function hasCap(name) {
   return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser" || name === "Mine Soulstones");
 }
 function getTravelNum(name) {
-    return (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Face Judgement") ? 1 : 0;
+    if (name === "Face Judgement" && reputation <= 50) return 2
+    else if (name === "Face Judgement" && reputation >= 50) return 1
+    else if (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Fall From Grace") return 1
+    return 0
 }
 function isTraining(name) {
     return (name === "Train Speed" || name === "Train Strength" || name === "Train Dex" || name === "Sit By Waterfall" || name === "Read Books" || name === "Bird Watching");
@@ -818,6 +837,42 @@ function StartJourney() {
     this.label = _txt("actions>start_journey>label");
 
     this.varName = "Journey";
+    this.stats = {
+        Con:.4,
+        Per:.3,
+        Spd:.3
+    };
+    this.allowed = function() {
+        return 1;
+    };
+    this.manaCost = function() {
+        return 1000;
+    };
+    this.canStart = function() {
+        return supplies === 1;
+    };
+    this.cost = function() {
+        addSupplies(-1);
+    };
+    this.visible = function() {
+        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
+    };
+    this.unlocked = function() {
+        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
+    };
+    this.finish = function() {
+        unlockTown(1);
+    };
+}
+
+function TearRift() {
+    this.name = "Tear Rift";
+    this.expMult = 2;
+    this.townNum = 0;
+    this.tooltip = _txt("actions>tear_rift>tooltip");
+    this.label = _txt("actions>tear_rift>label");
+
+    this.varName = "TearRirt";
     this.stats = {
         Con:.4,
         Per:.3,
@@ -2096,7 +2151,7 @@ function getAdvGuildRank(offset) {
     let bonus = precision3(1 + segment/20 + (segment ** 2)/300);
     if(!name) {
         name = "Godlike";
-        bonus = Math.floor(10 + (45 ** 2)/30);
+        bonus = Math.floor(1 + 2.25 + (45 ** 2)/300);
     } else {
         if(offset !== undefined) {
             name += ["-", "", "+"][offset % 3];
@@ -2247,7 +2302,7 @@ function getCraftGuildRank(offset) {
     let bonus = precision3(1 + segment/20 + (segment ** 2)/300);
     if(!name) {
         name = "Godlike";
-        bonus = Math.floor(10 + (45 ** 2)/30);
+        bonus = Math.floor(1 + 2.25 + (45 ** 2)/300);
     } else {
         if(offset !== undefined) {
             name += ["-", "", "+"][offset % 3];
@@ -2315,10 +2370,10 @@ function StartTrek() {
         return Math.ceil(12000);
     };
     this.visible = function() {
-        return true;
+        return towns[2].getLevel("City") >= 30;
     };
     this.unlocked = function() {
-        return true;
+        return towns[2].getLevel("City") >= 60;
     };
     this.finish = function() {
         unlockTown(3);
@@ -2510,7 +2565,7 @@ function Pyromancy() {
         Soul:.1
     };
     this.manaCost = function() {
-        return Math.ceil(12000 * (1 - towns[3].getLevel("Runes") * .005));
+        return Math.ceil(14000 * (1 - towns[3].getLevel("Runes") * .005));
     };
     this.visible = function() {
         return towns[3].getLevel("Runes") >= 16;
@@ -2656,6 +2711,151 @@ function HuntTrolls() {
     };
 }
 
+function CheckWalls() {
+    this.name = "Check Walls";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>check_walls>tooltip");
+    this.label = _txt("actions>check_walls>label");
+    this.labelDone = _txt("actions>check_walls>label_done");
+
+    this.varName = "Illusions";
+    this.stats = {
+        Spd:.1,
+        Dex:.1,
+        Per:.4,
+        Int:.4
+    };
+    this.manaCost = function() {
+        return 3000;
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Mountain") >= 10;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Mountain") >= 40;
+    };
+    this.finish = function() {
+        towns[3].finishProgress(this.varName, 100, function() {
+            adjustArtifacts();
+        });
+    };
+}
+
+function TakeArtifacts() {
+    this.varName = "Artifacts";
+    this.name = "Take Artifacts";
+    this.expMult = 1;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>take_artifacts>tooltip");
+    this.label = _txt("actions>take_artifacts>label");
+    this.labelDone = _txt("actions>take_artifacts>label_done");
+    this.infoText = _txt("actions>take_artifacts>info_text1") +
+      " <i class='fa fa-arrow-left'></i> " +
+      _txt("actions>take_artifacts>info_text2") +
+      " <i class='fa fa-arrow-left'></i> " +
+      _txt("actions>take_artifacts>info_text3") +
+      "<br><div class='bold'>" +
+      _txt("actions>tooltip>total_found") +
+       "</div> <div id='total"+this.varName+"'></div>";
+
+    this.stats = {
+        Spd:.2,
+        Per:.6,
+        Int:.2,
+    };
+    this.manaCost = function() {
+        return 1500;
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Illusions") >= 1;
+    };
+    this.unlocked = function() {
+        return towns[3].getLevel("Illusions") >= 5;
+    };
+    this.finish = function() {
+        towns[3].finishRegular(this.varName, 25, function() {
+            addArtifacts(1)
+        })
+    };
+}
+function adjustArtifacts() {
+    towns[3].totalArtifacts = towns[3].getLevel("Illusions") * 5;
+}
+
+function ImbueMind() {
+    this.varName = "ImbueMind";
+    this.name = "Imbue Mind";
+    this.expMult = 5;
+    this.townNum = 3;
+    this.tooltip = _txt("actions>imbue_mind>tooltip");
+    this.label = _txt("actions>imbue_mind>label");
+    this.labelDone = _txt("actions>imbue_mind>label_done");
+
+    this.stats = {
+        Spd:.1,
+        Per:.1,
+        Int:.8
+    };
+    this.loopStats = ["Spd", "Per", "Int"];
+    this.segments = 3;
+    this.manaCost = function() {
+        return 500000;
+    };
+    this.allowed = function() {
+        return 1;
+    };
+    this.canStart = function() {
+        var tempCost = (towns[3].totalImbueMind+1) * 20
+        var tempCanStart = true;
+        for(var i=0; i<9; i++) {
+            if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
+        }
+        return towns[3].ImbueMindLoopCounter === 0 && tempCanStart;
+    };
+    this.loopCost = function(segment) {
+        return 100000000 * (segment*5+1);
+    };
+    this.tickProgress = function(offset) {
+        return getSkillLevel("Magic") * (1 + getLevel(this.loopStats[(towns[3].ImbueMindLoopCounter+offset) % this.loopStats.length])/100);
+    };
+    this.loopsFinished = function() {
+        trainingLimits++;
+        addBuffAmt("Imbuement", 1);
+        var tempSoulstonesSacrificed = 0;
+        var tempSoulstonesToSacrifice = Math.ceil((towns[3].totalImbueMind * 20) / 9);
+        for(var i=0; i<9; i++) {
+            if (tempSoulstonesSacrificed + tempSoulstonesToSacrifice > towns[3].totalImbueMind * 20) tempSoulstonesToSacrifice = towns[3].totalImbueMind * 20 - tempSoulstonesSacrificed
+            tempSoulstonesSacrificed += tempSoulstonesToSacrifice
+            stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
+        }
+        view.updateSoulstones();
+    };
+    this.getPartName = function() {
+        return "Imbue Mind";
+    };
+    this.getSegmentName = function(segment) {
+        let segments = [];
+        $(_txtsObj("actions>imbue_mind>segment_names>name")).each(function(x,segmentName) {
+          segments.push($(segmentName).text());
+        })
+        return segments[segment % 3];
+    };
+    this.visible = function() {
+        return towns[3].getLevel("Illusions") >= 50;
+    };
+    this.unlocked = function() {
+        let toUnlock = towns[3].getLevel("Illusions") >= 70 && getSkillLevel("Magic") >= 300;
+        if(toUnlock && !isVisible(document.getElementById("buffList"))) {
+            document.getElementById("buffList").style.display = "inline-block";
+        }
+        return toUnlock;
+    };
+    this.finish = function() {
+        view.updateBuff("Imbuement");
+    };
+}
+
 function FaceJudgement() {
     this.varName = "FaceJudgement";
     this.name = "Face Judgement";
@@ -2684,5 +2884,36 @@ function FaceJudgement() {
     this.finish = function() {
         //if (reputation >= 50) unlockTown(4);
         //else if (reputation <= 50) unlockTown(5);
+    };
+}
+
+function FallFromGrace() {
+    this.varName = "FallFromGrace";
+    this.name = "Fall From Grace";
+    this.expMult = 2;
+    this.townNum = 4;
+    this.tooltip = _txt("actions>fall_from_grace>tooltip");
+    this.label = _txt("actions>fall_from_grace>label");
+
+    this.stats = {
+        Dex:.4,
+        Luck:.3,
+        Spd:.2,
+        Int:.1,
+    };
+    this.allowed = function() {
+        return 1;
+    };
+    this.manaCost = function() {
+        return 30000;
+    };
+    this.visible = function() {
+        return true;
+    };
+    this.unlocked = function() {
+        return true;
+    };
+    this.finish = function() {
+        //unlockTown(5);
     };
 }

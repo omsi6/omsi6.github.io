@@ -151,12 +151,16 @@ function Town(index) {
         this.createProgressVars("Architect");
     } else if(this.index === 3) {
         this.createVars("Geysers");
+        this.createVars("MineSoulstones");
+        this.createVars("Artifacts");
         this.createProgressVars("Mountain");
         this.createProgressVars("Runes");
         this.createProgressVars("Cavern");
-        this.createVars("MineSoulstones");
+        this.createProgressVars("Illusions");
         this.HuntTrolls = 0;
         this.HuntTrollsLoopCounter = 0;
+        this.ImbueMind = 0;
+        this.ImbueMindLoopCounter = 0;
     }
 
 }
