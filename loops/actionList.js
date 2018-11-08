@@ -2733,10 +2733,10 @@ function CheckWalls() {
         return 3000;
     };
     this.visible = function() {
-        return towns[3].getLevel("Mountain") >= 10;
+        return towns[3].getLevel("Cavern") >= 40;
     };
     this.unlocked = function() {
-        return towns[3].getLevel("Mountain") >= 40;
+        return towns[3].getLevel("Cavern") >= 80;
     };
     this.finish = function() {
         towns[3].finishProgress(this.varName, 100, function() {
