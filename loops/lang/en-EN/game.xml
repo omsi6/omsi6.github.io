@@ -11,6 +11,7 @@
             * Pyromancy mana cost 12000 > 14000.<br>
             * Pyromancy self combat per level 10 > 5.<br>
             * Start Trek now requires 60% City Explored.<br>
+            * The Crafting Guild and Adventure Guild rank bonuses at Godlike have been decreased. (77x > 10x)<br>
             * Chronomancy and Dark Magic now show their current bonus on their skill tooltips.<br>
             * Added commas to certain numbers >= 1,000 but < 9,999.<br>
             * Items that you can only get one of now display as icons always on the right side of your resources.<br>
