@@ -38,6 +38,8 @@ function translateClassNames(name) {
         return new Haggle();
     } else if(name === "Start Journey") {
         return new StartJourney();
+    } else if(name === "Open Rift") {
+        return new OpenRift();
     }
     //town 2
     if(name === "Explore Forest") {
@@ -865,33 +867,30 @@ function StartJourney() {
     };
 }
 
-function TearRift() {
-    this.name = "Tear Rift";
-    this.expMult = 2;
+function OpenRift() {
+    this.name = "Open Rift";
+    this.expMult = 3;
     this.townNum = 0;
-    this.tooltip = _txt("actions>tear_rift>tooltip");
-    this.label = _txt("actions>tear_rift>label");
+    this.tooltip = _txt("actions>open_rift>tooltip");
+    this.label = _txt("actions>open_rift>label");
 
-    this.varName = "TearRirt";
+    this.varName = "OpenRift";
     this.stats = {
-        Con:.4,
-        Per:.3,
-        Spd:.3
+        Int:.2,
+        Luck:.1,
+        Soul:.7
     };
     this.allowed = function() {
         return 1;
     };
     this.manaCost = function() {
-        return 1000;
+        return 20000;
     };
     this.canStart = function() {
         return supplies === 1;
     };
-    this.cost = function() {
-        addSupplies(-1);
-    };
     this.visible = function() {
-        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
+        return (getSkillLevel("Dark") >= 100 &&  getSkillLevel("Magic")) >= 15;
     };
     this.unlocked = function() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;

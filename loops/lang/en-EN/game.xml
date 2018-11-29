@@ -710,6 +710,12 @@
             Follow the trail to end up at the next town. You need to keep moving until you can learn how to shut these loops off.<br>Costs 1 supplies. Finish once to unlock Forest Path's actions, then finish this in order to use Forest Path's actions.<br>Unlocks at a combined skill of 35.
         ]]></tooltip>
         </start_journey>
+        <open_rift>
+            <label>Open Rift</label>
+            <tooltip><![CDATA[
+            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Adeptsville.<br>Unlocks at 500 Dark Magic.
+        ]]></tooltip>
+        </open_rift>
         <train_soul>
             <label>Sit By Waterfall</label>
             <tooltip><![CDATA[
