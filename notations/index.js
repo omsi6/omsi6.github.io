@@ -272,7 +272,7 @@ function updateValues() {
 	if (document.getElementById("commas").checked) commas = true;
 	else commas = false;
 	document.getElementById("standard").innerHTML = "Standard: " + "<b>" + formatValue("Standard", valueToFormat, 2, 0) + "</b>"
-	document.getElementById("cancer").innerHTML = "Emojis: " + "<b>" + formatValue("Emojis", valueToFormat, 2, 0) + "</b>"
+	document.getElementById("cancer").innerHTML = "Cancer: " + "<b>" + formatValue("Emojis", valueToFormat, 2, 0) + "</b>"
 	document.getElementById("mixed scientific").innerHTML = "Mixed scientific: " + "<b>" + formatValue("Mixed scientific", valueToFormat, 2, 0) + "</b>"
 	document.getElementById("mixed engineering").innerHTML = "Mixed engineering: " + "<b>" + formatValue("Mixed engineering", valueToFormat, 2, 0) + "</b>"
 	document.getElementById("logarithm").innerHTML = "Logarithm: " + "<b>" + formatValue("Logarithm", valueToFormat, 2, 0) + "</b>"
