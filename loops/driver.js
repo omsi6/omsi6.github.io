@@ -279,6 +279,15 @@ function setCustomActionAmount() {
     if (parseInt(document.getElementById("amountCustom").value) !== NaN) var value = parseInt(document.getElementById("amountCustom").value)
     else value = 1
     if (value >= 0 && value <= Number.MAX_VALUE) actions.addAmount = Math.min(value, 1e12)
+    if (value === 1) {
+        view.updateAddAmount(1);
+    } else if (value === 5) {
+        view.updateAddAmount(2);
+    } else if (value === 10) {
+        view.updateAddAmount(3);
+    } else {
+        view.updateAddAmount(0);
+    }
 }
 
 function selectLoadout(num) {

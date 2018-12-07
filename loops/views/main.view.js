@@ -475,7 +475,7 @@ function View() {
                 addClassToDiv(elem, "unused");
             }
         }
-        removeClassFromDiv(document.getElementById("amount"+num), "unused");
+        if (num > 0) removeClassFromDiv(document.getElementById("amount"+num), "unused");
     };
 
     this.updateLoadout = function(num) {
