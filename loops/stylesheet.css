@@ -85,6 +85,7 @@ input {
     margin-right:0;
     top: 2px;
     position: relative;
+    /* margin-top: -9px; */
 }
 
 /*.button {*/
@@ -128,7 +129,7 @@ input {
 }
 
 .unused {
-    background-color: #99c193;
+    /* background-color: #99c193; */
 }
 
 .container {

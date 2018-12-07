@@ -278,7 +278,7 @@ function View() {
             totalDivText +=
                 "<div id='nextActionContainer" + i + "' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(" + i + ")' ondragenter='dragOverDecorate(" + i +")' ondragleave='dragExitUndecorate("+i+")' draggable='true' data-index='"+i+"'>" +
                 "<img src='img/" + camelize(action.name) + ".svg' class='smallIcon imageDragFix'> x " +
-                "<div class='bold'>" + action.loops + "</div>" +
+                "<div class='bold'>" + toSuffix(action.loops) + "</div>" +
                 "<div style='float:right'>" +
                 capButton +
                 (isTravel ? "" : "<i id='plusButton" + i + "' onclick='addLoop(" + i + ")' class='actionIcon fa fa-plus'></i>") +

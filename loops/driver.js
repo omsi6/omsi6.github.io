@@ -259,7 +259,14 @@ function addLoopingPotion(amount) {
 
 function changeActionAmount(amount, num) {
     actions.addAmount = amount;
+    document.getElementById("amountCustom").value = amount
     view.updateAddAmount(num);
+}
+
+function setCustomActionAmount() {
+    if (parseInt(document.getElementById("amountCustom").value) !== NaN) var value = parseInt(document.getElementById("amountCustom").value)
+    else value = 1
+    if (value >= 0 && value <= Number.MAX_VALUE) actions.addAmount = Math.min(value, 1e12)
 }
 
 function selectLoadout(num) {
@@ -346,7 +353,8 @@ function addLoop(index) {
             addAmount = numMax - numHave;
         }
     }
-    actions.next[index].loops += addAmount;
+    if (actions.next[index].loops + addAmount !== Infinity) actions.next[index].loops += addAmount;
+    else actions.next[index].loops = 1e12;
     view.updateNextActions();
     view.updateLockedHidden();
 }
