@@ -6,6 +6,9 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".86"><![CDATA[
+            * Added a custom number input for the amount selections on the actions list.
+        ]]></version>
             <version verNum=".85"><![CDATA[
             * New actions - Check Walls, Take Artifacts, Imbue Mind<br>
             * Pyromancy mana cost 12000 > 14000.<br>
@@ -979,6 +982,8 @@
                 <name>Liches</name>
                 <name>Tarrasques</name>
                 <name>Demiliches</name>
+                <name>Demigods</name>
+                <name>Gods</name>
                 <name>Deer but they're jerks</name>
                 <name>Deer but they're jerks and slightly larger than before</name>
                 <name>Deer but they're jerks and moderately larger than before</name>
