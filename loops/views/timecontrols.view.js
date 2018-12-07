@@ -43,6 +43,8 @@ Views.registerView('timeControls',{
 
       // checkbox pause on restart
       html += "<div class='control'><input type='checkbox' id='pauseBeforeRestart'><label for='pauseBeforeRestart'>"+_txt('time_controls>pause_before_restart')+"</label></div>";
+      // checkbox pause on only failed loop
+      html += "<div class='control'><input type='checkbox' id='pauseOnFailedLoop'><label for='pauseOnFailedLoop'>"+_txt('time_controls>pause_on_failed_loop')+"</label></div>";
 
       return html;
    },

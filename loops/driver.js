@@ -103,14 +103,26 @@ function pauseGame() {
 }
 
 function prepareRestart() {
+    let curAction = actions.getNextValidAction();
     if(document.getElementById("pauseBeforeRestart").checked) {
-        let curAction = actions.getNextValidAction();
         if(!curAction) {
             pauseGame();
         } else {
             actions.completedTicks += actions.getNextValidAction().ticks
             view.updateTotalTicks();
             pauseGame();
+        }
+    } else if(document.getElementById("pauseOnFailedLoop").checked) {
+        if(actions.currentPos < actions.next.length-1) {
+            if(!curAction) {
+                pauseGame();
+            } else {
+                actions.completedTicks += actions.getNextValidAction().ticks
+                view.updateTotalTicks();
+                pauseGame();
+            }
+        } else {
+            restart();
         }
     } else {
         restart();

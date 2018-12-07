@@ -7,7 +7,8 @@
                 <version_prefix>Version</version_prefix>
             </meta>
             <version verNum=".86"><![CDATA[
-            * Added a custom number input for the amount selections on the actions list.
+            * Added a custom number input for the amount selections on the actions list.<br>
+            * Added a checkbox to pause when a loop fails. (this will trigger if your loop ends before you reach the last action)
         ]]></version>
             <version verNum=".85"><![CDATA[
             * New actions - Check Walls, Take Artifacts, Imbue Mind<br>
@@ -306,6 +307,7 @@
         <play_button>Play</play_button>
         <pause_button>Pause</pause_button>
         <pause_before_restart>Pause before restart</pause_before_restart>
+        <pause_on_failed_loop>Pause on failed loop</pause_on_failed_loop>
         <restart_button>Restart</restart_button>
         <restart_text>Resets the loop. Not a hard reset.</restart_text>
         <talents_button>Talents</talents_button>
