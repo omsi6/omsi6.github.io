@@ -69,3 +69,15 @@ a:visited {
     min-height: 60px;
     background: #333;
 }
+
+@keyframes spin {
+    0% {transform: rotateX(0deg);}
+    50% {transform: rotateX(360deg);}
+    100% {transform: rotateX(0deg);}
+}
+
+@keyframes shoutoutAnim {
+    0% {transform: rotateZ(2deg);}
+    50% {transform: rotateZ(-2deg);}
+    100% {transform: rotateZ(2deg);}
+}

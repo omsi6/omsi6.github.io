@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="flex-container main-container">
-            <p class="title">omsi's site</p>
+            <p class="title">omsi's site<span style="font-size:8px;"> v2</span></p>
             <div class="flex-container" style="flex-direction: column;">
                 <div class="link">
                     <a href="/calculator"><img src="assets/calculator-icon.png" class="icon"></a>
@@ -37,7 +37,32 @@
                     <a href="/loops"><img src="assets/loops-icon.png" class="icon"></a>
                    <div class="textbox"><b>Loops: </b>A modified version of <a href="http://stopsign.github.io/idleLoops/">Idle Loops</a> with additional content.</div>
                 </div>
+                <div class="link" style="opacity: 0;">
+                   <div class="textbox"></div>
+                </div>
+                <span id="shoutouttext" style="animation: shoutoutAnim 4s infinite; color: yellow; cursor: default" onmouseover="disableShoutoutAnim()">Incremental game shout-out!!!</span>
+                <div class="link" id="shoutout1" style="display:none">
+                    <a href="https://ivark.github.io"><img src="assets/antimatter-icon.png" class="icon"></a>
+                   <div class="textbox"><b>Antimatter Dimensions: </b>An incremental game with very very large numbers.</div>
+                </div>
+                <div class="link" id="shoutout2" style="display:none">
+                    <a href="https://trimps.github.io/"><img src="assets/trimps-icon.png" class="icon"></a>
+                   <div class="textbox"><b>Trimps: </b>An incremental game that has a great sense of progression, flavor, and lots of content.</div>
+                </div>
+                <div class="link" id="shoutout3" style="display:none">
+                    <a href="https://www.kongregate.com/games/Tukkun/anti-idle-the-game"><img src="assets/antiidle-icon.png" class="icon"></a>
+                   <div class="textbox"><b>Anti-Idle: </b>An incremental game that may seem exceedingly complex at first, but has an absurd amount of content and depth. <b>Requires Flash.</b></div>
+                </div>
+                <div class="link" id="shoutout4" style="display:none">
+                    <a href="https://www.kongregate.com/games/somethingggg/ngu-idle"><img src="assets/ngu-icon.png" class="icon"></a>
+                   <div class="textbox"><b>NGU: </b>An incremental game with tons of content, and constant updates, all the while mashing some of the best incremental game mechanics together.</div>
+                </div>
+                <div class="link" id="shoutout5" style="display:none">
+                    <a href="https://scholtek.com/minedefense"><img src="assets/mine-icon.png" class="icon"></a>
+                   <div class="textbox"><b>Mine Defense: </b>An incremental game without prestige, that is chock full of unfolding mechanics and paradigm shifts.</div>
+                </div>
             </div>
         </div>
     </body>
+    <script src="index.js"></script>
 </html>
