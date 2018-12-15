@@ -68,7 +68,6 @@ body {
 .superLargeIcon {
     width: 34px;
     height: 34px;
-    filter: drop-shadow(0px 0px 1px black);
 }
 .largeIcon {
     width:20px;
