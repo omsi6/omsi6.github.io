@@ -8,6 +8,8 @@
             </meta>
             <version verNum=".86"><![CDATA[
             * Added a custom number input for the amount selections on the actions list.<br>
+            * Amounts on the actions list are now formatted at values > 999,999.<br>
+            * Formatted values now always have at least 3 digits of precision.<br>
             * Added a checkbox to pause when a loop fails. (this will trigger if your loop ends before you reach the last action)
         ]]></version>
             <version verNum=".85"><![CDATA[

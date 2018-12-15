@@ -92,7 +92,7 @@ function toSuffix(value) {
     let suffixes = ["", "K", "M", "B","T","Qa","Qi","Sx","Sp","O","N","Dc","Ud","Dd","Td","qd","Qd","sd","Sd","Od","Nd","V"];
     let suffixNum = Math.floor(((""+value).length-1)/3);
     let shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(3));
-    if (shortValue % 1 !== 0)  shortValue = shortValue.toPrecision(2);
+    if (shortValue % 1 !== 0)  shortValue = shortValue.toPrecision(3);
     return shortValue+suffixes[suffixNum];
 }
 
