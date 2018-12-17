@@ -401,6 +401,11 @@ function exportSave() {
 }
 
 function importSave() {
+    if (document.getElementById("exportImport").value === "") {
+        if (!confirm("Importing nothing will delete your save. Are you sure you want to delete your save?")) {
+            return false;
+        }
+    }
     window.localStorage[saveName] = decode(document.getElementById("exportImport").value);
     // console.log(window.localStorage[saveName]);
     actions.next = [];
