@@ -465,7 +465,7 @@
         <alchemy>
             <label>Alchemy</label>
             <desc>Brewing potions is hard work! It's a good thing you found a teacher.</desc>
-            <desc2>The Magic teacher in Beginnersville adores alchemists. +1% to Mage Lessons Magic exp gain (rounded down) per level.</desc2>
+            <desc2>The Magic teacher in Beginnersville adores alchemists. +1% Magic exp gain from the Mage Lessons action (rounded down) per level.</desc2>
         </alchemy>
         <dark_magic>
             <label>Dark Magic</label>
@@ -491,7 +491,7 @@
         <title>Buffs</title>
         <dark_ritual>
             <label>Dark Ritual</label>
-            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic Dark Magic exp gain (rounded down) per ritual.</desc>
+            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic exp gain from the Dark Magic action (rounded down) per ritual.</desc>
             <desc2><![CDATA[<br>Actions are 10% faster in Beginnersville per ritual from 1-20.<br>
             Actions are 5% faster in the Forest Path per ritual from 21-40.<br>
             Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>]]>
@@ -1077,6 +1077,7 @@
             Begin your trek to the top of Mt. Olympus.<br>Unlocked at 60% City Explored.
         ]]></tooltip>
         </start_trek>
+        <!--zone 4 below-->
         <climb_mountain>
             <label>Climb Mountain</label>
             <label_done>Mountain Explored</label_done>
@@ -1168,9 +1169,6 @@
             <tooltip><![CDATA[
             Behind some of the illusory walls, there are various sorts of artifacts that seems to belong to some sort of ancient civilization. Or at least that's what you'll say if anybody comes looking for them. (these do nothing right now)<br>Every 25 alcoves has an artifact.<br>Unlocked with 5% Illusory Walls Discovered.
         ]]></tooltip>
-            <tooltip2><![CDATA[
-            mana.<br>Every 10 pots have mana.
-        ]]></tooltip2>
         </take_artifacts>
         <imbue_mind>
             <label>Imbue Mind</label>
@@ -1190,6 +1188,13 @@
             Face the judgement of the gods. If your reputation is 50 or higher, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or lower, you'll be cast into the shadow realm and thrown back to the beginning of your journey. (this does nothing right now)
         ]]></tooltip>
         </face_judgement>
+        <!--zone 5 below-->
+        <pyromancy>
+            <label>Mercantilism</label>
+            <tooltip><![CDATA[
+            Conjure the power of feverishly forceful and furiously firey flickering flames to aid you in combat. And yeah, the runes contain some stuff about this too. <br>Unlocked with both 60% Runic Symbols Deciphered and 200 Magic.
+        ]]></tooltip>
+        </pyromancy>
         <fall_from_grace>
             <label>Fall From Grace</label>
             <tooltip><![CDATA[
