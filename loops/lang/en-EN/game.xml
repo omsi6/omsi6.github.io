@@ -1189,12 +1189,12 @@
         ]]></tooltip>
         </face_judgement>
         <!--zone 5 below-->
-        <pyromancy>
+        <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
             Conjure the power of feverishly forceful and furiously firey flickering flames to aid you in combat. And yeah, the runes contain some stuff about this too. <br>Unlocked with both 60% Runic Symbols Deciphered and 200 Magic.
         ]]></tooltip>
-        </pyromancy>
+        </mercantilism>
         <fall_from_grace>
             <label>Fall From Grace</label>
             <tooltip><![CDATA[
