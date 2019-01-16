@@ -233,11 +233,22 @@
                 </div>
                 <div style="float:right;text-align:right;">
                     <div class="bold localized" style="margin-top:3px;" data-lockey="actions>title_loadout"></div>
-                    <div class="button unused" id="load1" onclick="selectLoadout(1)">1</div>
-                    <div class="button unused" id="load2" onclick="selectLoadout(2)">2</div>
-                    <div class="button unused" id="load3" onclick="selectLoadout(3)">3</div>
-                    <div class="button unused" id="load4" onclick="selectLoadout(4)">4</div>
-                    <div class="button unused" id="load5" onclick="selectLoadout(5)">5</div><br>
+                    <div class="button unused showthat" id="load1" onclick="selectLoadout(1)">1
+                        <div id="load1name" class='showthisname'></div>
+                    </div>
+                    <div class="button unused showthat" id="load2" onclick="selectLoadout(2)">2
+                        <div id="load2name" class='showthisname'></div>
+                    </div>
+                    <div class="button unused showthat" id="load3" onclick="selectLoadout(3)">3
+                        <div id="load3name" class='showthisname'></div>
+                    </div>
+                    <div class="button unused showthat" id="load4" onclick="selectLoadout(4)">4
+                        <div id="load4name" class='showthisname'></div>
+                    </div>
+                    <div class="button unused showthat" id="load5" style="margin-right: -4px;" onclick="selectLoadout(5)">5
+                        <div id="load5name" class='showthisname'></div>
+                    </div>
+                    <br>
                     <div class="button localized" style="margin-bottom:5px;margin-top:5px;" onclick="saveList()" data-lockey="actions>tooltip>save_loadout"></div><br>
                     <div class="button localized" onclick="loadList()" data-lockey="actions>tooltip>load_loadout"></div><br>
                     <div class="button localized" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>

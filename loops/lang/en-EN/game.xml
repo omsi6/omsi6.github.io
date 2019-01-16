@@ -6,7 +6,17 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".87"><![CDATA[
+            <b> January 16th, 2019 - The current date</b>
+            <b> v0.87 - "How about you name this one."</b><br>
+            * Fixed resource icons pushing page elements downwards when visible.<br>
+            * You can now name your loadouts by typing a name in the custom add amount box and then saving them. There is a 30 character max, and they can't only consist of numbers.<br>
+            * Versions now have dates and names in the patchnotes. <br>
+            * Patchnotes from the original version have been removed.
+        ]]></version>
             <version verNum=".86"><![CDATA[
+            <b> December 6th, 2018 - January 16th, 2019</b>
+            <b> v0.86 - "Customization, confirmation, checkboxes."</b><br>
             * Added a custom number input for the amount selections on the actions list.<br>
             * Amounts on the actions list are now formatted at values > 999,999.<br>
             * Formatted values now always have at least 3 digits of precision.<br>
@@ -14,6 +24,8 @@
             * Added a confirmation when importing nothing, that warns you it will delete your save.
         ]]></version>
             <version verNum=".85"><![CDATA[
+            <b> November 7th, 2018 - December 6th, 2018</b>
+            <b> v0.85 - "This one isn't illusory."</b><br>
             * New actions - Check Walls, Take Artifacts, Imbue Mind<br>
             * Pyromancy mana cost 12000 > 14000.<br>
             * Pyromancy self combat per level 10 > 5.<br>
@@ -27,11 +39,15 @@
             * The French translation has been disabled as it is currently broken, and no longer supported.
         ]]></version>
             <version verNum=".84"><![CDATA[
+            <b> October 14th, 2018 - November 7th, 2018</b>
+            <b> v0.84 - "Stop going so fast."</b><br>
             * Chronomancy speed bonus sqrt(1 + level / 200) > (1 + level / 60) ^ 0.25.<br>
             * Dark Magic mana gain bonus (1 + level / 100) > (1 + level / 60) ^ 0.25.<br>
             * The action list height now saves on reload.<br>
         ]]></version>
             <version verNum=".83"><![CDATA[
+            <b> October 9th, 2018 - October 14th, 2018</b>
+            <b> v0.83 - "Bonus buttons."</b><br>
             * Added an additional loadout slot.<br>
             * Added 100/50 buttons to the amount selections on the actions list.<br>
             * Added buttons to the top right of the actions list that allow you to adjust its vertical length.<br>
@@ -39,6 +55,8 @@
             * Fixed various tooltips not overlapping certain elements.
         ]]></version>
             <version verNum=".82"><![CDATA[
+            <b> October 6th, 2018 - October 9th, 2018</b>
+            <b> v0.82 - "Please help I don't understand math."</b><br>
             * New action - Face Judgement.<br>
             * The talent multiplier formula has been changed to be worse at higher levels. (talent ^ 0.5 / 5) > (talent ^ 0.4 / 3)<br>
             * Mine Soulstones mana cost 2500 > 5000.<br>
@@ -48,10 +66,14 @@
             * Fixed the Witch Knowledge Dark Ritual mana cost reduction not increasing the speed of the ritual to account for the reduced cost.
         ]]></version>
             <version verNum=".81"><![CDATA[
+            <b> October 3rd, 2018 - October 6th, 2018</b>
+            <b> v0.81 - "A new hobby."</b><br>
             * New action - Bird Watching.<br>
             * Fixed the speed bonuses Dark Ritual and Chronomancy draining bonus seconds faster.
         ]]></version>
             <version verNum=".80"><![CDATA[
+            <b> September 27th, 2018 - October 3rd, 2018</b>
+            <b> v0.80 - "The fine print."</b><br>
             * New action - Looping Potion.<br>
             * Dark Ritual now has bonuses for rituals 21-60, and a new unlimited per ritual bonus.<br>
             * Chronomancy speed bonus sqrt(1 + level / 100) > sqrt(1 + level / 200).<br>
@@ -61,10 +83,12 @@
             * Fixed various minor bugs.
         ]]></version>
             <version verNum=".79"><![CDATA[
+            <b> September 20th, 2018 - September 27th, 2018</b>
+            <b> v0.79 - "Flowers and fire and trolls, oh my!"</b><br>
             * Descriptions, flavor text, and tooltips have been changed in various places.<br>
             * New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls<br>
             * Dark Ritual exp bonus 2000% -> 1000%<br>
-            * Dark Magic now reduced your reputation by 1 per completion.<br>
+            * Dark Magic now reduces your reputation by 1 per completion.<br>
             * Dark Ritual reputation requirement 0 or less -> -5 or less<br>
             * Clear Thicket unlock 60% Forest Explored -> 20% Flower Trail Followed<br>
             * Clear Thicket mana cost 300 -> 500<br>
@@ -72,94 +96,14 @@
             * The font size on actions has been reduced by 1 pixel.
         ]]></version>
             <version verNum=".78"><![CDATA[
+            <b> August 18th, 2018 - September 20th, 2018</b>
+            <b> v0.78 - "Is it just me or is it getting evil in here?"</b><br>
             * New actions - Clear Thicket, Talk to Witch, Dark Magic, Dark Ritual, Buy Pickaxe<br>
             * Removed actions - Tournament<br>
             * New zone - Mt. Olympus<br>
             * Changed the colors for soul and charisma<br>
             * Old Shortcut mana cost 1200 -> 800<br>
             * Talk to Hermit mana cost 2000 -> 1200
-        ]]></version>
-            <version verNum=".77"><![CDATA[
-            * Ranks start at F now instead of E pt. 2<br>
-            * Fixed drag and drop for firefox<br>
-            * Adding small amounts of exp to Fight Monsters, Heal the Sick, and Small/Large Dungeon<br>
-            * Hermit is properly improved by 1% from shortcut<br>
-            * Hermit's reduction affect made linear<br>
-            * Fixed tooltip for Small Dungeon, Talk to Hermit, Stats, and Gamble<br>
-            * Fixed discord link
-        ]]></version>
-            <version verNum=".76"><![CDATA[
-            * Ranks start at F now instead of E<br>
-            * Fixed wild mana tooltip<br>
-            * Added Tournament, which uses self combat.
-        ]]></version>
-            <version verNum=".75"><![CDATA[
-            * Skill training actions have 150% exp.<br>
-            * Practical magic updates the gold cost tooltip correctly<br>
-            * Ping on Pause toggle saves on refresh<br>
-            * Started French support (thanks to Guizmus)<br>
-            * Haggle tooltip updates on reset correctly. Continue On mana reduction tooltip works.<br>
-            * Can't use repeat last action to get around training caps<br>
-            * New actions - Adventure Guild, Crafting Guild, Gather Team, Craft Armor, Large Dungeon, Apprentice, Mason, Architect<br>
-            * Short Quest mana cost 800 -> 600. LQuest mana cost 2k -> 1500, gold reward 25 -> 30<br>
-            * Buy Supplies requires 400 -> 300 gold.<br>
-            * Wild Mana 200 gain -> 250 gain.<br>
-            * Removing old versions as I add new ones now<br>
-            * Removed Get Drunk's gold cost, gave it 3x exp<br>
-            * Reworked dungeons - small dungeon is now capped at 6 floors, with soulstone chances and completed bonuses applying per-floor. Your existing completions were divided amongst the new floors.<br>
-            * Small Dungeon mana cost to 2k (until I get an option to short-circuit upon floor completion) and gets harder faster.<br>
-            * Made talent gain scale the same way that soulstone does, made soulstones 1/3rd as effective. This means talent gives 3% at level 1 instead of 1%.<br>
-            * HtS requires (not costs) 1 reputation, Fight Monster and Small Dungeon require 2 reputation.<br>
-            * Training caps reduced to 10 (action coming soon to improve this), and all trainings have 2000 mana cost.<br>
-            * Train Dex/Train Speed to zone 2.<br>
-            * Soulstones recover half as fast (because there's more of them)
-        ]]></version>
-            <version verNum=".74"><![CDATA[
-            * Radar chart - different and confusing way to visualize your data!<br>
-            * Some tooltip changes<br>
-            * Glasses icons on relevant actions<br>
-            * Offline progress!<br>
-            * Showing Hunt again (still useless)
-        ]]></version>
-            <version verNum=".73"><![CDATA[
-            * Changed formula for how Old Shortcut reduces Continue On<br>
-            * Repeat last action on list saves now<br>
-            * Lootable first checkboxes save now<br>
-            * Window title switches when paused correctly<br>
-            * Dragging an action image doesn't change the URL in firefox<br>
-            * 2 more story parts, unlocked at Small Dungeon completion<br>
-            * Re-arrange icon/loop count order on lists<br>
-            * Get Drunk removes 2 gold instead of adding it
-        ]]></version>
-            <version verNum=".72"><![CDATA[
-            * Sound on pause available in options<br>
-            * training limit set to 50 from 10 (for now)<br>
-            * Mana Original is multipled by # loops<br>
-            * Travel Action styling change<br>
-            * Saving in town 3<br>
-            * DRAG AND DROP (Thanks to Hunter)
-        ]]></version>
-            <version verNum=".71"><![CDATA[
-            * Tooltip on reset button<br>
-            * Glasses give x2 to forest<br>
-            * Mana cost reflects the tooltips now rather than an average of stat reduction<br>
-            * Trainings are capped at 10 per loop<br>
-            * New actions! Brew Potions, Continue On, Explore City, Gamble, Get Drunk, Purchase Mana, Sell Potions<br>
-            * Some new actions are usless at the moment.
-        ]]></version>
-            <version verNum=".70"><![CDATA[
-            * Reverted skill nerf (too harsh)<br>
-            * Actually capped glasses<br>
-            * Sell Gold -> Buy Mana<br>
-            * Double soulstone recovery<br>
-            * Nerfed practical magic (more uses for it later)
-        ]]></version>
-            <version verNum=".69"><![CDATA[
-            * Nerfed the soulstone nerf<br>
-            * Cleared additional purple bars on exp<br>
-            * Corrected glasses/throw party tooltips<br>
-            * Actually nerfed skill growth - it's cheaper than before for level 2 - 23, and about 4x harder at level 100<br>
-            * Add action to top of list option
         ]]></version>
         </changelog>
         <save>
@@ -1192,7 +1136,7 @@
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
-            Conjure the power of feverishly forceful and furiously firey flickering flames to aid you in combat. And yeah, the runes contain some stuff about this too. <br>Unlocked with both 60% Runic Symbols Deciphered and 200 Magic.
+            Practice your merchandising skills, which are sorely lacking considering how poor of a deal you're getting from those mana merchants.
         ]]></tooltip>
         </mercantilism>
         <fall_from_grace>

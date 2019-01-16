@@ -23,13 +23,20 @@ body {
 .showthatH:hover .showthisH {
     display: block;
 }
-.showthat:hover .showthis, .showthat2:hover .showthis2, .showthatO:hover .showthis {
+.showthat:hover .showthis, .showthatO:hover .showthis, .showthat:hover .showthisname {
     display: block;
+}
+
+.showthat2:hover .showthis2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .showthis, .showthis2, .showthisH {
     display:none;
     position:absolute;
+    color: black;
     background-color: #c0e4c7;
     border:1px solid;
     padding:3px 5px;
@@ -42,6 +49,21 @@ body {
 .showthis2 {
     z-index:1000;
     min-width:400px;
+}
+
+.showthisname {
+    display:none;
+    position:absolute;
+    color: black;
+    background-color: #c0e4c7;
+    border:1px solid;
+    padding:3px 5px;
+    border-radius:4px;
+    margin-top: -43px;
+    z-index: 999999;
+    text-align: left;
+    margin-left: -5px;
+    white-space: nowrap;
 }
 
 .title {
@@ -381,4 +403,5 @@ input {
     display: flex;
     justify-content: center;
     margin-bottom: -15px;
+    height: 16px;
 }

@@ -1147,3 +1147,9 @@ function adjustActionListSize(amt) {
         document.getElementById("nextActionsList").style.maxHeight = Math.min(Math.max(parseInt(document.getElementById("nextActionsList").style.maxHeight) + amt, 457), 1957) + "px"
     }
 }
+
+window.onload = function() {
+    for (let i=0; i<5; i++) {
+        document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
+    }
+};

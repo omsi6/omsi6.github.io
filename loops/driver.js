@@ -304,14 +304,24 @@ function saveList() {
         save();
         return;
     }
+    if (isNaN(document.getElementById("amountCustom").value)) {
+        if (document.getElementById("amountCustom").value.length > 30) document.getElementById("amountCustom").value = "30 Letter Max"
+        else loadoutnames[curLoadout-1] = document.getElementById("amountCustom").value
+    } else {
+        document.getElementById("amountCustom").value = "Enter a name!"
+    }
     loadouts[curLoadout] = copyArray(actions.next);
     save();
+    for (let i=0; i<5; i++) {
+        document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
+    }
 }
 
 function loadList() {
     if(curLoadout === 0) {
         return;
     }
+    document.getElementById("amountCustom").value = actions.addAmount;
     if(!loadouts[curLoadout]) {
         actions.next = [];
     } else {

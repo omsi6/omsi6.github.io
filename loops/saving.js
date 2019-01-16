@@ -58,6 +58,7 @@ let loopingPotion = 0;
 
 let curLoadout = 0;
 let loadouts = [];
+let loadoutnames = ["1", "2", "3", "4", "5"];
 let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy"];
 let skills = {};
 let buffList = ["Ritual", "Imbuement"];
@@ -234,6 +235,11 @@ function load() {
             }
         }
     }
+    if(toLoad.loadoutnames) {
+        for (let i=0; i<5; i++) {
+            loadoutnames[i] = toLoad.loadoutnames[i];
+        }
+    }
     curLoadout = toLoad.curLoadout
     let elem = document.getElementById("load"+curLoadout);
     if(elem) {
@@ -380,6 +386,7 @@ function save() {
     }
     toSave.nextList = actions.next;
     toSave.loadouts = loadouts;
+    toSave.loadoutnames = loadoutnames
     toSave.repeatLast = document.getElementById("repeatLastAction").checked;
     toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
     toSave.storyShowing = storyShowing;
