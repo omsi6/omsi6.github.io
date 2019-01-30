@@ -6,8 +6,17 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".88"><![CDATA[
+            <b> January 29th, 2019 - The current date</b>
+            <b> v0.88 - "Almost spring cleaning."</b><br>
+            * Dark Ritual and Imbue Mind now have hard caps on the amount buffs you can get from them.<br>
+            * Dark Ritual and Imbue Mind now display their current soulstone cost on their respective action tooltips.<br>
+            * Reworked the buff display to allow for user limiting of the number of action completions for buff actions.<br>
+            * Fixed a horizontal scrollbar appearing on the action list in certain cases.<br>
+            * There is now a fancy themed vertical scrollbar on the action list for browsers that support it. (Chrome, Safari, Opera, and a slightly worse looking one in Firefox)
+        ]]></version>
             <version verNum=".87"><![CDATA[
-            <b> January 16th, 2019 - The current date</b>
+            <b> January 16th, 2019 - January 29th</b>
             <b> v0.87 - "How about you name this one."</b><br>
             * Fixed resource icons pushing page elements downwards when visible.<br>
             * You can now name your loadouts by typing a name in the custom add amount box and then saving them. There is a 30 character max, and they can't only consist of numbers.<br>
@@ -447,6 +456,12 @@
             Increases the max amount of times you can do each training action by 1 per level.]]>
             </desc>
         </imbue_mind>
+         <great_feast>
+            <label>Great Feast</label>
+            <desc><![CDATA[That feast was so filling that it manages to keep you well satiated through your loops.<br>
+            Self combat is increased by 5% per level (rounded down).]]>
+            </desc>
+        </great_feast>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart>Buffs last through resets.</no_reset_on_restart>
@@ -741,7 +756,7 @@
             <label>Dark Ritual</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones.
+            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or lower.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones. Currently sacrificing <span id="goldCostRitual">0</span> soulstones.
         ]]></tooltip>
             <segment_names>
                 <name>Clear the Area</name>
@@ -1118,7 +1133,7 @@
             <label>Imbue Mind</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices (20 * (imbuements+1)) soulstones.
+            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices (20 * (imbuements+1)) soulstones. Currently sacrificing <span id="goldCostImbuement">0</span> soulstones.
         ]]></tooltip>
             <segment_names>
                 <name>Submerge the Soulstones</name>
@@ -1139,6 +1154,19 @@
             Practice your merchandising skills, which are sorely lacking considering how poor of a deal you're getting from those mana merchants.
         ]]></tooltip>
         </mercantilism>
+        <great_feast>
+            <label>Great Feast</label>
+            <label_done>Completed</label_done>
+            <tooltip><![CDATA[
+            All this adventuring is making you famished, it's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (500 * (feasts+1)) soulstones. Currently sacrificing <span id="goldCostFeast">0</span> soulstones.
+        ]]></tooltip>
+            <segment_names>
+                <name>Explain Your Order</name>
+                <name>Give Them Your Information</name>
+                <name>Verify Your Identity</name>
+                <name>Confirm Your Address</name>
+            </segment_names>
+        </great_feast>
         <fall_from_grace>
             <label>Fall From Grace</label>
             <tooltip><![CDATA[

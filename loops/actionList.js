@@ -146,8 +146,9 @@ function translateClassNames(name) {
     // town 5
     if(name === "Look Around") {
         return new LookAround();
-    }
-    else if(name === "Fall From Grace") {
+    } else if(name === "Great Feast") {
+        return new GreatFeast();
+    } else if(name === "Fall From Grace") {
         return new FallFromGrace();
     }
     // town 6
@@ -1273,7 +1274,7 @@ function DarkRitual() {
         for(var i=0; i<9; i++) {
             if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
         }
-        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart;
+        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
     };
     this.loopCost = function(segment) {
         return 1000000 * (segment*2+1);
@@ -1308,13 +1309,16 @@ function DarkRitual() {
     this.unlocked = function() {
         let toUnlock = towns[1].getLevel("Thicket") >= 90 && getSkillLevel("Dark") >= 50;
         if(toUnlock && !isVisible(document.getElementById("buffList"))) {
-            document.getElementById("buffList").style.display = "inline-block";
+            document.getElementById("buffList").style.display = "flex";
         }
         return toUnlock;
     };
     this.finish = function() {
         view.updateBuff("Ritual");
     };
+}
+function goldCostDarkRitual() {
+    return 50*(getBuffLevel("Ritual")+1);
 }
 
 function ContinueOn() {
@@ -2813,7 +2817,7 @@ function ImbueMind() {
         for(var i=0; i<9; i++) {
             if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
         }
-        return towns[3].ImbueMindLoopCounter === 0 && tempCanStart;
+        return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     };
     this.loopCost = function(segment) {
         return 100000000 * (segment*5+1);
@@ -2849,13 +2853,16 @@ function ImbueMind() {
     this.unlocked = function() {
         let toUnlock = towns[3].getLevel("Illusions") >= 70 && getSkillLevel("Magic") >= 300;
         if(toUnlock && !isVisible(document.getElementById("buffList"))) {
-            document.getElementById("buffList").style.display = "inline-block";
+            document.getElementById("buffList").style.display = "flex";
         }
         return toUnlock;
     };
     this.finish = function() {
         view.updateBuff("Imbuement");
     };
+}
+function goldCostImbueMind() {
+    return 20*(getBuffLevel("Imbuement")+1);
 }
 
 function FaceJudgement() {
@@ -2916,6 +2923,83 @@ function FallFromGrace() {
         return true;
     };
     this.finish = function() {
+        //TODO: remove this when z5/6 are added
         //unlockTown(5);
     };
+}
+
+//TODO: make this correct
+function GreatFeast() {
+    this.varName = "GreatFeast";
+    this.name = "Great Feast";
+    this.expMult = 5;
+    this.townNum = 4;
+    this.tooltip = _txt("actions>great_feast>tooltip");
+    this.label = _txt("actions>great_feast>label");
+    this.labelDone = _txt("actions>great_feast>label_done");
+
+    this.stats = {
+        Spd:.1,
+        Int:.1,
+        Soul:.8
+    };
+    this.loopStats = ["Spd", "Int", "Soul"];
+    this.segments = 3;
+    this.manaCost = function() {
+        return Math.ceil(50000 * (1 - towns[1].getLevel("Witch") * .005));
+    };
+    this.allowed = function() {
+        return 1;
+    };
+    this.canStart = function() {
+        var tempCost = (towns[1].totalDarkRitual+1) * 50
+        var tempCanStart = true;
+        for(var i=0; i<9; i++) {
+            if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
+        }
+        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
+    };
+    this.loopCost = function(segment) {
+        return 1000000 * (segment*2+1);
+    };
+    this.tickProgress = function(offset) {
+        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter+offset) % this.loopStats.length])/100) / (1 - towns[1].getLevel("Witch") * .005);
+    };
+    this.loopsFinished = function() {
+        addBuffAmt("Ritual", 1)
+        var tempSoulstonesSacrificed = 0;
+        var tempSoulstonesToSacrifice = Math.ceil((towns[1].totalDarkRitual * 50) / 9);
+        for(var i=0; i<9; i++) {
+            if (tempSoulstonesSacrificed + tempSoulstonesToSacrifice > towns[1].totalDarkRitual * 50) tempSoulstonesToSacrifice = towns[1].totalDarkRitual * 50 - tempSoulstonesSacrificed
+            tempSoulstonesSacrificed += tempSoulstonesToSacrifice
+            stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
+        }
+        view.updateSoulstones();
+    };
+    this.getPartName = function() {
+        return "Perform Dark Ritual";
+    };
+    this.getSegmentName = function(segment) {
+        let segments = [];
+        $(_txtsObj("actions>great_feast>segment_names>name")).each(function(x,segmentName) {
+          segments.push($(segmentName).text());
+        })
+        return segments[segment % 3];
+    };
+    this.visible = function() {
+        return towns[1].getLevel("Thicket") >= 50;
+    };
+    this.unlocked = function() {
+        let toUnlock = towns[1].getLevel("Thicket") >= 90 && getSkillLevel("Dark") >= 50;
+        if(toUnlock && !isVisible(document.getElementById("buffList"))) {
+            document.getElementById("buffList").style.display = "flex";
+        }
+        return toUnlock;
+    };
+    this.finish = function() {
+        view.updateBuff("Feast");
+    };
+}
+function goldCostGreatFeast() {
+    return 500*(getBuffLevel("Feast")+1);
 }

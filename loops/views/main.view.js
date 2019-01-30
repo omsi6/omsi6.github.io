@@ -150,11 +150,14 @@ function View() {
     this.updateBuff = function(buff) {
         if(buffs[buff].amt === 0) {
             document.getElementById("buff" + buff + "Container").style.display = "none";
+            document.getElementById("buff" + buff + "LevelContainer").style.display = "none";
             return;
         } else {
-            document.getElementById("buff" + buff + "Container").style.display = "inline-block";
+            document.getElementById("buff" + buff + "Container").style.display = "flex";
+            document.getElementById("buff" + buff + "LevelContainer").style.display = "flex";
         }
-        document.getElementById("buff" + buff + "Level").textContent = getBuffLevel(buff);
+        document.getElementById("buff" + buff + "Level").textContent = getBuffLevel(buff)+"/";
+        //document.getElementById("buff" + buff + "Cost").textContent = buffCosts[buffList.indexOf(buff)] * (getBuffLevel(buff)+1);
         if(buff === "Imbuement") {
             this.updateTrainingLimits();
         }
@@ -721,6 +724,10 @@ function View() {
             townInfos[4].removeChild(townInfos[4].firstChild);
         }
 
+        tempObj = new GreatFeast();
+        this.createTownAction(tempObj);
+        this.createMultiPartPBar(tempObj);
+
         this.createTravelAction(new FallFromGrace());
 
         while (actionOptionsTown[5].firstChild) {
@@ -761,9 +768,10 @@ function View() {
             actionStats += "<div class='bold'>" + statLabel + "</div> " + (action.stats[statName]*100)+"%<br>";
         }
         let extraImage = "";
+        let extraImagePositions = ["margin-top:17px;margin-left:5px;", "margin-top:17px;margin-left:-55px;", "margin-top:0px;margin-left:-55px;", "margin-top:0px;margin-left:5px;"]
         if(action.affectedBy) {
             for(let i = 0; i < action.affectedBy.length; i++) {
-                extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' style='position:absolute;margin-top:17px;margin-left:5px;'>";
+                extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' style='position:absolute;"+extraImagePositions[i]+"'>";
             }
         }
         const totalDivText =
@@ -831,6 +839,9 @@ function View() {
         this.adjustGoldCost("LQuests", goldCostLQuests());
         this.adjustGoldCost("Pots", goldCostSmashPots());
         this.adjustGoldCost("WildMana", goldCostWildMana());
+        this.adjustGoldCost("Ritual", goldCostDarkRitual());
+        this.adjustGoldCost("Imbuement", goldCostImbueMind());
+        this.adjustGoldCost("Feast", goldCostGreatFeast());
     };
 
     this.createTownInfo = function(action) {
@@ -1148,8 +1159,16 @@ function adjustActionListSize(amt) {
     }
 }
 
-window.onload = function() {
-    for (let i=0; i<5; i++) {
-        document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
+function updateBuffCaps() {
+    for (let i in buffList) {
+        document.getElementById("buff"+buffList[i]+"Cap").value = Math.min(parseInt(document.getElementById("buff"+buffList[i]+"Cap").value), buffHardCaps[i])
     }
+}
+
+window.onload = function() {
+    setTimeout(function(){
+        for (let i=0; i<5; i++) {
+            document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
+        }
+    }, 100);
 };

@@ -59,9 +59,10 @@ let loopingPotion = 0;
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-let skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy"];
 let skills = {};
-let buffList = ["Ritual", "Imbuement"];
+const buffList = ["Ritual", "Imbuement", "Feast"];
+const buffHardCaps = [666, 490, 100];
 let buffs = {};
 let townShowing = 0;
 let maxTown;
@@ -367,6 +368,176 @@ function save() {
 
     town = towns[5];
 
+
+    for(let i = 0; i < towns.length; i++) {
+        town = towns[i];
+        for(let j = 0; j < town.totalActionList.length; j++) {
+            let action = town.totalActionList[j];
+            if (town.varNames.indexOf(action.varName) !== -1) {
+                const varName = action.varName;
+                toSave["total" + varName] = town["total" + varName];
+                toSave["checked" + varName] = town["checked" + varName];
+                toSave["good" + varName] = town["good" + varName];
+                toSave["goodTemp" + varName] = town["good" + varName];
+                if(document.getElementById("searchToggler" + varName)) {
+                    toSave["searchToggler"+varName] = document.getElementById("searchToggler" + varName).checked;
+                }
+            }
+        }
+    }
+    toSave.nextList = actions.next;
+    toSave.loadouts = loadouts;
+    toSave.loadoutnames = loadoutnames
+    toSave.repeatLast = document.getElementById("repeatLastAction").checked;
+    toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
+    toSave.storyShowing = storyShowing;
+    toSave.storyMax = storyMax;
+    toSave.date = new Date();
+    toSave.totalOfflineMs = totalOfflineMs;
+
+    saveUISettings()
+
+    window.localStorage[saveName] = JSON.stringify(toSave);
+}
+
+function isOldAction(name) {
+    if(name === "Wander") {
+        return true
+    } else if(name === "Smash Pots") {
+        return true
+    } else if(name === "Pick Locks") {
+        return true
+    } else if(name === "Buy Glasses") {
+        return true
+    } else if(name === "Buy Mana") {
+        return true
+    } else if(name === "Meet People") {
+        return true
+    } else if(name === "Train Strength") {
+        return true
+    } else if(name === "Short Quest") {
+        return true
+    } else if(name === "Investigate") {
+        return true
+    } else if(name === "Long Quest") {
+        return true
+    } else if(name === "Warrior Lessons") {
+        return true
+    } else if(name === "Mage Lessons") {
+        return true
+    } else if(name === "Throw Party") {
+        return true
+    } else if(name === "Heal The Sick") {
+        return true
+    } else if(name === "Fight Monsters") {
+        return true
+    } else if(name === "Small Dungeon") {
+        return true
+    } else if(name === "Buy Supplies") {
+        return true
+    } else if(name === "Haggle") {
+        return true
+    } else if(name === "Start Journey") {
+        return true
+    }
+    //town 2
+    if(name === "Explore Forest") {
+        return true
+    } else if(name === "Wild Mana") {
+        return true
+    } else if(name === "Gather Herbs") {
+        return true
+    } else if(name === "Hunt") {
+        return true
+    } else if(name === "Sit By Waterfall") {
+        return true
+    } else if(name === "Old Shortcut") {
+        return true
+    } else if(name === "Talk To Hermit") {
+        return true
+    } else if(name === "Practical Magic") {
+        return true
+    } else if(name === "Learn Alchemy") {
+        return true
+    } else if(name === "Brew Potions") {
+        return true
+    } else if(name === "Train Dex") {
+        return true
+    } else if(name === "Train Speed") {
+        return true
+    }else if (name === "Continue On") {
+        return true
+    }
+    //town 3
+    if(name === "Explore City") {
+        return true
+    } else if(name === "Gamble") {
+        return true
+    } else if(name === "Get Drunk") {
+        return true
+    } else if(name === "Purchase Mana") {
+        return true
+    } else if(name === "Sell Potions") {
+        return true
+    } else if(name === "Read Books") {
+        return true
+    } else if(name === "Adventure Guild") {
+        return true
+    } else if(name === "Gather Team") {
+        return true
+    } else if(name === "Large Dungeon") {
+        return true
+    } else if(name === "Crafting Guild") {
+        return true
+    } else if(name === "Craft Armor") {
+        return true
+    } else if(name === "Apprentice") {
+        return true
+    } else if(name === "Mason") {
+        return true
+    } else if(name === "Architect") {
+        return true
+    }
+
+    return false
+}
+
+function createOldsave() {
+    let toSave = {};
+    toSave.curLoadout = Math.min(curLoadout, 5);
+    toSave.dungeons = [dungeons[0], dungeons[1]];
+    toSave.maxTown = Math.min(maxTown, 2);
+    toSave.actionTownNum = 0;
+    toSave.trainingLimits = 10;
+
+    let town = towns[0];
+    toSave.stats = stats;
+    toSave.skills = {};
+    for (let i=0; i<4; i++) {
+        toSave.skills[buffList[i]] = skills[buffList[i]]
+    }
+    toSave.expWander = town.expWander;
+    toSave.expMet = town.expMet;
+    toSave.expSecrets = town.expSecrets;
+    toSave.totalHeal = town.totalHeal;
+    toSave.totalFight = town.totalFight;
+    toSave.totalSDungeon = town.totalSDungeon;
+
+    town = towns[1];
+    toSave.expForest = town.expForest;
+    toSave.expShortcut = town.expShortcut;
+    toSave.expHermit = town.expHermit;
+
+    town = towns[2];
+    toSave.expCity = town.expCity;
+    toSave.expDrunk = town.expDrunk;
+    toSave.totalAdvGuild = town.totalAdvGuild;
+    toSave.totalCraftGuild = town.totalCraftGuild;
+    toSave.totalLDungeon = town.totalLDungeon;
+    toSave.version75 = true;
+    toSave.expApprentice = town.expApprentice;
+    toSave.expMason = town.expMason;
+    toSave.expArchitect = town.expArchitect;
 
     for(let i = 0; i < towns.length; i++) {
         town = towns[i];

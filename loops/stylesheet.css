@@ -23,7 +23,7 @@ body {
 .showthatH:hover .showthisH {
     display: block;
 }
-.showthat:hover .showthis, .showthatO:hover .showthis, .showthat:hover .showthisname {
+.showthat:hover .showthis, .showthatO:hover .showthis, .showthat:hover .showthisname, .showthat:hover .showthisbuff {
     display: block;
 }
 
@@ -49,6 +49,20 @@ body {
 .showthis2 {
     z-index:1000;
     min-width:400px;
+}
+
+.showthisbuff {
+    display:none;
+    position:absolute;
+    color: black;
+    background-color: #c0e4c7;
+    border:1px solid;
+    padding:3px 5px;
+    border-radius:4px;
+    margin-top:23px;
+    width: 263px;
+    z-index: 999999;
+    text-align:left;
 }
 
 .showthisname {
@@ -107,7 +121,26 @@ input {
     margin-right:0;
     top: 2px;
     position: relative;
-    /* margin-top: -9px; */
+}
+
+.buffmaxinput {
+    top: 0px;
+    width: 44px;
+    height: 20px;
+    border: none;
+    background: #e4ece5;
+    margin-right: 3.5px;
+    font-size: 27px;
+    margin-top: 4px;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 /*.button {*/
@@ -175,6 +208,12 @@ input {
     text-align:left;
 }
 
+.buffContainer {
+    width:100%;
+    position:relative;
+    justify-content: left;
+}
+
 .statRadarContainer {
     width:40px;
     padding-top:20px;
@@ -196,6 +235,17 @@ input {
     text-align:right;
     margin:5px 10px 0;
     float:right;
+}
+
+.buffNumDiv {
+    display: flex;
+    flex-direction: row;
+    width: 105px;
+    height: 23px;
+    text-align: right;
+    margin-top: -1px;
+    font-size: 27px;
+    justify-content: flex-end;
 }
 
 .skillLabel {
@@ -301,6 +351,55 @@ input {
 }
 .curActionContainer {
     width:102px;
+}
+
+#nextActionsList {
+    overflow-x: hidden !important;
+}
+
+#nextActionsList::-webkit-scrollbar  {
+    background: #cdded2;
+}
+
+#nextActionsList::-webkit-scrollbar-track  {
+    background: #99c193;
+}
+
+#nextActionsList::-webkit-scrollbar-thumb  {
+    background: #4caf50;
+}
+
+#nextActionsList::-webkit-scrollbar-thumb:hover  {
+    background: #3e8e41;
+}
+
+#nextActionsList::-webkit-scrollbar-button  {
+    color: black;
+    background-color: #4caf50;
+}
+
+#nextActionsList::-webkit-scrollbar-button:vertical:decrement  {
+    background-image: url("img/misc/arrowUpLight.svg");
+    background-size: 17px 17px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+#nextActionsList::-webkit-scrollbar-button:vertical:increment  {
+    background-image: url("img/misc/arrowDownLight.svg");
+    background-size: 17px 17px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+#nextActionsList::-webkit-scrollbar-button:hover  {
+    background-color: #3e8e41;
+}
+
+/*styled scrollbar for firefox ( why can't there just be one browser that everybody uses :( )*/
+
+#nextActionsList {
+    scrollbar-color: #4caf50 #99c193;
 }
 
 .actionIcon {

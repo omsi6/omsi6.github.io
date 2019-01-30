@@ -157,26 +157,49 @@
                     </div>
                 </div>
             </div>
-            <div id="buffList" style="width:100%;margin-top:25px;display:none">
+            <div id="buffList" style="width:100%;margin-top:25px;flex-direction: column;display:none;">
                 <div class="showthat">
                     <div class="large bold localized" data-lockey="buffs>title"></div>
                     <div class="showthis localized" data-lockey="buffs>tooltip>no_reset_on_restart"></div>
                 </div><br>
-                <div class="skillContainer showthat" id="buffRitualContainer">
-                    <div class="skillLabel medium bold localized" data-lockey="buffs>dark_ritual>label"></div>
-                    <div class="statNum medium"><div id="buffRitualLevel">0</div></div>
-                    <div style="margin-top:18px;"></div>
-                    <div class="showthis">
-                        <span class="localized" data-lockey="buffs>dark_ritual>desc"></span><br>
-                        <span class="localized" data-lockey="buffs>dark_ritual>desc2"></span>
+                <div style="display: flex;flex-direction: row;">
+                    <div style="display: flex;flex-direction: column;">
+                        <div class="buffContainer showthat" id="buffRitualContainer">
+                            <img src="img/darkRitual.svg" style="height: 20px;width:20px;margin-right: -15px;margin-top: -3px;">
+                            <div class="skillLabel bold localized" style="font-size: 27px;margin-top: -7px;" data-lockey="buffs>dark_ritual>label"></div>
+                            <div class="showthisbuff">
+                                <span class="localized" data-lockey="buffs>dark_ritual>desc"></span><br>
+                                <span class="localized" data-lockey="buffs>dark_ritual>desc2"></span>
+                            </div>
+                        </div>
+                        <div class="buffContainer showthat" id="buffImbuementContainer">
+                                <img src="img/imbueMind.svg" style="height: 20px;width:20px;margin-right: -15px;margin-top: -3px;">
+                            <div class="skillLabel bold localized" style="font-size: 27px;margin-top: -7px;" data-lockey="buffs>imbue_mind>label"></div>
+                            <div class="showthisbuff">
+                                <span class="localized" data-lockey="buffs>imbue_mind>desc"></span>
+                            </div>
+                        </div>
+                        <div class="buffContainer showthat" id="buffFeastContainer">
+                            <img src="img/greatFeast.svg" style="height: 20px;width:20px;margin-right: -18px;margin-top: -3px;">
+                        <div class="skillLabel bold localized" style="font-size: 27px;margin-top: -7px;" data-lockey="buffs>great_feast>label"></div>
+                        <div class="showthisbuff">
+                            <span class="localized" data-lockey="buffs>great_feast>desc"></span>
+                        </div>
                     </div>
-                </div>
-                <div class="skillContainer showthat" id="buffImbuementContainer">
-                    <div class="skillLabel medium bold localized" data-lockey="buffs>imbue_mind>label"></div>
-                    <div class="statNum medium"><div id="buffImbuementLevel">0</div></div>
-                    <div style="margin-top:18px;"></div>
-                    <div class="showthis">
-                        <span class="localized" data-lockey="buffs>imbue_mind>desc"></span>
+                    </div>
+                    <div style="width: 100px;display: flex;flex-direction: column;margin-top: -6px;">
+                        <div class="buffNumDiv medium" id="buffRitualLevelContainer">
+                            <div id="buffRitualLevel">0/</div>
+                            <input type="number" id="buffRitualCap" class="buffmaxinput medium" value="666" onchange="updateBuffCaps()">
+                        </div>
+                        <div class="buffNumDiv medium" id="buffImbuementLevelContainer">
+                            <div id="buffImbuementLevel">0/</div>
+                            <input type="number" id="buffImbuementCap" class="buffmaxinput medium" value="490" onchange="updateBuffCaps()">
+                        </div>
+                        <div class="buffNumDiv medium" id="buffFeastLevelContainer">
+                            <div id="buffFeastLevel">0/</div>
+                            <input type="number" id="buffFeastCap" class="buffmaxinput medium" value="100" onchange="updateBuffCaps()">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,7 +209,7 @@
     <div id="actionsColumn" style="width:350px;vertical-align:top;">
         <div id="actionList" style="width:100%;text-align:center;">
             <div class="showthat">
-                <div class="large bold localized" data-lockey="actions>title_list"></div>
+                <div class="large bold localized" style="margin-right: -49px;" data-lockey="actions>title_list"></div>
                 <div class="showthis">
                     <i class='actionIcon fa fa-circle-thin'></i> <span class='localized' data-lockey="actions>tooltip>icons>circle_thin"></span><br>
                     <i class='actionIcon fa fa-plus'></i> <span class='localized' data-lockey="actions>tooltip>icons>plus"></span><br>
@@ -198,7 +221,7 @@
                     <span class='localized' data-lockey="actions>tooltip>list_explanation"></span>
                 </div>
             </div>
-            <div style="position: relative; left: 113px;">
+            <div style="position: relative; left: 137px;">
                 <div class="button" style="z-index: 0;" onclick="adjustActionListSize(100)">+</div>
                 <div class="button" style="z-index: 0;" onclick="adjustActionListSize(-100)">-</div>
             </div>

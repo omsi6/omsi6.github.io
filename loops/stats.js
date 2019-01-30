@@ -31,6 +31,7 @@ function initializeBuffs() {
 function addNewBuff(name) {
     buffs[name] = {};
     buffs[name].amt = 0;
+    buffs[name].cap = 0;
 }
 
 function getLevel(stat) {
