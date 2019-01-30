@@ -11,7 +11,7 @@
             <b> v0.88 - "Almost spring cleaning."</b><br>
             * Dark Ritual and Imbue Mind now have hard caps on the amount buffs you can get from them.<br>
             * Dark Ritual and Imbue Mind now display their current soulstone cost on their respective action tooltips.<br>
-            * Reworked the buff display to allow for user limiting of the number of action completions for buff actions.<br>
+            * Reworked the buff display to allow for user limiting of the number of action completions for buff actions. The left number is your current amount, the right number is the amount you will stop being able to start the action at. You can change the right number, but you can not increase it past the hard cap.<br>
             * Fixed a horizontal scrollbar appearing on the action list in certain cases.<br>
             * There is now a fancy themed vertical scrollbar on the action list for browsers that support it. (Chrome, Safari, Opera, and a slightly worse looking one in Firefox)
         ]]></version>
