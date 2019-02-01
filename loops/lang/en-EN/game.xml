@@ -798,7 +798,7 @@
         <craft_armor>
             <label>Craft Armor</label>
             <tooltip><![CDATA[
-            Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% city explored.
+            Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% rumors heard.
         ]]></tooltip>
         </craft_armor>
         <smash_pots>
