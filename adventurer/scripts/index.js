@@ -66476,13 +66476,6 @@
 				return _react2.default.createElement(
 					"div",
 					{ style: { display: this.props.buildings.length > 0 ? "block" : "none" }, className: "item-menu" },
-					_react2.default.createElement(
-						"div",
-						{ className: "buy-amount" },
-						_react2.default.createElement("input", { type: "number", min: "1", max: "1000000",
-							value: this.state.buyAmount,
-							onChange: this.onChange.bind(this) })
-					),
 					this.props.buildings.map(function (building) {
 						return _react2.default.createElement(MenuBuilding, {
 							key: building.name,
