@@ -792,13 +792,13 @@
             <label>Gather Team</label>
             <tooltip><![CDATA[
             You don't have to take them on by yourself.<br>Max 5 other team members.<br>Costs <div id='teamCost'></div>
-            gold, and the cost goes up by 200 gold per member.<br>Each member adds (Rank Mult) * (Combat Skill / 2) to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocks at 20% city explored.
+            gold, and the cost goes up by 200 gold per member.<br>Each member adds (Rank Mult) * (Combat Skill / 2) to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocks at 20% rumors heard.
         ]]></tooltip>
         </gather_team>
         <craft_armor>
             <label>Craft Armor</label>
             <tooltip><![CDATA[
-            Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% city explored.
+            Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% rumors heard.
         ]]></tooltip>
         </craft_armor>
         <smash_pots>
