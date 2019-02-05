@@ -1,0 +1,183 @@
+<html>
+<head>
+	<title>Heirlooms</title>
+
+	<link rel="stylesheet" href="bootstrap.css" />
+	<link rel="stylesheet" href="icomoon.css" />
+	<link rel="stylesheet" href="index.css" />
+	<link rel="icon" type="image/ico" sizes="16x16" href="favicon.ico">
+</head>
+
+<body>
+	<div id="content">
+		<p id="content-text">
+			Paste your save into this box to get recommendations for heirloom upgrades.
+			<div class="help">
+				<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, and Miner Efficiency. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.<br><br>Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots.</p>
+			</div>
+		</p>
+		<div style="display: flex; flex-direction: column;">
+			<textarea placeholder="Paste your save here" id="saveInput" style="height: 26px; width:313px; max-height: 300px; max-width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
+			<button onclick="calculate()" style="width:313px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
+			<div>
+				<input placeholder="VM weight (default 12)" id="VMInput" type="number" oninput="updateWeight('VM')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+				<input placeholder="XP weight (default 11.25)" id="XPInput" type="number" oninput="updateWeight('XP')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+			</div>
+			<div style="margin-bottom: 1px;">
+				Fluffy E4L10:
+				<input id="hasE4" type="checkbox" onchange="updateCheckboxes()">
+				Fluffy E5L10:
+				<input id="hasE5" type="checkbox" onchange="updateCheckboxes()">
+				Charged Crits:
+				<input id="hasCC" type="checkbox" onchange="updateCheckboxes()">
+			</div>
+		</div>
+	</div>
+	<div class="nullifiumContainer" style="color: #8a008a;">
+		You have <span id="nuAmount">???</span> Nullifium.<br>
+		Your next upgrade should be <span id="nextUpgrade">???</span> at <span id="nuCost">???</span> Nullifium.
+	</div>
+	<div style="display: flex; flex-direction: row;">
+		<div id="shieldOldContainer" class="heirloomContainer" style="transform: translateX(190px);">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="icomoon icon-shield3"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="shieldOldName">???</span>
+				</div>
+			</div>
+			<div id="shieldOldModContainer0">
+				• 
+				<span id="shieldOldMod0" class="heirloomMod">???</span>
+			</div>
+			<div id="shieldOldModContainer1">
+				• 
+				<span id="shieldOldMod1" class="heirloomMod">???</span>
+			</div>
+			<div id="shieldOldModContainer2">
+				• 
+				<span id="shieldOldMod2" class="heirloomMod">???</span>
+			</div>
+			<div id="shieldOldModContainer3">
+				• 
+				<span id="shieldOldMod3" class="heirloomMod">???</span>
+			</div>
+			<div id="shieldOldModContainer4">
+				• 
+				<span id="shieldOldMod4" class="heirloomMod">???</span>
+			</div>
+		</div>
+		<div id="shieldNewContainer" class="heirloomContainer" style="opacity: 0;">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="icomoon icon-shield3"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="shieldNewName">???</span>
+				</div>
+			</div>
+			<div id="shieldNewModContainer0">
+				• 
+				<span id="shieldNewMod0" class="heirloomMod">???</span>
+				<span id="shieldNewMod0Plus">+?</span>
+			</div>
+			<div id="shieldNewModContainer1">
+				• 
+				<span id="shieldNewMod1" class="heirloomMod">???</span>
+				<span id="shieldNewMod1Plus">+?</span>
+			</div>
+			<div  id="shieldNewModContainer2">
+				• 
+				<span id="shieldNewMod2" class="heirloomMod">???</span>
+				<span id="shieldNewMod2Plus">+?</span>
+			</div>
+			<div id="shieldNewModContainer3">
+				• 
+				<span id="shieldNewMod3" class="heirloomMod">???</span>
+				<span id="shieldNewMod3Plus">+?</span>
+			</div>
+			<div id="shieldNewModContainer4">
+				• 
+				<span id="shieldNewMod4" class="heirloomMod">???</span>
+				<span id="shieldNewMod4Plus">+?</span>
+			</div>
+		</div>
+	</div>
+	<div style="display: flex; flex-direction: row;">
+		<div id="staffOldContainer" class="heirloomContainer" style="transform: translateX(190px);">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="glyphicon glyphicon-grain"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="staffOldName">???</span>
+				</div>
+			</div>
+			<div id="staffOldModContainer0">
+				• 
+				<span id="staffOldMod0" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer1">
+				• 
+				<span id="staffOldMod1" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer2">
+				• 
+				<span id="staffOldMod2" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer3">
+				• 
+				<span id="staffOldMod3" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer4">
+				• 
+				<span id="staffOldMod4" class="heirloomMod">???</span>
+			</div>
+		</div>
+		<div id="staffNewContainer" class="heirloomContainer" style="opacity: 0;">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="glyphicon glyphicon-grain"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="staffNewName">???</span>
+				</div>
+			</div>
+			<div id="staffNewModContainer0">
+				• 
+				<span id="staffNewMod0" class="heirloomMod">???</span>
+				<span id="staffNewMod0Plus">+?</span>
+			</div>
+			<div id="staffNewModContainer1">
+				• 
+				<span id="staffNewMod1" class="heirloomMod">???</span>
+				<span id="staffNewMod1Plus">+?</span>
+			</div>
+			<div id="staffNewModContainer2">
+				• 
+				<span id="staffNewMod2" class="heirloomMod">???</span>
+				<span id="staffNewMod2Plus">+?</span>
+			</div>
+			<div id="staffNewModContainer3">
+				• 
+				<span id="staffNewMod3" class="heirloomMod">???</span>
+				<span id="staffNewMod3Plus">+?</span>
+			</div>
+			<div id="staffNewModContainer4">
+				• 
+				<span id="staffNewMod4" class="heirloomMod">???</span>
+				<span id="staffNewMod4Plus">+?</span>
+			</div>
+		</div>
+	</div>
+
+	<footer id="footer">
+		<a href="https://omsi6.github.io/notations/index.js?2">Heirlooms v1.00</a>
+	</footer>
+
+	<script src="lz-string.js"></script>
+	<script src="jquery.js"></script>
+	<script src="index.js"></script>
+</body>
+</html>

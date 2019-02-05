@@ -1,0 +1,388 @@
+/*lots of styles taken from Trimps (https://trimps.github.io/), to make it look like the game does*/
+
+body {
+	display: flex;
+	flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+	background: #212121;
+	color: #bbb;
+	font-size: 14px;
+	user-select: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+* {
+	transform-origin: center center;
+}
+
+#saveInput {
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+::placeholder {
+	color: #666;
+	opacity: 1;
+	text-align: center;
+}
+
+a {
+	color: #a8a7a8;
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	text-decoration: underline;
+}
+
+.help{
+	position: relative;
+    top: -30px;
+    right: -72px;
+    text-align: center;
+    background-color: #333;
+	border-radius: 50%;
+	border: 1px solid black;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 20px;
+	cursor: default;
+	z-index: 999;
+}
+
+.help:before{
+    content:'?';
+    font-weight: bold;
+    color:#fff;
+}
+
+.help:hover p{
+    display:block;
+    transform-origin: 100% 0%;
+}
+
+.help p{
+    display: none;
+    text-align: left;
+    background-color: #111111;
+    padding: 1.5rem;
+    width: 300px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    right: -4px;
+    color: #FFF;
+    font-size: 13px;
+	line-height: 1.4;
+	z-index: 999;
+	border: 0.2rem solid #555;
+}
+
+.help p:before{
+    position: absolute;
+    content: '';
+    width:0;
+    height: 0;
+    border:6px solid transparent;
+    border-bottom-color:#1E2021;
+    right:10px;
+    top:-12px;
+}
+
+.help p:after{
+    width:100%;
+    height:40px;
+    content:'';
+    position: absolute;
+    top:-40px;
+    left:0;
+}
+
+#footer {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	align-self: flex-end;
+}
+
+#content {
+	display: flex;
+	flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#content-text {
+	max-width: 80%;
+	text-align: center;
+}
+
+.heirloomContainer {
+	height: 26rem;
+	width: 37rem;
+	font-size: 1.9rem;
+	margin: 10px;
+    border: 0.3rem solid #555;
+    padding: 1rem;
+    text-align: left;
+	background-color: #111111;
+	box-shadow: -1px 1px 10px #111;
+}
+
+.heirloomContainerTopRow {
+	margin-bottom: -2.3rem;
+}
+
+.heirloomIconContainer {
+	width: 16.66666667%;
+}
+
+.nullifiumContainer {
+	width: 313px;
+	height: 5.6rem;
+	font-size: 1.5rem;
+	line-height: 1.5rem;
+    border: 0.3rem solid #555;
+	padding: 0.3rem;
+	padding-top: 0.2rem;
+    text-align: left;
+	background-color: #111111;
+	box-shadow: -1px 1px 10px #111;
+	color: #8a008a;
+	text-align: center;
+}
+
+.icon-shield3 {
+	font-size: 3.5rem; margin-left: 1rem;
+}
+
+.glyphicon-grain {
+	font-size: 3.5rem;
+}
+
+.heirloomName {
+	font-size: 2rem;
+	position:relative;
+	left: 6rem;
+	top: -3rem;
+}
+
+.heirloomMod {
+    padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+    border: 0.2rem solid #333;
+    background-color: #111;
+    border-radius: 40px;
+    margin-bottom: 0.3rem;
+    display: inline-block;
+}
+
+.heirloomRare0{
+	color: #888888;
+}
+
+.heirloomRare0 .heirloomMod:hover,.heirloomRare0.rarityBdBox{
+	border: 0.2rem solid #888;
+}
+
+.heirloomRare1{
+	color: #1f7e1f;
+}
+
+.heirloomRare1 .heirloomMod:hover, .heirloomRare1.rarityBdBox{
+	border: 0.2rem solid #1f7e1f;
+}
+
+.heirloomRare2{
+	color: #2b2bce;
+}
+
+.heirloomRare2 .heirloomMod:hover, .heirloomRare2.rarityBdBox{
+	border: 0.2rem solid #2b2bce;
+}
+
+.heirloomRare3{
+	color: #7e1f7e;
+}
+
+.heirloomRare3 .heirloomMod:hover, .heirloomRare3.rarityBdBox{
+	border: 0.2rem solid #7e1f7e;
+}
+
+.heirloomRare4{
+	color: #e2722e;
+}
+
+.heirloomRare4 .heirloomMod:hover, .heirloomRare4.rarityBdBox{
+	border: 0.2rem solid #e2722e;
+}
+
+.heirloomRare5{
+	color: #b92727;
+}
+
+.heirloomRare5 .heirloomMod:hover, .heirloomRare5.rarityBdBox{
+	border: 0.2rem solid #b92727;
+}
+
+.heirloomRare6{
+	color: #2693ff;
+		text-shadow:
+	 -0.15rem -0.15rem 0.2rem #5000ba,  
+	  0.15rem -0.15rem 0.25rem #5b00d3,
+	 -0.15rem 0.15rem 0.2rem #6600ec,
+	  0.15rem 0.15rem 0.3rem #2f006d;
+	background: -moz-linear-gradient(-45deg,  #000b38 0%, #280021 50%, #000b38 100%); 
+	background: -webkit-linear-gradient(-45deg,  #000b38 0%,#280021 50%,#000b38 100%); 
+	background: linear-gradient(135deg,  #000b38 0%,#280021 50%,#000b38 100%); 
+}
+
+.heirloomRare6 .heirloomMod:hover {
+	border: 0.2rem solid #2693ff;
+}
+
+.heirloomRare6 .heirloomMod{
+	background-color: initial;
+}
+
+.heirloomRare7{
+	color: #730000;
+	text-shadow: 
+			1px 1px 2px #ff9326, 
+			0 0 25px #ff4000, 
+			0 0 5px #f37900, 
+			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
+			  0.17rem 0.17rem 0.3rem rgba(89,0,0,0.72);	
+	background: linear-gradient(135deg,  #000000 0%, #400000 50%, #100000 100%); 
+}
+
+.heirloomRare7 .heirloomIconContainer {
+	color: #730000;
+	animation: heirloomRare7Animated 7s infinite;
+}
+
+.heirloomRare7 .heirloomMod:hover {
+	border: 0.2rem solid #8c0000;
+}
+
+.heirloomRare7 .heirloomMod{
+	background-color: initial;
+}
+
+.heirloomRare8{
+	color: #0e5a07;
+	text-shadow: 
+			1px 1px 2px rgba(15, 158, 74, 0.6), 
+			0 0 25px rgba(43, 64, 185, 0.6), 
+			0 0 5px rgba(33, 114, 51, 0.6);
+}
+
+.heirloomRare8 .heirloomIconContainer {
+	color: #083604;
+	animation: heirloomRare8Animated 30s infinite;
+}
+
+.heirloomRare8 .heirloomMod:hover, .heirloomRare8.rarityBdBox{
+	border: 0.2rem solid #0e5a07;
+}
+
+.heirloomRare8 .heirloomMod{
+	background-color: initial;
+}
+
+@keyframes heirloomRare7Animated {
+	0% {
+		text-shadow: 
+			1px 1px 2px #ff9326, 
+			0 0 25px #ff4000, 
+			0 0 5px #f37900, 
+			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
+			  0.17rem 0.17rem 0.3rem rgba(89,0,0,0.72);	
+			  animation-timing-function: ease-in;
+	}
+	50% {
+		text-shadow: 
+			1px 1px 8px #ff9326, 
+			0 0 50px #ff4000, 
+			0 0 25px #f37900, 
+			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
+			  0.17rem 0.17rem 0.3rem rgba(89,0,0,0.72);	
+			  animation-timing-function: ease-out;
+	}
+	100% {
+	text-shadow: 
+			1px 1px 2px #ff9326, 
+			0 0 25px #ff4000, 
+			0 0 5px #f37900, 
+			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
+			  0.17rem 0.17rem 0.3rem rgba(89,0,0,0.72);	
+	}
+}
+
+@keyframes heirloomRare8Animated {
+	0% {
+		text-shadow: 
+			1px 1px 2px #0f9e4a, 
+			0 0 25px #2a40bb, 
+			0 0 5px #217233, 
+			-0.17rem -0.17rem 0.17rem rgba(70, 3, 82, 0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(37, 80, 12, 0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(124, 126, 9, 0.58),
+			  0.17rem 0.17rem 0.3rem rgba(33, 9, 36, 0.72);	
+			  animation-timing-function: ease-out;
+		transform: rotate(0deg);
+	}
+	50% {
+		text-shadow: 
+			1px 1px 8px #0f9e4a, 
+			0 0 50px #2a40bb, 
+			0 0 25px #217233, 
+			-0.17rem -0.17rem 0.17rem rgba(70, 3, 82, 0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(37, 80, 12, 0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(124, 126, 9, 0.58),
+			  0.17rem 0.17rem 0.3rem rgba(33, 9, 36, 0.72);	
+			  animation-timing-function: ease-in;
+		transform: rotate(180deg);
+	}
+	100% {
+	text-shadow: 
+			1px 1px 2px #0f9e4a, 
+			0 0 25px #2a40bb, 
+			0 0 5px #217233, 
+			-0.17rem -0.17rem 0.17rem rgba(70, 3, 82, 0.8),  
+			  0.17rem -0.17rem 0.17rem rgba(37, 80, 12, 0.72),
+			 -0.17rem 0.17rem 0.17rem rgba(124, 126, 9, 0.58),
+			  0.17rem 0.17rem 0.3rem rgba(33, 9, 36, 0.72);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes moveRight {
+	0% {transform: translateX(-200px)}
+	100% {transform: translateX(0px)}
+}
+
+@keyframes moveLeft {
+	0% {transform: translateX(190px)}
+	100% {transform: translateX(0px)}
+}
