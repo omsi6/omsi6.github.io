@@ -353,52 +353,52 @@ input[type="number"] {
     width:102px;
 }
 
-#nextActionsList {
+#nextActionsList, #curActionsList {
     overflow-x: hidden !important;
 }
 
-#nextActionsList::-webkit-scrollbar  {
+#nextActionsList::-webkit-scrollbar, #curActionsList::-webkit-scrollbar  {
     background: #cdded2;
 }
 
-#nextActionsList::-webkit-scrollbar-track  {
+#nextActionsList::-webkit-scrollbar-track, #curActionsList::-webkit-scrollbar-track  {
     background: #99c193;
 }
 
-#nextActionsList::-webkit-scrollbar-thumb  {
+#nextActionsList::-webkit-scrollbar-thumb, #curActionsList::-webkit-scrollbar-thumb   {
     background: #4caf50;
 }
 
-#nextActionsList::-webkit-scrollbar-thumb:hover  {
+#nextActionsList::-webkit-scrollbar-thumb:hover, #curActionsList::-webkit-scrollbar-thumb:hover  {
     background: #3e8e41;
 }
 
-#nextActionsList::-webkit-scrollbar-button  {
+#nextActionsList::-webkit-scrollbar-button, #curActionsList::-webkit-scrollbar-button  {
     color: black;
     background-color: #4caf50;
 }
 
-#nextActionsList::-webkit-scrollbar-button:vertical:decrement  {
+#nextActionsList::-webkit-scrollbar-button:vertical:decrement, #curActionsList::-webkit-scrollbar-button:vertical:decrement  {
     background-image: url("img/misc/arrowUpLight.svg");
     background-size: 17px 17px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
 
-#nextActionsList::-webkit-scrollbar-button:vertical:increment  {
+#nextActionsList::-webkit-scrollbar-button:vertical:increment, #curActionsList::-webkit-scrollbar-button:vertical:increment  {
     background-image: url("img/misc/arrowDownLight.svg");
     background-size: 17px 17px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
 
-#nextActionsList::-webkit-scrollbar-button:hover  {
+#nextActionsList::-webkit-scrollbar-button:hover, #curActionsList::-webkit-scrollbar-button:hover  {
     background-color: #3e8e41;
 }
 
 /*styled scrollbar for firefox ( why can't there just be one browser that everybody uses :( )*/
 
-#nextActionsList {
+#nextActionsList, #curActionsList {
     scrollbar-color: #4caf50 #99c193;
 }
 
