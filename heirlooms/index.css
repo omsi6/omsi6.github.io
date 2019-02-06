@@ -149,6 +149,7 @@ a:hover, a:active {
 
 .heirloomIconContainer {
 	width: 16.66666667%;
+	text-align: center;
 }
 
 .nullifiumContainer {
@@ -167,7 +168,7 @@ a:hover, a:active {
 }
 
 .icon-shield3 {
-	font-size: 3.5rem; margin-left: 1rem;
+	font-size: 3.5rem;
 }
 
 .glyphicon-grain {

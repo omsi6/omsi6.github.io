@@ -7,6 +7,7 @@
 
 /*
 
+v1.02 make save input clear on input focus, fix plagued heirloom animation
 v1.01: make custom weights save on refresh, add description of weights to help tooltip
 v1.00: release
 
