@@ -13,15 +13,20 @@
 		<p id="content-text">
 			Paste your save into this box to get recommendations for heirloom upgrades.
 			<div class="help">
-				<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, and Miner Efficiency. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.<br><br>Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots.</p>
+				<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, and Miner Efficiency. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
+					<br><br>
+					Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots.
+					<br><br>
+					VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights are used to provide a good balance between damage and helium/exp gain.
+				</p>
 			</div>
 		</p>
 		<div style="display: flex; flex-direction: column;">
-			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" style="height: 26px; width:313px; max-height: 300px; max-width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
+			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" style="height: 26px; width:313px; max-height: 300px; max-width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
 			<button onclick="calculate()" style="width:313px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
 			<div>
-				<input placeholder="VM weight (default 12)" id="VMInput" type="number" spellcheck="false" oninput="updateWeight('VM')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
-				<input placeholder="XP weight (default 11.25)" id="XPInput" type="number" spellcheck="false" oninput="updateWeight('XP')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+				<input placeholder="VM weight (default 12)" id="VMInput" type="number" spellcheck="false" autocomplete="off" oninput="updateWeight('VM')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+				<input placeholder="XP weight (default 11.25)" id="XPInput" type="number" spellcheck="false" autocomplete="off" oninput="updateWeight('XP')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
 			</div>
 			<div style="margin-bottom: 1px;">
 				Fluffy E4L10:
@@ -173,7 +178,7 @@
 	</div>
 
 	<footer id="footer">
-		<a href="https://omsi6.github.io/heirlooms/index.js">Heirlooms v1.00</a>
+		<a href="https://omsi6.github.io/heirlooms/index.js">Heirlooms v1.01</a>
 	</footer>
 
 	<script src="lz-string.js"></script>

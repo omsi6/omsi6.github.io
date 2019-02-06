@@ -3,10 +3,34 @@
 //minor help from SpectralFlame, and Razenpok
 //I hope this tool is useful! :)
 
+//patch notes: (maybe move these somewhere visible on the main page later)
+
+/*
+
+v1.01: make custom weights save on refresh, add description of weights to help tooltip
+v1.00: release
+
+*/
+
 let save;
 
 let VMWeight = 12;
 let XPWeight = 11.25;
+
+if (localStorage.getItem("VMWeight") === null) {
+	localStorage.setItem("VMWeight", 12)
+} else {
+	VMWeight = parseFloat(localStorage.getItem("VMWeight"))
+	if (VMWeight !== 12) document.getElementById("VMInput").value = VMWeight
+}
+if (localStorage.getItem("XPWeight") === null) {
+	XPWeight = localStorage.getItem("XPWeight")
+	localStorage.setItem("XPWeight", 11.25)
+} else {
+	XPWeight = parseFloat(localStorage.getItem("XPWeight"))
+	if (XPWeight !== 11.25) document.getElementById("XPInput").value = XPWeight
+}
+
 let hasE4 = false;
 let hasE5 = false;
 let hasCC =  false;
@@ -295,6 +319,7 @@ function updateWeight(type) {
 	if (save) {
 		calculate(true)
 	}
+	if (isNumeric(document.getElementById(type+"Input").value)) localStorage.setItem(type+"Weight", parseFloat(document.getElementById(type+"Input").value))
 }
 
 function updateCheckboxes() {

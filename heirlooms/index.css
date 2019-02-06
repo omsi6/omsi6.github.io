@@ -80,8 +80,9 @@ a:hover, a:active {
     display: none;
     text-align: left;
     background-color: #111111;
-    padding: 1.5rem;
-    width: 300px;
+	padding: 1.5rem;
+	margin-left: -191px;
+    width: 400px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     right: -4px;
     color: #FFF;
