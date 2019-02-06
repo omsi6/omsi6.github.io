@@ -13,7 +13,8 @@
             * Dark Ritual and Imbue Mind now display their current soulstone cost on their respective action tooltips.<br>
             * Reworked the buff display to allow for user limiting of the number of action completions for buff actions. The left number is your current amount, the right number is the amount you will stop being able to start the action at. You can change the right number, but you can not increase it past the hard cap.<br>
             * Fixed a horizontal scrollbar appearing on the action list in certain cases.<br>
-            * There is now a fancy themed vertical scrollbar on the action list for browsers that support it. (Chrome, Safari, Opera, and a slightly worse looking one in Firefox)
+            * There is now a fancy themed vertical scrollbar on the action list for browsers that support it. (Chrome, Safari, Opera, and a slightly worse looking one in Firefox)<br>
+            * Reworded reputation requirements on certain actions to prevent confusion.
         ]]></version>
             <version verNum=".87"><![CDATA[
             <b> January 16th, 2019 - January 29th</b>
