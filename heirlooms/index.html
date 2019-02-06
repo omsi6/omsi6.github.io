@@ -22,7 +22,7 @@
 			</div>
 		</p>
 		<div style="display: flex; flex-direction: column;">
-			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" style="height: 26px; width:313px; max-height: 300px; max-width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
+			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()" style="height: 26px; width:313px; max-height: 300px; max-width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
 			<button onclick="calculate()" style="width:313px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
 			<div>
 				<input placeholder="VM weight (default 12)" id="VMInput" type="number" spellcheck="false" autocomplete="off" oninput="updateWeight('VM')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
@@ -178,7 +178,7 @@
 	</div>
 
 	<footer id="footer">
-		<a href="https://omsi6.github.io/heirlooms/index.js">Heirlooms v1.02</a>
+		<a href="https://omsi6.github.io/heirlooms/index.js">Heirlooms v1.03</a>
 	</footer>
 
 	<script src="lz-string.js"></script>
