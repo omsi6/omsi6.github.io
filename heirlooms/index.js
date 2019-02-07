@@ -7,6 +7,7 @@
 
 /*
 
+v1.04 fix floating point errors being displayed
 v1.03 make calculation happen automatically on save input
 v1.02 make save input clear on input focus, fix plagued heirloom animation
 v1.01: make custom weights save on refresh, add description of weights to help tooltip
@@ -497,8 +498,9 @@ function calculate(manualInput) {
 	for (let i=0; i<5; i++) {
 		if (startingShield.mods[i]) {
 			if (startingShield.mods[i][0] === "empty") document.getElementById("shieldOldMod"+i).textContent = "Empty";
-			else document.getElementById("shieldOldMod"+i).textContent = startingShield.mods[i][1] + "% " + modNames[startingShield.mods[i][0]];
+			else document.getElementById("shieldOldMod"+i).textContent = parseFloat(startingShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingShield.mods[i][0]];
 			document.getElementById("shieldOldModContainer"+i).style.opacity = 1;
+			console.log(startingShield.mods[i][1])
 		}
 		else {
 			document.getElementById("shieldOldMod"+i).textContent = "N/A";
@@ -508,7 +510,7 @@ function calculate(manualInput) {
 	for (let i=0; i<5; i++) {
 		if (startingStaff.mods[i]) {
 			if (startingStaff.mods[i][0] === "empty") document.getElementById("staffOldMod"+i).textContent = "Empty";
-			else document.getElementById("staffOldMod"+i).textContent = startingStaff.mods[i][1] + "% " + modNames[startingStaff.mods[i][0]];
+			else document.getElementById("staffOldMod"+i).textContent = parseFloat(startingStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingStaff.mods[i][0]];
 			document.getElementById("staffOldModContainer"+i).style.opacity = 1;
 		}
 		else {
@@ -521,7 +523,7 @@ function calculate(manualInput) {
 	for (let i=0; i<5; i++) {
 		if (newShield.mods[i]) {
 			if (newShield.mods[i][0] === "empty") document.getElementById("shieldNewMod"+i).textContent = "Empty";
-			else document.getElementById("shieldNewMod"+i).textContent = newShield.mods[i][1] + "% " + modNames[newShield.mods[i][0]];
+			else document.getElementById("shieldNewMod"+i).textContent = parseFloat(newShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newShield.mods[i][0]];
 			document.getElementById("shieldNewModContainer"+i).style.opacity = 1;
 		}
 		else {
@@ -532,7 +534,7 @@ function calculate(manualInput) {
 	for (let i=0; i<5; i++) {
 		if (newStaff.mods[i]) {
 			if (newStaff.mods[i][0] === "empty") document.getElementById("staffNewMod"+i).textContent = "Empty";
-			else document.getElementById("staffNewMod"+i).textContent = newStaff.mods[i][1] + "% " + modNames[newStaff.mods[i][0]];
+			else document.getElementById("staffNewMod"+i).textContent = parseFloat(newStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newStaff.mods[i][0]];
 			document.getElementById("staffNewModContainer"+i).style.opacity = 1;
 		}
 		else {
