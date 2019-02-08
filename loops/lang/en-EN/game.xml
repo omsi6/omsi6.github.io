@@ -6,8 +6,15 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".89"><![CDATA[
+            <b> February 7th, 2019 - The current date</b>
+            <b> v0.89 - "Cobwebs in the corner."</b><br>
+            * Fixed the stat radar exp/talent bars all being stacked on top of one another<br>
+            * Added an input box in the options that allows you to adjust the update rate of the game. This shouldn't affect your rate of progress, but there's a chance it might have a very small effect. It will increase your performance when reduced below the default of 50.<br>
+            * Stat percentages on actions tooltips are now always listed in the same order as the stats on the left side of the screen.
+        ]]></version>
             <version verNum=".88"><![CDATA[
-            <b> January 29th, 2019 - The current date</b>
+            <b> January 29th, 2019 - February 7th, 2019</b>
             <b> v0.88 - "Almost spring cleaning."</b><br>
             * Dark Ritual and Imbue Mind now have hard caps on the amount buffs you can get from them.<br>
             * Dark Ritual and Imbue Mind now display their current soulstone cost on their respective action tooltips.<br>
@@ -175,6 +182,7 @@
                 your game is freezing frequently please disable for this page.
             </adblock_warning>
             <pause_audio_cue>Ping on pause</pause_audio_cue>
+            <update_rate>Updates per second:</update_rate>
         </options>
     </menu>
     <tutorial><![CDATA[

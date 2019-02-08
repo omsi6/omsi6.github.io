@@ -29,6 +29,7 @@ function View() {
         this.updateTeamCombat();
     };
 
+    this.statLocs = [{x:165, y:43}, {x:270, y:79}, {x:325, y:170}, {x:306, y:284}, {x:225, y:352}, {x:102, y:352}, {x:26, y:284}, {x:2, y:170}, {x:56, y:79}];
     this.createStats = function() {
         statGraph.init();
         let statContainer = document.getElementById("statContainer");
@@ -38,8 +39,9 @@ function View() {
         let totalStatDiv = "";
         for(let i = 0; i < statList.length; i++) {
             let stat = statList[i];
+            let loc = this.statLocs[i];
             totalStatDiv +=
-                "<div class='statRadarContainer showthat' onmouseover='view.showStat(\""+stat+"\")'>" +
+                "<div class='statRadarContainer showthat' style='left:"+loc.x+"px;top:"+loc.y+"px;' onmouseover='view.showStat(\""+stat+"\")'>" +
                     "<div class='statLabelContainer'>" +
                         "<div class='medium bold' style='margin-left:18px;margin-top:5px;'>"+_txt("stats>"+stat+">long_form")+"</div>" +
                         "<div style='color:#737373;' class='statNum'><div class='medium' id='stat"+stat+"ss'></div></div>" +
@@ -762,11 +764,16 @@ function View() {
     this.createTownAction = function(action) {
         let actionStats = "";
         let keyNames = Object.keys(action.stats);
-        for(let i = 0; i < keyNames.length; i++) {
-            let statName = keyNames[i];
-            let statLabel = _txt("stats>"+statName+">short_form");
-            actionStats += "<div class='bold'>" + statLabel + "</div> " + (action.stats[statName]*100)+"%<br>";
+        for (let i=0; i<9; i++) {
+            for (let l = 0; l < keyNames.length; l++) {
+                if (statList[i] === keyNames[l]) {
+                    let statName = keyNames[l];
+                    let statLabel = _txt("stats>"+statName+">short_form");
+                    actionStats += "<div class='bold'>" + statLabel + "</div> " + (action.stats[statName]*100)+"%<br>";
+                }
+            }
         }
+
         let extraImage = "";
         let extraImagePositions = ["margin-top:17px;margin-left:5px;", "margin-top:17px;margin-left:-55px;", "margin-top:0px;margin-left:-55px;", "margin-top:0px;margin-left:5px;"]
         if(action.affectedBy) {
