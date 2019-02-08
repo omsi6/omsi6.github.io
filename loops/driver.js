@@ -1,6 +1,7 @@
 'use strict';
 
 let gameSpeed = 1;
+let baseManaPerSecond = 50;
 
 let curTime = new Date();
 let gameTicksLeft = 0;
@@ -21,6 +22,10 @@ function getSpeedMult(zone) {
     return speedMult;
 }
 
+function getActualGameSpeed() {
+    return gameSpeed * getSpeedMult() * bonusSpeed;
+}
+
 function tick() {
     let newTime = new Date();
     gameTicksLeft += newTime - curTime;
@@ -33,7 +38,7 @@ function tick() {
     }
     prevState.stats = JSON.parse(JSON.stringify(stats));
 
-    while (gameTicksLeft > (1000 / 50)) {
+    while (gameTicksLeft > (1000 / baseManaPerSecond)) {
         if(gameTicksLeft > 2000) {
             window.fps /= 2;
             console.warn('too fast! (${gameTicksLeft})');
@@ -65,7 +70,7 @@ function tick() {
         if(timer % (300*gameSpeed) === 0) {
             save();
         }
-        gameTicksLeft -= ((1000 / 50) / (gameSpeed * getSpeedMult()) / bonusSpeed);
+        gameTicksLeft -= ((1000 / baseManaPerSecond) / getActualGameSpeed());
         if(bonusSpeed > 1) {
             addOffline(-1 * (gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed)) / getSpeedMult());
         }

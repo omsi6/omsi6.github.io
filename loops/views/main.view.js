@@ -169,7 +169,7 @@ function View() {
         document.getElementById("timeBar").style.width = (100 - timer / timeNeeded * 100) + "%";
         document.getElementById("timer").textContent =
             intToString((timeNeeded - timer), 1) + " | " +
-            intToString((timeNeeded - timer)/50, 2) + "s";
+            intToString((timeNeeded - timer)/50/getActualGameSpeed(), 2) + "s";
     };
     this.updateTotalTicks = function() {
         document.getElementById("totalTicks").textContent = actions.completedTicks;
