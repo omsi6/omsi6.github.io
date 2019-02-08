@@ -417,9 +417,11 @@ function handleDirectActionDragStart(event, actionName, townNum, actionVarName, 
     event.dataTransfer.setData("actionData", serialData);
 }
 
+
 function handleDirectActionDragEnd(actionVarName) {
     document.getElementById("container"+actionVarName).children[2].style.display = ""
 }
+
 
 function handleDragOver(event) {
     event.preventDefault();
