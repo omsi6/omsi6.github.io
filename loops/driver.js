@@ -409,11 +409,19 @@ function handleDragStart(event) {
     event.dataTransfer.setData('text/html', index);
 }
 
-function handleDirectActionDragStart(event, actionName, townNum, isTravelAction) {
+function handleDirectActionDragStart(event, actionName, townNum, actionVarName, isTravelAction) {
+    if (isTravelAction) document.getElementById("container"+actionVarName).children[3].style.display = "none"
+    else document.getElementById("container"+actionVarName).children[2].style.display = "none"
     var actionData = {_actionName: actionName, _townNum: townNum, _isTravelAction: isTravelAction};
     var serialData = JSON.stringify(actionData);
     event.dataTransfer.setData("actionData", serialData);
 }
+
+
+function handleDirectActionDragEnd(actionVarName) {
+    document.getElementById("container"+actionVarName).children[2].style.display = ""
+}
+
 
 function handleDragOver(event) {
     event.preventDefault();

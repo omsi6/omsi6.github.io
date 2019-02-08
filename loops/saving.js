@@ -260,7 +260,6 @@ function load() {
         }
     }
 
-    recalcInterval(50);
     pauseGame();
     view.initalize();
 
@@ -288,6 +287,8 @@ function load() {
 
     document.getElementById("repeatLastAction").checked = toLoad.repeatLast;
     document.getElementById("audioCueToggle").checked = toLoad.pingOnPause !== undefined ? toLoad.pingOnPause : false;
+    if (toLoad.updateRate) document.getElementById("updateRate").value = toLoad.updateRate;
+    else document.getElementById("updateRate").value = 50;
     storyShowing = toLoad.storyShowing !== undefined ? toLoad.storyShowing : 0;
     storyMax = toLoad.storyMax !== undefined ? toLoad.storyMax : 0;
 
@@ -313,6 +314,7 @@ function load() {
     view.updateNextActions();
     view.updateMultiPartActions();
     view.update();
+    recalcInterval(toLoad.updateRate);
 
 }
 
@@ -390,6 +392,8 @@ function save() {
     toSave.loadoutnames = loadoutnames
     toSave.repeatLast = document.getElementById("repeatLastAction").checked;
     toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
+    if (parseFloat(document.getElementById("updateRate").value) > 0) toSave.updateRate = parseFloat(document.getElementById("updateRate").value);
+    else toSave.updateRate = 50;
     toSave.storyShowing = storyShowing;
     toSave.storyMax = storyMax;
     toSave.date = new Date();

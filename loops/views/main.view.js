@@ -775,7 +775,7 @@ function View() {
             }
         }
         const totalDivText =
-            "<div id='container"+action.varName+"' class='actionContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", false)' onclick='addActionToList(\""+action.name+"\", "+action.townNum+")'>" +
+            "<div id='container"+action.varName+"' class='actionContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", \""+action.varName+"\", false)' ondragend='handleDirectActionDragEnd(\""+action.varName+"\")' onclick='addActionToList(\""+action.name+"\", "+action.townNum+")'>" +
                 action.label + "<br>" +
                 "<div style='position:relative'>" +
                     "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'>" +
@@ -806,7 +806,7 @@ function View() {
         }
 
         const totalDivText =
-            "<div id='container"+action.varName+"' class='travelContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", true)' onclick='addActionToList(\""+action.name+"\", "+action.townNum+", true)'>" +
+            "<div id='container"+action.varName+"' class='travelContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", \""+action.varName+"\", true)' ondragend='handleDirectActionDragEnd(\""+action.varName+"\")' onclick='addActionToList(\""+action.name+"\", "+action.townNum+", true)'>" +
             action.label + "<br>" +
             "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'><br>" +
             "<div class='showthis' draggable='false'>" +
