@@ -31,6 +31,7 @@ function tick() {
     let newTime = new Date();
     gameTicksLeft += newTime - curTime;
     radarUpdateTime += newTime - curTime;
+    let delta = newTime - curTime
     curTime = newTime;
     if(stop) {
         addOffline(gameTicksLeft * offlineRatio);
@@ -73,9 +74,10 @@ function tick() {
             save();
         }
         gameTicksLeft -= ((1000 / baseManaPerSecond) / getActualGameSpeed());
-        if(bonusSpeed > 1) {
-            addOffline(-1 * (gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed)) / getSpeedMult());
-        }
+    }
+
+    if(bonusSpeed > 1) {
+        addOffline(-Math.abs(delta * (bonusSpeed - 1)));
     }
 
     if(radarUpdateTime > 1000) {
