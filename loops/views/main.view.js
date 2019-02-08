@@ -167,10 +167,10 @@ function View() {
         document.getElementById("timeBar").style.width = (100 - timer / timeNeeded * 100) + "%";
         document.getElementById("timer").textContent =
             intToString((timeNeeded - timer), 1) + " | " +
-            intToString((timeNeeded - timer)/50, 2) + "s";
+            intToString((timeNeeded - timer)/50/getActualGameSpeed(), 2) + _txt("time_controls>seconds");
     };
     this.updateTotalTicks = function() {
-        document.getElementById("totalTicks").textContent = actions.completedTicks;
+        document.getElementById("totalTicks").textContent = actions.completedTicks + ' | ' + intToString(timeCounter, 2)+ _txt("time_controls>seconds");
     };
     this.updateGold = function() {
         document.getElementById("gold").textContent = gold;
@@ -323,7 +323,8 @@ function View() {
                     "<div class='bold'>"+_txt("actions>current_action>mana_original")+"</div> <div id='action"+i+"ManaOrig'>0</div><br>" +
                     "<div class='bold'>"+_txt("actions>current_action>mana_used")+"</div> <div id='action"+i+"ManaUsed'>0</div><br>" +
                     "<div class='bold'>"+_txt("actions>current_action>mana_remaining")+"</div> <div id='action"+i+"Remaining'></div><br>" +
-                    "<div class='bold'>"+_txt("actions>current_action>gold_remaining")+"</div> <div id='action"+i+"GoldRemaining'></div><br><br>" +
+                    "<div class='bold'>"+_txt("actions>current_action>gold_remaining")+"</div> <div id='action"+i+"GoldRemaining'></div><br>" +
+                    "<div class='bold'>"+_txt("actions>current_action>time_spent")+"</div> <div id='action"+i+"TimeSpent'></div><br><br>" +
                     "<div id='action"+i+"ExpGain'></div>" +
                     "<div id='action"+i+"HasFailed' style='display:none'>" +
                         "<div class='bold'>"+_txt("actions>current_action>failed_attempts")+"</div> <div id='action"+i+"Failed'>0</div><br>" +
@@ -360,10 +361,13 @@ function View() {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
         }
+
         document.getElementById("action" + index + "ManaOrig").innerHTML = action.manaCost() * action.loops + "";
         document.getElementById("action" + index + "ManaUsed").innerHTML = action.manaUsed + "";
         document.getElementById("action"+index+"Remaining").innerHTML = (timeNeeded - timer)+"";
         document.getElementById("action"+index+"GoldRemaining").innerHTML = (gold)+"";
+        document.getElementById("action" + index + "TimeSpent").innerHTML = intToString(action.timeSpent, 2) + _txt("time_controls>seconds");
+
         let statExpGain = "";
         let expGainDiv = document.getElementById("action"+index+"ExpGain");
         while (expGainDiv.firstChild) {

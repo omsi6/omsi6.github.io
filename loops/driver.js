@@ -1,10 +1,12 @@
 'use strict';
 
 let gameSpeed = 1;
+let baseManaPerSecond = 50;
 
 let curTime = new Date();
 let gameTicksLeft = 0;
 let radarUpdateTime = 0;
+let timeCounter = 0;
 
 function getSpeedMult(zone) {
     if (isNaN(zone)) zone = curTown;
@@ -21,6 +23,10 @@ function getSpeedMult(zone) {
     return speedMult;
 }
 
+function getActualGameSpeed() {
+    return gameSpeed * getSpeedMult() * bonusSpeed;
+}
+
 function tick() {
     let newTime = new Date();
     gameTicksLeft += newTime - curTime;
@@ -33,7 +39,7 @@ function tick() {
     }
     prevState.stats = JSON.parse(JSON.stringify(stats));
 
-    while (gameTicksLeft > (1000 / 50)) {
+    while (gameTicksLeft > (1000 / baseManaPerSecond)) {
         if(gameTicksLeft > 2000) {
             window.fps /= 2;
             console.warn('too fast! (${gameTicksLeft})');
@@ -44,6 +50,7 @@ function tick() {
             return;
         }
         timer++;
+        timeCounter += 1/baseManaPerSecond/getActualGameSpeed();
 
         actions.tick();
         for(let i = 0; i < dungeons.length; i++) {
@@ -65,7 +72,7 @@ function tick() {
         if(timer % (300*gameSpeed) === 0) {
             save();
         }
-        gameTicksLeft -= ((1000 / 50) / (gameSpeed * getSpeedMult()) / bonusSpeed);
+        gameTicksLeft -= ((1000 / baseManaPerSecond) / getActualGameSpeed());
         if(bonusSpeed > 1) {
             addOffline(-1 * (gameTicksLeft * ((bonusSpeed - 1)/bonusSpeed)) / getSpeedMult());
         }
@@ -132,6 +139,7 @@ function prepareRestart() {
 function restart() {
     shouldRestart = false;
     timer = 0;
+    timeCounter = 0;
     timeNeeded = timeNeededInitial;
     document.title = "Idle Loops";
     if(initialGold) { //debugging only
@@ -305,10 +313,19 @@ function saveList() {
         return;
     }
     if (isNaN(document.getElementById("amountCustom").value)) {
-        if (document.getElementById("amountCustom").value.length > 30) document.getElementById("amountCustom").value = "30 Letter Max"
-        else loadoutnames[curLoadout-1] = document.getElementById("amountCustom").value
+        if (document.getElementById("amountCustom").value.length > 30) {
+            document.getElementById("amountCustom").value = "30 Letter Max";
+        } else {
+            loadoutnames[curLoadout-1] = document.getElementById("amountCustom").value;
+        }
     } else {
-        document.getElementById("amountCustom").value = "Enter a name!"
+        // If the loadout has already been saved under a non-numeric name
+        // and the user tries to save under a numeric name, the loadout will
+        // be saved under an old name.
+        if (!isNaN(loadoutnames[curLoadout-1])) {
+            // If both the old AND the new names are numeric, then we insist on a non-numeric name.
+            document.getElementById("amountCustom").value = "Enter a name!";
+        }
     }
     loadouts[curLoadout] = copyArray(actions.next);
     save();

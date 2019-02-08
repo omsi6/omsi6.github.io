@@ -275,6 +275,7 @@
         <pause_on_failed_loop>Pause on failed loop</pause_on_failed_loop>
         <restart_button>Restart</restart_button>
         <restart_text>Resets the loop. Not a hard reset.</restart_text>
+        <seconds>s</seconds>
         <talents_button>Talents</talents_button>
         <story_title>Story</story_title>
         <stories>
@@ -554,6 +555,7 @@
             <mana_used>Mana Used</mana_used>
             <mana_remaining>Mana Remaining</mana_remaining>
             <gold_remaining>Gold Remaining</gold_remaining>
+            <time_spent>Time spent</time_spent>
             <failed_attempts>Failed Attempts</failed_attempts>
             <error>Error</error>
         </current_action>
