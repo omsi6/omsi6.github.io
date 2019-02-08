@@ -49,7 +49,7 @@ a:hover, a:active {
 	text-decoration: underline;
 }
 
-.help{
+.help {
 	position: relative;
     top: -30px;
     right: -72px;
@@ -63,6 +63,7 @@ a:hover, a:active {
     line-height: 20px;
 	cursor: default;
 	z-index: 999;
+	text-shadow: none;
 }
 
 .help:before{
@@ -88,19 +89,8 @@ a:hover, a:active {
     color: #FFF;
     font-size: 13px;
 	line-height: 1.4;
-	z-index: 999;
+	z-index: 9999;
 	border: 0.2rem solid #555;
-}
-
-.help p:before{
-    position: absolute;
-    content: '';
-    width:0;
-    height: 0;
-    border:6px solid transparent;
-    border-bottom-color:#1E2021;
-    right:10px;
-    top:-12px;
 }
 
 .help p:after{
@@ -132,6 +122,8 @@ a:hover, a:active {
 }
 
 .heirloomContainer {
+	display: flex;
+	flex-direction: column;
 	height: 26rem;
 	width: 37rem;
 	font-size: 1.9rem;
@@ -144,7 +136,9 @@ a:hover, a:active {
 }
 
 .heirloomContainerTopRow {
-	margin-bottom: -2.3rem;
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 1rem;
 }
 
 .heirloomIconContainer {
@@ -177,9 +171,7 @@ a:hover, a:active {
 
 .heirloomName {
 	font-size: 2rem;
-	position:relative;
-	left: 6rem;
-	top: -3rem;
+	line-height: 4rem;
 }
 
 .heirloomMod {
@@ -259,7 +251,7 @@ a:hover, a:active {
 	background-color: initial;
 }
 
-.heirloomRare7{
+.heirloomRare7, .heirloomRare7Anim {
 	color: #730000;
 	text-shadow: 
 			1px 1px 2px #ff9326, 
@@ -272,12 +264,12 @@ a:hover, a:active {
 	background: linear-gradient(135deg,  #000000 0%, #400000 50%, #100000 100%); 
 }
 
-.heirloomRare7 .heirloomIconContainer {
+.heirloomRare7Anim .heirloomIconContainer {
 	color: #730000;
 	animation: heirloomRare7Animated 7s infinite;
 }
 
-.heirloomRare7 .heirloomMod:hover {
+.heirloomRare7 .heirloomMod:hover, .heirloomRare7Anim .heirloomMod:hover {
 	border: 0.2rem solid #8c0000;
 }
 
@@ -285,7 +277,7 @@ a:hover, a:active {
 	background-color: initial;
 }
 
-.heirloomRare8{
+.heirloomRare8, .heirloomRare8Anim {
 	color: #0e5a07;
 	text-shadow: 
 			1px 1px 2px rgba(15, 158, 74, 0.6), 
@@ -295,10 +287,14 @@ a:hover, a:active {
 
 .heirloomRare8 .heirloomIconContainer {
 	color: #083604;
+}
+
+.heirloomRare8Anim .heirloomIconContainer {
+	color: #083604;
 	animation: heirloomRare8Animated 30s infinite;
 }
 
-.heirloomRare8 .heirloomMod:hover, .heirloomRare8.rarityBdBox{
+.heirloomRare8 .heirloomMod:hover, .heirloomRare8Anim .heirloomMod:hover, .heirloomRare8.rarityBdBox{
 	border: 0.2rem solid #0e5a07;
 }
 

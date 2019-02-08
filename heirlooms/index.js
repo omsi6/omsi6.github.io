@@ -7,6 +7,7 @@
 
 /*
 
+v1.05 make heirloom animations disabled if save has them turned off, display additional information about each heirloom in a ? tooltip in the corner of heirloom containers
 v1.04 fix floating point errors being displayed
 v1.03 make calculation happen automatically on save input
 v1.02 make save input clear on input focus, fix plagued heirloom animation
@@ -398,6 +399,10 @@ function prettify(number) {
 	return prettifySub(number) + suffix;
 }
 
+function prettifyCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function calculate(manualInput) {
 	save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value))
 
@@ -474,10 +479,20 @@ function calculate(manualInput) {
 	document.getElementById("staffNewName").textContent  = startingStaff.name + " (New)";
 
 	//add rarity styles to equip divs
-	document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity;
-	document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity;
-	document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity;
-	document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity;
+	if (save.options.menu.showHeirloomAnimations.enabled && startingShield.rarity >= 7) {
+		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity+"Anim";
+		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity+"Anim";
+	} else {
+		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity;
+		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity;
+	}
+	if (save.options.menu.showHeirloomAnimations.enabled && startingStaff.rarity >= 7) {
+		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity+"Anim";
+		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity+"Anim";
+	} else {
+		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity;
+		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity;
+	}
 
 	//add upg amounts
 	for (let i=0; i<5; i++) {
@@ -494,53 +509,112 @@ function calculate(manualInput) {
 		}
 	}
 
+
+
 	//add current stats to old divs
+	let infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
 	for (let i=0; i<5; i++) {
 		if (startingShield.mods[i]) {
 			if (startingShield.mods[i][0] === "empty") document.getElementById("shieldOldMod"+i).textContent = "Empty";
 			else document.getElementById("shieldOldMod"+i).textContent = parseFloat(startingShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingShield.mods[i][0]];
 			document.getElementById("shieldOldModContainer"+i).style.opacity = 1;
-			console.log(startingShield.mods[i][1])
+		if (modsToWeigh.includes(startingShield.mods[i][0])) {
+			infoText += fancyModNames[startingShield.mods[i][0]]+":<ul>"
+			infoText += "<li>Cost: "+prettifyCommas(getUpgCost(startingShield.mods[i][0], startingShield))+"</li>"
+			infoText += "<li>Gain: "+getUpgGain(startingShield.mods[i][0], startingShield)+"</li>"
+			infoText += "<li>Efficiency: "+getUpgEff(startingShield.mods[i][0], startingShield)+"</li>"
+			infoText += "</ul>"
+		}
 		}
 		else {
 			document.getElementById("shieldOldMod"+i).textContent = "N/A";
 			document.getElementById("shieldOldModContainer"+i).style.opacity = 0;
 		}
 	}
+	infoText += "</ul>"
+	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
+		document.getElementById("shieldOldInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
+	} else {
+		document.getElementById("shieldOldInfo").innerHTML = infoText
+	}
+
+	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
 	for (let i=0; i<5; i++) {
 		if (startingStaff.mods[i]) {
 			if (startingStaff.mods[i][0] === "empty") document.getElementById("staffOldMod"+i).textContent = "Empty";
 			else document.getElementById("staffOldMod"+i).textContent = parseFloat(startingStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingStaff.mods[i][0]];
 			document.getElementById("staffOldModContainer"+i).style.opacity = 1;
+			if (modsToWeigh.includes(startingStaff.mods[i][0])) {
+				infoText += fancyModNames[startingStaff.mods[i][0]]+":<ul>"
+				infoText += "<li>Cost: "+prettifyCommas(getUpgCost(startingStaff.mods[i][0], startingStaff))+"</li>"
+				infoText += "<li>Gain: "+getUpgGain(startingStaff.mods[i][0], startingStaff)+"</li>"
+				infoText += "<li>Efficiency: "+getUpgEff(startingStaff.mods[i][0], startingShield, startingStaff)+"</li>"
+				infoText += "</ul>"
+			}
 		}
 		else {
 			document.getElementById("staffOldMod"+i).textContent = "N/A";
 			document.getElementById("staffOldModContainer"+i).style.opacity = 0;
 		}
 	}
+	infoText += "</ul>"
+	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
+		document.getElementById("staffOldInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
+	} else {
+		document.getElementById("staffOldInfo").innerHTML = infoText
+	}
 
 	//add new stats to new divs
+	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
 	for (let i=0; i<5; i++) {
 		if (newShield.mods[i]) {
 			if (newShield.mods[i][0] === "empty") document.getElementById("shieldNewMod"+i).textContent = "Empty";
 			else document.getElementById("shieldNewMod"+i).textContent = parseFloat(newShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newShield.mods[i][0]];
 			document.getElementById("shieldNewModContainer"+i).style.opacity = 1;
+			if (modsToWeigh.includes(newShield.mods[i][0])) {
+				infoText += fancyModNames[newShield.mods[i][0]]+":<ul>"
+				infoText += "<li>Cost: "+prettifyCommas(getUpgCost(newShield.mods[i][0], newShield))+"</li>"
+				infoText += "<li>Gain: "+getUpgGain(newShield.mods[i][0], newShield)+"</li>"
+				infoText += "<li>Efficiency: "+getUpgEff(newShield.mods[i][0], newShield)+"</li>"
+				infoText += "</ul>"
+			}
 		}
 		else {
 			document.getElementById("shieldNewMod"+i).textContent = "N/A";
 			document.getElementById("shieldNewModContainer"+i).style.opacity = 0;
 		}
 	}
+	infoText += "</ul>"
+	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
+		document.getElementById("shieldNewInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
+	} else {
+		document.getElementById("shieldNewInfo").innerHTML = infoText
+	}
+
+	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
 	for (let i=0; i<5; i++) {
 		if (newStaff.mods[i]) {
 			if (newStaff.mods[i][0] === "empty") document.getElementById("staffNewMod"+i).textContent = "Empty";
 			else document.getElementById("staffNewMod"+i).textContent = parseFloat(newStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newStaff.mods[i][0]];
 			document.getElementById("staffNewModContainer"+i).style.opacity = 1;
+			if (modsToWeigh.includes(newStaff.mods[i][0])) {
+				infoText += fancyModNames[newStaff.mods[i][0]]+":<ul>"
+				infoText += "<li>Cost: "+prettifyCommas(getUpgCost(newStaff.mods[i][0], newStaff))+"</li>"
+				infoText += "<li>Gain: "+getUpgGain(newStaff.mods[i][0], newStaff)+"</li>"
+				infoText += "<li>Efficiency: "+getUpgEff(newStaff.mods[i][0], newShield, newStaff)+"</li>"
+				infoText += "</ul>"
+			}
 		}
 		else {
 			document.getElementById("staffNewMod"+i).textContent = "N/A";
 			document.getElementById("staffNewModContainer"+i).style.opacity = 0;
 		}
+	}
+	infoText += "</ul>"
+	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
+		document.getElementById("staffNewInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
+	} else {
+		document.getElementById("staffNewInfo").innerHTML = infoText
 	}
 
 	//animation
@@ -553,4 +627,9 @@ function calculate(manualInput) {
 
 	document.getElementById("shieldOldContainer").style.transform = ""
 	document.getElementById("staffOldContainer").style.transform = ""
+
+	document.getElementById("shieldOld?").style.display = "block"
+	document.getElementById("shieldNew?").style.display = "block"
+	document.getElementById("staffOld?").style.display = "block"
+	document.getElementById("staffNew?").style.display = "block"
 }
