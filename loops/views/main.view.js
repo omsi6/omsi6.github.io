@@ -771,17 +771,17 @@ function View() {
         let extraImagePositions = ["margin-top:17px;margin-left:5px;", "margin-top:17px;margin-left:-55px;", "margin-top:0px;margin-left:-55px;", "margin-top:0px;margin-left:5px;"]
         if(action.affectedBy) {
             for(let i = 0; i < action.affectedBy.length; i++) {
-                extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' style='position:absolute;"+extraImagePositions[i]+"'>";
+                extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' draggable='false' style='position:absolute;"+extraImagePositions[i]+"'>";
             }
         }
         const totalDivText =
-            "<div id='container"+action.varName+"' class='actionContainer showthat' onclick='addActionToList(\""+action.name+"\", "+action.townNum+")'>" +
+            "<div id='container"+action.varName+"' class='actionContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", false)' onclick='addActionToList(\""+action.name+"\", "+action.townNum+")'>" +
                 action.label + "<br>" +
                 "<div style='position:relative'>" +
-                    "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon'>" +
+                    "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'>" +
                     extraImage +
                 "</div>" +
-                "<div class='showthis'>" +
+                "<div class='showthis' draggable='false'>" +
                     action.tooltip + "<span id='goldCost"+action.varName+"'></span>" +
                     ((typeof(action.tooltip2) === "string") ? action.tooltip2 : "")+"<br>"+
                     actionStats +
@@ -806,10 +806,10 @@ function View() {
         }
 
         const totalDivText =
-            "<div id='container"+action.varName+"' class='travelContainer showthat' onclick='addActionToList(\""+action.name+"\", "+action.townNum+", true)'>" +
+            "<div id='container"+action.varName+"' class='travelContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", true)' onclick='addActionToList(\""+action.name+"\", "+action.townNum+", true)'>" +
             action.label + "<br>" +
-            "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon'><br>" +
-            "<div class='showthis'>" +
+            "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'><br>" +
+            "<div class='showthis' draggable='false'>" +
             action.tooltip + "<br>" +
             actionStats +
             "<div class='bold'>"+_txt("actions>tooltip>mana_cost")+"</div> <div id='manaCost"+action.varName+"'>"+action.manaCost()+"</div><br>" +

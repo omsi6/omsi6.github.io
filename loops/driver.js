@@ -166,7 +166,7 @@ function restart() {
     // save();
 }
 
-function addActionToList(name, townNum, isTravelAction) {
+function addActionToList(name, townNum, isTravelAction, insertAtIndex) {
     for(let i = 0; i < towns[townNum].totalActionList.length; i++) {
         let action = towns[townNum].totalActionList[i];
         if(action.name === name) {
@@ -181,9 +181,9 @@ function addActionToList(name, townNum, isTravelAction) {
                 }
                 if(isTravelAction) {
                     actionTownNum = townNum+1;
-                    actions.addAction(name, 1);
+                    actions.addAction(name, 1, insertAtIndex);
                 } else {
-                    actions.addAction(name, addAmount);
+                    actions.addAction(name, addAmount, insertAtIndex);
                 }
             }
         }
@@ -409,6 +409,12 @@ function handleDragStart(event) {
     event.dataTransfer.setData('text/html', index);
 }
 
+function handleDirectActionDragStart(event, actionName, townNum, isTravelAction) {
+    var actionData = {_actionName: actionName, _townNum: townNum, _isTravelAction: isTravelAction};
+    var serialData = JSON.stringify(actionData);
+    event.dataTransfer.setData("actionData", serialData);
+}
+
 function handleDragOver(event) {
     event.preventDefault();
 }
@@ -417,7 +423,13 @@ function handleDragDrop(event) {
     let indexOfDroppedOverElement = event.target.getAttribute("data-index");
     dragExitUndecorate(indexOfDroppedOverElement);
     let initialIndex = event.dataTransfer.getData("text/html");
-    moveQueuedAction(initialIndex, indexOfDroppedOverElement);
+    if(initialIndex !== "") {
+        moveQueuedAction(initialIndex, indexOfDroppedOverElement);
+    }
+    else {
+        var actionData = JSON.parse(event.dataTransfer.getData("actionData"));
+        addActionToList(actionData._actionName, actionData._townNum, actionData._isTravelAction, indexOfDroppedOverElement);
+    }
 }
 
 function moveQueuedAction(initialIndex, resultingIndex) {
