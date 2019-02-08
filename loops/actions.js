@@ -20,6 +20,7 @@ function Actions() {
 
         curAction.ticks++;
         curAction.manaUsed++;
+        curAction.timeSpent += 1/baseManaPerSecond/getActualGameSpeed();
         if(curAction.loopStats) { //only for multi-part progress bars
             let segment = 0;
             let curProgress = towns[curAction.townNum][curAction.varName];
@@ -95,6 +96,7 @@ function Actions() {
         }
         if(curAction.allowed && getNumOnCurList(curAction.name) > curAction.allowed()) {
             curAction.ticks = 0;
+            curAction.timeSpent = 0;
             view.updateCurrentActionBar(this.currentPos);
             return undefined;
         }
@@ -155,6 +157,7 @@ function Actions() {
                 action.loopsLeft = action.loops;
                 action.ticks = 0;
                 action.manaUsed = 0;
+                action.timeSpent = 0;
             }
 
         } else {
@@ -170,6 +173,7 @@ function Actions() {
                 toAdd.loopsLeft = action.loops;
                 toAdd.ticks = 0;
                 toAdd.manaUsed = 0;
+                toAdd.timeSpent = 0;
 
                 this.current.push(toAdd);
             }

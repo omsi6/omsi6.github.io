@@ -6,6 +6,7 @@ let baseManaPerSecond = 50;
 let curTime = new Date();
 let gameTicksLeft = 0;
 let radarUpdateTime = 0;
+let timeCounter = 0;
 
 function getSpeedMult(zone) {
     if (isNaN(zone)) zone = curTown;
@@ -49,6 +50,7 @@ function tick() {
             return;
         }
         timer++;
+        timeCounter += 1/baseManaPerSecond/getActualGameSpeed();
 
         actions.tick();
         for(let i = 0; i < dungeons.length; i++) {
@@ -137,6 +139,7 @@ function prepareRestart() {
 function restart() {
     shouldRestart = false;
     timer = 0;
+    timeCounter = 0;
     timeNeeded = timeNeededInitial;
     document.title = "Idle Loops";
     if(initialGold) { //debugging only
