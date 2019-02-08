@@ -11,7 +11,9 @@
             <b> v0.89 - "Cobwebs in the corner."</b><br>
             * Fixed the stat radar exp/talent bars all being stacked on top of one another<br>
             * Added an input box in the options that allows you to adjust the update rate of the game. This shouldn't affect your rate of progress, but there's a chance it might have a very small effect. It will increase your performance when reduced below the default of 50.<br>
-            * Stat percentages on actions tooltips are now always listed in the same order as the stats on the left side of the screen.
+            * Stat percentages on actions tooltips are now always listed in the same order as the stats on the left side of the screen.<br>
+            * Added a time spent display for actions in the current action list.<br>
+            * You can now drag actions directly from the action options into your loop.
         ]]></version>
             <version verNum=".88"><![CDATA[
             <b> January 29th, 2019 - February 7th, 2019</b>
