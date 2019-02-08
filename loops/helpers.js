@@ -422,21 +422,29 @@ function roughSizeOfObject( object ) {
 }
 // modified from: https://stackoverflow.com/questions/879152/how-do-i-make-javascript-beep/13194087#13194087
 let beep = (function () {
-    let ctxClass = window.audioContext || window.AudioContext || window.AudioContext || window.webkitAudioContext;
-    let ctx = new ctxClass();
-    return function (duration) {
-        if (duration <= 0) return;
+    var ctxClass = window.audioContext ||window.AudioContext || window.AudioContext || window.webkitAudioContext
+    var ctx = new ctxClass();
+    return function (duration, type, finishedCallback) {
 
-        let osc = ctx.createOscillator();
-        osc.type = "sine";
+        duration = +duration;
+
+        // Only 0-4 are valid types.
+
+        if (typeof finishedCallback != "function") {
+            finishedCallback = function () {};
+        }
+
+        var osc = ctx.createOscillator();
 
         osc.connect(ctx.destination);
-        if (osc.noteOn) osc.noteOn(0);
-        if (osc.start) osc.start();
+        if (osc.noteOn) osc.noteOn(0); // old browsers
+        if (osc.start) osc.start(); // new browsers
 
         setTimeout(function () {
-            if (osc.noteOff) osc.noteOff(0);
-            if (osc.stop) osc.stop();
+            if (osc.noteOff) osc.noteOff(0); // old browsers
+            if (osc.stop) osc.stop(); // new browsers
+            finishedCallback();
         }, duration);
+
     };
 })();

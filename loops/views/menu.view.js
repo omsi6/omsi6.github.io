@@ -67,7 +67,7 @@ Views.registerView('menu',{
         html += Views.menu.htmlLocalizationMenu();
       html += _txt("menu>options>adblock_warning")+"<br>";
       html += "<input id='audioCueToggle' type='checkbox' /><label for='audioCueToggle'>"+_txt("menu>options>pause_audio_cue")+"</label><br>";
-      html += _txt("menu>options>update_rate")+"<input id='updateRate' type='number' value='50' style='width: 50px;' oninput='recalcInterval(this.value)' />"+"</label><br>";
+      html += _txt("menu>options>update_rate")+"<input id='updateRate' type='number' value='50' min='1' style='width: 50px;' oninput='recalcInterval(this.value)' />"+"</label><br>";
      html += "</div>";
      html += "</div>";
      return html;

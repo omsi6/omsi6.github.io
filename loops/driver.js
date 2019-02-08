@@ -104,6 +104,8 @@ function recalcInterval(fps) {
 
 function pauseGame() {
     stop = !stop;
+    view.updateTime()
+    view.updateCurrentActionBar(actions.currentPos)
     document.title = stop ? "*PAUSED* Idle Loops" : "Idle Loops";
     document.getElementById('pausePlay').innerHTML = _txt("time_controls>"+ (stop ? 'play_button' : 'pause_button'));
     if(!stop && (shouldRestart || timer >= timeNeeded)) {
@@ -114,6 +116,10 @@ function pauseGame() {
 function prepareRestart() {
     let curAction = actions.getNextValidAction();
     if(document.getElementById("pauseBeforeRestart").checked) {
+        if (document.getElementById("audioCueToggle").checked) {
+            beep(250);
+            setTimeout(function () {beep(250)},500)
+        }
         if(!curAction) {
             pauseGame();
         } else {
@@ -122,6 +128,10 @@ function prepareRestart() {
             pauseGame();
         }
     } else if(document.getElementById("pauseOnFailedLoop").checked) {
+        if (document.getElementById("audioCueToggle").checked) {
+            beep(250);
+            setTimeout(function () {beep(250)},500)
+        }
         if(actions.currentPos < actions.next.length-1) {
             if(!curAction) {
                 pauseGame();

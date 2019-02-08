@@ -13,7 +13,9 @@
             * Added an input box in the options that allows you to adjust the update rate of the game. This shouldn't affect your rate of progress, but there's a chance it might have a very small effect. It will increase your performance when reduced below the default of 50.<br>
             * Stat percentages on actions tooltips are now always listed in the same order as the stats on the left side of the screen.<br>
             * Added a time spent display for actions in the current action list.<br>
-            * You can now drag actions directly from the action options into your loop.
+            * You can now drag actions directly from the action options into your loop.<br>
+            * Fixed ping on pause not working.<br>
+            * Fixed incorrect formulas on the Dark Magic/Chronomancy tooltips.
         ]]></version>
             <version verNum=".88"><![CDATA[
             <b> January 29th, 2019 - February 7th, 2019</b>
@@ -435,12 +437,12 @@
         <dark_magic>
             <label>Dark Magic</label>
             <desc>Use various dark arts to help you harvest mana.</desc>
-            <desc2><![CDATA[Multiply the mana gain from Smash Pots and Wild Mana by (level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusDark'></div>x mana gains.]]></desc2>
+            <desc2><![CDATA[Multiply the mana gain from Smash Pots and Wild Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusDark'></div>x mana gains.]]></desc2>
         </dark_magic>
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Actions in all zones are (level / 60) ^ 0.25 times faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are (1 + level / 60) ^ 0.25 ^ 0.25 times faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
         </chronomancy>
         <pyromancy>
             <label>Pyromancy</label>
