@@ -15,7 +15,8 @@
             * Added a time spent display for actions in the current action list.<br>
             * You can now drag actions directly from the action options into your loop.<br>
             * Fixed ping on pause not working.<br>
-            * Fixed incorrect formulas on the Dark Magic/Chronomancy tooltips.
+            * Fixed incorrect formulas on the Dark Magic/Chronomancy tooltips.<br>
+            * Fixed soulstone costing actions not updating their tooltip cost upon completion.
         ]]></version>
             <version verNum=".88"><![CDATA[
             <b> January 29th, 2019 - February 7th, 2019</b>
@@ -771,8 +772,11 @@
             <label>Dark Ritual</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + witch knowledge / 100) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or below.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones. Currently sacrificing <span id="goldCostRitual">0</span> soulstones.
+            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + witch knowledge / 100) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or below.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 90% Thicket Explored and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+             soulstones.
+        ]]></tooltip2>
             <segment_names>
                 <name>Clear the Area</name>
                 <name>Prepare the Altar</name>
@@ -1148,8 +1152,11 @@
             <label>Imbue Mind</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices (20 * (imbuements+1)) soulstones. Currently sacrificing <span id="goldCostImbuement">0</span> soulstones.
+            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices (20 * (imbuements+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+             soulstones.
+        ]]></tooltip2>
             <segment_names>
                 <name>Submerge the Soulstones</name>
                 <name>Arrange the Soulstones</name>
@@ -1173,8 +1180,11 @@
             <label>Great Feast</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            All this adventuring is making you famished, it's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (500 * (feasts+1)) soulstones. Currently sacrificing <span id="goldCostFeast">0</span> soulstones.
+            All this adventuring is making you famished, it's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (500 * (feasts+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+             soulstones.
+        ]]></tooltip2>
             <segment_names>
                 <name>Explain Your Order</name>
                 <name>Give Them Your Information</name>

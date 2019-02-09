@@ -1252,6 +1252,7 @@ function DarkRitual() {
     this.expMult = 10;
     this.townNum = 1;
     this.tooltip = _txt("actions>dark_ritual>tooltip");
+    this.tooltip2 = _txt("actions>dark_ritual>tooltip2");
     this.label = _txt("actions>dark_ritual>label");
     this.labelDone = _txt("actions>dark_ritual>label_done");
 
@@ -1292,6 +1293,7 @@ function DarkRitual() {
             stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
         }
         view.updateSoulstones();
+        view.adjustGoldCost("DarkRitual", goldCostDarkRitual());
     };
     this.getPartName = function() {
         return "Perform Dark Ritual";
@@ -2795,6 +2797,7 @@ function ImbueMind() {
     this.expMult = 5;
     this.townNum = 3;
     this.tooltip = _txt("actions>imbue_mind>tooltip");
+    this.tooltip2 = _txt("actions>great_feast>tooltip2");
     this.label = _txt("actions>imbue_mind>label");
     this.labelDone = _txt("actions>imbue_mind>label_done");
 
@@ -2836,6 +2839,7 @@ function ImbueMind() {
             stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
         }
         view.updateSoulstones();
+        view.adjustGoldCost("ImbueMind", goldCostImbueMind());
     };
     this.getPartName = function() {
         return "Imbue Mind";
@@ -2935,6 +2939,7 @@ function GreatFeast() {
     this.expMult = 5;
     this.townNum = 4;
     this.tooltip = _txt("actions>great_feast>tooltip");
+    this.tooltip2 = _txt("actions>great_feast>tooltip2");
     this.label = _txt("actions>great_feast>label");
     this.labelDone = _txt("actions>great_feast>label_done");
 
@@ -2975,9 +2980,10 @@ function GreatFeast() {
             stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
         }
         view.updateSoulstones();
+        view.adjustGoldCost("GreatFeast", goldCostGreatFeast());
     };
     this.getPartName = function() {
-        return "Perform Dark Ritual";
+        return "Host Great Feast";
     };
     this.getSegmentName = function(segment) {
         let segments = [];

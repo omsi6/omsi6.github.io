@@ -853,9 +853,9 @@ function View() {
         this.adjustGoldCost("LQuests", goldCostLQuests());
         this.adjustGoldCost("Pots", goldCostSmashPots());
         this.adjustGoldCost("WildMana", goldCostWildMana());
-        this.adjustGoldCost("Ritual", goldCostDarkRitual());
-        this.adjustGoldCost("Imbuement", goldCostImbueMind());
-        this.adjustGoldCost("Feast", goldCostGreatFeast());
+        this.adjustGoldCost("DarkRitual", goldCostDarkRitual());
+        this.adjustGoldCost("ImbueMind", goldCostImbueMind());
+        this.adjustGoldCost("GreatFeast", goldCostGreatFeast());
     };
 
     this.createTownInfo = function(action) {
