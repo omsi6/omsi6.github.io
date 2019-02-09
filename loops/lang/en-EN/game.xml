@@ -442,7 +442,7 @@
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Actions in all zones are (1 + level / 60) ^ 0.25 ^ 0.25 times faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are (1 + level / 60) ^ 0.25 times faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
         </chronomancy>
         <pyromancy>
             <label>Pyromancy</label>
