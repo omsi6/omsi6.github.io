@@ -881,7 +881,7 @@ function View() {
 
     this.createMultiPartPBar = function(action) {
         let pbars = "";
-        let width = "style='width:"+(90/action.segments)+"%'";
+        let width = "style='width:calc("+(91/action.segments)+"% - 4px)'";
         for(let i = 0; i < action.segments; i++) {
             pbars += "<div class='thickProgressBar showthat' "+width+">" +
                         "<div id='expBar"+i+action.varName+"' class='segmentBar'></div>" +
