@@ -16,7 +16,8 @@
             * You can now drag actions directly from the action options into your loop.<br>
             * Fixed ping on pause not working.<br>
             * Fixed incorrect formulas on the Dark Magic/Chronomancy tooltips.<br>
-            * Fixed soulstone costing actions not updating their tooltip cost upon completion.
+            * Fixed soulstone costing actions not updating their tooltip cost upon completion.<br>
+            * Fixed the progress bar on multi part actions being larger than other progress bars.
         ]]></version>
             <version verNum=".88"><![CDATA[
             <b> January 29th, 2019 - February 7th, 2019</b>
