@@ -17,7 +17,8 @@
             * Fixed ping on pause not working.<br>
             * Fixed incorrect formulas on the Dark Magic/Chronomancy tooltips.<br>
             * Fixed soulstone costing actions not updating their tooltip cost upon completion.<br>
-            * Fixed the progress bar on multi part actions being larger than other progress bars.
+            * Fixed the progress bar on multi part actions being larger than other progress bars.<br>
+            * Added 30 humorous new monster names for Fight Monsters.
         ]]></version>
             <version verNum=".88"><![CDATA[
             <b> January 29th, 2019 - February 7th, 2019</b>
@@ -426,10 +427,11 @@
         <practical_magic>
             <label>Practical Magic</label>
             <desc>Mage Hand, Prestidigitation, Detect Magic, and other useful tricks to help out.</desc>
-            <desc2><![CDATA[Smash Pots and Gather Wild Mana have 1% reduced mana cost per level (rounded up).<br>
+            <desc2><![CDATA[Smash Pots and Wild Mana have 1% reduced mana cost per level (rounded up).<br>
       Pick Locks get 1% more gold per level from 1-200 (rounded down).<br>
       Short Quests get 1% more gold per level from 101-300 (rounded down).<br>
-      Long Quests get 1% more gold per level from 201-400 (rounded down).]]></desc2>
+      Long Quests get 1% more gold per level from 201-400 (rounded down).<br>
+      Currently multiplying costs by <div id='skillBonusPractical'></div>x.]]></desc2>
         </practical_magic>
         <alchemy>
             <label>Alchemy</label>
@@ -953,7 +955,7 @@
                 <name>Beholders</name>
                 <name>Spectres</name>
                 <name>Mimics</name>
-                <name>Shambling Mound</name>
+                <name>Shambling Mounds</name>
                 <name>Corrupted Mushroomfolk</name>
                 <name>Giant Owls</name>
                 <name>Blood Trolls</name>
@@ -968,12 +970,38 @@
                 <name>Demiliches</name>
                 <name>Demigods</name>
                 <name>Gods</name>
-                <name>Deer but they're jerks</name>
                 <name>Deer but they're jerks and slightly larger than before</name>
-                <name>Deer but they're jerks and moderately larger than before</name>
-                <name>Deer but they're jerks and substantially larger than before</name>
-                <name>Deer but they're jerks and massively larger than before</name>
-                <name>Deer but they're jerks and absurdly larger than before</name>
+                <name>Giant Turtles with spherical shells</name>
+                <name>Goblins but they're late on their rent</name>
+                <name>Demon rabbits but they have massive teeth</name>
+                <name>Giant Honeybadgers but they can turn invisible</name>
+                <name>Venomous Snakes that are also poisonous</name>
+                <name>Angry Monkeys with twelve arms</name>
+                <name>Trolls that aren't weak against fire</name>
+                <name>Ogres but they're smarter</name>
+                <name>Pixies with sand instead of pixie dust</name>
+                <name>Treants but they're on fire</name>
+                <name>Gelatanous Cubes that are constantly growing in size</name>
+                <name>Fairies with blindingly bright dresses</name>
+                <name>Orcs with multiple weapons</name>
+                <name>Beholders with mouthes on every eye</name>
+                <name>Spectres that are actually scary</name>
+                <name>Mimics without an obvious tell</name>
+                <name>Shambling Mounds that can locomote quickly</name>
+                <name>Corrupted Mushroomfolk that taste bad</name>
+                <name>Giant Owls that can swim</name>
+                <name>Blood Trolls that don't like your hairstyle</name>
+                <name>Small Wyrms that aren't grounded</name>
+                <name>Displacer Beasts that can properly place themselves</name>
+                <name>Gibbering Mouthers with eyes on every mouth</name>
+                <name>Mind Flayers with pitchforks</name>
+                <name>Aboleths but harder, better, faster, and stronger</name>
+                <name>Ancient Dragons who've graduated from college</name>
+                <name>Liches with strong political opinions</name>
+                <name>Tarrasques that actually notice you</name>
+                <name>Demiliches happy about their condition</name>
+                <name>Demigods that are even more elitist than before</name>
+                <name>Gods but they had to come in on saturday</name>
             </segment_names>
             <segment_alt_names>
                 <name>Speedy Monsters</name>

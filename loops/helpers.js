@@ -27,7 +27,9 @@ function pxToInt(num) {
 
 function round(num) {
     return formatNumber(num);
-} function formatNumber(num) {
+}
+
+function formatNumber(num) {
     return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -69,7 +71,7 @@ function intToString (value, amount) {
             baseValue = amount;
         }
         var returnVal = parseFloat(value).toFixed(baseValue-1)
-        return returnVal[0] + "," + returnVal.substring(1)
+        return returnVal[0] + "," + returnVal.substring(1);
     } else {
         let baseValue = 3;
         if(amount) {
@@ -92,7 +94,7 @@ function toSuffix(value) {
     let suffixes = ["", "K", "M", "B","T","Qa","Qi","Sx","Sp","O","N","Dc","Ud","Dd","Td","qd","Qd","sd","Sd","Od","Nd","V"];
     let suffixNum = Math.floor(((""+value).length-1)/3);
     let shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(3));
-    if (shortValue % 1 !== 0)  shortValue = shortValue.toPrecision(3);
+    if (shortValue % 1 !== 0) shortValue = shortValue.toPrecision(3);
     return shortValue+suffixes[suffixNum];
 }
 

@@ -146,6 +146,8 @@ function View() {
             document.getElementById("skillBonusDark").textContent = intToString(Math.pow(1 + getSkillLevel("Dark") / 60, 0.25), 4)
         } else if (skill === "Chronomancy")  {
             document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4)
+        } else if (skill === "Practical")  {
+            document.getElementById("skillBonusPractical").textContent = (1 / (1 + getSkillLevel("Practical") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/g, "$1" )
         }
     };
 
@@ -1015,7 +1017,7 @@ function View() {
 
     this.updateMultiPart = function(action) {
         document.getElementById("multiPartName"+action.varName).textContent = action.getPartName();
-        document.getElementById("completed"+action.varName).textContent = " " + towns[action.townNum]["total"+action.varName];
+        document.getElementById("completed"+action.varName).textContent = " " + formatNumber(towns[action.townNum]["total"+action.varName]);
         for(let i = 0; i < action.segments; i++) {
             let expBar = document.getElementById("expBar"+i+action.varName);
             if(!expBar) {
