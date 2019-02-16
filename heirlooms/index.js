@@ -7,6 +7,7 @@
 
 /*
 
+v1.06 fix base prices not actually being enforced
 v1.05 make heirloom animations disabled if save has them turned off, display additional information about each heirloom in a ? tooltip in the corner of heirloom containers
 v1.04 fix floating point errors being displayed
 v1.03 make calculation happen automatically on save input
@@ -128,7 +129,7 @@ function getUpgCost(type, heirloom) {
 			value = heirloom.mods[i][1]
 		}
 	}
-	if (value <= maxAmounts[type]) {
+	if (value <= maxAmounts[type][rarity]) {
 		return basePrices[rarity];
 	}
 	let amount = (value-maxAmounts[type][rarity]) / stepAmounts[type][rarity];
