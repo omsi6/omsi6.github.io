@@ -19,6 +19,7 @@ function View() {
         this.updateAddAmount(1);
         this.createTownActions();
         this.updateProgressActions();
+        this.updateLockedHidden();
         this.updateSoulstones();
         this.updateSupplies();
         this.showTown(0);
@@ -403,20 +404,23 @@ function View() {
         }
     };
 
+    this.updateSingleProgressAction = function(town, varName) {
+        let level = town.getLevel(varName);
+        let levelPrc = town.getPrcToNext(varName) + "%";
+        document.getElementById("prc"+varName).innerHTML = level;
+        document.getElementById("expBar"+varName).style.width = levelPrc;
+        document.getElementById("progress"+varName).innerHTML = intToString(levelPrc, 2);
+        document.getElementById("bar"+varName).style.width = level + "%";
+    };
+
     this.updateProgressActions = function() {
         for(let i = 0; i < towns.length; i++) {
             let town = towns[i];
             for(let j = 0; j < town.progressVars.length; j++) {
                 let varName = towns[i].progressVars[j];
-                let level = town.getLevel(varName);
-                let levelPrc = town.getPrcToNext(varName) + "%";
-                document.getElementById("prc"+varName).innerHTML = level;
-                document.getElementById("expBar"+varName).style.width = levelPrc;
-                document.getElementById("progress"+varName).innerHTML = intToString(levelPrc, 2);
-                document.getElementById("bar"+varName).style.width = level + "%";
-            }
+                this.updateSingleProgressAction(town, varName);
+           }
         }
-        this.updateLockedHidden();
     };
 
     this.updateLockedHidden = function() {

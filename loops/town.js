@@ -41,8 +41,10 @@ function Town(index) {
                     view.updateRegular(action.varName, action.townNum);
                 }
             }
+
+            view.updateLockedHidden();
         }
-        view.updateProgressActions();
+        view.updateSingleProgressAction(towns[curTown], varName);
     };
 
     this.getPrcToNext = function(varName) {
