@@ -960,9 +960,10 @@ function View() {
         let loopCost = action.loopCost(segment);
         while(curProgress >= loopCost && segment < action.segments) {
             document.getElementById("expBar"+segment+action.varName).style.width = "0";
-            if(document.getElementById("progress"+segment+action.varName).textContent !== loopCost) {
-                document.getElementById("progress"+segment+action.varName).textContent = intToStringRound(loopCost);
-                document.getElementById("progressNeeded"+segment+action.varName).textContent = intToStringRound(loopCost);
+            let roundedLoopCost = intToStringRound(loopCost);
+            if(document.getElementById("progress"+segment+action.varName).textContent !== roundedLoopCost) {
+                document.getElementById("progress"+segment+action.varName).textContent = roundedLoopCost;
+                document.getElementById("progressNeeded"+segment+action.varName).textContent = roundedLoopCost;
             }
 
             curProgress -= loopCost;
@@ -971,7 +972,7 @@ function View() {
         }
 
         //update current segments
-        if(document.getElementById("progress"+segment+action.varName) && document.getElementById("progress"+segment+action.varName).textContent !== curProgress) {
+        if(document.getElementById("progress"+segment+action.varName)) {
             document.getElementById("expBar"+segment+action.varName).style.width = (100-100*curProgress/loopCost)+"%";
             document.getElementById("progress"+segment+action.varName).textContent = intToStringRound(curProgress);
             document.getElementById("progressNeeded"+segment+action.varName).textContent = intToStringRound(loopCost);
