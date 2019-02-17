@@ -43,6 +43,7 @@ function Town(index) {
                 }
             }
             view.updateLockedHidden();
+            adjustAll();
         }
         view.updateProgressAction(varName, towns[curTown]);
     };

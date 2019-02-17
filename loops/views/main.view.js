@@ -29,6 +29,7 @@ function View() {
         this.updateTeamNum();
         this.updateTeamCombat();
         this.updateLoadoutNames()
+        adjustAll();
     };
 
     this.statLocs = [{x:165, y:43}, {x:270, y:79}, {x:325, y:170}, {x:306, y:284}, {x:225, y:352}, {x:102, y:352}, {x:26, y:284}, {x:2, y:170}, {x:56, y:79}];
@@ -1169,10 +1170,10 @@ function draggedUndecorate(i) {
 }
 
 function adjustActionListSize(amt) {
-    if (document.getElementById("expandableList").style.height === "" && amt === 100) {
-        document.getElementById("expandableList").style.height = "600px"
-        document.getElementById("curActionsList").style.maxHeight = "557px"
-        document.getElementById("nextActionsList").style.maxHeight = "557px"
+    if (document.getElementById("expandableList").style.height === "" && amt > 0) {
+        document.getElementById("expandableList").style.height = 500+amt+"px"
+        document.getElementById("curActionsList").style.maxHeight = 457+amt+"px"
+        document.getElementById("nextActionsList").style.maxHeight = 457+amt+"px"
     }
     else if (document.getElementById("expandableList").style.height === "" && amt === -100) {
         document.getElementById("expandableList").style.height = "500px"

@@ -204,10 +204,7 @@ function Wander() {
         return true;
     };
     this.finish = function() {
-        towns[0].finishProgress(this.varName, 200 * (glasses ? 4 : 1), function() {
-            adjustPots();
-            adjustLocks();
-        });
+        towns[0].finishProgress(this.varName, 200 * (glasses ? 4 : 1))
     };
 }
 function adjustPots() {
@@ -241,9 +238,7 @@ function MeetPeople() {
         return towns[0].getLevel("Wander") >= 22;
     };
     this.finish = function() {
-        towns[0].finishProgress(this.varName, 200, function() {
-            adjustSQuests();
-        });
+        towns[0].finishProgress(this.varName, 200);
     };
 }
 function adjustSQuests() {
@@ -275,9 +270,7 @@ function Investigate() {
         return towns[0].getLevel("Met") >= 25;
     };
     this.finish = function() {
-        towns[0].finishProgress(this.varName, 500, function() {
-            adjustLQuests();
-        });
+        towns[0].finishProgress(this.varName, 500);
     };
 }
 function adjustLQuests() {
@@ -310,11 +303,7 @@ function ExploreForest() {
         return true;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
-            adjustWildMana();
-            adjustHunt();
-            adjustHerbs();
-        });
+        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
     };
 }
 function adjustWildMana() {
@@ -352,10 +341,8 @@ function OldShortcut() {
         return towns[1].getLevel("Forest") >= 20;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100, function() {
-            adjustHerbs();
-            view.adjustManaCost("Continue On");
-        });
+        towns[1].finishProgress(this.varName, 100);
+        view.adjustManaCost("Continue On");
     };
 }
 
@@ -383,11 +370,10 @@ function TalkToHermit() {
         return towns[1].getLevel("Shortcut") >= 20 && getSkillLevel("Magic") >= 40;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 50 * (1 + towns[1].getLevel("Shortcut")/100), function() {
-            view.adjustManaCost("Learn Alchemy");
-            view.adjustManaCost("Gather Herbs");
-            view.adjustManaCost("Practical Magic");
-        });
+        towns[1].finishProgress(this.varName, 50 * (1 + towns[1].getLevel("Shortcut")/100));
+        view.adjustManaCost("Learn Alchemy");
+        view.adjustManaCost("Gather Herbs");
+        view.adjustManaCost("Practical Magic");
     };
 }
 
@@ -418,9 +404,7 @@ function ExploreCity() {
         return true;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
-            adjustSuckers();
-        });
+        towns[2].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
     };
 }
 function adjustSuckers() {
@@ -458,8 +442,7 @@ function GetDrunk() {
         return towns[2].getLevel("City") >= 20;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 100, function() {
-        });
+        towns[2].finishProgress(this.varName, 100);
     };
 }
 
@@ -491,8 +474,7 @@ function Apprentice() {
         return towns[2].getLevel("Drunk") >= 40;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 30 * getCraftGuildRank().bonus, function() {
-        });
+        towns[2].finishProgress(this.varName, 30 * getCraftGuildRank().bonus);
         addSkillExp("Crafting", 10 * (1 + towns[2].getLevel(this.varName)/100));
     };
 }
@@ -525,8 +507,7 @@ function Mason() {
         return towns[2].getLevel("Drunk") >= 60 && towns[2].getLevel("Apprentice") >= 100;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 20 * getCraftGuildRank().bonus, function() {
-        });
+        towns[2].finishProgress(this.varName, 20 * getCraftGuildRank().bonus);
         addSkillExp("Crafting", 20 * (1 + towns[2].getLevel(this.varName)/100));
     };
 }
@@ -559,8 +540,7 @@ function Architect() {
         return towns[2].getLevel("Drunk") >= 80 && towns[2].getLevel("Mason") >= 100;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 10 * getCraftGuildRank().bonus, function() {
-        });
+        towns[2].finishProgress(this.varName, 10 * getCraftGuildRank().bonus);
         addSkillExp("Crafting", 40 * (1 + towns[2].getLevel(this.varName)/100));
     };
 }
@@ -687,9 +667,7 @@ function ThrowParty() {
         return towns[0].getLevel("Secrets") >= 30;
     };
     this.finish = function() {
-        towns[0].finishProgress("Met", 3200, function() {
-            adjustSQuests();
-        });
+        towns[0].finishProgress("Met", 3200);
     };
 }
 
@@ -1110,9 +1088,7 @@ function FollowFlowers() {
         return towns[1].getLevel("Forest") >= 50;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
-            adjustHerbs();
-        });
+        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
     };
 }
 
@@ -1174,9 +1150,7 @@ function ClearThicket() {
         return towns[1].getLevel("Flowers") >= 20;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100, function() {
-            adjustWildMana();
-        });
+        towns[1].finishProgress(this.varName, 100);
     };
 }
 
@@ -1204,10 +1178,9 @@ function TalkToWitch() {
         return towns[1].getLevel("Thicket") >= 60 && getSkillLevel("Magic") >= 80;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100, function() {
-            view.adjustManaCost("Dark Magic");
-            view.adjustManaCost("Dark Ritual");
-        });
+        towns[1].finishProgress(this.varName, 100);
+        view.adjustManaCost("Dark Magic");
+        view.adjustManaCost("Dark Ritual");
     };
 }
 
@@ -2415,9 +2388,7 @@ function ClimbMountain() {
         return true;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1), function() {
-            adjustGeysers();
-        });
+        towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1));
     };
 }
 
@@ -2491,10 +2462,9 @@ function DecipherRunes() {
         return towns[3].getLevel("Mountain") >= 20;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100 * (glasses ? 2 : 1), function() {
-            view.adjustManaCost("Chronomancy");
-            view.adjustManaCost("Pyromancy");
-        });
+        towns[3].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
+        view.adjustManaCost("Chronomancy");
+        view.adjustManaCost("Pyromancy");
     };
 }
 
@@ -2612,9 +2582,7 @@ function ExploreCavern() {
         return towns[3].getLevel("Mountain") >= 40;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100, function() {
-            adjustMineSoulstones();
-        });
+        towns[3].finishProgress(this.varName, 100);
     };
 }
 
@@ -2744,9 +2712,7 @@ function CheckWalls() {
         return towns[3].getLevel("Cavern") >= 80;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100, function() {
-            adjustArtifacts();
-        });
+        towns[3].finishProgress(this.varName, 100);
     };
 }
 

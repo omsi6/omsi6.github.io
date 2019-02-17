@@ -306,8 +306,6 @@ function load() {
         towns[0].totalSDungeon = dungeons[0][0].completed + dungeons[0][1].completed + dungeons[0][2].completed + dungeons[0][3].completed + dungeons[0][4].completed + dungeons[0][5].completed
     }
 
-
-
     adjustAll();
 
     view.changeStatView();
