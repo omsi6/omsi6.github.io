@@ -23,7 +23,7 @@ let isBeta = !!location.href.match(/beta/i);
 let saveName = !isBeta ? "idleLoops1" :  "idleLoopsBeta";
 
 //this is to hide the cheat button if you aren't supposed to cheat
-if (window.location.href !== "http://10.0.0.3:8080/loops/") document.getElementById("cheat").style.display = "none"
+if (window.location.href === "http://10.0.0.3:8080/loops/") document.getElementById("cheat").style.display = "inline-block"
 
 let timeNeededInitial = 5 * 50;
 let timer = timeNeededInitial;
@@ -260,7 +260,6 @@ function load() {
         }
     }
 
-    pauseGame();
     view.initalize();
 
     for(let i = 0; i < towns.length; i++) {
@@ -287,6 +286,7 @@ function load() {
 
     document.getElementById("repeatLastAction").checked = toLoad.repeatLast;
     document.getElementById("audioCueToggle").checked = toLoad.pingOnPause !== undefined ? toLoad.pingOnPause : false;
+    document.getElementById("hotkeysToggle").checked = toLoad.hotkeys !== undefined ? toLoad.hotkeys : true;
     if (toLoad.updateRate) document.getElementById("updateRate").value = toLoad.updateRate;
     else document.getElementById("updateRate").value = 50;
     storyShowing = toLoad.storyShowing !== undefined ? toLoad.storyShowing : 0;
@@ -315,6 +315,7 @@ function load() {
     view.updateMultiPartActions();
     view.update();
     recalcInterval(toLoad.updateRate);
+    pauseGame();
 
 }
 
@@ -392,6 +393,7 @@ function save() {
     toSave.loadoutnames = loadoutnames
     toSave.repeatLast = document.getElementById("repeatLastAction").checked;
     toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
+    toSave.hotkeys = document.getElementById("hotkeysToggle").checked;
     if (parseFloat(document.getElementById("updateRate").value) > 0) toSave.updateRate = parseFloat(document.getElementById("updateRate").value);
     else toSave.updateRate = 50;
     toSave.storyShowing = storyShowing;

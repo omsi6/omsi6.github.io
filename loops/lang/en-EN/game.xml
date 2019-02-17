@@ -6,8 +6,19 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".90"><![CDATA[
+            <b> February 16th, 2019 - The current date</b>
+            <b> v0.90 - "Crumbs in the keyboard."</b><br>
+            * Added hotkeys. (found in the options menu, hover over the word "hotkeys" for a list)<br>
+            * The small bar that appears when you hover over an action on the current action list has been restyled to better fit the game.<br>
+            * Performance has been greatly to moderately increased depending on the situation.<br>
+            * You can now shift+click actions with caps to add them to your action list at their capped amount. (or hold shift and then drag them into the list)<br>
+            * Fixed mana remaining not visually updating upon reset.<br>
+            * Fixed loadout names sometimes not loading.<br>
+            * Fixed Gamble not showing its unlock requirement.
+        ]]></version>
             <version verNum=".89"><![CDATA[
-            <b> February 7th, 2019 - The current date</b>
+            <b> February 7th, 2019 - February 16th, 2019</b>
             <b> v0.89 - "Cobwebs in the corner."</b><br>
             * Fixed the stat radar exp/talent bars all being stacked on top of one another<br>
             * Added an input box in the options that allows you to adjust the update rate of the game. This shouldn't affect your rate of progress, but there's a chance it might have a very small effect. It will increase your performance when reduced below the default of 50.<br>
@@ -189,6 +200,18 @@
                 your game is freezing frequently please disable for this page.
             </adblock_warning>
             <pause_audio_cue>Ping on pause</pause_audio_cue>
+            <hotkeys>Hotkeys</hotkeys>
+            <hotkeys_tooltip><![CDATA[
+                Spacebar: Pause/play<br>
+                R: Restart<br>
+                B: Toggle bonus seconds<br>
+                1-5: Select loadout 1-5<br>
+                Shift+1-5: Select and load loadout 1-5<br>
+                +/-: Increase/decrease action list size<br>
+                Shift+S: Save current list to selected loudout<br>
+                Shift+L: Load selected loudout<br>
+                Shift+C: Clear current list<br>
+        ]]></hotkeys_tooltip>
             <update_rate>Updates per second:</update_rate>
         </options>
     </menu>
@@ -427,7 +450,7 @@
         <practical_magic>
             <label>Practical Magic</label>
             <desc>Mage Hand, Prestidigitation, Detect Magic, and other useful tricks to help out.</desc>
-            <desc2><![CDATA[Smash Pots and Wild Mana have 1% reduced mana cost per level (rounded up).<br>
+            <desc2><![CDATA[Smash Pots and Wild Mana costs are reduced to the original / (1 + level / 100) (rounded up).<br>
       Pick Locks get 1% more gold per level from 1-200 (rounded down).<br>
       Short Quests get 1% more gold per level from 101-300 (rounded down).<br>
       Long Quests get 1% more gold per level from 201-400 (rounded down).<br>
@@ -915,7 +938,7 @@
             <info_text2>Suckers total</info_text2>
             <info_text3>People to check if they're suckers</info_text3>
             <tooltip><![CDATA[
-            The cards still somehow come out different every time.<br>Has 2x exp/talent gain<br>Costs 20 gold and 1 reputation.<br>Requires a reputation above -6.<br>You win against every 10 suckers, and get 60 gold for winning.
+            The cards still somehow come out different every time.<br>Has 2x exp/talent gain<br>Costs 20 gold and 1 reputation.<br>Requires a reputation above -6.<br>You win against every 10 suckers, and get 60 gold for winning.<br>Unlocked at 10% City Explored.
         ]]></tooltip>
         </gamble>
         <heal_sick>

@@ -184,6 +184,7 @@ function Actions() {
         this.adjustTicksNeeded();
         view.updateMultiPartActions();
         view.updateNextActions();
+        view.updateTime();
     };
 
     this.adjustTicksNeeded = function() {

@@ -421,11 +421,12 @@ input[type="number"] {
 }
 
 .actionSelectedIndicator {
-    position:absolute;
-    opacity:0;
-    background-color: #0900e2;
-    width:3px;
-    height:100%;
+    position: absolute;
+    opacity: 0;
+    background-color: #4caf50;
+    width: 3px;
+    height: 100%;
+    left: -3px;
 }
 
 .townLabel {

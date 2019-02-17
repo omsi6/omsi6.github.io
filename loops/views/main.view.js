@@ -19,6 +19,7 @@ function View() {
         this.updateAddAmount(1);
         this.createTownActions();
         this.updateProgressActions();
+        this.updateLockedHidden();
         this.updateSoulstones();
         this.updateSupplies();
         this.showTown(0);
@@ -27,6 +28,7 @@ function View() {
         this.adjustGoldCosts();
         this.updateTeamNum();
         this.updateTeamCombat();
+        this.updateLoadoutNames()
     };
 
     this.statLocs = [{x:165, y:43}, {x:270, y:79}, {x:325, y:170}, {x:306, y:284}, {x:225, y:352}, {x:102, y:352}, {x:26, y:284}, {x:2, y:170}, {x:56, y:79}];
@@ -101,24 +103,24 @@ function View() {
         if(!expEquals(stat) || !talentEquals(stat) || statShowing === stat) {
             document.getElementById("stat" + stat + "LevelBar").style.width = levelPrc;
             document.getElementById("stat" + stat + "TalentBar").style.width = talentPrc;
-            document.getElementById("stat" + stat + "Level").innerHTML = intToString(getLevel(stat), 1);
-            document.getElementById("stat" + stat + "Talent").innerHTML = intToString(getTalent(stat), 1);
+            document.getElementById("stat" + stat + "Level").textContent = intToString(getLevel(stat), 1);
+            document.getElementById("stat" + stat + "Talent").textContent = intToString(getTalent(stat), 1);
         }
 
         if(statShowing === stat || document.getElementById("stat" + stat + "LevelExp").innerHTML === "") {
-            document.getElementById("stat" + stat + "Level2").innerHTML = intToString(getLevel(stat), 1);
+            document.getElementById("stat" + stat + "Level2").textContent = intToString(getLevel(stat), 1);
             let expOfLevel = getExpOfLevel(getLevel(stat));
-            document.getElementById("stat" + stat + "LevelExp").innerHTML = intToString(stats[stat].exp - expOfLevel, 1);
-            document.getElementById("stat" + stat + "LevelExpNeeded").innerHTML = intToString(getExpOfLevel(getLevel(stat)+1) - expOfLevel+"", 1);
-            document.getElementById("stat" + stat + "LevelProgress").innerHTML = intToString(levelPrc, 2);
+            document.getElementById("stat" + stat + "LevelExp").textContent = intToString(stats[stat].exp - expOfLevel, 1);
+            document.getElementById("stat" + stat + "LevelExpNeeded").textContent = intToString(getExpOfLevel(getLevel(stat)+1) - expOfLevel+"", 1);
+            document.getElementById("stat" + stat + "LevelProgress").textContent = intToString(levelPrc, 2);
 
-            document.getElementById("stat" + stat + "Talent2").innerHTML = intToString(getTalent(stat), 1);
+            document.getElementById("stat" + stat + "Talent2").textContent = intToString(getTalent(stat), 1);
             let expOfTalent = getExpOfTalent(getTalent(stat));
-            document.getElementById("stat" + stat + "TalentExp").innerHTML = intToString(stats[stat].talent - expOfTalent, 1);
-            document.getElementById("stat" + stat + "TalentExpNeeded").innerHTML = intToString(getExpOfTalent(getTalent(stat)+1) - expOfTalent+"", 1);
-            document.getElementById("stat" + stat + "TalentMult").innerHTML = intToString(calcTalentMult(getTalent(stat)), 3);
-            document.getElementById("stat" + stat + "TalentProgress").innerHTML = intToString(talentPrc, 2);
-            document.getElementById("stat" + stat + "TotalMult").innerHTML = intToString(getTotalBonusXP(stat), 3);
+            document.getElementById("stat" + stat + "TalentExp").textContent = intToString(stats[stat].talent - expOfTalent, 1);
+            document.getElementById("stat" + stat + "TalentExpNeeded").textContent = intToString(getExpOfTalent(getTalent(stat)+1) - expOfTalent+"", 1);
+            document.getElementById("stat" + stat + "TalentMult").textContent = intToString(calcTalentMult(getTalent(stat)), 3);
+            document.getElementById("stat" + stat + "TalentProgress").textContent = intToString(talentPrc, 2);
+            document.getElementById("stat" + stat + "TotalMult").textContent = intToString(getTotalBonusXP(stat), 3);
         }
         this["update"+stat] = false;
     };
@@ -134,13 +136,13 @@ function View() {
             this.updateTeamCombat();
         }
         const levelPrc = getPrcToNextSkillLevel(skill);
-        document.getElementById("skill" + skill + "Level").innerHTML = getSkillLevel(skill);
+        document.getElementById("skill" + skill + "Level").textContent = getSkillLevel(skill);
         document.getElementById("skill" + skill + "LevelBar").style.width = levelPrc + "%";
 
         let expOfLevel = getExpOfSkillLevel(getSkillLevel(skill));
-        document.getElementById("skill" + skill + "LevelExp").innerHTML = intToString(skills[skill].exp - expOfLevel, 1);
-        document.getElementById("skill" + skill + "LevelExpNeeded").innerHTML = intToString(getExpOfSkillLevel(getSkillLevel(skill)+1) - expOfLevel+"", 1);
-        document.getElementById("skill" + skill + "LevelProgress").innerHTML = intToString(levelPrc, 2);
+        document.getElementById("skill" + skill + "LevelExp").textContent = intToString(skills[skill].exp - expOfLevel, 1);
+        document.getElementById("skill" + skill + "LevelExpNeeded").textContent = intToString(getExpOfSkillLevel(getSkillLevel(skill)+1) - expOfLevel+"", 1);
+        document.getElementById("skill" + skill + "LevelProgress").textContent = intToString(levelPrc, 2);
 
         if(skill === "Dark") {
             document.getElementById("skillBonusDark").textContent = intToString(Math.pow(1 + getSkillLevel("Dark") / 60, 0.25), 4)
@@ -354,8 +356,8 @@ function View() {
         }
         div.style.width = (100 * action.ticks / action.adjustedTicks) + "%";
         if(action.loopsFailed) {
-            document.getElementById("action" + index + "Failed").innerHTML = action.loopsFailed + "";
-            document.getElementById("action" + index + "Error").innerHTML = action.errorMessage + "";
+            document.getElementById("action" + index + "Failed").textContent = action.loopsFailed + "";
+            document.getElementById("action" + index + "Error").textContent = action.errorMessage + "";
             document.getElementById("action"+index+"HasFailed").style.display = "block";
             div.style.width = "100%";
             div.style.backgroundColor = "#ff0000";
@@ -366,11 +368,11 @@ function View() {
             div.style.backgroundColor = "#6d6d6d";
         }
 
-        document.getElementById("action" + index + "ManaOrig").innerHTML = action.manaCost() * action.loops + "";
-        document.getElementById("action" + index + "ManaUsed").innerHTML = action.manaUsed + "";
-        document.getElementById("action"+index+"Remaining").innerHTML = (timeNeeded - timer)+"";
-        document.getElementById("action"+index+"GoldRemaining").innerHTML = (gold)+"";
-        document.getElementById("action" + index + "TimeSpent").innerHTML = intToString(action.timeSpent, 2) + _txt("time_controls>seconds");
+        document.getElementById("action" + index + "ManaOrig").textContent = action.manaCost() * action.loops + "";
+        document.getElementById("action" + index + "ManaUsed").textContent = action.manaUsed + "";
+        document.getElementById("action"+index+"Remaining").textContent = (timeNeeded - timer)+"";
+        document.getElementById("action"+index+"GoldRemaining").textContent = (gold)+"";
+        document.getElementById("action" + index + "TimeSpent").textContent = intToString(action.timeSpent, 2) + _txt("time_controls>seconds");
 
         let statExpGain = "";
         let expGainDiv = document.getElementById("action"+index+"ExpGain");
@@ -397,10 +399,19 @@ function View() {
     };
 
     this.updateCurrentActionLoops = function(index) {
-        document.getElementById("action" + index + "Loops").innerHTML = actions.current[index].loopsLeft;
+        document.getElementById("action" + index + "Loops").textContent = actions.current[index].loopsLeft;
         if(index === (actions.current.length - 1)) {
-            document.getElementById("action" + index + "LoopsLeft").innerHTML = actions.current[index].loops;
+            document.getElementById("action" + index + "LoopsLeft").textContent = actions.current[index].loops;
         }
+    };
+
+    this.updateProgressAction = function(varName, town) {
+        let level = town.getLevel(varName);
+        let levelPrc = town.getPrcToNext(varName) + "%";
+        document.getElementById("prc"+varName).textContent = level;
+        document.getElementById("expBar"+varName).style.width = levelPrc;
+        document.getElementById("progress"+varName).textContent = intToString(levelPrc, 2);
+        document.getElementById("bar"+varName).style.width = level + "%";
     };
 
     this.updateProgressActions = function() {
@@ -408,15 +419,9 @@ function View() {
             let town = towns[i];
             for(let j = 0; j < town.progressVars.length; j++) {
                 let varName = towns[i].progressVars[j];
-                let level = town.getLevel(varName);
-                let levelPrc = town.getPrcToNext(varName) + "%";
-                document.getElementById("prc"+varName).innerHTML = level;
-                document.getElementById("expBar"+varName).style.width = levelPrc;
-                document.getElementById("progress"+varName).innerHTML = intToString(levelPrc, 2);
-                document.getElementById("bar"+varName).style.width = level + "%";
+                this.updateProgressAction(varName, town);
             }
         }
-        this.updateLockedHidden();
     };
 
     this.updateLockedHidden = function() {
@@ -466,17 +471,17 @@ function View() {
         }
         actionOptionsTown[townNum].style.display = "block";
         townInfos[townNum].style.display = "block";
-        document.getElementById("townName").innerHTML = _txt("towns>town"+townNum+">name");
-        document.getElementById("townDesc").innerHTML = _txt("towns>town"+townNum+">desc");
+        document.getElementById("townName").textContent = _txt("towns>town"+townNum+">name");
+        document.getElementById("townDesc").textContent = _txt("towns>town"+townNum+">desc");
         townShowing = townNum;
     };
 
     this.updateRegular = function(varName, index) {
         const town = towns[index];
-        document.getElementById("total"+varName).innerHTML = town["total"+varName]+"";
-        document.getElementById("checked"+varName).innerHTML = town["total"+varName] - town["checked"+varName]+"";
-        document.getElementById("goodTemp"+varName).innerHTML = town["goodTemp"+varName]+"";
-        document.getElementById("good"+varName).innerHTML = town["good"+varName]+"";
+        document.getElementById("total"+varName).textContent = town["total"+varName]+"";
+        document.getElementById("checked"+varName).textContent = town["total"+varName] - town["checked"+varName]+"";
+        document.getElementById("goodTemp"+varName).textContent = town["goodTemp"+varName]+"";
+        document.getElementById("good"+varName).textContent = town["good"+varName]+"";
     };
 
     this.updateAddAmount = function(num) {
@@ -501,6 +506,12 @@ function View() {
             removeClassFromDiv(document.getElementById("load" + num), "unused");
         }
     };
+
+    this.updateLoadoutNames = function() {
+        for (let i=0; i<5; i++) {
+            document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
+        }
+    }
 
     this.createTownActions = function() {
         while (actionOptionsTown[0].firstChild) {
@@ -995,9 +1006,9 @@ function View() {
         }
         for(let i = 0; i < dungeons[dungeonNum].length; i++) {
             let level = dungeons[dungeonNum][i];
-            document.getElementById("soulstoneChance"+dungeonNum+"_"+i).innerHTML = intToString(level.ssChance * 100, 4);
-            document.getElementById("soulstonePrevious"+dungeonNum+"_"+i).innerHTML = level.lastStat;
-            document.getElementById("soulstoneCompleted"+dungeonNum+"_"+i).innerHTML = level.completed + "";
+            document.getElementById("soulstoneChance"+dungeonNum+"_"+i).textContent = intToString(level.ssChance * 100, 4);
+            document.getElementById("soulstonePrevious"+dungeonNum+"_"+i).textContent = level.lastStat;
+            document.getElementById("soulstoneCompleted"+dungeonNum+"_"+i).textContent = level.completed + "";
         }
     };
 
@@ -1006,9 +1017,9 @@ function View() {
             let statName = statList[i];
             if(stats[statName].soulstone) {
                 document.getElementById("ss" + statName + "Container").style.display = "inline-block";
-                document.getElementById("ss"+statName).innerHTML = intToString(stats[statName].soulstone, 1);
-                document.getElementById("stat" + statName + "SSBonus").innerHTML = intToString(stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 0);
-                document.getElementById("stat" + statName + "ss").innerHTML = intToString(stats[statName].soulstone, 1);
+                document.getElementById("ss"+statName).textContent = intToString(stats[statName].soulstone, 1);
+                document.getElementById("stat" + statName + "SSBonus").textContent = intToString(stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 0);
+                document.getElementById("stat" + statName + "ss").textContent = intToString(stats[statName].soulstone, 1);
             } else {
                 document.getElementById("ss" + statName + "Container").style.display = "none";
             }
@@ -1061,7 +1072,7 @@ function View() {
             }
         }
         storyShowing = num;
-        document.getElementById("storyPage").innerHTML = storyShowing+1;
+        document.getElementById("storyPage").textContent = storyShowing+1;
         document.getElementById("story"+num).style.display = "inline-block";
     };
 
@@ -1181,10 +1192,10 @@ function updateBuffCaps() {
     }
 }
 
-window.onload = function() {
+/*window.onload = function() {
     setTimeout(function(){
         for (let i=0; i<5; i++) {
             document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
         }
     }, 100);
-};
+};*/

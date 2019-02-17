@@ -107,7 +107,7 @@ function pauseGame() {
     view.updateTime()
     view.updateCurrentActionBar(actions.currentPos)
     document.title = stop ? "*PAUSED* Idle Loops" : "Idle Loops";
-    document.getElementById('pausePlay').innerHTML = _txt("time_controls>"+ (stop ? 'play_button' : 'pause_button'));
+    document.getElementById('pausePlay').textContent = _txt("time_controls>"+ (stop ? 'play_button' : 'pause_button'));
     if(!stop && (shouldRestart || timer >= timeNeeded)) {
         restart();
     }
@@ -204,6 +204,11 @@ function addActionToList(name, townNum, isTravelAction, insertAtIndex) {
                     actions.addAction(name, 1, insertAtIndex);
                 } else {
                     actions.addAction(name, addAmount, insertAtIndex);
+                    if (shiftDown && hasCap(name)) {
+                        capAmount((insertAtIndex) ? insertAtIndex : actions.next.length-1, townNum)
+                    } else if (shiftDown && isTraining(name)) {
+                        capTraining((insertAtIndex) ? insertAtIndex : actions.next.length-1, townNum)
+                    }
                 }
             }
         }
@@ -317,6 +322,12 @@ function selectLoadout(num) {
         curLoadout = num;
     }
     view.updateLoadout(curLoadout);
+}
+
+function loadLoadout(num) {
+    curLoadout = num;
+    view.updateLoadout(curLoadout);
+    loadList()
 }
 
 function saveList() {
@@ -537,16 +548,16 @@ function addOffline(num) {
         if(totalOfflineMs < 0) {
             totalOfflineMs = 0;
         }
-        document.getElementById("bonusSeconds").innerHTML = intToString(totalOfflineMs / 1000, 2);
+        document.getElementById("bonusSeconds").textContent = intToString(totalOfflineMs / 1000, 2);
     }
 }
 
 function toggleOffline() {
     if(bonusSpeed === 1) { //go fast
         bonusSpeed = 4;
-        document.getElementById('isBonusOn').innerHTML = _txt("time_controls>bonus_seconds>state>on");
+        document.getElementById('isBonusOn').textContent = _txt("time_controls>bonus_seconds>state>on");
     } else { //take it slow
         bonusSpeed = 1;
-        document.getElementById('isBonusOn').innerHTML = _txt("time_controls>bonus_seconds>state>off");
+        document.getElementById('isBonusOn').textContent = _txt("time_controls>bonus_seconds>state>off");
     }
 }

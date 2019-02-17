@@ -1930,7 +1930,7 @@ function HealTheSick() {
     };
     this.finish = function() {
         addSkillExp("Magic", 10);
-        view.updateProgressActions();
+        view.updateLockedHidden();
     };
 }
 
@@ -1988,7 +1988,7 @@ function FightMonsters() {
     };
     this.finish = function() {
         addSkillExp("Combat", 10);
-        view.updateProgressActions();
+        view.updateLockedHidden();
     };
 }
 function monsterNames(FightLoopCounter) { //spd, defensive, aggressive
@@ -2078,7 +2078,7 @@ function SmallDungeon() {
     this.finish = function() {
         addSkillExp("Magic", 5);
         addSkillExp("Combat", 5);
-        view.updateProgressActions();
+        view.updateLockedHidden();
     };
 }
 function finishDungeon(dungeonNum, floorNum) {
@@ -2243,7 +2243,7 @@ function LargeDungeon() {
     this.finish = function() {
         addSkillExp("Magic", 15);
         addSkillExp("Combat", 15);
-        view.updateProgressActions();
+        view.updateLockedHidden();
     };
 }
 

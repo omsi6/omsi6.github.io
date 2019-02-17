@@ -22,9 +22,13 @@ function Town(index) {
         }
     };
 
-    this.finishProgress = function(varName, expGain, levelUpReward) {
+    this.finishProgress = function(varName, expGain) {
+        //return if capped, for performance
+        if (this["exp"+varName] >= 505000 ) {
+            return
+        } 
         const prevLevel = this.getLevel(varName);
-        if(this["exp"+varName]+expGain > 505000 ) {
+        if (this["exp"+varName]+expGain > 505000 ) {
             this["exp"+varName] = 505000;
         } else {
             this["exp"+varName] += expGain;
@@ -32,17 +36,15 @@ function Town(index) {
         let level = this.getLevel(varName);
 
         if(level !== prevLevel) {
-            //level up
-            levelUpReward();
-
             for(let i = 0; i < view.totalActionList.length; i++) {
                 let action = view.totalActionList[i];
                 if(towns[curTown].varNames.indexOf(action.varName) !== -1) {
                     view.updateRegular(action.varName, action.townNum);
                 }
             }
+            view.updateLockedHidden();
         }
-        view.updateProgressActions();
+        view.updateProgressAction(varName, towns[curTown]);
     };
 
     this.getPrcToNext = function(varName) {
