@@ -7,6 +7,7 @@
 
 /*
 
+v1.07 fix charged crits not being properly accounted for, fix relentless math being wrong at low levels
 v1.06 fix base prices not actually being enforced
 v1.05 make heirloom animations disabled if save has them turned off, display additional information about each heirloom in a ? tooltip in the corner of heirloom containers
 v1.04 fix floating point errors being displayed
@@ -181,7 +182,7 @@ function getUpgGain(type, heirloom) {
 		}
 		const megaCrits = Math.min(Math.floor(critChance / 100), 2);
 		critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
-		const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.min(relentlessness, 9);
+		const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max((Math.min(relentlessness, 10) -1), 0)
 		switch (megaCrits) {
 			case 2:
 				critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
@@ -236,8 +237,8 @@ function getUpgGain(type, heirloom) {
 			megaCritMult += 1;
 		}
 		const megaCritsBefore = Math.min(Math.floor(critChanceBefore / 100), 2);
-		const megaCritsAfter = Math.min(Math.floor((critChanceBefore + stepAmounts[type][rarity]) / 100), 2);
-		critChanceAfter = Math.min((critChanceBefore + stepAmounts[type][rarity]) - megaCritsAfter * 100, 100) / 100;
+		const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((hasCC) ? stepAmounts[type][rarity] * 1.5 : stepAmounts[type][rarity])) / 100), 2);
+		critChanceAfter = Math.min((critChanceBefore + ((hasCC) ? stepAmounts[type][rarity] * 1.5 : stepAmounts[type][rarity])) - megaCritsAfter * 100, 100) / 100;
 		critChanceBefore = Math.min(critChanceBefore - megaCritsBefore * 100, 100) / 100;
 		switch (megaCritsBefore) {
 			case 2:
