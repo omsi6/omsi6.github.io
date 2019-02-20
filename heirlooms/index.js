@@ -7,6 +7,7 @@
 
 /*
 
+v1.08 equipment level input
 v1.07 fix charged crits not being properly accounted for, fix relentless math being wrong at low levels
 v1.06 fix base prices not actually being enforced
 v1.05 make heirloom animations disabled if save has them turned off, display additional information about each heirloom in a ? tooltip in the corner of heirloom containers
@@ -22,6 +23,7 @@ let save;
 
 let VMWeight = 12;
 let XPWeight = 11.25;
+let ELWeight = 90;
 
 if (localStorage.getItem("VMWeight") === null) {
 	localStorage.setItem("VMWeight", 12)
@@ -35,6 +37,13 @@ if (localStorage.getItem("XPWeight") === null) {
 } else {
 	XPWeight = parseFloat(localStorage.getItem("XPWeight"))
 	if (XPWeight !== 11.25) document.getElementById("XPInput").value = XPWeight
+}
+if (localStorage.getItem("XPWeight") === null) {
+	XPWeight = localStorage.getItem("XPWeight")
+	localStorage.setItem("XPWeight", 11.25)
+} else {
+	ELWeight = parseFloat(localStorage.getItem("ELWeight"))
+	if (ELWeight !== 90) document.getElementById("ELInput").value = ELWeight
 }
 
 let hasE4 = false;
@@ -287,13 +296,12 @@ function getUpgGain(type, heirloom) {
 		return (value + 100 + stepAmounts[type][rarity] * XPWeight) / (value + 100)
 	} else if (type === "MinerSpeed") {
 		//maybe make the assumed equip level adjustable? I think 90 is a good balance assuming it's not though
-		var equipLevels = 90;
 		for (let i in heirloom.mods) { 
 			if (heirloom.mods[i][0] === type) {
 				value = heirloom.mods[i][1];
 			}
 		}
-		return (Math.log((value + 100 + stepAmounts[type][rarity]) / (value + 100), ((1 - Math.pow(1.2, equipLevels)) / (1 - Math.pow(1.2, equipLevels - 1)))) + equipLevels) / equipLevels
+		return (Math.log((value + 100 + stepAmounts[type][rarity]) / (value + 100), ((1 - Math.pow(1.2, ELWeight)) / (1 - Math.pow(1.2, ELWeight - 1)))) + ELWeight) / ELWeight
 	}
 }
 
@@ -314,12 +322,16 @@ function isNumeric(n) {
 function updateWeight(type) {
 	switch(type) {
 		case "VM":
-			if(isNumeric(document.getElementById("VMInput").value))
-			VMWeight = parseFloat(document.getElementById("VMInput").value)
+			if (document.getElementById("VMInput").value === "") VMWeight = 12;
+			else if (isNumeric(document.getElementById("VMInput").value)) VMWeight = parseFloat(document.getElementById("VMInput").value)
 			break;
 		case "XP":
-		if(isNumeric(document.getElementById("XPInput").value))
-			XPWeight = parseFloat(document.getElementById("XPInput").value)
+			if (document.getElementById("XPInput").value === "") XPWeight = 11.25;
+			else if(isNumeric(document.getElementById("XPInput").value)) XPWeight = parseFloat(document.getElementById("XPInput").value)
+			break;
+		case "EL":
+			if (document.getElementById("ELInput").value === "") ELWeight = 90;
+			else if(isNumeric(document.getElementById("ELInput").value)) ELWeight = parseFloat(document.getElementById("ELInput").value)
 			break;
 	}
 	if (save) {
