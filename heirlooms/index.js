@@ -7,6 +7,7 @@
 
 /*
 
+v1.09 fix NaN values at equip level input of 1
 v1.08 equipment level input
 v1.07 fix charged crits not being properly accounted for, fix relentless math being wrong at low levels
 v1.06 fix base prices not actually being enforced
@@ -295,12 +296,13 @@ function getUpgGain(type, heirloom) {
 		}
 		return (value + 100 + stepAmounts[type][rarity] * XPWeight) / (value + 100)
 	} else if (type === "MinerSpeed") {
-		//maybe make the assumed equip level adjustable? I think 90 is a good balance assuming it's not though
+		//default equip level is 90. I think this is good?
 		for (let i in heirloom.mods) { 
 			if (heirloom.mods[i][0] === type) {
 				value = heirloom.mods[i][1];
 			}
 		}
+		if (ELWeight === 1) return (Math.log((value + 100 + stepAmounts[type][rarity]) / (value + 100), 3) + 1)
 		return (Math.log((value + 100 + stepAmounts[type][rarity]) / (value + 100), ((1 - Math.pow(1.2, ELWeight)) / (1 - Math.pow(1.2, ELWeight - 1)))) + ELWeight) / ELWeight
 	}
 }
