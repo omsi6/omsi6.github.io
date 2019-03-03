@@ -2763,7 +2763,7 @@ function ImbueMind() {
     this.expMult = 5;
     this.townNum = 3;
     this.tooltip = _txt("actions>imbue_mind>tooltip");
-    this.tooltip2 = _txt("actions>great_feast>tooltip2");
+    this.tooltip2 = _txt("actions>imbue_mind>tooltip2");
     this.label = _txt("actions>imbue_mind>label");
     this.labelDone = _txt("actions>imbue_mind>label_done");
 
