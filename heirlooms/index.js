@@ -9,6 +9,7 @@
 
 /*
 
+v1.11 fix classy breaking caluclations, minor code cleanup
 v1.10 new miner eff, vmdc, and fluffy exp gain calculations with new inputs to make them work, lots of background cleanup and a better localstorage usage system, improved/minor fixes to css
 v1.09 fix NaN values at equip level input of 1
 v1.08 equipment level input
@@ -39,7 +40,7 @@ let inputs = {
 		this[name] = value;
 		if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") document.getElementById(name + "Input").checked = value;
 		else document.getElementById(name + "Input").value = value;
-		localStorage.setItem("heirloomInputs", JSON.stringify(inputs))
+		localStorage.setItem("heirloomInputs", JSON.stringify(inputs));
 	}
 }
 
@@ -47,7 +48,7 @@ if (localStorage.getItem("heirloomInputs") !== null) {
 	let savedInputs = JSON.parse(localStorage.getItem("heirloomInputs"))
 	for (input in JSON.parse(localStorage.getItem("heirloomInputs"))) {
 		if ((input === "VMWeight" || input === "XPWeight") && savedInputs[input] === 1) continue
-		inputs.setInput(input, savedInputs[input])
+		inputs.setInput(input, savedInputs[input]);
 	}
 }
 
@@ -57,18 +58,19 @@ function isNumeric(n) {
 
 function updateInput(name) {
 	let inputDiv = document.getElementById(name + "Input")
-	if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") inputs[name] = inputDiv.checked
-	else if (isNumeric(inputDiv.value)) inputs[name] = parseFloat(inputDiv.value)
+	if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") inputs[name] = inputDiv.checked;
+	else if ((name === "VMWeight" || name === "XPWeight") && inputDiv.value === "") inputs[name] = 1;
+	else if (isNumeric(inputDiv.value)) inputs[name] = parseFloat(inputDiv.value);
 	if (save) {
-		calculate(true)
+		calculate(true);
 	}
-	localStorage.setItem("heirloomInputs", JSON.stringify(inputs))
+	localStorage.setItem("heirloomInputs", JSON.stringify(inputs));
 }
 
 //remove old data
-localStorage.removeItem("VMWeight")
-localStorage.removeItem("XPWeight")
-localStorage.removeItem("ELWeight")
+localStorage.removeItem("VMWeight");
+localStorage.removeItem("XPWeight");
+localStorage.removeItem("ELWeight");
 
 Math.log = (function () {
 	var log = Math.log;
@@ -264,7 +266,7 @@ function totalEnemyHealthInZone(zone) {
 function totalFluffyExpModifierUpToZone(zone) {
 	let start = 300;
 	if (save.portal.Classy.level) {
-		start = Math.floor(start - (save.portal.Classy.level * save.portal.Classy.modifier));
+		start = Math.floor(start - (save.portal.Classy.level * 2));
 	}
 	let i = 0;
 	let modifier = 0;
@@ -356,7 +358,7 @@ function voidMapsUpToZone(zone, portal, heirloomBonus) {
 function getUpgValue(type, heirloom) {
 	for (let mod of heirloom.mods) {
 		if (mod[0] === type) {
-			return mod[1]
+			return mod[1];
 		}
 	}
 }
@@ -383,15 +385,15 @@ function getUpgGain(type, heirloom) {
 	let value = getUpgValue(type, heirloom);
 	let stepAmount = stepAmounts[type][heirloom.rarity];
 	if (type === "trimpAttack") {
-		return (value + 100 + stepAmount) / (value + 100)
+		return (value + 100 + stepAmount) / (value + 100);
 	} else if (type === "critDamage") {
-		var relentlessness = save.portal.Relentlessness.level
+		var relentlessness = save.portal.Relentlessness.level;
 		let critChance = relentlessness * 5;
 		let megaCritMult = 5;
 		let critDmgNormalizedBefore = 0;
 		let critDmgNormalizedAfter = 0;
-		if (inputs.CC) critChance += getUpgValue("critChance", heirloom) * 1.5
-		else critChance += getUpgValue("critChance", heirloom)
+		if (inputs.CC) critChance += getUpgValue("critChance", heirloom) * 1.5;
+		else critChance += getUpgValue("critChance", heirloom);
 		if (inputs.E4) {
 			critChance += 50;
 		}
@@ -403,7 +405,7 @@ function getUpgGain(type, heirloom) {
 		}
 		const megaCrits = Math.min(Math.floor(critChance / 100), 2);
 		critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
-		const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max((Math.min(relentlessness, 10) - 1), 0)
+		const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max((Math.min(relentlessness, 10) - 1), 0);
 		switch (megaCrits) {
 			case 2:
 				critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
@@ -429,7 +431,7 @@ function getUpgGain(type, heirloom) {
 
 		return critDmgNormalizedAfter / critDmgNormalizedBefore;
 	} else if (type === "critChance") {
-		var relentlessness = save.portal.Relentlessness.level
+		var relentlessness = save.portal.Relentlessness.level;
 		let critChanceBefore = relentlessness * 5;
 		let critChanceAfter = relentlessness * 5;
 		let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.min(relentlessness, 9);
@@ -437,8 +439,8 @@ function getUpgGain(type, heirloom) {
 		let critDmgNormalizedBefore = 0;
 		let critDmgNormalizedAfter = 0;
 		if (inputs.CC) critChanceBefore += value * 1.5
-		else critChanceBefore += value
-		critDamage += getUpgValue("critDamage", heirloom)
+		else critChanceBefore += value;
+		critDamage += getUpgValue("critDamage", heirloom);
 		if (inputs.E4) {
 			critChanceBefore += 50;
 		}
@@ -479,7 +481,7 @@ function getUpgGain(type, heirloom) {
 	} if (type === "voidMaps") {
 		//legacy mode return
 		if (inputs.Legacy) {
-			return (value + stepAmount * inputs.VMWeight) / (value)
+			return (value + stepAmount * inputs.VMWeight) / (value);
 		}
 
 		let voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
@@ -519,7 +521,7 @@ function getUpgGain(type, heirloom) {
 		if (inputs.Legacy) {
 			return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100)
 		}
-		
+
 		let upgGain = (value + 100 + stepAmount) / (value + 100);
 		// Avoiding weird stuff with zero division.
 		// Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
@@ -533,29 +535,27 @@ function getUpgGain(type, heirloom) {
 		// Adding XPWeight (default: 1) in a manner consistent with previous calculation
 		return (1 + (upgGain - 1) * inputs.XPWeight);
 	} else if (type === "plaguebringer") {
-		return (value + 100 + stepAmount) / (value + 100)
+		return (value + 100 + stepAmount) / (value + 100);
 	} else if (type === "MinerSpeed") {
-		return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels
+		return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels;
 	}
 }
 
 function getUpgEff(type, shield, staff) {
 	if (type === "trimpAttack") {
-		return 1
+		return 1;
 	} else if (modsToWeighShield.includes(type)) {
-		return Math.log(getUpgGain(type, shield), getUpgGain("trimpAttack", shield)) * getUpgCost("trimpAttack", shield) / getUpgCost(type, shield)
+		return Math.log(getUpgGain(type, shield), getUpgGain("trimpAttack", shield)) * getUpgCost("trimpAttack", shield) / getUpgCost(type, shield);
 	} else if (modsToWeighStaff.includes(type)) {
-		return Math.log(getUpgGain(type, staff), getUpgGain("trimpAttack", shield)) * getUpgCost("trimpAttack", shield) / getUpgCost(type, staff)
+		return Math.log(getUpgGain(type, staff), getUpgGain("trimpAttack", shield)) * getUpgCost("trimpAttack", shield) / getUpgCost(type, staff);
 	}
 }
 
 function prettifySub(number) {
 	number = parseFloat(number);
 	var floor = Math.floor(number);
-	if (number === floor) // number is an integer, just show it as-is
-		return number;
-	var precision = 3 - floor.toString().length; // use the right number of digits
-
+	// number is an integer, just show it as-is
+	if (number === floor) return number;
 	return number.toFixed(3 - floor.toString().length);
 }
 
@@ -616,51 +616,90 @@ function prettifyCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function updateModContainer(divName, shield, staff) {
+	let infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>";
+	let heirloomToUse;
+	if (divName === "shieldOld" || divName === "shieldNew") heirloomToUse = shield;
+	else heirloomToUse = staff;
+	for (let i = 0; i < 5; i++) {
+		if (heirloomToUse.mods[i]) {
+			if (heirloomToUse.mods[i][0] === "empty") document.getElementById(divName+"Mod" + i).textContent = "Empty";
+			else document.getElementById(divName+"Mod" + i).textContent = parseFloat(heirloomToUse.mods[i][1].toPrecision(4)).toString() + "% " + modNames[heirloomToUse.mods[i][0]];
+			document.getElementById(divName+"ModContainer" + i).style.opacity = 1;
+			if (modsToWeigh.includes(heirloomToUse.mods[i][0])) {
+				infoText += fancyModNames[heirloomToUse.mods[i][0]] + ":<ul>";
+				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(heirloomToUse.mods[i][0], heirloomToUse)) + "</li>";
+				infoText += "<li>Gain: " + getUpgGain(heirloomToUse.mods[i][0], heirloomToUse) + "</li>";
+				infoText += "<li>Efficiency: " + getUpgEff(heirloomToUse.mods[i][0], shield, heirloomToUse) + "</li>";
+				infoText += "</ul>";
+			}
+		}
+		else {
+			document.getElementById(divName+"Mod" + i).textContent = "N/A";
+			document.getElementById(divName+"ModContainer" + i).style.opacity = 0;
+		}
+	}
+	infoText += "</ul>";
+	if (infoText.length === 149) {
+		document.getElementById(divName+"Info").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods.";
+	} else {
+		document.getElementById(divName+"Info").innerHTML = infoText;
+	}
+	document.getElementById(divName+"?").style.display = "block";
+
+	//rarity styles
+	if (save.options.menu.showHeirloomAnimations.enabled && heirloomToUse.rarity >= 7) {
+		document.getElementById(divName+"Container").classList.value = "heirloomContainer heirloomRare" + heirloomToUse.rarity + "Anim";
+	} else {
+		document.getElementById(divName+"Container").classList.value = "heirloomContainer heirloomRare" + heirloomToUse.rarity;
+	}
+}
+
 function calculate(manualInput) {
-	if (JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value)) !== null) save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value))
+	if (JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value)) !== null) save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value));
 
-	let nu = save.global.nullifium
+	let nu = save.global.nullifium;
 
-	let startingShield = save.global.ShieldEquipped
-	let startingStaff = save.global.StaffEquipped
+	let startingShield = save.global.ShieldEquipped;
+	let startingStaff = save.global.StaffEquipped;
 
 	if (!manualInput) {
-		inputs.setInput("E4", fluffyRewardsAvailable() >= fluffyRewards.critChance)
-		inputs.setInput("E5", fluffyRewardsAvailable() >= fluffyRewards.megaCrit)
-		inputs.setInput("CC", save.talents.crit.purchased)
+		inputs.setInput("E4", fluffyRewardsAvailable() >= fluffyRewards.critChance);
+		inputs.setInput("E5", fluffyRewardsAvailable() >= fluffyRewards.megaCrit);
+		inputs.setInput("CC", save.talents.crit.purchased);
 		for (let input in inputs) {
 			if (input === "setInput") continue
 			if (document.getElementById(input+"Input").value === "") {
 				switch (input) {
 					case "portalZone":
-						inputs.setInput(input, save.global.highestLevelCleared + 1)
+						inputs.setInput(input, save.global.highestLevelCleared + 1);
 					break
 					case "voidZone":
-						inputs.setInput(input, save.stats.highestVoidMap.valueTotal)
+						inputs.setInput(input, save.stats.highestVoidMap.valueTotal);
 					break
 				}
 			}
 		}
 	}
 
-	let shieldAddAmounts = [0, 0, 0, 0, 0]
-	let staffAddAmounts = [0, 0, 0, 0, 0]
+	let shieldAddAmounts = [0, 0, 0, 0, 0];
+	let staffAddAmounts = [0, 0, 0, 0, 0];
 
-	let newShield = JSON.parse(JSON.stringify(startingShield))
-	let newStaff = JSON.parse(JSON.stringify(startingStaff))
+	let newShield = JSON.parse(JSON.stringify(startingShield));
+	let newStaff = JSON.parse(JSON.stringify(startingStaff));
 
 	let cost = 0;
-	let name = ""
-	let modToUpgrade = []
+	let name = "";
+	let modToUpgrade = [];
 
 	while (true) {
-		let eff = 0
+		let eff = 0;
 		for (let mod of newShield.mods) {
 			if (getUpgEff(mod[0], newShield, newStaff) > eff) {
 				eff = getUpgEff(mod[0], newShield, newStaff);
 				cost = getUpgCost(mod[0], newShield);
-				name = mod[0]
-				modToUpgrade = mod
+				name = mod[0];
+				modToUpgrade = mod;
 			}
 		}
 
@@ -668,24 +707,23 @@ function calculate(manualInput) {
 			if (getUpgEff(mod[0], newShield, newStaff) > eff) {
 				eff = getUpgEff(mod[0], newShield, newStaff);
 				cost = getUpgCost(mod[0], newStaff);
-				name = mod[0]
-				modToUpgrade = mod
+				name = mod[0];
+				modToUpgrade = mod;
 			}
 		}
 
 		if (modsToWeighShield.includes(name) && nu > cost) {
-			newShield.mods[newShield.mods.indexOf(modToUpgrade)][1] += stepAmounts[newShield.mods[newShield.mods.indexOf(modToUpgrade)][0]][newShield.rarity]
+			newShield.mods[newShield.mods.indexOf(modToUpgrade)][1] += stepAmounts[newShield.mods[newShield.mods.indexOf(modToUpgrade)][0]][newShield.rarity];
 			shieldAddAmounts[newShield.mods.indexOf(modToUpgrade)] += 1;
 			nu -= cost;
 		} else if (modsToWeighStaff.includes(name) && nu > cost) {
-			newStaff.mods[newStaff.mods.indexOf(modToUpgrade)][1] += stepAmounts[newStaff.mods[newStaff.mods.indexOf(modToUpgrade)][0]][newStaff.rarity]
+			newStaff.mods[newStaff.mods.indexOf(modToUpgrade)][1] += stepAmounts[newStaff.mods[newStaff.mods.indexOf(modToUpgrade)][0]][newStaff.rarity];
 			staffAddAmounts[newStaff.mods.indexOf(modToUpgrade)] += 1;
 			nu -= cost;
 		} else {
 			break;
 		}
 	}
-
 
 	//current nu, next goal price, next goal name
 	document.getElementById("nuAmount").textContent = prettify(nu);
@@ -697,22 +735,6 @@ function calculate(manualInput) {
 	document.getElementById("shieldNewName").textContent = startingShield.name + " (New)";
 	document.getElementById("staffOldName").textContent = startingStaff.name + " (Old)";
 	document.getElementById("staffNewName").textContent = startingStaff.name + " (New)";
-
-	//add rarity styles to equip divs
-	if (save.options.menu.showHeirloomAnimations.enabled && startingShield.rarity >= 7) {
-		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity + "Anim";
-		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity + "Anim";
-	} else {
-		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity;
-		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity;
-	}
-	if (save.options.menu.showHeirloomAnimations.enabled && startingStaff.rarity >= 7) {
-		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity + "Anim";
-		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity + "Anim";
-	} else {
-		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity;
-		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity;
-	}
 
 	//add upg amounts
 	for (let i = 0; i < 5; i++) {
@@ -729,127 +751,19 @@ function calculate(manualInput) {
 		}
 	}
 
-
-
 	//add current stats to old divs
-	let infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i = 0; i < 5; i++) {
-		if (startingShield.mods[i]) {
-			if (startingShield.mods[i][0] === "empty") document.getElementById("shieldOldMod" + i).textContent = "Empty";
-			else document.getElementById("shieldOldMod" + i).textContent = parseFloat(startingShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingShield.mods[i][0]];
-			document.getElementById("shieldOldModContainer" + i).style.opacity = 1;
-			if (modsToWeigh.includes(startingShield.mods[i][0])) {
-				infoText += fancyModNames[startingShield.mods[i][0]] + ":<ul>"
-				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(startingShield.mods[i][0], startingShield)) + "</li>"
-				infoText += "<li>Gain: " + getUpgGain(startingShield.mods[i][0], startingShield) + "</li>"
-				infoText += "<li>Efficiency: " + getUpgEff(startingShield.mods[i][0], startingShield) + "</li>"
-				infoText += "</ul>"
-			}
-		}
-		else {
-			document.getElementById("shieldOldMod" + i).textContent = "N/A";
-			document.getElementById("shieldOldModContainer" + i).style.opacity = 0;
-		}
-	}
-	infoText += "</ul>"
-	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
-		document.getElementById("shieldOldInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
-	} else {
-		document.getElementById("shieldOldInfo").innerHTML = infoText
-	}
-
-	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i = 0; i < 5; i++) {
-		if (startingStaff.mods[i]) {
-			if (startingStaff.mods[i][0] === "empty") document.getElementById("staffOldMod" + i).textContent = "Empty";
-			else document.getElementById("staffOldMod" + i).textContent = parseFloat(startingStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingStaff.mods[i][0]];
-			document.getElementById("staffOldModContainer" + i).style.opacity = 1;
-			if (modsToWeigh.includes(startingStaff.mods[i][0])) {
-				infoText += fancyModNames[startingStaff.mods[i][0]] + ":<ul>"
-				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(startingStaff.mods[i][0], startingStaff)) + "</li>"
-				infoText += "<li>Gain: " + getUpgGain(startingStaff.mods[i][0], startingStaff) + "</li>"
-				infoText += "<li>Efficiency: " + getUpgEff(startingStaff.mods[i][0], startingShield, startingStaff) + "</li>"
-				infoText += "</ul>"
-			}
-		}
-		else {
-			document.getElementById("staffOldMod" + i).textContent = "N/A";
-			document.getElementById("staffOldModContainer" + i).style.opacity = 0;
-		}
-	}
-	infoText += "</ul>"
-	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
-		document.getElementById("staffOldInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
-	} else {
-		document.getElementById("staffOldInfo").innerHTML = infoText
-	}
-
-	//add new stats to new divs
-	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i = 0; i < 5; i++) {
-		if (newShield.mods[i]) {
-			if (newShield.mods[i][0] === "empty") document.getElementById("shieldNewMod" + i).textContent = "Empty";
-			else document.getElementById("shieldNewMod" + i).textContent = parseFloat(newShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newShield.mods[i][0]];
-			document.getElementById("shieldNewModContainer" + i).style.opacity = 1;
-			if (modsToWeigh.includes(newShield.mods[i][0])) {
-				infoText += fancyModNames[newShield.mods[i][0]] + ":<ul>"
-				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(newShield.mods[i][0], newShield)) + "</li>"
-				infoText += "<li>Gain: " + getUpgGain(newShield.mods[i][0], newShield) + "</li>"
-				infoText += "<li>Efficiency: " + getUpgEff(newShield.mods[i][0], newShield) + "</li>"
-				infoText += "</ul>"
-			}
-		}
-		else {
-			document.getElementById("shieldNewMod" + i).textContent = "N/A";
-			document.getElementById("shieldNewModContainer" + i).style.opacity = 0;
-		}
-	}
-	infoText += "</ul>"
-	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
-		document.getElementById("shieldNewInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
-	} else {
-		document.getElementById("shieldNewInfo").innerHTML = infoText
-	}
-
-	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i = 0; i < 5; i++) {
-		if (newStaff.mods[i]) {
-			if (newStaff.mods[i][0] === "empty") document.getElementById("staffNewMod" + i).textContent = "Empty";
-			else document.getElementById("staffNewMod" + i).textContent = parseFloat(newStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newStaff.mods[i][0]];
-			document.getElementById("staffNewModContainer" + i).style.opacity = 1;
-			if (modsToWeigh.includes(newStaff.mods[i][0])) {
-				infoText += fancyModNames[newStaff.mods[i][0]] + ":<ul>"
-				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(newStaff.mods[i][0], newStaff)) + "</li>"
-				infoText += "<li>Gain: " + getUpgGain(newStaff.mods[i][0], newStaff) + "</li>"
-				infoText += "<li>Efficiency: " + getUpgEff(newStaff.mods[i][0], newShield, newStaff) + "</li>"
-				infoText += "</ul>"
-			}
-		}
-		else {
-			document.getElementById("staffNewMod" + i).textContent = "N/A";
-			document.getElementById("staffNewModContainer" + i).style.opacity = 0;
-		}
-	}
-	infoText += "</ul>"
-	if (infoText === "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br></ul>") {
-		document.getElementById("staffNewInfo").innerHTML = "This is where you would normally see additional information about this heirloom's mods, but this heirloom has no weighted mods."
-	} else {
-		document.getElementById("staffNewInfo").innerHTML = infoText
-	}
+	updateModContainer("shieldOld", startingShield, startingStaff)
+	updateModContainer("shieldNew", newShield, newStaff)
+	updateModContainer("staffOld", startingShield, startingStaff)
+	updateModContainer("staffNew", newShield, newStaff)
 
 	//animation
-	document.getElementById("shieldOldContainer").style.animation = "moveLeft 1s 1 cubic-bezier(0, 0, 0, 1)"
-	document.getElementById("shieldNewContainer").style.animation = "moveRight 1s 1 cubic-bezier(0, 0, 0, 1)"
-	document.getElementById("shieldNewContainer").style.opacity = 1
-	document.getElementById("staffOldContainer").style.animation = "moveLeft 1s 1 cubic-bezier(0, 0, 0, 1)"
-	document.getElementById("staffNewContainer").style.animation = "moveRight 1s 1 cubic-bezier(0, 0, 0, 1)"
-	document.getElementById("staffNewContainer").style.opacity = 1
-
-	document.getElementById("shieldOldContainer").style.transform = ""
-	document.getElementById("staffOldContainer").style.transform = ""
-
-	document.getElementById("shieldOld?").style.display = "block"
-	document.getElementById("shieldNew?").style.display = "block"
-	document.getElementById("staffOld?").style.display = "block"
-	document.getElementById("staffNew?").style.display = "block"
+	document.getElementById("shieldOldContainer").style.animation = "moveLeft 1s 1 cubic-bezier(0, 0, 0, 1)";
+	document.getElementById("shieldNewContainer").style.animation = "moveRight 1s 1 cubic-bezier(0, 0, 0, 1)";
+	document.getElementById("shieldNewContainer").style.opacity = 1;
+	document.getElementById("staffOldContainer").style.animation = "moveLeft 1s 1 cubic-bezier(0, 0, 0, 1)";
+	document.getElementById("staffNewContainer").style.animation = "moveRight 1s 1 cubic-bezier(0, 0, 0, 1)";
+	document.getElementById("staffNewContainer").style.opacity = 1;
+	document.getElementById("shieldOldContainer").style.transform = "";
+	document.getElementById("staffOldContainer").style.transform = "";
 }
