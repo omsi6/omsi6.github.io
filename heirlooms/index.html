@@ -17,27 +17,43 @@
 					<br><br>
 					Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots.
 					<br><br>
-					VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights are used to provide a good balance between damage and helium/exp gain.
+					VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your expected helium by 0.5%, a weight of 12 would multiply it by 12, making it calculated as if it were to increase your value by 6%.
+					<br><br>
+					Weapon levels is the number of weapon levels you have by the end of your run.
+					<br><br>
+					Portal zone is the zone you're going to portal at, and Void zone is the zone you're going to run your void maps at.
+					<br><br>
+					If any of the bottom 3 inputs are blank, your recommended purchase will likely be incorrect, so you should fill them out.
+					<br><br>
+					A toggle for legacy mode can be found in the bottom right corner. This resorts to the old VMDC/Fluffy exp calculations directly from nSheetz's spreadsheet, which can be found <a href="https://docs.google.com/spreadsheets/d/1-Co8J4z3TjOZ71O7on35_rCJq3T-0D4LV5rn0clY5Q8" target="_blank">by clicking here</a>, and does not use the Portal zone/Void zone inputs. Legacy mode is not recommended, but if you're using it, VM/XP weights of 12/11.25 respectively are recommended.
 				</p>
 			</div>
 		</p>
 		<div style="display: flex; flex-direction: column;">
-			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()" style="height: 26px; width:313px; max-height: 300px; max-width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
-			<button onclick="calculate()" style="width:313px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
+			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()" style="height: 26px; width: 312.9px; min-height: 26px; max-height: 300px; min-width: 312.9px; max-width: 312.9px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
+			<button onclick="calculate()" style="width: 312.9px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
 			<div>
-				<input placeholder="VM weight (default 12)" id="VMInput" type="number" spellcheck="false" autocomplete="off" oninput="updateWeight('VM')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
-				<input placeholder="XP weight (default 11.25)" id="XPInput" type="number" spellcheck="false" autocomplete="off" oninput="updateWeight('XP')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+				<input placeholder="VM weight (default 1)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+				<input placeholder="XP weight (default 1)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
 			</div>
 			<div>
-				<input placeholder="Equipment levels at end of run (default 90)" id="ELInput" type="number" spellcheck="false" autocomplete="off" oninput="updateWeight('EL')" style="font-size: 1.1rem; height: 26px; width: 313px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+				<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+				<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+				<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
 			</div>
-			<div style="margin-bottom: 1px;">
-				Fluffy E4L10:
-				<input id="hasE4" type="checkbox" onchange="updateCheckboxes()">
-				Fluffy E5L10:
-				<input id="hasE5" type="checkbox" onchange="updateCheckboxes()">
-				Charged Crits:
-				<input id="hasCC" type="checkbox" onchange="updateCheckboxes()">
+			<div style="display: flex; flex-direction: row; margin-bottom: 1px; font-size: 1.33rem;">
+				<div class="checkboxContainer">
+					Fluffy E4L10:
+					<input id="E4Input" type="checkbox" onchange="updateInput('E4')">
+				</div>
+				<div class="checkboxContainer">
+					Fluffy E5L10:
+					<input id="E5Input" type="checkbox" onchange="updateInput('E5')">
+				</div>
+				<div class="checkboxContainer">
+					Charged Crits:
+					<input id="CCInput" type="checkbox" onchange="updateInput('CC')">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -55,7 +71,7 @@
 					<span class="heirloomName" id="shieldOldName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 9999;">
+			<div style="width: 0px; height: 0px; z-index: 2;">
 				<div class="help" id="shieldOld?" style="display: none; right: -331px; top: -51px;">
 					<p id="shieldOldInfo"></p>
 				</div>
@@ -90,7 +106,7 @@
 					<span class="heirloomName" id="shieldNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 9999;">
+			<div style="width: 0px; height: 0px; z-index: 2;">
 				<div class="help" id="shieldNew?" style="display: none; right: -331px; top: -51px;">
 					<p id="shieldNewInfo"></p>
 				</div>
@@ -132,7 +148,7 @@
 					<span class="heirloomName" id="staffOldName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px;">
+			<div style="width: 0px; height: 0px; z-index: 1;">
 				<div class="help" id="staffOld?" style="display: none; right: -331px; top: -51px;">
 					<p id="staffOldInfo"></p>
 				</div>
@@ -167,7 +183,7 @@
 					<span class="heirloomName" id="staffNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px;">
+			<div style="width: 0px; height: 0px; z-index: 1;">
 				<div class="help" id="staffNew?" style="display: none; right: -331px; top: -51px;">
 					<p id="staffNewInfo"></p>
 				</div>
@@ -201,7 +217,11 @@
 	</div>
 
 	<footer id="footer">
-		<a href="https://omsi6.github.io/heirlooms/index.js">Heirlooms v1.09</a>
+		<div class="checkboxContainer">
+			<span style="color: #a8a7a8; font-size: 1.33rem;">Legacy mode: </span>
+			<input id="LegacyInput" type="checkbox" onchange="updateInput('Legacy')">
+		</div>
+		<a href="https://omsi6.github.io/heirlooms/index.js" style="text-decoration: underline">Heirlooms v1.10</a>
 	</footer>
 
 	<script src="lz-string.js"></script>

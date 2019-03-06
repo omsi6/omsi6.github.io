@@ -31,7 +31,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 }
  
 input[type="number"] {
-    -moz-appearance: textfield;
+	-moz-appearance: textfield;
+	text-align: center;
+}
+
+input[type="checkbox"] {
+	margin: 0px;
+	margin-top: 3px;
+	margin-left: 5px;
+}
+
+.checkboxContainer {
+	display: flex;
+	width: 104px;
 }
 
 ::placeholder {
@@ -147,7 +159,7 @@ a:hover, a:active {
 }
 
 .nullifiumContainer {
-	width: 313px;
+	width: 312px;
 	height: 5.6rem;
 	font-size: 1.5rem;
 	line-height: 1.5rem;

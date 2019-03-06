@@ -1,12 +1,15 @@
 //lots of stuff here copied from Trimps (https://trimps.github.io/), since it is a calculator for it afterall
 //lots of the math and the idea behind this is based off of the heirloom spreadsheet made by nsheetz from the Trimps discord
+//major help for improved VM/XP calculations from ymhsbmbesitwf
+//help for improved miner eff calculation from GhostFrog
 //minor help from SpectralFlame, and Razenpok
 //I hope this tool is useful! :)
 
-//patch notes: (maybe move these somewhere visible on the main page later)
+//patch notes: (maybe move these somewhere visible on the main page later, instead of just a link in the corner)
 
 /*
 
+v1.10 new miner eff, vmdc, and fluffy exp gain calculations with new inputs to make them work, lots of background cleanup and a better localstorage usage system, improved/minor fixes to css
 v1.09 fix NaN values at equip level input of 1
 v1.08 equipment level input
 v1.07 fix charged crits not being properly accounted for, fix relentless math being wrong at low levels
@@ -22,40 +25,56 @@ v1.00: release
 
 let save;
 
-let VMWeight = 12;
-let XPWeight = 11.25;
-let ELWeight = 90;
-
-if (localStorage.getItem("VMWeight") === null) {
-	localStorage.setItem("VMWeight", 12)
-} else {
-	VMWeight = parseFloat(localStorage.getItem("VMWeight"))
-	if (VMWeight !== 12) document.getElementById("VMInput").value = VMWeight
-}
-if (localStorage.getItem("XPWeight") === null) {
-	XPWeight = localStorage.getItem("XPWeight")
-	localStorage.setItem("XPWeight", 11.25)
-} else {
-	XPWeight = parseFloat(localStorage.getItem("XPWeight"))
-	if (XPWeight !== 11.25) document.getElementById("XPInput").value = XPWeight
-}
-if (localStorage.getItem("XPWeight") === null) {
-	XPWeight = localStorage.getItem("XPWeight")
-	localStorage.setItem("XPWeight", 11.25)
-} else {
-	ELWeight = parseFloat(localStorage.getItem("ELWeight"))
-	if (ELWeight !== 90) document.getElementById("ELInput").value = ELWeight
+let inputs = {
+	VMWeight: 1,
+	XPWeight: 1,
+	weaponLevels: 90,
+	portalZone: 1,
+	voidZone: 1,
+	E4: false,
+	E5: false,
+	CC: false,
+	Legacy: false,
+	setInput: function (name, value) {
+		this[name] = value;
+		if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") document.getElementById(name + "Input").checked = value;
+		else document.getElementById(name + "Input").value = value;
+		localStorage.setItem("heirloomInputs", JSON.stringify(inputs))
+	}
 }
 
-let hasE4 = false;
-let hasE5 = false;
-let hasCC =  false;
+if (localStorage.getItem("heirloomInputs") !== null) {
+	let savedInputs = JSON.parse(localStorage.getItem("heirloomInputs"))
+	for (input in JSON.parse(localStorage.getItem("heirloomInputs"))) {
+		if ((input === "VMWeight" || input === "XPWeight") && savedInputs[input] === 1) continue
+		inputs.setInput(input, savedInputs[input])
+	}
+}
 
-Math.log = (function() {
-  var log = Math.log;
-  return function(n, base) {
-    return log(n)/(base ? log(base) : 1);
-  };
+function isNumeric(n) {
+	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function updateInput(name) {
+	let inputDiv = document.getElementById(name + "Input")
+	if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") inputs[name] = inputDiv.checked
+	else if (isNumeric(inputDiv.value)) inputs[name] = parseFloat(inputDiv.value)
+	if (save) {
+		calculate(true)
+	}
+	localStorage.setItem("heirloomInputs", JSON.stringify(inputs))
+}
+
+//remove old data
+localStorage.removeItem("VMWeight")
+localStorage.removeItem("XPWeight")
+localStorage.removeItem("ELWeight")
+
+Math.log = (function () {
+	var log = Math.log;
+	return function (n, base) {
+		return log(n) / (base ? log(base) : 1);
+	};
 })();
 
 const modNames = {
@@ -131,19 +150,225 @@ const hardCaps = {
 	plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 75]
 }
 
+//below code is from /u/ymhsbmbesitwf on reddit
+/**
+ * Useful constants.
+ */
+// Trimps updates.js : getAchievementStrengthLevel()
+const achievementTiers = [15, 100, 300, 600, 1000, 2000];
+// Trimps main.js : prestigeEquipment(what, fromLoad, noInc)
+// Trimps config.js : prestige
+const attackPrestigeMultiplier = Math.pow(1.19, 13);
+// Trimps main.js : checkVoidMap()
+// Actual chance works independently from Heirloom Bonus.
+const averageCellsAfterMin = 891.0401556784;
+// Trimps config.js : badGuys
+// World enemies with all relevant Exotic Imp-orts unlocked, lies only by up to 3.7% otherwise.
+const averageBadGuyHealthMod = (0.7 + 1.3 + 1.3 + 1 + 0.7 + 0.8 + 1.1 + 1.6 + 1.5 + 1 + 1 + 1 + 1 + 1) / 14;
+// Trimps main.js : Fluffy
+const fluffyRewards = { voidance: 12, critChance: 14, megaCrit: 15, voidelicious: 17 };
+// Trimps config.js : goldenUpgrades
+// Trimps main.js: buyGoldenUpgrade(what)
+const goldenVoid = [0.0, 0.02, 0.06, 0.12, 0.2, 0.3, 0.42, 0.56, 0.72];
+
+/**
+ * Variables that need to be read from save / settings.
+ */
+let portalZone = -1; // recommended default: save.global.highestLevelCleared + 1
+// because save.global.lastPortal can be sometimes wrong,
+// e.g. artificially low after c^2 (Trimp etc) and players
+// might not recognize the significance
+let voidZone = -1;   // recommended default: save.stats.highestVoidMap
+
+/**
+ * Prestige + Fluffinity + Level
+ */
+function fluffyRewardsAvailable() {
+	// Trimps main.js : Fluffy 
+	let fluffyLevel = Math.floor(Math.log(((save.global.fluffyExp / (1000 * Math.pow(5, save.global.fluffyPrestige))) * 3) + 1) / Math.log(4));
+	return (save.global.fluffyPrestige + (save.talents.fluffyAbility.purchased ? 1 : 0) + fluffyLevel);
+}
+
+/**
+ * Should account for everything except:
+ * 1) Z1-Z10 health nerfs: irrelevant
+ * 2) Nature enemies: ignored on purpose
+ * 3) Magma placement: this random factor shouldn't influence the average too much
+ */
+function totalEnemyHealthInZone(zone) {
+	// Trimps config.js getEnemyHealth: function (level, name, ignoreImpStat)
+	let amt = 130 * Math.sqrt(zone) * Math.pow(3.265, zone / 2) - 110;
+	let averageCell = (0 + 98) / 2;
+	let total = 0;
+	if (zone < 60) {
+		total += ((amt * 0.4) + ((amt * 0.4) * (averageCell / 110))) * averageBadGuyHealthMod * 99;
+		total += ((amt * 0.4) + ((amt * 0.4) * (99 / 110))) * 2; // Blimp
+	} else {
+		amt *= Math.pow(1.1, zone - 59);
+		// Trimps main.js Corruption
+		let corruptionStart = save.talents.headstart.purchased ? (save.talents.headstart2.purchased ? ((save.talents.headstart3.purchased) ? 151 : 166) : 176) : 181;
+		if (zone < corruptionStart) {
+			total += ((amt * 0.5) + ((amt * 0.8) * (averageCell / 100))) * averageBadGuyHealthMod * 99;
+		} else {
+			let corruptionCells = Math.min(Math.floor((zone - corruptionStart) / 3) + 2, 80);
+			let corruptionMaxCell = Math.min(((Math.floor(corruptionCells / 6) + 1) * 10) - 1, 98);
+			let corruptionStatScale = 10 * Math.pow(1.05, Math.floor((zone - 150) / 6));
+			// corruptTough, corruptDodge
+			corruptionStatScale = ((corruptionStatScale * 4) + (corruptionStatScale * 5) + (corruptionStatScale / 0.7)) / 6;
+			let healthyCells = 0;
+			let healthyMaxCell = -1;
+			let healthyStatScale = 14 * Math.pow(1.05, Math.floor((zone - 150) / 6));
+			// healthyTough
+			healthyStatScale = ((healthyStatScale * 4) + (healthyStatScale * 7.5)) / 5;
+			// Checking Spire II Achievement, because current run might not be there yet.
+			if ((zone > 300) && (save.achievements.spire2Timed.highest != 0)) {
+				healthyCells = Math.min(Math.floor((zone - 300) / 15) + 2, 80);
+				healthyMaxCell = Math.min((Math.floor(healthyCells / 6) + 1) * 10, 98);
+				corruptionCells -= healthyCells;
+			}
+			let averageHealth = 0;
+			let corruptionCellsOverlap = 0;
+			// Overlap (average)
+			if (healthyCells > 0) {
+				averageCell = (0 + healthyMaxCell) / 2;
+				averageHealth = ((amt * 0.5) + ((amt * 0.8) * (averageCell / 100))) * averageBadGuyHealthMod;
+				corruptionCellsOverlap = (healthyMaxCell - healthyCells) / (corruptionMaxCell - healthyCells) * corruptionCells;
+				total += averageHealth * healthyStatScale * healthyCells;
+				total += averageHealth * corruptionStatScale * corruptionCellsOverlap;
+				total += averageHealth * ((healthyMaxCell + 1) - healthyCells - corruptionCellsOverlap);
+			}
+			// Corruption
+			if (healthyMaxCell < corruptionMaxCell) {
+				averageCell = ((healthyMaxCell + 1) + corruptionMaxCell) / 2;
+				averageHealth = ((amt * 0.5) + ((amt * 0.8) * (averageCell / 100))) * averageBadGuyHealthMod;
+				total += averageHealth * corruptionStatScale * (corruptionCells - corruptionCellsOverlap);
+				total += averageHealth * (((corruptionMaxCell + 1) - (healthyMaxCell + 1)) - (corruptionCells - corruptionCellsOverlap));
+			}
+			// Above Corruption
+			if (corruptionMaxCell < 98) {
+				averageCell = ((corruptionMaxCell + 1) + 98) / 2;
+				averageHealth = ((amt * 0.5) + ((amt * 0.8) * (averageCell / 100))) * averageBadGuyHealthMod;
+				total += averageHealth * (98 - corruptionMaxCell);
+			}
+		}
+		total += ((amt * 0.4) + ((amt * 0.4) * (99 / 110))) * 6; // Improbability
+	}
+	return total;
+}
+
+/**
+ * Has to include Classy, so it's accurate only for saves with intended Perk allocation
+ * and will result in slightly higher (I think) Fluffy priority with some c^2 specs.
+ * Now includes Spire rewards, since almost all runs clear at least few rows of top Spire.
+ */
+function totalFluffyExpModifierUpToZone(zone) {
+	let start = 300;
+	if (save.portal.Classy.level) {
+		start = Math.floor(start - (save.portal.Classy.level * save.portal.Classy.modifier));
+	}
+	let i = 0;
+	let modifier = 0;
+	for (i = start; i < zone; ++i) {
+		modifier += Math.pow(1.015, i - start) * ((start % 100 == 0) ? 3 : 1);
+	}
+	return modifier;
+}
+
+/**
+ * Should account for everything except:
+ * 1) Looting bonuses: on purpose
+ * 2) Fluffy / Daily bonuses: on purpose
+ * 3) Spire Rows: many runs don't clear top Spire, don't want to guess the rows
+ */
+function voidHeliumInZone(zone) {
+	// Trimps config.js Cthulimp.loot
+	let amt = ((zone >= 60) ? 10 : 2) * ((zone >= 230) ? 3 : 1);
+	let corruptionStart = save.talents.headstart.purchased ? (save.talents.headstart2.purchased ? ((save.talents.headstart3.purchased) ? 151 : 166) : 176) : 181;
+	if (zone >= corruptionStart) {
+		amt *= 2;
+		let healthyCells = ((zone > 300) && (save.achievements.spire2Timed.highest != 0)) ? Math.min(Math.floor((zone - 300) / 15) + 2, 80) : 0;
+		let corruptionCells = Math.min(Math.floor((zone - corruptionStart) / 3) + 2, 80) - healthyCells;
+		amt *= 1 + 0.15 * corruptionCells + 0.45 * healthyCells;
+	}
+	// Trimp main.js rewardResource(what, baseAmt, level, checkMapLootScale, givePercentage)
+	// if zone >= 19 to prevent NaN results
+	if (zone >= 19) amt *= ((zone - 19) * 1.35) + Math.pow(1.23, Math.sqrt((zone - 19) * 1.35));
+	if (save.global.sLevel >= 5) {
+		amt *= Math.pow(1.005, zone);
+	}
+	return amt;
+}
+
+/**
+ * Average VMs gathered up to zone, with starting bonuses based on portal.
+ */
+function voidMapsUpToZone(zone, portal, heirloomBonus) {
+	let voidMaps = 0;
+	// Trimps updates.js : resetGame(keepPortal)
+	if (save.talents.voidSpecial.purchased) {
+		voidMaps += Math.floor(portal / 100);
+		if (save.talents.voidSpecial2.purchased) {
+			voidMaps += Math.floor((portal + 50) / 100);
+		}
+	}
+	// Trimps main.js : Fluffy
+	let fluffyAvailable = fluffyRewardsAvailable();
+	if (fluffyAvailable >= fluffyRewards.voidance) {
+		voidMaps += 2;
+		if (fluffyAvailable >= fluffyRewards.voidelicious) {
+			voidMaps += 16;
+		}
+	}
+	// Trimps main.js : getAvailableGoldenUpgrades()
+	// Trimps updates.js : countExtraAchievementGoldens()
+	let goldenUpgrades = Math.floor((save.global.achievementBonus - 2000) / 500);
+	if (goldenUpgrades <= 0)
+		goldenUpgrades = 0;
+	let goldenMax = 8;
+	// Reasonable assumption by omsi6
+	if (!save.talents.voidSpecial.purchased) {
+		goldenUpgrades = 0;
+		goldenMax = 0;
+	}
+	let goldenTier = 6;
+	while ((goldenTier > 0) && (save.global.achievementBonus < achievementTiers[goldenTier - 1])) {
+		--goldenTier;
+	}
+	let goldenFrequency = 50 - ((goldenTier - 1) * 5);
+	// Trimps main.js : checkVoidMap()
+	let max = save.global.highestLevelCleared;
+	let zonesCleared = 0;
+	while ((zonesCleared < zone) && (goldenUpgrades <= goldenMax)) {
+		let min = (max > 80) ? (1000 + ((max - 80) * 13)) : 1000;
+		min *= (1 - (heirloomBonus / 100));
+		min *= (1 - goldenVoid[goldenUpgrades]);
+		let zonesWithCurrentUpgrade = goldenFrequency;
+		if (((zonesCleared + zonesWithCurrentUpgrade) > zone) || (goldenUpgrades == goldenMax)) {
+			zonesWithCurrentUpgrade = zone - zonesCleared;
+		}
+		voidMaps += (zonesWithCurrentUpgrade * 100) / (min + averageCellsAfterMin);
+		zonesCleared += zonesWithCurrentUpgrade;
+		++goldenUpgrades;
+	}
+	return voidMaps;
+}
+
+function getUpgValue(type, heirloom) {
+	for (let mod of heirloom.mods) {
+		if (mod[0] === type) {
+			return mod[1]
+		}
+	}
+}
+
 //add arrays for max normal values, if below or equal to, return normal price, else divide the amount over the normal value by the step to get amount and calculate the price with the amount
 function getUpgCost(type, heirloom) {
 	let rarity = heirloom.rarity
-	let value = 0;
-	for (let i in heirloom.mods) { 
-		if (heirloom.mods[i][0] === type) {
-			value = heirloom.mods[i][1]
-		}
-	}
+	let value = getUpgValue(type, heirloom)
 	if (value <= maxAmounts[type][rarity]) {
 		return basePrices[rarity];
 	}
-	let amount = (value-maxAmounts[type][rarity]) / stepAmounts[type][rarity];
+	let amount = (value - maxAmounts[type][rarity]) / stepAmounts[type][rarity];
 	if (type === "critChance") {
 		return (value >= hardCaps[type][rarity]) ? 1e10 : Math.floor(basePrices[rarity] * Math.pow(priceIncreases[rarity], amount));
 	} else if (type === "voidMaps") {
@@ -155,44 +380,30 @@ function getUpgCost(type, heirloom) {
 }
 
 function getUpgGain(type, heirloom) {
-	let value = 0;
-	let rarity = heirloom.rarity
+	let value = getUpgValue(type, heirloom);
+	let stepAmount = stepAmounts[type][heirloom.rarity];
 	if (type === "trimpAttack") {
-		for (let i in heirloom.mods) { 
-			if (heirloom.mods[i][0] === type) {
-				value = heirloom.mods[i][1];
-			}
-		}
-		return (value+100+stepAmounts[type][rarity]) / (value+100)
+		return (value + 100 + stepAmount) / (value + 100)
 	} else if (type === "critDamage") {
 		var relentlessness = save.portal.Relentlessness.level
 		let critChance = relentlessness * 5;
 		let megaCritMult = 5;
 		let critDmgNormalizedBefore = 0;
 		let critDmgNormalizedAfter = 0;
-		for (let mod of heirloom.mods) { 
-			if (mod[0] === type) {
-				value = mod[1];
-			}
-			if (mod[0] === "critChance") {
-				critChance += mod[1];
-				if (hasCC) {
-					critChance += mod[1] / 2;
-				}
-			}
-		}
-		if (hasE4) {
+		if (inputs.CC) critChance += getUpgValue("critChance", heirloom) * 1.5
+		else critChance += getUpgValue("critChance", heirloom)
+		if (inputs.E4) {
 			critChance += 50;
 		}
-		if (hasE5) {
+		if (inputs.E5) {
 			megaCritMult += 2;
 		}
-		if (hasCC) {
+		if (inputs.CC) {
 			megaCritMult += 1;
 		}
 		const megaCrits = Math.min(Math.floor(critChance / 100), 2);
 		critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
-		const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max((Math.min(relentlessness, 10) -1), 0)
+		const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max((Math.min(relentlessness, 10) - 1), 0)
 		switch (megaCrits) {
 			case 2:
 				critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
@@ -206,13 +417,13 @@ function getUpgGain(type, heirloom) {
 		}
 		switch (megaCrits) {
 			case 2:
-				critDmgNormalizedAfter = (critDamage + stepAmounts[type][rarity]) * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
+				critDmgNormalizedAfter = (critDamage + stepAmount) * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
 				break;
 			case 1:
-				critDmgNormalizedAfter = (critDamage + stepAmounts[type][rarity]) * ((1 - critChance) + megaCritMult * critChance);
+				critDmgNormalizedAfter = (critDamage + stepAmount) * ((1 - critChance) + megaCritMult * critChance);
 				break;
 			case 0:
-				critDmgNormalizedAfter = (critDamage + stepAmounts[type][rarity]) * critChance + ((1 - critChance) * 100);
+				critDmgNormalizedAfter = (critDamage + stepAmount) * critChance + ((1 - critChance) * 100);
 				break;
 		}
 
@@ -225,30 +436,21 @@ function getUpgGain(type, heirloom) {
 		let megaCritMult = 5;
 		let critDmgNormalizedBefore = 0;
 		let critDmgNormalizedAfter = 0;
-		for (let mod of heirloom.mods) { 
-			if (mod[0] === type) {
-				value = mod[1];
-				critChanceBefore += mod[1];
-				if (hasCC) {
-					critChanceBefore += mod[1] / 2;
-				}
-			}
-			if (mod[0] === "critDamage") {
-				critDamage += mod[1];
-			}
-		}
-		if (hasE4) {
+		if (inputs.CC) critChanceBefore += value * 1.5
+		else critChanceBefore += value
+		critDamage += getUpgValue("critDamage", heirloom)
+		if (inputs.E4) {
 			critChanceBefore += 50;
 		}
-		if (hasE5) {
+		if (inputs.E5) {
 			megaCritMult += 2;
 		}
-		if (hasCC) {
+		if (inputs.CC) {
 			megaCritMult += 1;
 		}
 		const megaCritsBefore = Math.min(Math.floor(critChanceBefore / 100), 2);
-		const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((hasCC) ? stepAmounts[type][rarity] * 1.5 : stepAmounts[type][rarity])) / 100), 2);
-		critChanceAfter = Math.min((critChanceBefore + ((hasCC) ? stepAmounts[type][rarity] * 1.5 : stepAmounts[type][rarity])) - megaCritsAfter * 100, 100) / 100;
+		const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((inputs.CC) ? stepAmount * 1.5 : stepAmount)) / 100), 2);
+		critChanceAfter = Math.min((critChanceBefore + ((inputs.CC) ? stepAmount * 1.5 : stepAmount)) - megaCritsAfter * 100, 100) / 100;
 		critChanceBefore = Math.min(critChanceBefore - megaCritsBefore * 100, 100) / 100;
 		switch (megaCritsBefore) {
 			case 2:
@@ -274,36 +476,66 @@ function getUpgGain(type, heirloom) {
 		}
 
 		return critDmgNormalizedAfter / critDmgNormalizedBefore;
-	} else if (type === "voidMaps") {
-		for (let i in heirloom.mods) { 
-			if (heirloom.mods[i][0] === type) {
-				value = heirloom.mods[i][1];
-			}
+	} if (type === "voidMaps") {
+		//legacy mode return
+		if (inputs.Legacy) {
+			return (value + stepAmount * inputs.VMWeight) / (value)
 		}
-		return (value + stepAmounts[type][rarity] * VMWeight) / (value)
-	} else if (type === "plaguebringer") {
-		for (let i in heirloom.mods) { 
-			if (heirloom.mods[i][0] === type) {
-				value = heirloom.mods[i][1];
-			}
-		}
-		return (value + 100 + stepAmounts[type][rarity]) / (value + 100)
+
+		let voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
+		let voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
+		let upgGain = voidMapsNew / voidMapsOld;
+		
+		// Using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
+		// It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
+		let zoneStep = (inputs.portalZone > 235) ? 30 : 10;
+		// Ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
+		// Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
+		// difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
+		// Example results (formatted to display average per zone scaling)
+		//  Z20: 1.843938^10 / 9.596448^2
+		//  Z49: 1.823788^10 / 9.596448^2
+		//  Z55: 2.019369^10 / 9.596448^2
+		//  Z60: 2.003003^10 / 9.596448^2
+		// Z100: 1.997119^10 / 9.596448^2
+		// Z180: 2.048560^10 / 9.596448^2
+		// Z235: 2.017895^10 / 9.596448^2
+		// Z236: 2.027765^30 / 9.596448^6
+		// Z450: 2.006783^30 / 9.596448^6
+		// Z650: 2.006184^30 / 9.596448^6
+		// Results will be slightly different without Headstarts.
+		let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
+		attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
+		let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
+		let voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
+		heliumScaling *= voidMapsHigherZone / voidMapsOld;
+		// Scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
+		upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
+
+		// Adding VMWeight (default: 1) in a manner consistent with previous calculation
+		return (1 + (upgGain - 1) * inputs.VMWeight);
 	} else if (type === "FluffyExp") {
-		for (let i in heirloom.mods) { 
-			if (heirloom.mods[i][0] === type) {
-				value = heirloom.mods[i][1];
-			}
+		//legacy mode return
+		if (inputs.Legacy) {
+			return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100)
 		}
-		return (value + 100 + stepAmounts[type][rarity] * XPWeight) / (value + 100)
+		
+		let upgGain = (value + 100 + stepAmount) / (value + 100);
+		// Avoiding weird stuff with zero division.
+		// Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
+		if (inputs.portalZone >= 301) {
+			// Scaling to Attack by comparing Exp gained from additional zones
+			let pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
+			let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
+			attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
+			upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
+		}
+		// Adding XPWeight (default: 1) in a manner consistent with previous calculation
+		return (1 + (upgGain - 1) * inputs.XPWeight);
+	} else if (type === "plaguebringer") {
+		return (value + 100 + stepAmount) / (value + 100)
 	} else if (type === "MinerSpeed") {
-		//default equip level is 90. I think this is good?
-		for (let i in heirloom.mods) { 
-			if (heirloom.mods[i][0] === type) {
-				value = heirloom.mods[i][1];
-			}
-		}
-		if (ELWeight === 1) return (Math.log((value + 100 + stepAmounts[type][rarity]) / (value + 100), 3) + 1)
-		return (Math.log((value + 100 + stepAmounts[type][rarity]) / (value + 100), ((1 - Math.pow(1.2, ELWeight)) / (1 - Math.pow(1.2, ELWeight - 1)))) + ELWeight) / ELWeight
+		return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels
 	}
 }
 
@@ -317,41 +549,7 @@ function getUpgEff(type, shield, staff) {
 	}
 }
 
-function isNumeric(n) {
-	return !isNaN(parseFloat(n)) && isFinite(n);
-  }
-
-function updateWeight(type) {
-	switch(type) {
-		case "VM":
-			if (document.getElementById("VMInput").value === "") VMWeight = 12;
-			else if (isNumeric(document.getElementById("VMInput").value)) VMWeight = parseFloat(document.getElementById("VMInput").value)
-			break;
-		case "XP":
-			if (document.getElementById("XPInput").value === "") XPWeight = 11.25;
-			else if(isNumeric(document.getElementById("XPInput").value)) XPWeight = parseFloat(document.getElementById("XPInput").value)
-			break;
-		case "EL":
-			if (document.getElementById("ELInput").value === "") ELWeight = 90;
-			else if(isNumeric(document.getElementById("ELInput").value)) ELWeight = parseFloat(document.getElementById("ELInput").value)
-			break;
-	}
-	if (save) {
-		calculate(true)
-	}
-	if (isNumeric(document.getElementById(type+"Input").value)) localStorage.setItem(type+"Weight", parseFloat(document.getElementById(type+"Input").value))
-}
-
-function updateCheckboxes() {
-	hasE4 = document.getElementById("hasE4").checked
-	hasE5 = document.getElementById("hasE5").checked
-	hasCC = document.getElementById("hasCC").checked
-	if (save) {
-		calculate(true)
-	}
-}
-
-function prettifySub(number){
+function prettifySub(number) {
 	number = parseFloat(number);
 	var floor = Math.floor(number);
 	if (number === floor) // number is an integer, just show it as-is
@@ -369,7 +567,7 @@ function prettify(number) {
 	if (number < 0) return "-" + prettify(-number);
 	if (number < 0.005) return (+number).toExponential(2);
 
-	var base = Math.floor(Math.log(number)/Math.log(1000));
+	var base = Math.floor(Math.log(number) / Math.log(1000));
 	if (base <= 0) return prettifySub(number);
 	number /= Math.pow(1000, base);
 	if (number >= 999.5) {
@@ -377,9 +575,9 @@ function prettify(number) {
 		number /= 1000;
 		++base;
 	}
-	if (save.options.menu.standardNotation.enabled == 3){
+	if (save.options.menu.standardNotation.enabled == 3) {
 		var suffices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-		if (base <= suffices.length) suffix = suffices[base -1];
+		if (base <= suffices.length) suffix = suffices[base - 1];
 		else {
 			var suf2 = (base % suffices.length) - 1;
 			if (suf2 < 0) suf2 = suffices.length - 1;
@@ -389,24 +587,23 @@ function prettify(number) {
 	else {
 		var suffices = [
 			'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'Ud',
-            'Dd', 'Td', 'Qad', 'Qid', 'Sxd', 'Spd', 'Od', 'Nd', 'V', 'Uv', 'Dv',
-            'Tv', 'Qav', 'Qiv', 'Sxv', 'Spv', 'Ov', 'Nv', 'Tg', 'Utg', 'Dtg', 'Ttg',
-            'Qatg', 'Qitg', 'Sxtg', 'Sptg', 'Otg', 'Ntg', 'Qaa', 'Uqa', 'Dqa', 'Tqa',
-            'Qaqa', 'Qiqa', 'Sxqa', 'Spqa', 'Oqa', 'Nqa', 'Qia', 'Uqi', 'Dqi',
-            'Tqi', 'Qaqi', 'Qiqi', 'Sxqi', 'Spqi', 'Oqi', 'Nqi', 'Sxa', 'Usx',
-            'Dsx', 'Tsx', 'Qasx', 'Qisx', 'Sxsx', 'Spsx', 'Osx', 'Nsx', 'Spa',
-            'Usp', 'Dsp', 'Tsp', 'Qasp', 'Qisp', 'Sxsp', 'Spsp', 'Osp', 'Nsp',
-            'Og', 'Uog', 'Dog', 'Tog', 'Qaog', 'Qiog', 'Sxog', 'Spog', 'Oog',
-            'Nog', 'Na', 'Un', 'Dn', 'Tn', 'Qan', 'Qin', 'Sxn', 'Spn', 'On',
-            'Nn', 'Ct', 'Uc'
+			'Dd', 'Td', 'Qad', 'Qid', 'Sxd', 'Spd', 'Od', 'Nd', 'V', 'Uv', 'Dv',
+			'Tv', 'Qav', 'Qiv', 'Sxv', 'Spv', 'Ov', 'Nv', 'Tg', 'Utg', 'Dtg', 'Ttg',
+			'Qatg', 'Qitg', 'Sxtg', 'Sptg', 'Otg', 'Ntg', 'Qaa', 'Uqa', 'Dqa', 'Tqa',
+			'Qaqa', 'Qiqa', 'Sxqa', 'Spqa', 'Oqa', 'Nqa', 'Qia', 'Uqi', 'Dqi',
+			'Tqi', 'Qaqi', 'Qiqi', 'Sxqi', 'Spqi', 'Oqi', 'Nqi', 'Sxa', 'Usx',
+			'Dsx', 'Tsx', 'Qasx', 'Qisx', 'Sxsx', 'Spsx', 'Osx', 'Nsx', 'Spa',
+			'Usp', 'Dsp', 'Tsp', 'Qasp', 'Qisp', 'Sxsp', 'Spsp', 'Osp', 'Nsp',
+			'Og', 'Uog', 'Dog', 'Tog', 'Qaog', 'Qiog', 'Sxog', 'Spog', 'Oog',
+			'Nog', 'Na', 'Un', 'Dn', 'Tn', 'Qan', 'Qin', 'Sxn', 'Spn', 'On',
+			'Nn', 'Ct', 'Uc'
 		];
 		var suffix;
 		if (save.options.menu.standardNotation.enabled == 2 || (save.options.menu.standardNotation.enabled == 1 && base > suffices.length) || (save.options.menu.standardNotation.enabled == 4 && base > 31))
 			suffix = "e" + ((base) * 3);
 		else if (save.options.menu.standardNotation.enabled && base <= suffices.length)
-			suffix = suffices[base-1];
-		else
-		{
+			suffix = suffices[base - 1];
+		else {
 			var exponent = parseFloat(numberTmp).toExponential(2);
 			exponent = exponent.replace('+', '');
 			return exponent;
@@ -416,27 +613,34 @@ function prettify(number) {
 }
 
 function prettifyCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function calculate(manualInput) {
-	save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value))
+	if (JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value)) !== null) save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value))
 
 	let nu = save.global.nullifium
 
 	let startingShield = save.global.ShieldEquipped
 	let startingStaff = save.global.StaffEquipped
 
-	let fluffyLevel = Math.floor(Math.log10(((save.global.fluffyExp / (1000 * Math.pow(5, save.global.fluffyPrestige))) * (4 - 1)) + 1) / Math.log10(4));
-	let fluffinity = (save.talents.fluffyAbility.purchased) ? 1 : 0;
-
 	if (!manualInput) {
-		hasE4 = (fluffyLevel + save.global.fluffyPrestige + fluffinity >= 14) ? true : false;
-		hasE5 = (fluffyLevel + save.global.fluffyPrestige + fluffinity >= 15) ? true : false;
-		hasCC = save.talents.crit.purchased;
-		document.getElementById("hasE4").checked = hasE4
-		document.getElementById("hasE5").checked = hasE5
-		document.getElementById("hasCC").checked = hasCC
+		inputs.setInput("E4", fluffyRewardsAvailable() >= fluffyRewards.critChance)
+		inputs.setInput("E5", fluffyRewardsAvailable() >= fluffyRewards.megaCrit)
+		inputs.setInput("CC", save.talents.crit.purchased)
+		for (let input in inputs) {
+			if (input === "setInput") continue
+			if (document.getElementById(input+"Input").value === "") {
+				switch (input) {
+					case "portalZone":
+						inputs.setInput(input, save.global.highestLevelCleared + 1)
+					break
+					case "voidZone":
+						inputs.setInput(input, save.stats.highestVoidMap.valueTotal)
+					break
+				}
+			}
+		}
 	}
 
 	let shieldAddAmounts = [0, 0, 0, 0, 0]
@@ -459,7 +663,7 @@ function calculate(manualInput) {
 				modToUpgrade = mod
 			}
 		}
-	
+
 		for (let mod of newStaff.mods) {
 			if (getUpgEff(mod[0], newShield, newStaff) > eff) {
 				eff = getUpgEff(mod[0], newShield, newStaff);
@@ -468,7 +672,7 @@ function calculate(manualInput) {
 				modToUpgrade = mod
 			}
 		}
-	
+
 		if (modsToWeighShield.includes(name) && nu > cost) {
 			newShield.mods[newShield.mods.indexOf(modToUpgrade)][1] += stepAmounts[newShield.mods[newShield.mods.indexOf(modToUpgrade)][0]][newShield.rarity]
 			shieldAddAmounts[newShield.mods.indexOf(modToUpgrade)] += 1;
@@ -489,39 +693,39 @@ function calculate(manualInput) {
 	document.getElementById("nextUpgrade").textContent = fancyModNames[name];
 
 	//heirloom names
-	document.getElementById("shieldOldName").textContent  = startingShield.name + " (Old)";
-	document.getElementById("shieldNewName").textContent  = startingShield.name + " (New)";
-	document.getElementById("staffOldName").textContent  = startingStaff.name + " (Old)";
-	document.getElementById("staffNewName").textContent  = startingStaff.name + " (New)";
+	document.getElementById("shieldOldName").textContent = startingShield.name + " (Old)";
+	document.getElementById("shieldNewName").textContent = startingShield.name + " (New)";
+	document.getElementById("staffOldName").textContent = startingStaff.name + " (Old)";
+	document.getElementById("staffNewName").textContent = startingStaff.name + " (New)";
 
 	//add rarity styles to equip divs
 	if (save.options.menu.showHeirloomAnimations.enabled && startingShield.rarity >= 7) {
-		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity+"Anim";
-		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity+"Anim";
+		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity + "Anim";
+		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity + "Anim";
 	} else {
-		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity;
-		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare"+startingShield.rarity;
+		document.getElementById("shieldOldContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity;
+		document.getElementById("shieldNewContainer").classList.value = "heirloomContainer heirloomRare" + startingShield.rarity;
 	}
 	if (save.options.menu.showHeirloomAnimations.enabled && startingStaff.rarity >= 7) {
-		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity+"Anim";
-		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity+"Anim";
+		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity + "Anim";
+		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity + "Anim";
 	} else {
-		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity;
-		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare"+startingStaff.rarity;
+		document.getElementById("staffOldContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity;
+		document.getElementById("staffNewContainer").classList.value = "heirloomContainer heirloomRare" + startingStaff.rarity;
 	}
 
 	//add upg amounts
-	for (let i=0; i<5; i++) {
+	for (let i = 0; i < 5; i++) {
 		if (shieldAddAmounts[i] === 0) {
-			document.getElementById("shieldNewMod"+i+"Plus").textContent = "";
+			document.getElementById("shieldNewMod" + i + "Plus").textContent = "";
 		} else {
-			document.getElementById("shieldNewMod"+i+"Plus").textContent = "+"+shieldAddAmounts[i];
+			document.getElementById("shieldNewMod" + i + "Plus").textContent = "+" + shieldAddAmounts[i];
 		}
 
 		if (staffAddAmounts[i] === 0) {
-			document.getElementById("staffNewMod"+i+"Plus").textContent = "";
+			document.getElementById("staffNewMod" + i + "Plus").textContent = "";
 		} else {
-			document.getElementById("staffNewMod"+i+"Plus").textContent = "+"+staffAddAmounts[i];
+			document.getElementById("staffNewMod" + i + "Plus").textContent = "+" + staffAddAmounts[i];
 		}
 	}
 
@@ -529,22 +733,22 @@ function calculate(manualInput) {
 
 	//add current stats to old divs
 	let infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i=0; i<5; i++) {
+	for (let i = 0; i < 5; i++) {
 		if (startingShield.mods[i]) {
-			if (startingShield.mods[i][0] === "empty") document.getElementById("shieldOldMod"+i).textContent = "Empty";
-			else document.getElementById("shieldOldMod"+i).textContent = parseFloat(startingShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingShield.mods[i][0]];
-			document.getElementById("shieldOldModContainer"+i).style.opacity = 1;
-		if (modsToWeigh.includes(startingShield.mods[i][0])) {
-			infoText += fancyModNames[startingShield.mods[i][0]]+":<ul>"
-			infoText += "<li>Cost: "+prettifyCommas(getUpgCost(startingShield.mods[i][0], startingShield))+"</li>"
-			infoText += "<li>Gain: "+getUpgGain(startingShield.mods[i][0], startingShield)+"</li>"
-			infoText += "<li>Efficiency: "+getUpgEff(startingShield.mods[i][0], startingShield)+"</li>"
-			infoText += "</ul>"
-		}
+			if (startingShield.mods[i][0] === "empty") document.getElementById("shieldOldMod" + i).textContent = "Empty";
+			else document.getElementById("shieldOldMod" + i).textContent = parseFloat(startingShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingShield.mods[i][0]];
+			document.getElementById("shieldOldModContainer" + i).style.opacity = 1;
+			if (modsToWeigh.includes(startingShield.mods[i][0])) {
+				infoText += fancyModNames[startingShield.mods[i][0]] + ":<ul>"
+				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(startingShield.mods[i][0], startingShield)) + "</li>"
+				infoText += "<li>Gain: " + getUpgGain(startingShield.mods[i][0], startingShield) + "</li>"
+				infoText += "<li>Efficiency: " + getUpgEff(startingShield.mods[i][0], startingShield) + "</li>"
+				infoText += "</ul>"
+			}
 		}
 		else {
-			document.getElementById("shieldOldMod"+i).textContent = "N/A";
-			document.getElementById("shieldOldModContainer"+i).style.opacity = 0;
+			document.getElementById("shieldOldMod" + i).textContent = "N/A";
+			document.getElementById("shieldOldModContainer" + i).style.opacity = 0;
 		}
 	}
 	infoText += "</ul>"
@@ -555,22 +759,22 @@ function calculate(manualInput) {
 	}
 
 	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i=0; i<5; i++) {
+	for (let i = 0; i < 5; i++) {
 		if (startingStaff.mods[i]) {
-			if (startingStaff.mods[i][0] === "empty") document.getElementById("staffOldMod"+i).textContent = "Empty";
-			else document.getElementById("staffOldMod"+i).textContent = parseFloat(startingStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingStaff.mods[i][0]];
-			document.getElementById("staffOldModContainer"+i).style.opacity = 1;
+			if (startingStaff.mods[i][0] === "empty") document.getElementById("staffOldMod" + i).textContent = "Empty";
+			else document.getElementById("staffOldMod" + i).textContent = parseFloat(startingStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[startingStaff.mods[i][0]];
+			document.getElementById("staffOldModContainer" + i).style.opacity = 1;
 			if (modsToWeigh.includes(startingStaff.mods[i][0])) {
-				infoText += fancyModNames[startingStaff.mods[i][0]]+":<ul>"
-				infoText += "<li>Cost: "+prettifyCommas(getUpgCost(startingStaff.mods[i][0], startingStaff))+"</li>"
-				infoText += "<li>Gain: "+getUpgGain(startingStaff.mods[i][0], startingStaff)+"</li>"
-				infoText += "<li>Efficiency: "+getUpgEff(startingStaff.mods[i][0], startingShield, startingStaff)+"</li>"
+				infoText += fancyModNames[startingStaff.mods[i][0]] + ":<ul>"
+				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(startingStaff.mods[i][0], startingStaff)) + "</li>"
+				infoText += "<li>Gain: " + getUpgGain(startingStaff.mods[i][0], startingStaff) + "</li>"
+				infoText += "<li>Efficiency: " + getUpgEff(startingStaff.mods[i][0], startingShield, startingStaff) + "</li>"
 				infoText += "</ul>"
 			}
 		}
 		else {
-			document.getElementById("staffOldMod"+i).textContent = "N/A";
-			document.getElementById("staffOldModContainer"+i).style.opacity = 0;
+			document.getElementById("staffOldMod" + i).textContent = "N/A";
+			document.getElementById("staffOldModContainer" + i).style.opacity = 0;
 		}
 	}
 	infoText += "</ul>"
@@ -582,22 +786,22 @@ function calculate(manualInput) {
 
 	//add new stats to new divs
 	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i=0; i<5; i++) {
+	for (let i = 0; i < 5; i++) {
 		if (newShield.mods[i]) {
-			if (newShield.mods[i][0] === "empty") document.getElementById("shieldNewMod"+i).textContent = "Empty";
-			else document.getElementById("shieldNewMod"+i).textContent = parseFloat(newShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newShield.mods[i][0]];
-			document.getElementById("shieldNewModContainer"+i).style.opacity = 1;
+			if (newShield.mods[i][0] === "empty") document.getElementById("shieldNewMod" + i).textContent = "Empty";
+			else document.getElementById("shieldNewMod" + i).textContent = parseFloat(newShield.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newShield.mods[i][0]];
+			document.getElementById("shieldNewModContainer" + i).style.opacity = 1;
 			if (modsToWeigh.includes(newShield.mods[i][0])) {
-				infoText += fancyModNames[newShield.mods[i][0]]+":<ul>"
-				infoText += "<li>Cost: "+prettifyCommas(getUpgCost(newShield.mods[i][0], newShield))+"</li>"
-				infoText += "<li>Gain: "+getUpgGain(newShield.mods[i][0], newShield)+"</li>"
-				infoText += "<li>Efficiency: "+getUpgEff(newShield.mods[i][0], newShield)+"</li>"
+				infoText += fancyModNames[newShield.mods[i][0]] + ":<ul>"
+				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(newShield.mods[i][0], newShield)) + "</li>"
+				infoText += "<li>Gain: " + getUpgGain(newShield.mods[i][0], newShield) + "</li>"
+				infoText += "<li>Efficiency: " + getUpgEff(newShield.mods[i][0], newShield) + "</li>"
 				infoText += "</ul>"
 			}
 		}
 		else {
-			document.getElementById("shieldNewMod"+i).textContent = "N/A";
-			document.getElementById("shieldNewModContainer"+i).style.opacity = 0;
+			document.getElementById("shieldNewMod" + i).textContent = "N/A";
+			document.getElementById("shieldNewModContainer" + i).style.opacity = 0;
 		}
 	}
 	infoText += "</ul>"
@@ -608,22 +812,22 @@ function calculate(manualInput) {
 	}
 
 	infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>"
-	for (let i=0; i<5; i++) {
+	for (let i = 0; i < 5; i++) {
 		if (newStaff.mods[i]) {
-			if (newStaff.mods[i][0] === "empty") document.getElementById("staffNewMod"+i).textContent = "Empty";
-			else document.getElementById("staffNewMod"+i).textContent = parseFloat(newStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newStaff.mods[i][0]];
-			document.getElementById("staffNewModContainer"+i).style.opacity = 1;
+			if (newStaff.mods[i][0] === "empty") document.getElementById("staffNewMod" + i).textContent = "Empty";
+			else document.getElementById("staffNewMod" + i).textContent = parseFloat(newStaff.mods[i][1].toPrecision(4)).toString() + "% " + modNames[newStaff.mods[i][0]];
+			document.getElementById("staffNewModContainer" + i).style.opacity = 1;
 			if (modsToWeigh.includes(newStaff.mods[i][0])) {
-				infoText += fancyModNames[newStaff.mods[i][0]]+":<ul>"
-				infoText += "<li>Cost: "+prettifyCommas(getUpgCost(newStaff.mods[i][0], newStaff))+"</li>"
-				infoText += "<li>Gain: "+getUpgGain(newStaff.mods[i][0], newStaff)+"</li>"
-				infoText += "<li>Efficiency: "+getUpgEff(newStaff.mods[i][0], newShield, newStaff)+"</li>"
+				infoText += fancyModNames[newStaff.mods[i][0]] + ":<ul>"
+				infoText += "<li>Cost: " + prettifyCommas(getUpgCost(newStaff.mods[i][0], newStaff)) + "</li>"
+				infoText += "<li>Gain: " + getUpgGain(newStaff.mods[i][0], newStaff) + "</li>"
+				infoText += "<li>Efficiency: " + getUpgEff(newStaff.mods[i][0], newShield, newStaff) + "</li>"
 				infoText += "</ul>"
 			}
 		}
 		else {
-			document.getElementById("staffNewMod"+i).textContent = "N/A";
-			document.getElementById("staffNewModContainer"+i).style.opacity = 0;
+			document.getElementById("staffNewMod" + i).textContent = "N/A";
+			document.getElementById("staffNewModContainer" + i).style.opacity = 0;
 		}
 	}
 	infoText += "</ul>"
