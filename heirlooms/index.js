@@ -1,6 +1,7 @@
 //lots of stuff here copied from Trimps (https://trimps.github.io/), since it is a calculator for it afterall
 //lots of the math and the idea behind this is based off of the heirloom spreadsheet made by nsheetz from the Trimps discord
-//major help for improved VM/XP calculations from ymhsbmbesitwf
+//code for spire td damage calcutations (tdcalc.js) from swaq/bhad (http://swaqvalley.com/td_calc/) with permission
+//major help for beta VM/XP calculations from ymhsbmbesitwf
 //help for improved miner eff calculation from GhostFrog
 //minor help from SpectralFlame, and Razenpok
 //I hope this tool is useful! :)
@@ -9,6 +10,7 @@
 
 /*
 
+v1.12 allow swapping of weighted heirlooms from carried looms, move new vm/xp calculations to a beta switch and use legacy calcs by default, fix crit dmg/chance calcs breaking if the shield only had one of said stats, fix all calcs breaking if you didn't have trimp attack, new versioning system
 v1.11 fix classy breaking caluclations, minor code cleanup
 v1.10 new miner eff, vmdc, and fluffy exp gain calculations with new inputs to make them work, lots of background cleanup and a better localstorage usage system, improved/minor fixes to css
 v1.09 fix NaN values at equip level input of 1
@@ -25,52 +27,111 @@ v1.00: release
 */
 
 let save;
+let time;
+let version = 1.12;
+document.getElementById("versionNumber").textContent = version;
 
+let checkboxNames = ["E4", "E5", "CC", "Beta"]
+let textboxNames = ["VMWeight", "XPWeight", "weaponLevels", "portalZone", "voidZone"]
 let inputs = {
-	VMWeight: 1,
-	XPWeight: 1,
+	VMWeight: 12,
+	XPWeight: 11.25,
 	weaponLevels: 90,
 	portalZone: 1,
 	voidZone: 1,
+	version: version,
 	E4: false,
 	E5: false,
 	CC: false,
-	Legacy: false,
+	Beta: false,
+	preferredShield: {
+		name: "",
+		index: 0
+	},
+	preferredStaff: {
+		name: "",
+		index: 0
+	},
+	preferredCore: {
+		name: "",
+		index: 0
+	},
 	setInput: function (name, value) {
+
+		if (checkboxNames.includes(name)) document.getElementById(name + "Input").checked = value;
+		else if (textboxNames.includes(name)) document.getElementById(name + "Input").value = value;
+
 		this[name] = value;
-		if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") document.getElementById(name + "Input").checked = value;
-		else document.getElementById(name + "Input").value = value;
-		localStorage.setItem("heirloomInputs", JSON.stringify(inputs));
+		localStorage.setItem("heirloomsInputs", JSON.stringify(inputs));
+
 	}
 }
 
-if (localStorage.getItem("heirloomInputs") !== null) {
-	let savedInputs = JSON.parse(localStorage.getItem("heirloomInputs"))
-	for (input in JSON.parse(localStorage.getItem("heirloomInputs"))) {
+if (localStorage.getItem("heirloomsInputs") !== null) {
+	let savedInputs = JSON.parse(localStorage.getItem("heirloomsInputs"))
+	for (input in JSON.parse(localStorage.getItem("heirloomsInputs"))) {
 		if ((input === "VMWeight" || input === "XPWeight") && savedInputs[input] === 1) continue
 		inputs.setInput(input, savedInputs[input]);
 	}
 }
 
+function updateVersion() {
+	//put version update pops here, checking inputs.version
+}
+
+//updateVersion()
+
 function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function updateInput(name) {
+function updateInput(name, value, position) {
 	let inputDiv = document.getElementById(name + "Input")
-	if (name === "E4" || name === "E5" || name === "CC" || name === "Legacy") inputs[name] = inputDiv.checked;
-	else if ((name === "VMWeight" || name === "XPWeight") && inputDiv.value === "") inputs[name] = 1;
-	else if (isNumeric(inputDiv.value)) inputs[name] = parseFloat(inputDiv.value);
+	if (checkboxNames.includes(name)) inputs[name] = inputDiv.checked;
+	else if (name === "VMWeight" && inputDiv.value === "") {
+		inputs[name] = 12;
+	} else if (name === "XPWeight" && inputDiv.value === "") {
+		inputs[name] = 11.25;
+	} else if (name.includes("preferred") && position !== undefined) {
+		let cachedL = document.getElementById("inventoryColumn1").children.length + document.getElementById("inventoryColumn2").children.length
+		let type = name.split("preferred")[1];
+		for (let i=0; i<cachedL; i++) {
+			if (document.getElementById("carriedHeirloom"+i).classList[2].includes(type)) document.getElementById("carriedHeirloom"+i).classList.remove("selected");
+		}
+		if (value === inputs["preferred"+type].name) {
+			if (containsDuplicate(save.global.heirloomsCarried, value)) {
+				if (position === inputs["preferred"+type].index) {
+					inputs[name].name = "";
+					inputs[name].index = -1;
+				} else {
+					document.getElementById("carriedHeirloom"+position).classList.add("selected");
+					inputs[name].name = value;
+					inputs[name].index = position;
+				}
+			} else {
+				inputs[name].name = "";
+				inputs[name].index = -1;
+			}
+		} else {
+			document.getElementById("carriedHeirloom"+position).classList.add("selected");
+			inputs[name].name = value;
+			inputs[name].index = position;
+		}
+	} else if (isNumeric(inputDiv.value)) {
+		inputs[name] = parseFloat(inputDiv.value);
+	}
 	if (save) {
 		calculate(true);
 	}
-	localStorage.setItem("heirloomInputs", JSON.stringify(inputs));
+	localStorage.setItem("heirloomsInputs", JSON.stringify(inputs));
 }
 
 //remove old data
 localStorage.removeItem("VMWeight");
 localStorage.removeItem("XPWeight");
 localStorage.removeItem("ELWeight");
+
+localStorage.removeItem("heirloomInputs");
 
 Math.log = (function () {
 	var log = Math.log;
@@ -367,7 +428,7 @@ function getUpgValue(type, heirloom) {
 function getUpgCost(type, heirloom) {
 	let rarity = heirloom.rarity
 	let value = getUpgValue(type, heirloom)
-	if (value <= maxAmounts[type][rarity]) {
+	if (value <= maxAmounts[type][rarity] || !isNumeric(value)) {
 		return basePrices[rarity];
 	}
 	let amount = (value - maxAmounts[type][rarity]) / stepAmounts[type][rarity];
@@ -385,6 +446,8 @@ function getUpgGain(type, heirloom) {
 	let value = getUpgValue(type, heirloom);
 	let stepAmount = stepAmounts[type][heirloom.rarity];
 	if (type === "trimpAttack") {
+		//this below line is just to allow the heirloom to still be weighed, even if the heirloom is missing trimp attack (/ 10000 is "arbitrary", just there to keep numbers reasonable)
+		if (!isNumeric(value)) return 1 + stepAmount / 10000;
 		return (value + 100 + stepAmount) / (value + 100);
 	} else if (type === "critDamage") {
 		var relentlessness = save.portal.Relentlessness.level;
@@ -392,8 +455,10 @@ function getUpgGain(type, heirloom) {
 		let megaCritMult = 5;
 		let critDmgNormalizedBefore = 0;
 		let critDmgNormalizedAfter = 0;
-		if (inputs.CC) critChance += getUpgValue("critChance", heirloom) * 1.5;
-		else critChance += getUpgValue("critChance", heirloom);
+		if (isNumeric(getUpgValue("critChance", heirloom))) {
+			if (inputs.CC) critChance += getUpgValue("critChance", heirloom) * 1.5;
+			else critChance += getUpgValue("critChance", heirloom);
+		}
 		if (inputs.E4) {
 			critChance += 50;
 		}
@@ -440,7 +505,9 @@ function getUpgGain(type, heirloom) {
 		let critDmgNormalizedAfter = 0;
 		if (inputs.CC) critChanceBefore += value * 1.5
 		else critChanceBefore += value;
-		critDamage += getUpgValue("critDamage", heirloom);
+		if (isNumeric(getUpgValue("critDamage", heirloom))) {
+			critDamage += getUpgValue("critDamage", heirloom);
+		}
 		if (inputs.E4) {
 			critChanceBefore += 50;
 		}
@@ -479,61 +546,59 @@ function getUpgGain(type, heirloom) {
 
 		return critDmgNormalizedAfter / critDmgNormalizedBefore;
 	} if (type === "voidMaps") {
-		//legacy mode return
-		if (inputs.Legacy) {
+		if (inputs.Beta) {
+			let voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
+			let voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
+			let upgGain = voidMapsNew / voidMapsOld;
+			
+			// Using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
+			// It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
+			let zoneStep = (inputs.portalZone > 235) ? 30 : 10;
+			// Ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
+			// Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
+			// difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
+			// Example results (formatted to display average per zone scaling)
+			//  Z20: 1.843938^10 / 9.596448^2
+			//  Z49: 1.823788^10 / 9.596448^2
+			//  Z55: 2.019369^10 / 9.596448^2
+			//  Z60: 2.003003^10 / 9.596448^2
+			// Z100: 1.997119^10 / 9.596448^2
+			// Z180: 2.048560^10 / 9.596448^2
+			// Z235: 2.017895^10 / 9.596448^2
+			// Z236: 2.027765^30 / 9.596448^6
+			// Z450: 2.006783^30 / 9.596448^6
+			// Z650: 2.006184^30 / 9.596448^6
+			// Results will be slightly different without Headstarts.
+			let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
+			attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
+			let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
+			let voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
+			heliumScaling *= voidMapsHigherZone / voidMapsOld;
+			// Scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
+			upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
+
+			// Adding VMWeight (default: 1) in a manner consistent with previous calculation
+			return (1 + (upgGain - 1) * inputs.VMWeight);
+		} else {
 			return (value + stepAmount * inputs.VMWeight) / (value);
 		}
-
-		let voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
-		let voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
-		let upgGain = voidMapsNew / voidMapsOld;
-		
-		// Using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
-		// It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
-		let zoneStep = (inputs.portalZone > 235) ? 30 : 10;
-		// Ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
-		// Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
-		// difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
-		// Example results (formatted to display average per zone scaling)
-		//  Z20: 1.843938^10 / 9.596448^2
-		//  Z49: 1.823788^10 / 9.596448^2
-		//  Z55: 2.019369^10 / 9.596448^2
-		//  Z60: 2.003003^10 / 9.596448^2
-		// Z100: 1.997119^10 / 9.596448^2
-		// Z180: 2.048560^10 / 9.596448^2
-		// Z235: 2.017895^10 / 9.596448^2
-		// Z236: 2.027765^30 / 9.596448^6
-		// Z450: 2.006783^30 / 9.596448^6
-		// Z650: 2.006184^30 / 9.596448^6
-		// Results will be slightly different without Headstarts.
-		let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
-		attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
-		let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
-		let voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
-		heliumScaling *= voidMapsHigherZone / voidMapsOld;
-		// Scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
-		upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
-
-		// Adding VMWeight (default: 1) in a manner consistent with previous calculation
-		return (1 + (upgGain - 1) * inputs.VMWeight);
 	} else if (type === "FluffyExp") {
-		//legacy mode return
-		if (inputs.Legacy) {
+		if (inputs.Beta) {
+			let upgGain = (value + 100 + stepAmount) / (value + 100);
+			// Avoiding weird stuff with zero division.
+			// Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
+			if (inputs.portalZone >= 301) {
+				// Scaling to Attack by comparing Exp gained from additional zones
+				let pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
+				let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
+				attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
+				upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
+			}
+			// Adding XPWeight (default: 1) in a manner consistent with previous calculation
+			return (1 + (upgGain - 1) * inputs.XPWeight);
+		} else {
 			return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100)
 		}
-
-		let upgGain = (value + 100 + stepAmount) / (value + 100);
-		// Avoiding weird stuff with zero division.
-		// Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
-		if (inputs.portalZone >= 301) {
-			// Scaling to Attack by comparing Exp gained from additional zones
-			let pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
-			let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
-			attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
-			upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
-		}
-		// Adding XPWeight (default: 1) in a manner consistent with previous calculation
-		return (1 + (upgGain - 1) * inputs.XPWeight);
 	} else if (type === "plaguebringer") {
 		return (value + 100 + stepAmount) / (value + 100);
 	} else if (type === "MinerSpeed") {
@@ -655,20 +720,66 @@ function updateModContainer(divName, shield, staff) {
 	}
 }
 
+function addHeirloomToInventory(heirloom, num) {
+	let iconName;
+	if (heirloom.type === "Shield") iconName = "icomoon icon-shield3 tinyIcon"
+	else if (heirloom.type === "Staff") iconName = "glyphicon glyphicon-grain tinyIcon"
+	else if (heirloom.type === "Core") iconName = "glyphicon glyphicon-adjust tinyIcon"
+	let totalDiv = `<div id="carriedHeirloom${num}" class="heirloomMod heirloomRare${heirloom.rarity + ((save.options.menu.showHeirloomAnimations.enabled && heirloom.rarity >= 7) ? "Anim" : "") + " " + heirloom.type}" style="display:flex; height:2rem; width: 17.5rem;" onclick="updateInput('preferred${heirloom.type}', '${heirloom.name}', ${num})">
+						<div class="heirloomIconContainer" style="width: 8%; margin-right:3px;">
+						<span class="${iconName}"></span>
+						</div>
+						<div style="font-size: 1rem; line-height: 1.1rem;">${heirloom.name}</div>
+					</div>`
+	if (num < 7) document.getElementById("inventoryColumn1").innerHTML += totalDiv
+	else document.getElementById("inventoryColumn2").innerHTML += totalDiv
+}
+
+function containsDuplicate(heirlooms, name) {
+	let shieldCount = 0;
+	let staffCount = 0;
+	let coreCount = 0;
+	for (let heirloom of heirlooms) {
+		if (heirloom.name === name && heirloom.type === "Shield") {
+			if (shieldCount > 0) return true;
+			else shieldCount++
+		}
+		if (heirloom.name === name && heirloom.type === "Staff") {
+			if (staffCount > 0) return true;
+			else staffCount++
+		}
+		if (heirloom.name === name && heirloom.type === "Core") {
+			if (coreCount > 0) return true;
+			else coreCount++
+		}
+	}
+	return false
+}
+
 function calculate(manualInput) {
 	if (JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value)) !== null) save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value));
+
+	//init td calc with save data
+	
+	//startTDCalc()
 
 	let nu = save.global.nullifium;
 
 	let startingShield = save.global.ShieldEquipped;
 	let startingStaff = save.global.StaffEquipped;
+	let startingCore = save.global.CoreEquipped;
 
 	if (!manualInput) {
 		inputs.setInput("E4", fluffyRewardsAvailable() >= fluffyRewards.critChance);
 		inputs.setInput("E5", fluffyRewardsAvailable() >= fluffyRewards.megaCrit);
 		inputs.setInput("CC", save.talents.crit.purchased);
+		document.getElementById("inventoryColumn1").innerHTML = ""
+		document.getElementById("inventoryColumn2").innerHTML = ""
+		for (let i in save.global.heirloomsCarried) {
+			addHeirloomToInventory(save.global.heirloomsCarried[i], i)
+		}
 		for (let input in inputs) {
-			if (input === "setInput") continue
+			if (!textboxNames.includes(input)) continue
 			if (document.getElementById(input+"Input").value === "") {
 				switch (input) {
 					case "portalZone":
@@ -678,6 +789,42 @@ function calculate(manualInput) {
 						inputs.setInput(input, save.stats.highestVoidMap.valueTotal);
 					break
 				}
+			}
+		}
+	}
+
+	for (let i in save.global.heirloomsCarried) {
+		if (save.global.heirloomsCarried[i].name === inputs.preferredShield.name && save.global.heirloomsCarried[i].type === "Shield") {
+			if (containsDuplicate(save.global.heirloomsCarried, save.global.heirloomsCarried[i].name)) {
+				if (parseInt(i) === inputs.preferredShield.index) {
+					startingShield = save.global.heirloomsCarried[i]
+					document.getElementById("carriedHeirloom"+i).classList.add("selected");
+				}
+			} else {
+				startingShield = save.global.heirloomsCarried[i]
+				document.getElementById("carriedHeirloom"+i).classList.add("selected");
+			}
+		}
+		else if (save.global.heirloomsCarried[i].name === inputs.preferredStaff.name && save.global.heirloomsCarried[i].type === "Staff") {
+			if (containsDuplicate(save.global.heirloomsCarried, save.global.heirloomsCarried[i].name)) {
+				if (parseInt(i)  === inputs.preferredStaff.index) {
+					startingStaff = save.global.heirloomsCarried[i]
+					document.getElementById("carriedHeirloom"+i).classList.add("selected");
+				}
+			} else {
+				startingStaff = save.global.heirloomsCarried[i]
+				document.getElementById("carriedHeirloom"+i).classList.add("selected");
+			}
+		}
+		else if (save.global.heirloomsCarried[i].name === inputs.preferredCore.name && save.global.heirloomsCarried[i].type === "Core") {
+			if (containsDuplicate(save.global.heirloomsCarried, save.global.heirloomsCarried[i].name)) {
+				if (parseInt(i)  === inputs.preferredCore.index) {
+					startingCore = save.global.heirloomsCarried[i]
+					document.getElementById("carriedHeirloom"+i).classList.add("selected");
+				}
+			} else {
+				startingCore = save.global.heirloomsCarried[i]
+				document.getElementById("carriedHeirloom"+i).classList.add("selected");
 			}
 		}
 	}

@@ -10,56 +10,64 @@
 
 <body>
 	<div id="content">
-		<p id="content-text">
-			Paste your save into this box to get recommendations for heirloom upgrades.
-			<div class="help">
-				<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, and Miner Efficiency. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
-					<br><br>
-					Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots.
-					<br><br>
-					VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your expected helium by 0.5%, a weight of 12 would multiply it by 12, making it calculated as if it were to increase your value by 6%.
-					<br><br>
-					Weapon levels is the number of weapon levels you have by the end of your run.
-					<br><br>
-					Portal zone is the zone you're going to portal at, and Void zone is the zone you're going to run your void maps at.
-					<br><br>
-					If any of the bottom 3 inputs are blank, your recommended purchase will likely be incorrect, so you should fill them out.
-					<br><br>
-					A toggle for legacy mode can be found in the bottom right corner. This resorts to the old VMDC/Fluffy exp calculations directly from nSheetz's spreadsheet, which can be found <a href="https://docs.google.com/spreadsheets/d/1-Co8J4z3TjOZ71O7on35_rCJq3T-0D4LV5rn0clY5Q8" target="_blank">by clicking here</a>, and does not use the Portal zone/Void zone inputs. Legacy mode is not recommended, but if you're using it, VM/XP weights of 12/11.25 respectively are recommended.
-				</p>
-			</div>
-		</p>
-		<div style="display: flex; flex-direction: column;">
-			<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()" style="height: 26px; width: 312.9px; min-height: 26px; max-height: 300px; min-width: 312.9px; max-width: 312.9px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
-			<button onclick="calculate()" style="width: 312.9px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
-			<div>
-				<input placeholder="VM weight (default 1)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
-				<input placeholder="XP weight (default 1)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
-			</div>
-			<div>
-				<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
-				<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
-				<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
-			</div>
-			<div style="display: flex; flex-direction: row; margin-bottom: 1px; font-size: 1.33rem;">
-				<div class="checkboxContainer">
-					Fluffy E4L10:
-					<input id="E4Input" type="checkbox" onchange="updateInput('E4')">
+		<div style="display: flex; flex-direction: column; align-items: center; margin-left: -22.4px;">
+			<p id="content-text">
+				Paste your save into the box below to get recommendations for heirloom upgrades.
+				<div class="help">
+					<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, and Miner Efficiency. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
+						<br><br>
+						Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones.
+						<br><br>
+						To the right of the inputs, you'll see your inventory of carried heirlooms. To weigh mods using one of these heirlooms rather than your currently equipped heirloom, click on the one you'd like to weigh. To go back to your equipped heirloom, click on your currently selected heirloom to unselect it.
+						<br><br>
+						VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights (12/11.25) are used to provide a good balance between damage and helium/exp gain.
+						<br><br>
+						Weapon levels is the number of weapon levels you have by the end of your run.
+						<br><br>
+						Portal zone is the zone you're going to portal at, and Void zone is the zone you're going to run your void maps at.
+						<br><br>
+						Weapon levels is the only bottom input that matters when not in beta mode. When in beta mode, if any of the bottom 3 inputs are blank, your recommended purchase will likely be incorrect, so you should fill them out. 
+						<br><br>
+						A toggle for beta mode can be found in the bottom right corner. This uses new VMDC/Fluffy exp calculations from ymhsbmbesitwf, and uses the Portal zone/Void zone inputs. Beta mode is not recommended, but if you're using it, VM/XP weights of 0.8/0.7 are recommended.
+					</p>
 				</div>
-				<div class="checkboxContainer">
-					Fluffy E5L10:
-					<input id="E5Input" type="checkbox" onchange="updateInput('E5')">
+			</p>
+			<div style="display: flex; flex-direction: column;">
+				<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()" style="height: 26px; width: 312.9px; min-height: 26px; max-height: 300px; min-width: 312.9px; max-width: 312.9px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
+				<button onclick="calculate()" style="width: 312.9px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
+				<div>
+					<input placeholder="VM weight (default 12)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+					<input placeholder="XP weight (default 11.25)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
 				</div>
-				<div class="checkboxContainer">
-					Charged Crits:
-					<input id="CCInput" type="checkbox" onchange="updateInput('CC')">
+				<div>
+					<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
+					<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+					<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
 				</div>
+				<div style="display: flex; flex-direction: row; margin-bottom: 1px; font-size: 1.33rem;">
+					<div class="checkboxContainer">
+						Fluffy E4L10:
+						<input id="E4Input" type="checkbox" onchange="updateInput('E4')">
+					</div>
+					<div class="checkboxContainer">
+						Fluffy E5L10:
+						<input id="E5Input" type="checkbox" onchange="updateInput('E5')">
+					</div>
+					<div class="checkboxContainer">
+						Charged Crits:
+						<input id="CCInput" type="checkbox" onchange="updateInput('CC')">
+					</div>
+				</div>
+			</div>
+			<div class="nullifiumContainer" style="color: #8a008a;">
+				You have <span id="nuAmount">???</span> Nullifium.<br>
+				Your next upgrade should be <span id="nextUpgrade">???</span> at <span id="nuCost">???</span> Nullifium.
 			</div>
 		</div>
-	</div>
-	<div class="nullifiumContainer" style="color: #8a008a;">
-		You have <span id="nuAmount">???</span> Nullifium.<br>
-		Your next upgrade should be <span id="nextUpgrade">???</span> at <span id="nuCost">???</span> Nullifium.
+		<div id="heirloomInventory" class="heirloomContainer" style="height: 17.3rem; margin-bottom: -70px; margin-left: -92px; flex-direction: row;">
+			<div id="inventoryColumn1" style="margin-top: -6px; margin-left: -6px; margin-right: 6px;"></div>
+			<div id="inventoryColumn2" style="margin-top: -6px;"></div>
+		</div>
 	</div>
 	<div style="display: flex; flex-direction: row;">
 		<div id="shieldOldContainer" class="heirloomContainer" style="transform: translateX(190px);">
@@ -218,14 +226,15 @@
 
 	<footer id="footer">
 		<div class="checkboxContainer">
-			<span style="color: #a8a7a8; font-size: 1.33rem;">Legacy mode: </span>
-			<input id="LegacyInput" type="checkbox" onchange="updateInput('Legacy')">
+			<span style="color: #a8a7a8; font-size: 1.33rem;">Beta mode: </span>
+			<input id="BetaInput" type="checkbox" onchange="updateInput('Beta')">
 		</div>
-		<a href="https://omsi6.github.io/heirlooms/index.js" style="text-decoration: underline">Heirlooms v1.11</a>
+		<a href="https://omsi6.github.io/heirlooms/index.js" style="text-decoration: underline">Heirlooms v<span id="versionNumber">0.00</span></a>
 	</footer>
 
 	<script src="lz-string.js"></script>
 	<script src="jquery.js"></script>
+	<!--<script src="tdcalc.js"></script>-->
 	<script src="index.js"></script>
 </body>
 </html>

@@ -123,7 +123,7 @@ a:hover, a:active {
 
 #content {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
     justify-content: center;
     align-items: center;
 }
@@ -140,6 +140,7 @@ a:hover, a:active {
 	width: 37rem;
 	font-size: 1.9rem;
 	margin: 10px;
+	margin-top: 9px;
     border: 0.3rem solid #555;
     padding: 1rem;
     text-align: left;
@@ -179,6 +180,32 @@ a:hover, a:active {
 
 .glyphicon-grain {
 	font-size: 3.5rem;
+}
+
+.glyphicon-adjust {
+	font-size: 3.5rem;
+}
+
+.tinyIcon {
+	font-size: 1rem;
+	line-height: 1rem;
+}
+
+.icon-shield3.tinyIcon {
+	line-height: 1.5rem
+}
+
+.inventoryHeirloomName {
+	font-size: 2rem;
+	line-height: 4rem;
+}
+
+#heirloomInventory .heirloomMod:hover {
+    border-color: #983;
+}
+
+.selected {
+	border-color: #983 !important;
 }
 
 .heirloomName {
