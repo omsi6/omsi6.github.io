@@ -1891,6 +1891,24 @@ function ClearThicket() {
     this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
     this.label = _txt("actions>"+getXMLName(this.name)+">label");
     this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
+    this.storyReqs = function(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[1].getLevel("Thicket") >= 1
+            case 2:
+                return towns[1].getLevel("Thicket") >= 10
+            case 3:
+                return towns[1].getLevel("Thicket") >= 20
+            case 4:
+                return towns[1].getLevel("Thicket") >= 40
+            case 5:
+                return towns[1].getLevel("Thicket") >= 60
+            case 6:
+                return towns[1].getLevel("Thicket") >= 80
+            case 7:
+                return towns[1].getLevel("Thicket") >= 100
+        }
+    }
 
     this.varName = "Thicket";
     this.stats = {
