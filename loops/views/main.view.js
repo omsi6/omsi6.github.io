@@ -989,6 +989,7 @@ function View() {
         this.adjustExpGain(new Mason());
         this.adjustExpGain(new Architect());
         this.adjustExpGain(new Chronomancy());
+        this.adjustExpGain(new LoopingPotion());
         this.adjustExpGain(new Pyromancy());
         this.adjustExpGain(new HuntTrolls());
     };
