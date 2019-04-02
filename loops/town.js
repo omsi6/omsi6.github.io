@@ -36,14 +36,13 @@ function Town(index) {
         let level = this.getLevel(varName);
 
         if(level !== prevLevel) {
-            for(let i = 0; i < view.totalActionList.length; i++) {
-                let action = view.totalActionList[i];
-                if(towns[curTown].varNames.indexOf(action.varName) !== -1) {
+            view.updateLockedHidden();
+            adjustAll();
+            for(let action of view.totalActionList) {
+                if(towns[action.townNum].varNames.indexOf(action.varName) !== -1) {
                     view.updateRegular(action.varName, action.townNum);
                 }
             }
-            view.updateLockedHidden();
-            adjustAll();
         }
         view.updateProgressAction(varName, towns[curTown]);
     };

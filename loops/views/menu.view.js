@@ -31,13 +31,14 @@ Views.registerView('menu',{
      html += "<div class='showthisH'>";
        html += "<div class='button' onclick='save()'>"+_txt("menu>save>manual_save")+"</div><br>";
        html += "<textarea id='exportImportList'></textarea><label for='exportImportList'> "+_txt("menu>save>list_label")+"</label><br>";
-       html += "<div class='button' onclick='exportCurrentList()'>"+_txt("menu>save>export_button")+"</div>";
+       html += "<div class='button' style='margin-right: 2px;' onclick='exportCurrentList()'>"+_txt("menu>save>export_button")+"</div>";
        html += "<div class='button' onclick='importCurrentList()'>"+_txt("menu>save>import_button")+"</div><br>";
        html += _txt("menu>save>list_comment")+ "<br><br>";
       html += "<input id='exportImport'><label for='exportImport'> "+_txt("menu>save>input_label")+"</label><br>";
-      html += "<div class='button' style='margin-top: 5px;' onclick='exportSave()'>"+_txt("menu>save>export_button")+"</div><br>";
-      html += _txt("menu>save>export_comment")+"<br>";
+      html += "<div class='button' style='margin-top: 5px; margin-right: 2px;' onclick='exportSave()'>"+_txt("menu>save>export_button")+"</div>";
       html += "<div class='button' style='margin-top: 1px;' onclick='importSave()'>"+_txt("menu>save>import_button")+"</div><br>";
+      html += "<div class='button' style='margin-top: 3px;' onclick='exportOldSave()'>"+_txt("menu>save>export_button_old")+"</div><br>";
+      html += _txt("menu>save>export_comment")+"<br>";
       html += _txt("menu>save>import_comment");
       html += "<div class='showthat2'>"+_txt("menu>save>import_hover_special")+"<div class='showthis2'>"+_txt("menu>save>import_hover_special_tooltip")+"</div></div><br>";
      html += "</div>";

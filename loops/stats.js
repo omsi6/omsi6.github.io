@@ -115,6 +115,13 @@ function addSkillExp(name, amount) {
     view.updateSkill(name);
 }
 
+function handleSkillExp(list) {
+    for (let skill in list) {
+        if (Number.isInteger(list[skill])) addSkillExp(skill, list[skill]);
+        else addSkillExp(skill, list[skill]());
+    }
+}
+
 function addBuffAmt(name, amount) {
     buffs[name].amt += amount;
     view.updateBuff(name);

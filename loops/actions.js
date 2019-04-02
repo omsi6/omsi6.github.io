@@ -38,6 +38,7 @@ function Actions() {
                 //segment finished
                 if (segment === curAction.segments - 1) {
                     //part finished
+                    if(curAction.name === "Dark Ritual" && towns[curAction.townNum][curAction.varName] >= 4000000) unlockStory("darkRitualThirdSegmentReached")
                     towns[curAction.townNum][curAction.varName] = 0;
                     towns[curAction.townNum][curAction.varName + "LoopCounter"] += curAction.segments;
                     towns[curAction.townNum]["total"+curAction.varName]++;
@@ -59,7 +60,6 @@ function Actions() {
                     view.updateMultiPart(curAction);
                 }
                 segment++;
-
             }
             view.updateMultiPartSegments(curAction);
         }
@@ -69,6 +69,8 @@ function Actions() {
 
             this.completedTicks += curAction.adjustedTicks;
             curAction.finish();
+            curAction.manaRemaining = timeNeeded - timer
+            curAction.goldRemaining = gold
 
             if(curAction.cost) {
                 curAction.cost();
@@ -137,10 +139,10 @@ function Actions() {
         towns[1].DarkRitualLoopCounter = 0;
         towns[2].AdvGuild = 0;
         towns[2].AdvGuildLoopCounter = 0;
-        window.curAdvGuildSegment = 0;
+        curAdvGuildSegment = 0;
         towns[2].CraftGuild = 0;
         towns[2].CraftGuildLoopCounter = 0;
-        window.curCraftGuildSegment = 0;
+        curCraftGuildSegment = 0;
         towns[2].LDungeon = 0;
         towns[2].LDungeonLoopCounter = 0;
         towns[3].HuntTrolls = 0;
@@ -157,6 +159,8 @@ function Actions() {
                 action.loopsLeft = action.loops;
                 action.ticks = 0;
                 action.manaUsed = 0;
+                action.manaRemaining = 0;
+                action.goldRemaining = 0;
                 action.timeSpent = 0;
             }
 
@@ -173,6 +177,8 @@ function Actions() {
                 toAdd.loopsLeft = action.loops;
                 toAdd.ticks = 0;
                 toAdd.manaUsed = 0;
+                toAdd.manaRemaining = 0;
+                toAdd.goldRemaining = 0;
                 toAdd.timeSpent = 0;
 
                 this.current.push(toAdd);

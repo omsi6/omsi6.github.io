@@ -10,7 +10,7 @@ let timeCounter = 0;
 
 function getSpeedMult(zone) {
     if (isNaN(zone)) zone = curTown;
-    var speedMult = 1;
+    let speedMult = 1;
 
     //dark ritual
     if (zone === 0 && getBuffLevel("Ritual") > 0) speedMult *= 1 + Math.min(getBuffLevel("Ritual"), 20) / 10;
@@ -43,7 +43,7 @@ function tick() {
     while (gameTicksLeft > (1000 / baseManaPerSecond)) {
         if(gameTicksLeft > 2000) {
             window.fps /= 2;
-            console.warn('too fast! (${gameTicksLeft})');
+            console.warn(`too fast! (${gameTicksLeft})`);
             statGraph.graphObject.options.animation.duration = 0;
             gameTicksLeft = 0;
         }
@@ -120,25 +120,21 @@ function prepareRestart() {
             beep(250);
             setTimeout(function () {beep(250)},500)
         }
-        if(!curAction) {
-            pauseGame();
-        } else {
+        if(curAction) {
             actions.completedTicks += actions.getNextValidAction().ticks
             view.updateTotalTicks();
-            pauseGame();
         }
+        pauseGame();
     } else if(document.getElementById("pauseOnFailedLoop").checked) {
-        if (document.getElementById("audioCueToggle").checked) {
-            beep(250);
-            setTimeout(function () {beep(250)},500)
-        }
         if(actions.currentPos < actions.next.length-1) {
-            if(!curAction) {
-                pauseGame();
-            } else {
+            if(curAction) {
                 actions.completedTicks += actions.getNextValidAction().ticks
                 view.updateTotalTicks();
-                pauseGame();
+            }
+            pauseGame();
+            if (document.getElementById("audioCueToggle").checked) {
+                beep(250);
+                setTimeout(function () {beep(250)},500)
             }
         } else {
             restart();
@@ -443,6 +439,15 @@ function split(index) {
     toSplit.loops = Math.floor(toSplit.loops/2);
     view.updateNextActions();
 }
+
+function showNotification(name) {
+    document.getElementById(name+"Notification").style.display = "block";
+}
+
+function hideNotification(name) {
+    document.getElementById(name+"Notification").style.display = "none";
+}
+
 function handleDragStart(event) {
     let index = event.target.getAttribute("data-index");
     draggedDecorate(index);
@@ -450,10 +455,9 @@ function handleDragStart(event) {
 }
 
 function handleDirectActionDragStart(event, actionName, townNum, actionVarName, isTravelAction) {
-    if (isTravelAction) document.getElementById("container"+actionVarName).children[3].style.display = "none"
-    else document.getElementById("container"+actionVarName).children[2].style.display = "none"
-    var actionData = {_actionName: actionName, _townNum: townNum, _isTravelAction: isTravelAction};
-    var serialData = JSON.stringify(actionData);
+    document.getElementById("container"+actionVarName).children[2].style.display = "none"
+    let actionData = {_actionName: actionName, _townNum: townNum, _isTravelAction: isTravelAction};
+    let serialData = JSON.stringify(actionData);
     event.dataTransfer.setData("actionData", serialData);
 }
 

@@ -70,7 +70,7 @@ function intToString (value, amount) {
         if(amount) {
             baseValue = amount;
         }
-        var returnVal = parseFloat(value).toFixed(baseValue-1)
+        let returnVal = parseFloat(value).toFixed(baseValue-1)
         return returnVal[0] + "," + returnVal.substring(1);
     } else {
         let baseValue = 3;
@@ -424,8 +424,8 @@ function roughSizeOfObject( object ) {
 }
 // modified from: https://stackoverflow.com/questions/879152/how-do-i-make-javascript-beep/13194087#13194087
 let beep = (function () {
-    var ctxClass = window.audioContext ||window.AudioContext || window.AudioContext || window.webkitAudioContext
-    var ctx = new ctxClass();
+    let ctxClass = window.audioContext ||window.AudioContext || window.AudioContext || window.webkitAudioContext
+    let ctx = new ctxClass();
     return function (duration, type, finishedCallback) {
 
         duration = +duration;
@@ -436,7 +436,7 @@ let beep = (function () {
             finishedCallback = function () {};
         }
 
-        var osc = ctx.createOscillator();
+        let osc = ctx.createOscillator();
 
         osc.connect(ctx.destination);
         if (osc.noteOn) osc.noteOn(0); // old browsers
@@ -450,3 +450,37 @@ let beep = (function () {
 
     };
 })();
+
+function statistics() {
+    let actionCount = 0;
+    let actionWithStoryCount = 0;
+    let multiPartActionCount = 0;
+    let PBAActionCount = 0;
+    let limitedActionCount = 0;
+    let storyCount = 0;
+    let skillCount = 0;
+    let buffCount = 0;
+    for (let action of view.totalActionList) {
+        if (action.storyReqs !== undefined) {
+            let name = action.name.toLowerCase().replace(/ /g,"_");
+            storyCount += _txt("actions>"+name, "fallback").split("⮀").length - 1
+            actionWithStoryCount++
+        }
+        if (action.loopStats !== undefined) multiPartActionCount++
+        actionCount++
+    }
+    for (let town of towns) {
+        PBAActionCount += town.progressVars.length
+        for (let property in town) {
+            if (property.includes("checked")) limitedActionCount++
+        }
+    }
+
+    return `Actions: ${actionCount} (${actionWithStoryCount} with story)
+ Multi part actions: ${multiPartActionCount}
+ Progress based actions: ${PBAActionCount}
+ Limited actions: ${limitedActionCount}
+ Stories: ${storyCount} (~${(storyCount / actionCount).toFixed(2)} avg per action)
+ Skills: ${skillList.length}
+ Buffs: ${buffList.length}`
+}

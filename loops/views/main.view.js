@@ -23,12 +23,18 @@ function View() {
         this.updateSoulstones();
         this.updateSupplies();
         this.showTown(0);
+        this.showActions(false);
         this.updateTrainingLimits();
         this.changeStatView();
         this.adjustGoldCosts();
+        this.adjustExpGains();
         this.updateTeamNum();
         this.updateTeamCombat();
-        this.updateLoadoutNames()
+        this.updateLoadoutNames();
+        setInterval(() => {
+            view.updateStories();
+            view.updateLockedHidden();
+        }, 2000);
         adjustAll();
     };
 
@@ -56,16 +62,16 @@ function View() {
                     "<div class='showthis' id='stat"+stat+"Tooltip' style='width:225px;'>" +
                         "<div class='medium bold'>"+_txt("stats>"+stat+">long_form")+"</div><br>" +
                         _txt("stats>"+stat+">blurb") + "<br>" +
-                        "<div class='medium bold'>"+_txt("stats>tooltip>level")+"</div> <div id='stat"+stat+"Level2'></div><br>" +
-                        "<div class='medium bold'>"+_txt("stats>tooltip>level_exp")+"</div> <div id='stat"+stat+"LevelExp'></div>/<div id='stat"+stat+"LevelExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat"+stat+"LevelProgress'></div>%)</div><br>" +
-                        "<div class='medium bold'>"+_txt("stats>tooltip>talent")+"</div> <div id='stat"+stat+"Talent2'></div><br>" +
-                        "<div class='medium bold'>"+_txt("stats>tooltip>talent_exp")+"</div> <div id='stat"+stat+"TalentExp'></div>/<div id='stat"+stat+"TalentExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat"+stat+"TalentProgress'></div>%)</div><br>" +
-                "<div class='medium bold'>"+_txt("stats>tooltip>talent_multiplier")+"</div> x<div id='stat"+stat+"TalentMult'></div><br>" +
+                        "<div class='medium bold'>"+_txt("stats>tooltip>level")+":</div> <div id='stat"+stat+"Level2'></div><br>" +
+                        "<div class='medium bold'>"+_txt("stats>tooltip>level_exp")+":</div> <div id='stat"+stat+"LevelExp'></div>/<div id='stat"+stat+"LevelExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat"+stat+"LevelProgress'></div>%)</div><br>" +
+                        "<div class='medium bold'>"+_txt("stats>tooltip>talent")+":</div> <div id='stat"+stat+"Talent2'></div><br>" +
+                        "<div class='medium bold'>"+_txt("stats>tooltip>talent_exp")+":</div> <div id='stat"+stat+"TalentExp'></div>/<div id='stat"+stat+"TalentExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat"+stat+"TalentProgress'></div>%)</div><br>" +
+                "<div class='medium bold'>"+_txt("stats>tooltip>talent_multiplier")+":</div> x<div id='stat"+stat+"TalentMult'></div><br>" +
                         "<div id='ss"+stat+"Container' class='ssContainer'>" +
-                            "<div class='bold'>"+_txt("stats>tooltip>soulstone")+"</div> <div id='ss"+stat+"'></div><br>" +
-                            "<div class='medium bold'>"+_txt("stats>tooltip>soulstone_multiplier")+"</div> x<div id='stat"+stat+"SSBonus'></div>" +
+                            "<div class='bold'>"+_txt("stats>tooltip>soulstone")+":</div> <div id='ss"+stat+"'></div><br>" +
+                            "<div class='medium bold'>"+_txt("stats>tooltip>soulstone_multiplier")+":</div> x<div id='stat"+stat+"SSBonus'></div>" +
                         "</div><br>" +
-                        "<div class='medium bold'>"+_txt("stats>tooltip>total_multiplier")+"</div> x<div id='stat"+stat+"TotalMult'></div>" +
+                        "<div class='medium bold'>"+_txt("stats>tooltip>total_multiplier")+":</div> x<div id='stat"+stat+"TotalMult'></div>" +
                     "</div>" +
                 "</div>"
         }
@@ -137,7 +143,7 @@ function View() {
             this.updateTeamCombat();
         }
         const levelPrc = getPrcToNextSkillLevel(skill);
-        document.getElementById("skill" + skill + "Level").textContent = getSkillLevel(skill);
+        document.getElementById("skill" + skill + "Level").textContent = (getSkillLevel(skill) > 9999) ? toSuffix(getSkillLevel(skill)) : formatNumber(getSkillLevel(skill))
         document.getElementById("skill" + skill + "LevelBar").style.width = levelPrc + "%";
 
         let expOfLevel = getExpOfSkillLevel(getSkillLevel(skill));
@@ -284,7 +290,7 @@ function View() {
             } else if(isTraining(action.name)) {
                 capButton = "<i id='capButton" + i + "' onclick='capTraining(" + i + ")' class='actionIcon fa fa-circle-thin'></i>";
             }
-            let isTravel = getTravelNum(action.name);
+            let isTravel = (getTravelNum(action.name)) > 0 ? true : false;
             totalDivText +=
                 "<div id='nextActionContainer" + i + "' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(" + i + ")' ondragenter='dragOverDecorate(" + i +")' ondragleave='dragExitUndecorate("+i+")' draggable='true' data-index='"+i+"'>" +
                 "<img src='img/" + camelize(action.name) + ".svg' class='smallIcon imageDragFix'> x " +
@@ -327,14 +333,14 @@ function View() {
             totalDivText +=
                 "<div id='actionTooltip"+i+"' style='display:none;padding-left:10px;width:90%'>" +
                     "<div style='text-align:center;width:100%'>"+action.label+"</div><br><br>" +
-                    "<div class='bold'>"+_txt("actions>current_action>mana_original")+"</div> <div id='action"+i+"ManaOrig'>0</div><br>" +
-                    "<div class='bold'>"+_txt("actions>current_action>mana_used")+"</div> <div id='action"+i+"ManaUsed'>0</div><br>" +
+                    "<div class='bold'>"+_txt("actions>current_action>mana_original")+"</div> <div id='action"+i+"ManaOrig'></div><br>" +
+                    "<div class='bold'>"+_txt("actions>current_action>mana_used")+"</div> <div id='action"+i+"ManaUsed'></div><br>" +
                     "<div class='bold'>"+_txt("actions>current_action>mana_remaining")+"</div> <div id='action"+i+"Remaining'></div><br>" +
                     "<div class='bold'>"+_txt("actions>current_action>gold_remaining")+"</div> <div id='action"+i+"GoldRemaining'></div><br>" +
                     "<div class='bold'>"+_txt("actions>current_action>time_spent")+"</div> <div id='action"+i+"TimeSpent'></div><br><br>" +
                     "<div id='action"+i+"ExpGain'></div>" +
                     "<div id='action"+i+"HasFailed' style='display:none'>" +
-                        "<div class='bold'>"+_txt("actions>current_action>failed_attempts")+"</div> <div id='action"+i+"Failed'>0</div><br>" +
+                        "<div class='bold'>"+_txt("actions>current_action>failed_attempts")+"</div> <div id='action"+i+"Failed'></div><br>" +
                         "<div class='bold'>"+_txt("actions>current_action>error")+"</div> <div id='action"+i+"Error'></div>" +
                     "</div>" +
                 "</div>";
@@ -364,6 +370,9 @@ function View() {
             div.style.backgroundColor = "#ff0000";
             div.style.height = "30%";
             div.style.marginTop = "5px";
+            if (action.name === "Heal The Sick") unlockStory("failedHeal")
+            if (action.name === "Brew Potions") unlockStory("failedBrewPotions")
+            if (action.name === "Brew Potions" && reputation < 0) unlockStory("failedBrewPotionsNegativeRep")
         } else if(action.loopsLeft === 0) {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
@@ -371,8 +380,8 @@ function View() {
 
         document.getElementById("action" + index + "ManaOrig").textContent = action.manaCost() * action.loops + "";
         document.getElementById("action" + index + "ManaUsed").textContent = action.manaUsed + "";
-        document.getElementById("action"+index+"Remaining").textContent = (timeNeeded - timer)+"";
-        document.getElementById("action"+index+"GoldRemaining").textContent = (gold)+"";
+        document.getElementById("action"+index+"Remaining").textContent = action.manaRemaining+"";
+        document.getElementById("action"+index+"GoldRemaining").textContent = action.goldRemaining+"";
         document.getElementById("action" + index + "TimeSpent").textContent = intToString(action.timeSpent, 2) + _txt("time_controls>seconds");
 
         let statExpGain = "";
@@ -383,7 +392,7 @@ function View() {
         for(let i = 0; i < statList.length; i++) {
             let statName = statList[i];
             if(action["statExp"+statName]) {
-                statExpGain += "<div class='bold'>"+_txt("stats>"+statName+">short_form")+"</div> " + intToString(action["statExp"+statName], 2) + "<br>";
+                statExpGain += "<div class='bold'>"+_txt("stats>"+statName+">short_form")+":</div> " + intToString(action["statExp"+statName], 2) + "<br>";
             }
         }
         expGainDiv.innerHTML = statExpGain;
@@ -430,6 +439,7 @@ function View() {
             let action = this.totalActionList[i];
             const actionDiv = document.getElementById("container"+action.varName);
             const infoDiv = document.getElementById("infoContainer"+action.varName);
+            const storyDiv = document.getElementById("storyContainer"+action.varName);
             if(!action.unlocked() || (action.allowed && getNumOnList(action.name) >= action.allowed())) {
                 addClassToDiv(actionDiv, "locked");
                 if(infoDiv) {
@@ -446,8 +456,51 @@ function View() {
             }
             if(!action.visible()) {
                 addClassToDiv(actionDiv, "hidden");
+                if (storyDiv !== null) addClassToDiv(storyDiv, "hidden");
             } else {
                 removeClassFromDiv(actionDiv, "hidden");
+                if (storyDiv !== null) removeClassFromDiv(storyDiv, "hidden");
+            }
+            if (storyDiv !== null) {
+                if(!action.unlocked()) {
+                    addClassToDiv(storyDiv, "hidden");
+                } else {
+                    removeClassFromDiv(storyDiv, "hidden");
+                }
+            }
+        }
+    };
+
+    this.updateStories = function(init) {
+        //~1.56ms cost per run. run once every 2000ms on an interval
+        for (let action of view.totalActionList) {
+            if (action.storyReqs !== undefined) {
+                //greatly reduces/nullifies the cost of checking actions with all stories unlocked, which is nice,
+                //since you're likely to have more stories unlocked at end game, which is when performance is worse
+                let divName = "storyContainer"+action.varName
+                if (document.getElementById(divName).innerHTML.includes("???")) {
+                    let storyTooltipText = ""
+                    let lastInBranch = false;
+                    let name = action.name.toLowerCase().replace(/ /g,"_");
+                    let storyAmt = _txt("actions>"+name, "fallback").split("⮀").length - 1
+                    for (let i=1; i<=storyAmt; i++) {
+                        let storyText = _txt("actions>"+name+">story_"+i, "fallback").split("⮀")
+                        if (action.storyReqs(i)) {
+                            storyTooltipText += storyText[0] + storyText[1]
+                            lastInBranch = false;
+                        } else if (lastInBranch) {
+                            storyTooltipText += "<b>???:</b> ???"
+                        } else {
+                            storyTooltipText += storyText[0] + " ???"
+                            lastInBranch = true;
+                        }
+                        storyTooltipText += "<br>"
+                    }
+                    if (document.getElementById(divName).children[2].innerHTML !== storyTooltipText) {
+                        document.getElementById(divName).children[2].innerHTML = storyTooltipText
+                        if (!init) showNotification(divName)
+                    }
+                }
             }
         }
     };
@@ -468,13 +521,35 @@ function View() {
         }
         for(let i = 0; i < actionOptionsTown.length; i++) {
             actionOptionsTown[i].style.display = "none";
+            actionStoriesTown[i].style.display = "none";
             townInfos[i].style.display = "none";
         }
-        actionOptionsTown[townNum].style.display = "block";
+        if (actionStoriesShowing) actionStoriesTown[townNum].style.display = "block";
+        else actionOptionsTown[townNum].style.display = "block";
         townInfos[townNum].style.display = "block";
         document.getElementById("townName").textContent = _txt("towns>town"+townNum+">name");
         document.getElementById("townDesc").textContent = _txt("towns>town"+townNum+">desc");
         townShowing = townNum;
+    };
+
+    this.showActions = function(stories) {
+        for(let i = 0; i < actionOptionsTown.length; i++) {
+            actionOptionsTown[i].style.display = "none";
+            actionStoriesTown[i].style.display = "none";
+        }
+
+        if(!stories) {
+            document.getElementById("actionsViewLeft").style.visibility = "hidden";
+            document.getElementById("actionsViewRight").style.visibility = "visible";
+            actionOptionsTown[townShowing].style.display = "block";
+        } else {
+            document.getElementById("actionsViewLeft").style.visibility = "visible";
+            document.getElementById("actionsViewRight").style.visibility = "hidden";
+            actionStoriesTown[townShowing].style.display = "block";
+        }
+
+        document.getElementById("actionsTitle").textContent = _txt("actions>title"+((stories) ? "_stories" : ""));
+        actionStoriesShowing = stories;
     };
 
     this.updateRegular = function(varName, index) {
@@ -518,6 +593,9 @@ function View() {
         while (actionOptionsTown[0].firstChild) {
             actionOptionsTown[0].removeChild(actionOptionsTown[0].firstChild);
         }
+        while (actionStoriesTown[0].firstChild) {
+            actionStoriesTown[0].removeChild(actionStoriesTown[0].firstChild);
+        }
         while(townInfos[0].firstChild) {
             townInfos[0].removeChild(townInfos[0].firstChild);
         }
@@ -538,7 +616,7 @@ function View() {
         this.createTownAction(tempObj);
         this.createActionProgress(tempObj);
 
-        this.createTownAction(new TrainStr());
+        this.createTownAction(new TrainStrength());
 
         tempObj = new ShortQuest();
         this.createTownAction(tempObj);
@@ -570,7 +648,7 @@ function View() {
 
         this.createTownAction(new BuySupplies());
         this.createTownAction(new Haggle());
-        this.createTravelAction(new StartJourney());
+        this.createTownAction(new StartJourney());
 
         while (actionOptionsTown[1].firstChild) {
             actionOptionsTown[1].removeChild(actionOptionsTown[1].firstChild);
@@ -608,8 +686,8 @@ function View() {
         this.createTownAction(new LearnAlchemy());
         this.createTownAction(new BrewPotions());
 
-        this.createTownAction(new TrainDex());
-        this.createTownAction(new TrainSpd());
+        this.createTownAction(new TrainDexterity());
+        this.createTownAction(new TrainSpeed());
 
         tempObj = new FollowFlowers();
         this.createTownAction(tempObj);
@@ -631,7 +709,7 @@ function View() {
         this.createTownAction(tempObj);
         this.createMultiPartPBar(tempObj);
 
-        this.createTravelAction(new ContinueOn());
+        this.createTownAction(new ContinueOn());
 
         while (actionOptionsTown[2].firstChild) {
             actionOptionsTown[2].removeChild(actionOptionsTown[2].firstChild);
@@ -686,7 +764,7 @@ function View() {
 
         this.createTownAction(new BuyPickaxe());
 
-        this.createTravelAction(new StartTrek());
+        this.createTownAction(new StartTrek());
 
         while (actionOptionsTown[3].firstChild) {
             actionOptionsTown[3].removeChild(actionOptionsTown[3].firstChild);
@@ -735,7 +813,7 @@ function View() {
         this.createTownAction(tempObj);
         this.createMultiPartPBar(tempObj);
 
-        this.createTravelAction(new FaceJudgement());
+        this.createTownAction(new FaceJudgement());
 
         while (actionOptionsTown[4].firstChild) {
             actionOptionsTown[4].removeChild(actionOptionsTown[4].firstChild);
@@ -748,7 +826,7 @@ function View() {
         this.createTownAction(tempObj);
         this.createMultiPartPBar(tempObj);
 
-        this.createTravelAction(new FallFromGrace());
+        this.createTownAction(new FallFromGrace());
 
         while (actionOptionsTown[5].firstChild) {
             actionOptionsTown[5].removeChild(actionOptionsTown[5].firstChild);
@@ -756,8 +834,6 @@ function View() {
         while(townInfos[5].firstChild) {
             townInfos[5].removeChild(townInfos[5].firstChild);
         }
-
-
 
     };
 
@@ -781,13 +857,27 @@ function View() {
 
     this.createTownAction = function(action) {
         let actionStats = "";
-        let keyNames = Object.keys(action.stats);
+        let actionSkills = "";
+        let statKeyNames = Object.keys(action.stats);
         for (let i=0; i<9; i++) {
-            for (let l = 0; l < keyNames.length; l++) {
-                if (statList[i] === keyNames[l]) {
-                    let statName = keyNames[l];
+            for (let l = 0; l < statKeyNames.length; l++) {
+                if (statList[i] === statKeyNames[l]) {
+                    let statName = statKeyNames[l];
                     let statLabel = _txt("stats>"+statName+">short_form");
-                    actionStats += "<div class='bold'>" + statLabel + "</div> " + (action.stats[statName]*100)+"%<br>";
+                    actionStats += "<div class='bold'>" + statLabel + ":</div> " + (action.stats[statName]*100)+"%<br>";
+                }
+            }
+        }
+        if (action.skills !== undefined) {
+            let skillKeyNames = Object.keys(action.skills); 
+            let l = skillList.length
+            for (let i=0; i<l; i++) {
+                for (let l = 0; l < skillKeyNames.length; l++) {
+                    if (skillList[i] === skillKeyNames[l]) {
+                        let skillName = skillKeyNames[l];
+                        let skillLabel = _txt("skills>"+getXMLName(skillName)+">label") + " " + _txt("stats>tooltip>exp");
+                        actionSkills += "<div class='bold'>" + skillLabel + ":</div> " + "<span id='expGain"+action.varName+skillName+"'></span>" + "<br>";
+                    }
                 }
             }
         }
@@ -798,8 +888,9 @@ function View() {
                 extraImage += "<img src='img/"+camelize(action.affectedBy[i])+".svg' class='smallIcon' draggable='false' style='position:absolute;"+extraImagePositions[i]+"'>";
             }
         }
+        let isTravel = (getTravelNum(action.name)) > 0 ? true : false;
         const totalDivText =
-            "<div id='container"+action.varName+"' class='actionContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", \""+action.varName+"\", false)' ondragend='handleDirectActionDragEnd(\""+action.varName+"\")' onclick='addActionToList(\""+action.name+"\", "+action.townNum+")'>" +
+            "<div id='container"+action.varName+"' class='"+((isTravel) ? "travel" : "action")+"Container showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", \""+action.varName+"\", false)' ondragend='handleDirectActionDragEnd(\""+action.varName+"\")' onclick='addActionToList(\""+action.name+"\", "+action.townNum+")'>" +
                 action.label + "<br>" +
                 "<div style='position:relative'>" +
                     "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'>" +
@@ -808,49 +899,54 @@ function View() {
                 "<div class='showthis' draggable='false'>" +
                     action.tooltip + "<span id='goldCost"+action.varName+"'></span>" +
                     ((typeof(action.tooltip2) === "string") ? action.tooltip2 : "")+"<br>"+
+                    actionSkills +
                     actionStats +
-                    "<div class='bold'>"+_txt("actions>tooltip>mana_cost")+"</div> <div id='manaCost"+action.varName+"'>"+formatNumber(action.manaCost())+"</div><br>" +
-                    "<div class='bold'>"+_txt("actions>tooltip>exp_multiplier")+"</div> "+(action.expMult*100)+"%<br>" +
+                    "<div class='bold'>"+_txt("actions>tooltip>mana_cost")+":</div> <div id='manaCost"+action.varName+"'>"+formatNumber(action.manaCost())+"</div><br>" +
+                    "<div class='bold'>"+_txt("actions>tooltip>exp_multiplier")+":</div> "+(action.expMult*100)+"%<br>" +
                 "</div>" +
             "</div>";
 
         let actionsDiv = document.createElement("div");
         actionsDiv.innerHTML = totalDivText;
+        if (isTravel) actionsDiv.style.width = "100%";
         actionOptionsTown[action.townNum].appendChild(actionsDiv);
         towns[action.townNum].totalActionList.push(action);
         this.totalActionList.push(action);
-    };
 
-    this.createTravelAction = function(action) {
-        let actionStats = "";
-        let keyNames = Object.keys(action.stats);
-        for (let i=0; i<9; i++) {
-            for (let l = 0; l < keyNames.length; l++) {
-                if (statList[i] === keyNames[l]) {
-                    let statName = keyNames[l];
-                    let statLabel = _txt("stats>"+statName+">short_form");
-                    actionStats += "<div class='bold'>" + statLabel + "</div> " + (action.stats[statName]*100)+"%<br>";
+        if (action.storyReqs !== undefined) {
+            let storyTooltipText = ""
+            let lastInBranch = false;
+            let storyAmt = _txt("actions>"+action.name.toLowerCase().replace(/ /g,"_"), "fallback").split("⮀").length - 1
+            for (let i=1; i<=storyAmt; i++) {
+                let storyText = _txt("actions>"+action.name.toLowerCase().replace(/ /g,"_")+">story_"+i, "fallback").split("⮀")
+                if (action.storyReqs(i)) {
+                    storyTooltipText += storyText[0] + storyText[1]
+                    lastInBranch = false;
+                } else if (lastInBranch) {
+                    storyTooltipText += "<b>???:</b> ???"
+                } else {
+                    storyTooltipText += storyText[0] + " ???"
+                    lastInBranch = true;
                 }
+                storyTooltipText += "<br>"
             }
+    
+            const storyDivText =
+                "<div id='storyContainer"+action.varName+"' class='storyContainer showthat' draggable='false' onmouseover='hideNotification(\"storyContainer"+action.varName+"\")'>" +
+                    action.label + "<br>" +
+                    "<div style='position:relative'>" +
+                        "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'>" +
+                        "<div id='storyContainer"+action.varName+"Notification' class='notification storyNotification'></div>" + 
+                    "</div>" +
+                    "<div class='showthisstory' draggable='false'>" +
+                        storyTooltipText +
+                    "</div>" +
+                "</div>";
+    
+            let storyDiv = document.createElement("div");
+            storyDiv.innerHTML = storyDivText;
+            actionStoriesTown[action.townNum].appendChild(storyDiv);
         }
-        const totalDivText =
-            "<div id='container"+action.varName+"' class='travelContainer showthat' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, \""+action.name+"\", "+action.townNum+", \""+action.varName+"\", true)' ondragend='handleDirectActionDragEnd(\""+action.varName+"\")' onclick='addActionToList(\""+action.name+"\", "+action.townNum+", true)'>" +
-            action.label + "<br>" +
-            "<img src='img/"+camelize(action.name)+".svg' class='superLargeIcon' draggable='false'><br>" +
-            "<div class='showthis' draggable='false'>" +
-            action.tooltip + "<br>" +
-            actionStats +
-            "<div class='bold'>"+_txt("actions>tooltip>mana_cost")+"</div> <div id='manaCost"+action.varName+"'>"+action.manaCost()+"</div><br>" +
-            "<div class='bold'>"+_txt("actions>tooltip>exp_multiplier")+"</div> "+(action.expMult*100)+"%<br>" +
-            "</div>" +
-            "</div>";
-
-        let actionsDiv = document.createElement("div");
-        actionsDiv.innerHTML = totalDivText;
-        actionsDiv.style.width = "100%";
-        actionOptionsTown[action.townNum].appendChild(actionsDiv);
-        towns[action.townNum].totalActionList.push(action);
-        this.totalActionList.push(action);
     };
 
     this.adjustManaCost = function(actionName) {
@@ -871,6 +967,32 @@ function View() {
         this.adjustGoldCost("ImbueMind", goldCostImbueMind());
         this.adjustGoldCost("GreatFeast", goldCostGreatFeast());
     };
+    this.adjustExpGain = function(action) {
+        for (let skill in action.skills) {
+            if (Number.isInteger(action.skills[skill])) document.getElementById("expGain"+action.varName+skill).textContent = action.skills[skill];
+            else document.getElementById("expGain"+action.varName+skill).textContent = action.skills[skill]();
+        }
+    };
+    this.adjustExpGains = function() {
+        this.adjustExpGain(new WarriorLessons());
+        this.adjustExpGain(new MageLessons());
+        this.adjustExpGain(new HealTheSick());
+        this.adjustExpGain(new FightMonsters());
+        this.adjustExpGain(new SmallDungeon());
+        this.adjustExpGain(new PracticalMagic());
+        this.adjustExpGain(new LearnAlchemy());
+        this.adjustExpGain(new BrewPotions());
+        this.adjustExpGain(new DarkMagic());
+        this.adjustExpGain(new LargeDungeon());
+        this.adjustExpGain(new CraftingGuild());
+        this.adjustExpGain(new Apprentice());
+        this.adjustExpGain(new Mason());
+        this.adjustExpGain(new Architect());
+        this.adjustExpGain(new Chronomancy());
+        this.adjustExpGain(new Pyromancy());
+        this.adjustExpGain(new HuntTrolls());
+    };
+    'expGain"+action.varName+skillName+"'
 
     this.createTownInfo = function(action) {
         let totalInfoText =
@@ -910,7 +1032,7 @@ function View() {
         const totalDivText =
             "<div class='townStatContainer' style='text-align:center' id='infoContainer"+action.varName+"'>"+
                 "<div class='bold townLabel' style='float:left' id='multiPartName"+action.varName+"'></div>"+
-                "<div class='completedInfo showthat' onmouseover='view.updateSoulstoneChance()'>" +
+                "<div class='completedInfo showthat' onmouseover='view.updateSoulstoneChance(true)'>" +
                     "<div class='bold'>"+action.labelDone+"</div> <div id='completed"+action.varName+"'></div>" +
                     (completedTooltip === "" ? "" :"<div class='showthis' id='completedContainer"+action.varName+"'>"+completedTooltip+"</div>") +
                 "</div><br>"+
@@ -968,9 +1090,10 @@ function View() {
         let loopCost = action.loopCost(segment);
         while(curProgress >= loopCost && segment < action.segments) {
             document.getElementById("expBar"+segment+action.varName).style.width = "0";
-            if(document.getElementById("progress"+segment+action.varName).textContent !== loopCost) {
-                document.getElementById("progress"+segment+action.varName).textContent = intToStringRound(loopCost);
-                document.getElementById("progressNeeded"+segment+action.varName).textContent = intToStringRound(loopCost);
+            let roundedLoopCost = intToStringRound(loopCost);
+            if(document.getElementById("progress"+segment+action.varName).textContent !== roundedLoopCost) {
+                document.getElementById("progress"+segment+action.varName).textContent = roundedLoopCost;
+                document.getElementById("progressNeeded"+segment+action.varName).textContent = roundedLoopCost;
             }
 
             curProgress -= loopCost;
@@ -979,7 +1102,7 @@ function View() {
         }
 
         //update current segments
-        if(document.getElementById("progress"+segment+action.varName) && document.getElementById("progress"+segment+action.varName).textContent !== curProgress) {
+        if(document.getElementById("progress"+segment+action.varName)) {
             document.getElementById("expBar"+segment+action.varName).style.width = (100-100*curProgress/loopCost)+"%";
             document.getElementById("progress"+segment+action.varName).textContent = intToStringRound(curProgress);
             document.getElementById("progressNeeded"+segment+action.varName).textContent = intToStringRound(loopCost);
@@ -995,21 +1118,15 @@ function View() {
         }
     };
 
+    this.dungeonTooltipShown = 0;
     this.updateSoulstoneChance = function() {
-        let dungeonNum = -1;
-        if(isVisible(document.getElementById("completedContainerLDungeon"))) {
-            dungeonNum = 1;
-        } else if(isVisible(document.getElementById("completedContainerSDungeon"))) {
-            dungeonNum = 0;
-        }
-        if(dungeonNum === -1) {
-            return;
-        }
-        for(let i = 0; i < dungeons[dungeonNum].length; i++) {
-            let level = dungeons[dungeonNum][i];
-            document.getElementById("soulstoneChance"+dungeonNum+"_"+i).textContent = intToString(level.ssChance * 100, 4);
-            document.getElementById("soulstonePrevious"+dungeonNum+"_"+i).textContent = level.lastStat;
-            document.getElementById("soulstoneCompleted"+dungeonNum+"_"+i).textContent = level.completed + "";
+        for (let j = 0; j < dungeons.length; j++) {
+            for(let i = 0; i < dungeons[j].length; i++) {
+                let level = dungeons[j][i];
+                document.getElementById("soulstoneChance"+j+"_"+i).textContent = intToString(level.ssChance * 100, 4);
+                document.getElementById("soulstonePrevious"+j+"_"+i).textContent = level.lastStat;
+                document.getElementById("soulstoneCompleted"+j+"_"+i).textContent = level.completed + "";
+            }
         }
     };
 
@@ -1103,19 +1220,25 @@ function View() {
     };
 }
 
-function unlockStory(num) {
+function unlockGlobalStory(num) {
     if(num > storyMax) {
         document.getElementById("newStory").style.display = "inline-block";
         storyMax = num;
     }
 }
 
+function unlockStory(name) {
+    if (!storyReqs[name]) storyReqs[name] = true;
+}
+
 const curActionsDiv = document.getElementById("curActionsList");
 const nextActionsDiv = document.getElementById("nextActionsList");
 const actionOptionsTown = [];
+const actionStoriesTown = [];
 const townInfos = [];
 for(let i = 0; i < 6; i++) {
     actionOptionsTown[i] = document.getElementById("actionOptionsTown"+i);
+    actionStoriesTown[i] = document.getElementById("actionStoriesTown"+i);
     townInfos[i] = document.getElementById("townInfo"+i);
 }
 

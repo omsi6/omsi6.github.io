@@ -74,7 +74,7 @@
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillCombatLevelBar"></div></div>
                     <div class="showthis">
                         <span class="localized" data-lockey="skills>combat>desc"></span><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillCombatLevelExp"></div>/<div id="skillCombatLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillCombatLevelProgress"></div>%)</div><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillCombatLevelExp"></div>/<div id="skillCombatLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillCombatLevelProgress"></div>%)</div><br>
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillMagicContainer">
@@ -84,19 +84,18 @@
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillMagicLevelBar"></div></div>
                     <div class="showthis">
                         <span class="localized" data-lockey="skills>magic>desc"></span><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillMagicLevelExp"></div>/<div id="skillMagicLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillMagicLevelProgress"></div>%)</div><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillMagicLevelExp"></div>/<div id="skillMagicLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillMagicLevelProgress"></div>%)</div><br>
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillPracticalContainer">
-                    <div class="skillLabel medium bold localized" data-lockey="skills>practical_magic>label"></div>
+                    <div class="skillLabel medium bold localized" data-lockey="skills>practical>label"></div>
                     <div class="statNum medium"><div id="skillPracticalLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillPracticalLevelBar"></div></div>
-
                     <div class="showthis" style="width:490px">
-                        <span class="localized" data-lockey="skills>practical_magic>desc"></span><br><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillPracticalLevelExp"></div>/<div id="skillPracticalLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillPracticalLevelProgress"></div>%)</div><br>
-                        <span class="localized" data-lockey="skills>practical_magic>desc2"></span>
+                        <span class="localized" data-lockey="skills>practical>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillPracticalLevelExp"></div>/<div id="skillPracticalLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillPracticalLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>practical>desc2"></span>
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillAlchemyContainer">
@@ -106,30 +105,29 @@
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillAlchemyLevelBar"></div></div>
                     <div class="showthis">
                         <span class="localized" data-lockey="skills>alchemy>desc"></span><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillAlchemyLevelExp"></div>/<div id="skillAlchemyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillAlchemyLevelProgress"></div>%)</div><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillAlchemyLevelExp"></div>/<div id="skillAlchemyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillAlchemyLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>alchemy>desc2"></span><br>
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillDarkContainer">
-                    <div class="skillLabel medium bold localized" data-lockey="skills>dark_magic>label"></div>
+                    <div class="skillLabel medium bold localized" data-lockey="skills>dark>label"></div>
                     <div class="statNum medium"><div id="skillDarkLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillDarkLevelBar"></div></div>
-
                     <div class="showthis" style="width:490px">
-                        <span class="localized" data-lockey="skills>dark_magic>desc"></span><br><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillDarkLevelExp"></div>/<div id="skillDarkLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillDarkLevelProgress"></div>%)</div><br>
-                        <span class="localized" data-lockey="skills>dark_magic>desc2"></span>
+                        <span class="localized" data-lockey="skills>dark>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillDarkLevelExp"></div>/<div id="skillDarkLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillDarkLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>dark>desc2"></span>
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillCraftingContainer">
-                    <div class="skillLabel medium bold">Crafting</div>
+                    <div class="skillLabel medium bold localized" data-lockey="skills>crafting>label"></div>
                     <div class="statNum medium"><div id="skillCraftingLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillCraftingLevelBar"></div></div>
                     <div class="showthis">
-                        The skill of using your hands and creativity when doing physical work.<br>
-                        <div class="medium bold">Level</div> <div id="skillCraftingLevelExp"></div>/<div id="skillCraftingLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillCraftingLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>crafting>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillCraftingLevelExp"></div>/<div id="skillCraftingLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillCraftingLevelProgress"></div>%)</div><br>
                     </div>
                 </div>
                 <div class="skillContainer showthat" id="skillChronomancyContainer">
@@ -137,10 +135,9 @@
                     <div class="statNum medium"><div id="skillChronomancyLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillChronomancyLevelBar"></div></div>
-
                     <div class="showthis" style="width:490px">
-                        <span class="localized" data-lockey="skills>chronomancy>desc"></span><br><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillChronomancyLevelExp"></div>/<div id="skillChronomancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillChronomancyLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>chronomancy>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillChronomancyLevelExp"></div>/<div id="skillChronomancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillChronomancyLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>chronomancy>desc2"></span>
                     </div>
                 </div>
@@ -149,11 +146,32 @@
                     <div class="statNum medium"><div id="skillPyromancyLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
                     <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillPyromancyLevelBar"></div></div>
-
                     <div class="showthis" style="width:490px">
-                        <span class="localized" data-lockey="skills>pyromancy>desc"></span><br><br>
-                        <div class="medium bold localized" data-lockey="skills>tooltip>level"></div> <div id="skillPyromancyLevelExp"></div>/<div id="skillPyromancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillPyromancyLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>pyromancy>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillPyromancyLevelExp"></div>/<div id="skillPyromancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillPyromancyLevelProgress"></div>%)</div><br>
                         <span class="localized" data-lockey="skills>pyromancy>desc2"></span>
+                    </div>
+                </div>
+                <div class="skillContainer showthat" id="skillRestorationContainer">
+                    <div class="skillLabel medium bold localized" data-lockey="skills>restoration>label"></div>
+                    <div class="statNum medium"><div id="skillRestorationLevel">0</div></div>
+                    <div style="margin-top:18px;"></div>
+                    <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillRestorationLevelBar"></div></div>
+                    <div class="showthis" style="width:490px">
+                        <span class="localized" data-lockey="skills>restoration>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillRestorationLevelExp"></div>/<div id="skillRestorationLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillRestorationLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>restoration>desc2"></span>
+                    </div>
+                </div>
+                <div class="skillContainer showthat" id="skillSpatiomancyContainer">
+                    <div class="skillLabel medium bold localized" data-lockey="skills>spatiomancy>label"></div>
+                    <div class="statNum medium"><div id="skillSpatiomancyLevel">0</div></div>
+                    <div style="margin-top:18px;"></div>
+                    <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillSpatiomancyLevelBar"></div></div>
+                    <div class="showthis" style="width:490px">
+                        <span class="localized" data-lockey="skills>spatiomancy>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillSpatiomancyLevelExp"></div>/<div id="skillSpatiomancyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillSpatiomancyLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>spatiomancy>desc2"></span>
                     </div>
                 </div>
             </div>
@@ -308,8 +326,10 @@
         <div id="townInfo5" class='townInfo' style="display:none;"></div>
 
         <div class="showthat" style="display:block;margin:10px auto 2px auto;text-align:center;">
-            <span class='large bold localized' data-lockey="actions>title"></span>
+            <div style="float:left;margin-left:150px;" class="actionIcon fa fa-arrow-left" id="actionsViewLeft" onclick="view.showActions(false)"></div>
+            <span class='large bold' id="actionsTitle"></span>
             <div class='showthis localized' data-lockey="actions>tooltip>desc"></div>
+            <div style="float:right;margin-right:150px;" class="actionIcon fa fa-arrow-right" id="actionsViewRight" onclick="view.showActions(true)"></div>
         </div>
         <div id="actionOptionsTown0" class='actionOptions'></div>
         <div id="actionOptionsTown1" class='actionOptions' style="display:none;"></div>
@@ -317,6 +337,12 @@
         <div id="actionOptionsTown3" class='actionOptions' style="display:none;"></div>
         <div id="actionOptionsTown4" class='actionOptions' style="display:none;"></div>
         <div id="actionOptionsTown5" class='actionOptions' style="display:none;"></div>
+        <div id="actionStoriesTown0" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown1" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown2" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown3" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown4" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown5" class='actionStories' style="display:none;"></div>
     </div>
 
     <div id="tutorial" style="position:absolute;width:100%;height:100%;left:0;top:0;z-index:9999;">
@@ -327,32 +353,34 @@
         </div>
     </div>
 
-    <script src="helpers.js?15"></script>
-    <script src="interval.js?15"></script>
-    <script src="driver.js?15"></script>
-    <script src="stats.js?15"></script>
-    <script src="statsgraph.js?15"></script>
-    <script src="views/main.view.js?15"></script>
-    <script src="actions.js?15"></script>
-    <script src="actionList.js?15"></script>
-    <script src="town.js?15"></script>
-    <script src="talents.js?15"></script>
-    <script src="saving.js?15"></script>
-    <script src="hotkeys.js?15"></script>
-    <script src="localization.js?13"></script>
-    <script src="views/views.js?13"></script>
-    <script src="views/menu.view.js?13"></script>
-    <script src="views/trackedresources.view.js?13"></script>
-    <script src="views/timecontrols.view.js?13"></script>
+    <script src="helpers.js?91"></script>
+    <script src="interval.js?91"></script>
+    <script src="driver.js?91"></script>
+    <script src="stats.js?91"></script>
+    <script src="statsgraph.js?91"></script>
+    <script src="views/main.view.js?91"></script>
+    <script src="actions.js?91"></script>
+    <script src="actionList.js?91"></script>
+    <script src="town.js?91"></script>
+    <script src="talents.js?91"></script>
+    <script src="saving.js?91"></script>
+    <script src="hotkeys.js?91"></script>
+    <script src="localization.js?91"></script>
+    <script src="views/views.js?91"></script>
+    <script src="views/menu.view.js?91"></script>
+    <script src="views/trackedresources.view.js?91"></script>
+    <script src="views/timecontrols.view.js?91"></script>
     <script>
         $(function() {
             Localization.init();
             window._txt = Localization.txt; // binding the _txt function for simplier use
             window._txtsObj = Localization.txtsObj; // binding the _txt function for simplier use
-            Localization.loadLib('game',function() { // we load the "game.xml" library, then startup the game.
-                Views.draw();
-                Localization.localizePage("game");
-                startGame();
+            Localization.loadLib('fallback',function() { // loading fallback library
+                Localization.loadLib('game',function() { // we load the "game.xml" library, then startup the game.
+                    Views.draw();
+                    Localization.localizePage("game");
+                    startGame();
+                });
             });
         })
     </script>

@@ -59,18 +59,43 @@ let loopingPotion = 0;
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy"];
 let skills = {};
 const buffList = ["Ritual", "Imbuement", "Feast"];
 const buffHardCaps = [666, 490, 100];
 let buffs = {};
 let townShowing = 0;
+let actionStoriesShowing = false;
 let maxTown;
 let statShowing;
 let actionTownNum;
 let trainingLimits;
 let storyShowing = 0;
 let storyMax = 0;
+let storyReqs = {
+    maxSQuestsInALoop: false,
+    maxLQuestsInALoop: false,
+    heal10PatientsInALoop: false,
+    failedHeal: false,
+    clearSDungeon: false,
+    haggle: false,
+    haggle15TimesInALoop: false,
+    haggle16TimesInALoop: false,
+    glassesBought: false,
+    partyThrown: false,
+    strengthTrained: false,
+    suppliesBought: false,
+    suppliesBoughtWithoutHaggling: false,
+    smallDungeonAttempted: false,
+    satByWaterfall: false,
+    dexterityTrained: false,
+    speedTrained: false,
+    birdsWatched: false,
+    darkRitualThirdSegmentReached: false,
+    failedBrewPotions: false,
+    failedBrewPotionsNegativeRep: false,
+    potionBrewed: false
+}
 
 let curDate = new Date();
 let totalOfflineMs = 0;
@@ -78,8 +103,8 @@ let bonusSpeed = 1;
 let offlineRatio = .8;
 let dungeons;
 
-window.curAdvGuildSegment = 0;
-window.curCraftGuildSegment = 0;
+let curAdvGuildSegment = 0;
+let curCraftGuildSegment = 0;
 
 
 function closeTutorial() {
@@ -134,6 +159,20 @@ function load() {
     for(let property in toLoad.buffs) {
         if (toLoad.buffs.hasOwnProperty(property)) {
             buffs[property].amt = toLoad.buffs[property].amt;
+        }
+    }
+
+    for(let property in toLoad.buffs) {
+        if (toLoad.buffs.hasOwnProperty(property)) {
+            buffs[property].amt = toLoad.buffs[property].amt;
+        }
+    }
+
+    if (toLoad.storyReqs !== undefined) {
+        for(let property in storyReqs) {
+            if (toLoad.storyReqs.hasOwnProperty(property)) {
+                storyReqs[property] = toLoad.storyReqs[property]
+            }
         }
     }
 
@@ -212,6 +251,9 @@ function load() {
             if(action.name === "Tournament") {
                 action.name = "Buy Pickaxe";
             }
+            if(action.name === "Train Dex") {
+                action.name = "Train Dexterity";
+            }
             actions.next.push(action);
         }
     }
@@ -231,6 +273,9 @@ function load() {
                 }
                 if(action.name === "Tournament") {
                     action.name = "Buy Pickaxe";
+                }
+                if(action.name === "Train Dex") {
+                    action.name = "Train Dexterity";
                 }
                 loadouts[i].push(action);
             }
@@ -311,6 +356,7 @@ function load() {
     view.changeStatView();
     view.updateNextActions();
     view.updateMultiPartActions();
+    view.updateStories(true);
     view.update();
     recalcInterval(toLoad.updateRate);
     pauseGame();
@@ -396,6 +442,8 @@ function save() {
     else toSave.updateRate = 50;
     toSave.storyShowing = storyShowing;
     toSave.storyMax = storyMax;
+    toSave.storyReqs = storyReqs;
+
     toSave.date = new Date();
     toSave.totalOfflineMs = totalOfflineMs;
 
@@ -506,9 +554,12 @@ function isOldAction(name) {
     return false
 }
 
-function createOldsave() {
+//start old save
+
+function exportOldSave() {
+    if (!confirm("This will give you your save file with all save data for any content added in this fork removed. This will allow you to import your save back to stopsign.github.io, but you will lose any progress you made on features exclusive to this fork.")) return
     let toSave = {};
-    toSave.curLoadout = Math.min(curLoadout, 5);
+    toSave.curLoadout = Math.min(curLoadout, 4);
     toSave.dungeons = [dungeons[0], dungeons[1]];
     toSave.maxTown = Math.min(maxTown, 2);
     toSave.actionTownNum = 0;
@@ -518,7 +569,7 @@ function createOldsave() {
     toSave.stats = stats;
     toSave.skills = {};
     for (let i=0; i<4; i++) {
-        toSave.skills[buffList[i]] = skills[buffList[i]]
+        toSave.skills[skillList[i]] = skills[skillList[i]]
     }
     toSave.expWander = town.expWander;
     toSave.expMet = town.expMet;
@@ -543,7 +594,7 @@ function createOldsave() {
     toSave.expMason = town.expMason;
     toSave.expArchitect = town.expArchitect;
 
-    for(let i = 0; i < towns.length; i++) {
+    for(let i = 0; i < 3; i++) {
         town = towns[i];
         for(let j = 0; j < town.totalActionList.length; j++) {
             let action = town.totalActionList[j];
@@ -560,8 +611,13 @@ function createOldsave() {
         }
     }
     toSave.nextList = actions.next;
-    toSave.loadouts = loadouts;
-    toSave.loadoutnames = loadoutnames
+    let tempLoadouts = [[], [], [], [], []]
+    for (let i=0; i<5; i++) {
+        for (let l=0; l<loadouts[i].length; l++) {
+            if (isOldAction(loadouts[i][l].name)) tempLoadouts[i][tempLoadouts[i].length] = loadouts[i][l]
+        }
+    }
+    toSave.loadouts = tempLoadouts;
     toSave.repeatLast = document.getElementById("repeatLastAction").checked;
     toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
     toSave.storyShowing = storyShowing;
@@ -569,10 +625,12 @@ function createOldsave() {
     toSave.date = new Date();
     toSave.totalOfflineMs = totalOfflineMs;
 
-    saveUISettings()
-
-    window.localStorage[saveName] = JSON.stringify(toSave);
+    document.getElementById("exportImport").value = encode(JSON.stringify(toSave));
+    document.getElementById("exportImport").select();
+    document.execCommand('copy');
 }
+
+//end old save
 
 function exportSave() {
     save();

@@ -17,13 +17,17 @@ body {
     cursor:default;
 }
 
+.showthis:hover, .showthis2:hover, .showthisstory:hover {
+    display: none !important;
+}
+
 .showthatO {
     position:relative;
 }
 .showthatH:hover .showthisH {
     display: block;
 }
-.showthat:hover .showthis, .showthatO:hover .showthis, .showthat:hover .showthisname, .showthat:hover .showthisbuff {
+.showthat:hover .showthis, .showthatO:hover .showthis, .showthat:hover .showthisname, .showthat:hover .showthisbuff, .showthat:hover .showthisstory {
     display: block;
 }
 
@@ -80,6 +84,23 @@ body {
     white-space: nowrap;
 }
 
+.showthisstory {
+    display:none;
+    position:absolute;
+    color: black;
+    background: url(img/misc/texture.png);
+    border:1px solid #b89651;
+    padding:3px 5px;
+    margin-top:-2px;
+    margin-left:-1px;
+    z-index: 999999;
+    text-align:left;
+}
+
+.thickProgressBar .showthis {
+    margin-top: 15px;
+}
+
 .title {
     font-size:16px;
     font-weight:bold;
@@ -112,6 +133,30 @@ body {
 .smallIcon {
     width: 16px;
     height: 16px;
+}
+
+.notification {
+    position: absolute;
+    font-weight: bold;
+    border-radius: 50%;
+    display: none;
+}
+
+.notification::before {
+    content: "!";
+}
+
+.storyNotification {
+    right: -32px;
+    bottom: 4px;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #b89651;
+}
+
+.storyContainer .superLargeIcon, .storyContainer .smallIcon {
+    filter: drop-shadow(-1px 1px 1px #444);
+    mix-blend-mode: overlay;
 }
 
 input, label {
@@ -315,6 +360,11 @@ input[type="number"] {
     min-height:470px;
 }
 
+.actionStories {
+    text-align:center;
+    min-height:470px;
+}
+
 .actionContainer {
     cursor:pointer;
     width:102px;
@@ -325,6 +375,25 @@ input[type="number"] {
 }
 .actionContainer:hover, .travelContainer:hover {
     background-color: #bef8ff;
+}
+
+.storyContainer {
+    width: 102px;
+    height: 50px;
+    vertical-align: top;
+    margin: 0 2px;
+    font-size: 13px;
+    color: #b89651;
+    border: 1px solid #b89651;
+    background: url(img/misc/texture.png);
+    box-shadow: -2px 2px 1px #bbb;
+    border-radius: 5px;
+    margin: 3px;
+    fill: white;
+}
+.storyContainer:hover {
+    border-radius: 0px;
+    box-shadow: none;
 }
 
 .travelContainer {

@@ -4,7 +4,7 @@ window.Localization = {
   defaultLang : 'en-EN', //
   supportedLang : {
     'en-EN' : 'English',
-    //'fr-FR' : 'Français',
+    'fr-FR' : 'Français',
   },
   getKey : 'lg', // key used in the get parameter of the URL to set a specific language
   handle : '#localization_menu', // html selector of the div to put the localization menu in
@@ -29,14 +29,18 @@ window.Localization = {
   },
   txt : function(path,lib) { // lib can be ignored to use the last used lib. returns the text for the given key
     if (typeof(lib) == "undefined")
-      lib = Localization.lastLib;
+      lib = "game";
     var libObject = $(Localization.libs[lib]);
     if (libObject.length)
       var txt = $(Localization.libs[lib]).find(path).text();
 
     if (txt=="") {
       console.warn("Missing text in lang '"+ Localization.currentLang + "' for key "+path+" in lib "+lib);
-      txt = "["+path+"]";
+      txt = $(Localization.libs["fallback"]).find(path).text();
+      if (txt=="") {
+        console.warn("Missing fallback for key "+path);
+        txt = "["+path+"]";
+      }
     }
     return txt;
   },
@@ -64,7 +68,8 @@ window.Localization = {
     window.location.href=window.location.origin+window.location.pathname+'?'+$.param(vars);
   },
   loadXML : function(libName,callback) {
-      $.get('lang/'+Localization.currentLang+'/'+libName+'.xml',null,callback,'xml');
+      if (libName === "fallback") $.get('lang/en-EN/game.xml',null,callback,'xml')
+      else $.get('lang/'+Localization.currentLang+'/'+libName+'.xml',null,callback,'xml');
   },
   getUrlVars : function() {
       var vars = {};
