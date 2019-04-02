@@ -27,7 +27,7 @@ Views.registerView('timeControls',{
       html += "<div class='showthatO control'>";
         html += "<div class='showthatO' onmouseover='view.updateStory(storyShowing)' style='height:30px;'>";
         html += "<div class='large bold'>"+_txt('time_controls>story_title')+"</div><div id='newStory' style='color:red;display:none;'>(!)</div>";
-        html += "<div class='showthis' style='width:400px;'>";
+        html += "<div class='showthisH' style='width:400px;'>";
           // story controls
           html += "<div style='margin-left:175px;' class='actionIcon fa fa-arrow-left control' id='storyLeft' onclick='view.updateStory(storyShowing-1)'></div>";
           html += "<div style='' id='storyPage' class='bold control'></div>";

@@ -52,6 +52,9 @@ function Actions() {
                         view.updateTotalTicks();
                         curAction.loopsLeft = 0;
                         curAction.ticks = 0;
+                        curAction.manaRemaining = timeNeeded - timer
+                        curAction.goldRemaining = gold
+                        curAction.finish();
                         break;
                     }
                 }

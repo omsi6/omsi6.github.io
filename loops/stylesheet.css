@@ -27,7 +27,7 @@ body {
 .showthatH:hover .showthisH {
     display: block;
 }
-.showthat:hover .showthis, .showthatO:hover .showthis, .showthat:hover .showthisname, .showthat:hover .showthisbuff, .showthat:hover .showthisstory {
+.showthat:hover .showthis, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisbuff, .showthat:hover .showthisstory {
     display: block;
 }
 

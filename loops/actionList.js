@@ -472,7 +472,7 @@ function TrainStrength() {
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
-                return storyReqs.StrengthTrained;
+                return storyReqs.strengthTrained;
             case 2:
                 return getTalent("Str") >= 100;
             case 3:
@@ -1062,7 +1062,8 @@ function SmallDungeon() {
     };
     this.finish = function() {
         handleSkillExp(this.skills);
-        unlockStory("smallDungeonAttempted")
+        unlockStory("smallDungeonAttempted");
+        if (towns[0].SDungeonLoopCounter >= 42) unlockStory("clearSDungeon")
     };
 }
 function finishDungeon(dungeonNum, floorNum) {
@@ -1169,7 +1170,7 @@ function Haggle() {
     };
     this.finish = function() {
         if (towns[0].suppliesCost === 20) unlockStory("haggle15TimesInALoop")
-        else if (towns[0].suppliesCost === 0) unlockStory("haggle16TimeInALoop")
+        else if (towns[0].suppliesCost === 0) unlockStory("haggle16TimesInALoop")
         towns[0].suppliesCost -= 20;
         if(towns[0].suppliesCost < 0 ) {
             towns[0].suppliesCost = 0;
