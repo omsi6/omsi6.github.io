@@ -17,7 +17,7 @@ body {
     cursor:default;
 }
 
-.showthis:hover, .showthis2:hover, .showthisstory:hover {
+.showthis:hover, .showthis2:hover {
     display: none !important;
 }
 
