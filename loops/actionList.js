@@ -245,18 +245,17 @@ function SmashPots() {
     this.name = "Smash Pots";
     this.expMult = 1;
     this.townNum = 0;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.tooltip2 = _txt("actions>"+getXMLName(this.name)+">tooltip2");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
@@ -294,18 +293,17 @@ function PickLocks() {
     this.name = "Pick Locks";
     this.expMult = 1;
     this.townNum = 0;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.tooltip2 = _txt("actions>"+getXMLName(this.name)+">tooltip2");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
@@ -507,18 +505,17 @@ function ShortQuest() {
     this.name = "Short Quest";
     this.expMult = 1;
     this.townNum = 0;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.tooltip2 = _txt("actions>"+getXMLName(this.name)+">tooltip2");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
@@ -612,18 +609,17 @@ function LongQuest() {
     this.name = "Long Quest";
     this.expMult = 1;
     this.townNum = 0;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.tooltip2 = _txt("actions>"+getXMLName(this.name)+">tooltip2");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
@@ -1320,18 +1316,17 @@ function WildMana() {
     this.name = "Wild Mana";
     this.expMult = 1;
     this.townNum = 1;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.tooltip2 = _txt("actions>"+getXMLName(this.name)+">tooltip2");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
@@ -1369,17 +1364,16 @@ function GatherHerbs() {
     this.name = "Gather Herbs";
     this.expMult = 1;
     this.townNum = 1;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
@@ -1414,21 +1408,20 @@ function Hunt() {
     this.name = "Hunt";
     this.expMult = 1;
     this.townNum = 1;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
     this.storyReqs = function(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].checkedHunt >= 1;towns[1].goodHunt
+                return towns[1].checkedHunt >= 1;
             case 2:
                 return towns[1].goodHunt >= 10;
             case 3:
@@ -2194,17 +2187,16 @@ function Gamble() {
     this.name = "Gamble";
     this.expMult = 2;
     this.townNum = 2;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
 
     this.stats = {
         Cha:.2,
@@ -2874,17 +2866,16 @@ function ManaGeyser() {
     this.name = "Mana Geyser";
     this.expMult = 1;
     this.townNum = 3;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
 
     this.stats = {
         Str:.6,
@@ -3077,17 +3068,16 @@ function MineSoulstones() {
     this.name = "Mine Soulstones";
     this.expMult = 1;
     this.townNum = 3;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
 
     this.stats = {
         Str:.6,
@@ -3210,17 +3200,16 @@ function TakeArtifacts() {
     this.name = "Take Artifacts";
     this.expMult = 1;
     this.townNum = 3;
-    this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
-    this.label = _txt("actions>"+getXMLName(this.name)+">label");
-    this.labelDone = _txt("actions>"+getXMLName(this.name)+">label_done");
-    this.infoText = _txt("actions>"+getXMLName(this.name)+">info_text1") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text2") +
-      " <i class='fa fa-arrow-left'></i> " +
-      _txt("actions>"+getXMLName(this.name)+">info_text3") +
-      "<br><div class='bold'>" +
-      _txt("actions>tooltip>total_found") +
-       "</div> <div id='total"+this.varName+"'></div>";
+    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
+    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
+    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
+    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+                    <i class='fa fa-arrow-left'></i>
+                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+                    <br><span class='bold'>${_txt("actions>tooltip>total_found")+": "}</span><div id='total${this.varName}'></div>
+                    <br><span class='bold'>${_txt("actions>tooltip>total_checked")+": "}</span><div id='checked${this.varName}'></div>`;
 
     this.stats = {
         Spd:.2,

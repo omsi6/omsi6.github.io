@@ -138,3 +138,23 @@ GameKeyboard.bind("shift", () => setShiftKey(true), "keydown");
 GameKeyboard.bind("shift", () => setShiftKey(false), "keyup");
 GameKeyboard.bind(["ctrl", "command"], () => setControlKey(true), "keydown");
 GameKeyboard.bind(["ctrl", "command"], () => setControlKey(false), "keyup");
+
+function handleTownHotkey(amount) {
+  if (amount === 1 && maxTown > townShowing) view.showTown(townShowing+1)
+  else if (amount === -1 && townShowing > 0) view.showTown(townShowing-1)
+}
+
+function handleStoryHotkey(showing) {
+  if (amount === 1 && maxTown > townShowing) view.showTown(townShowing+1)
+  else if (amount === -1 && townShowing > 0) view.showTown(townShowing-1)
+}
+
+GameKeyboard.bindHotkey("right", () => handleTownHotkey(1));
+GameKeyboard.bindHotkey("d", () => handleTownHotkey(1));
+GameKeyboard.bindHotkey("left", () => handleTownHotkey(-1));
+GameKeyboard.bindHotkey("a", () => handleTownHotkey(-1));
+
+GameKeyboard.bindHotkey("shift+right", () => view.showActions(true));
+GameKeyboard.bindHotkey("shift+d", () => view.showActions(true));
+GameKeyboard.bindHotkey("shift+left", () => view.showActions(false));
+GameKeyboard.bindHotkey("shift+a", () => view.showActions(false));

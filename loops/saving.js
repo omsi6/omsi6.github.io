@@ -100,7 +100,7 @@ let storyReqs = {
 let curDate = new Date();
 let totalOfflineMs = 0;
 let bonusSpeed = 1;
-let offlineRatio = .8;
+let offlineRatio = 1;
 let dungeons;
 
 let curAdvGuildSegment = 0;
@@ -338,7 +338,8 @@ function load() {
     storyMax = toLoad.storyMax !== undefined ? toLoad.storyMax : 0;
 
     totalOfflineMs = toLoad.totalOfflineMs !== undefined ? toLoad.totalOfflineMs : 0;
-    addOffline(Math.floor((new Date() - new Date(toLoad.date)) * offlineRatio));
+    //capped at 1 month of gain
+    addOffline(Math.min(Math.floor((new Date() - new Date(toLoad.date)) * offlineRatio), 2678400000));
 
     if(toLoad.version75 === undefined) {
         let total = towns[0].totalSDungeon;

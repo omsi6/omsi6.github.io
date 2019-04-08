@@ -554,10 +554,11 @@ function View() {
 
     this.updateRegular = function(varName, index) {
         const town = towns[index];
-        document.getElementById("total"+varName).textContent = town["total"+varName]+"";
-        document.getElementById("checked"+varName).textContent = town["total"+varName] - town["checked"+varName]+"";
-        document.getElementById("goodTemp"+varName).textContent = town["goodTemp"+varName]+"";
-        document.getElementById("good"+varName).textContent = town["good"+varName]+"";
+        document.getElementById("total"+varName).textContent = town["total"+varName];
+        document.getElementById("checked"+varName).textContent = town["checked"+varName];
+        document.getElementById("unchecked"+varName).textContent = town["total"+varName] - town["checked"+varName];
+        document.getElementById("goodTemp"+varName).textContent = town["goodTemp"+varName];
+        document.getElementById("good"+varName).textContent = town["good"+varName];
     };
 
     this.updateAddAmount = function(num) {
@@ -969,8 +970,8 @@ function View() {
     };
     this.adjustExpGain = function(action) {
         for (let skill in action.skills) {
-            if (Number.isInteger(action.skills[skill])) document.getElementById("expGain"+action.varName+skill).textContent = action.skills[skill];
-            else document.getElementById("expGain"+action.varName+skill).textContent = action.skills[skill]();
+            if (Number.isInteger(action.skills[skill])) document.getElementById("expGain"+action.varName+skill).textContent = action.skills[skill].toFixed(0);
+            else document.getElementById("expGain"+action.varName+skill).textContent = action.skills[skill]().toFixed(0);
         }
     };
     this.adjustExpGains = function() {
@@ -1001,7 +1002,7 @@ function View() {
                 "<div class='bold townLabel'>"+action.labelDone+"</div> " +
                 "<div id='goodTemp"+action.varName+"'>0</div> <i class='fa fa-arrow-left'></i> " +
                 "<div id='good"+action.varName+"'>0</div> <i class='fa fa-arrow-left'></i> " +
-                "<div id='checked"+action.varName+"'>0</div>" +
+                "<div id='unchecked"+action.varName+"'>0</div>" +
                 "<input type='checkbox' id='searchToggler"+action.varName+"' style='margin-left:10px;'>" +
                 "<label for='searchToggler"+action.varName+"'> Lootable first</label>"+
                 "<div class='showthis'>" +

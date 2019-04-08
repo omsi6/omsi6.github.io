@@ -326,6 +326,7 @@ function loadLoadout(num) {
     loadList()
 }
 
+let globalCustomInput = ""
 function saveList() {
     if(curLoadout === 0) {
         save();
@@ -335,7 +336,7 @@ function saveList() {
         if (document.getElementById("amountCustom").value.length > 30) {
             document.getElementById("amountCustom").value = "30 Letter Max";
         } else {
-            loadoutnames[curLoadout-1] = document.getElementById("amountCustom").value;
+            if ((document.getElementById("amountCustom").value !== "Saved!")) loadoutnames[curLoadout-1] = document.getElementById("amountCustom").value;
         }
     } else {
         // If the loadout has already been saved under a non-numeric name
@@ -348,6 +349,11 @@ function saveList() {
     }
     loadouts[curLoadout] = copyArray(actions.next);
     save();
+    if ((document.getElementById("amountCustom").value !== "Saved!")) globalCustomInput = document.getElementById("amountCustom").value
+    document.getElementById("amountCustom").value = "Saved!"
+    setTimeout(() => {
+        document.getElementById("amountCustom").value = globalCustomInput 
+    }, 1000);
     for (let i=0; i<5; i++) {
         document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
     }
@@ -558,7 +564,7 @@ function addOffline(num) {
 
 function toggleOffline() {
     if(bonusSpeed === 1) { //go fast
-        bonusSpeed = 4;
+        bonusSpeed = 5;
         document.getElementById('isBonusOn').textContent = _txt("time_controls>bonus_seconds>state>on");
     } else { //take it slow
         bonusSpeed = 1;
