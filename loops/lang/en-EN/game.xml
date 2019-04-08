@@ -23,7 +23,7 @@
             • Slightly adjusted the spacing and location of buttons on the saving menu.<br>
             • Added a button on the saving menu to export your save in a Stopsign compatible form.<br>
             • Skill levels now have a comma after 999, and a suffix after 9999.<br>
-            • Scarce action tooltips now display their total checked below their total found, and have a comma preceding their found count.<br>
+            • Scarce action tooltips now display their total checked below their total found, and have a semicolon preceding their found count.<br>
             • Added a visual indicator for when you save a loadout.<br>
             • Added hotkeys for changing the current zone, and showing action options/stories.<br>
             • Fixed various typos.<br>
