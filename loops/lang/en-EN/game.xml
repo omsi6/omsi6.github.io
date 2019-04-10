@@ -11,21 +11,26 @@
             <b> v0.91 - "A storied future."</b><br>
             • Added action stories. These are short stories for most actions. These were written by Jacmac from the Discord. As of now, there are 120 individual entries. These become visible when their corresponding action is unlocked, and readable when a certain listed requirement is fulfilled. (arrow to the right of "Action Options" to view them)<br>
             • Changed bonus seconds gains from 80% > 100%, and drain from 3/s > 4/s. (this will result in a 5x speed multiplier, up from the previous 4x)<br>
+            • When the delta between the last update and the current time is too long, the game will now attempt to give you bonus seconds equal to it, rather than just skipping it.<br>
             • Action tooltips now display skill exp gain (if applicable) above stat percentages.<br>
+            • Dark Ritual and Imbue Mind now take the remainder of soulstones after division from the stat with the most soulstones, rather than soul.<br>
             • Changed Dark Ritual's unlock requirement from 90% Thicket Explored to 50% Witch Knowledge to prevent confusion.<br>
-            • Changed the icons for Small Dungeon, Wild Mana, and Looping Potion to be consistent with other icons.<br>
+            • Changed the icons for Small Dungeon, Wild Mana, Looping Potion, and Buy Supplies to be consistent with other icons.<br>
+            • Supplies now shows as an icon in the resource list, to be consistent with other resources that are limited to 1.<br>
             • Renamed Train Dex to Train Dexterity.<br>
             • Added colons in various different places they were missing.<br>
-            • Minor performance improvements.<br>
+            • Minor performance improvements. (higher for those not using the radar chart)<br>
             • Changes on patch notes are now preceded by • instead of *.<br>
             • Modified the Throw Party and Old Shortcut tooltips for clarity.<br>
+            • Face judgement now requires 100% Mountain Explored.<br>
             • Translations now fallback to english if there's no translated version of the text. This means that the French translation has been re-enabled, but do note that it's only a partial translation.<br>
             • Slightly adjusted the spacing and location of buttons on the saving menu.<br>
             • Added a button on the saving menu to export your save in a Stopsign compatible form.<br>
             • Skill levels now have a comma after 999, and a suffix after 9999.<br>
             • Scarce action tooltips now display their total checked below their total found, and have a semicolon preceding their found count.<br>
             • Added a visual indicator for when you save a loadout.<br>
-            • Added hotkeys for changing the current zone, and showing action options/stories.<br>
+            • Added hotkeys for changing the current zone, showing action options/stories, and undoing the most recent action list change.<br>
+            • Revamped the changelog tooltips to allow for a scrollbar.<br>
             • Fixed various typos.<br>
             • Fixed the spacing between the load and clear list buttons.<br>
             • Fixed certain tooltips not closing if you moved your mouse downwards onto the tooltip too quickly.<br>
@@ -34,7 +39,10 @@
             • Fixed level exp on skill tooltips being labeled as "Level".<br>
             • Fixed certain tooltips not closing if you moved your mouse downwards onto the tooltip too quickly.<br>
             • Fixed ping on pause not working properly with pause on failed loop.<br>
-            • Fixed mana/gold remaining displays on the action list sometimes being incorrect at high game speeds.
+            • Fixed mana/gold remaining displays on the action list sometimes being incorrect at high game speeds.<br>
+            • Fixed failed actions being able to spend mana for a single tick before failing.<br>
+            • Fixed soulstone count not updating if you sacrificed exactly the amount of soulstones you had in a specific stat.<br>
+            • Fixed improper margins between town info and action options/stories before everything in a town is unlocked.
         ]]></version>
             <version verNum=".90"><![CDATA[
             <b> February 16th, 2019 - April 2nd, 2019</b>
@@ -89,8 +97,8 @@
             • Added a confirmation when importing nothing, that warns you it will delete your save.
         ]]></version>
             <version verNum=".85"><![CDATA[
-            <b> November 7th, 2018 - December 6th, 2018</b>
-            <b> v0.85 - "This one isn't illusory."</b><br>
+            <b class="versiontitle"> November 7th, 2018 - December 6th, 2018</b>
+            <b class="versiontitle"> v0.85 - "This one isn't illusory."</b><br>
             • New actions - Check Walls, Take Artifacts, Imbue Mind<br>
             • Pyromancy mana cost 12000 > 14000.<br>
             • Pyromancy self combat per level 10 > 5.<br>
@@ -247,6 +255,7 @@
                 Left/A: Show previous zone<br>
                 Shift+Right/D: Show action stories<br>
                 Shift+Left/A: Show action options<br>
+                Shift+Z: Undo most recent change to action list
         ]]></hotkeys_tooltip>
             <update_rate>Updates per second:</update_rate>
         </options>
@@ -281,11 +290,6 @@
             <id>reputation</id>
             <desc>The influence you have over the people in town.</desc>
         </resource>
-        <resource initially_hidden="true" no_count="true">
-            <title>Supplies</title>
-            <id>supplies</id>
-            <desc>Needed to go to the next town.</desc>
-        </resource>
         <resource initially_hidden="true">
             <title>Herbs:</title>
             <id>herbs</id>
@@ -303,7 +307,7 @@
         </resource>
         <resource initially_hidden="true">
             <title>Team Members:</title>
-            <id>teamNum</id>
+            <id>teamMembers</id>
             <desc>You know their personalities and fighting style. They don't know your name.</desc>
         </resource>
         <resource initially_hidden="true">
@@ -326,6 +330,11 @@
             <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
             <id>glasses</id>
             <desc>Woah, trees have so many leaves on them.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/buySupplies.svg" class="smallIcon">]]></title>
+            <id>supplies</id>
+            <desc>Needed to go to the next town.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/buyPickaxe.svg" class="smallIcon">]]></title>
@@ -1443,7 +1452,7 @@
         <face_judgement>
             <label>Face Judgement</label>
             <tooltip><![CDATA[
-            Face the judgement of the gods. If your reputation is 50 or above, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or below, you'll be cast into the shadow realm and thrown back to the beginning of your journey. (this does nothing right now)
+            Face the judgement of the gods. If your reputation is 50 or above, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or below, you'll be cast into the shadow realm and thrown back to the beginning of your journey.<br>Unlocked at 100% Mountain Explored. (this action does nothing right now)
         ]]></tooltip>
             <!--TODO: give this action story-->
         </face_judgement>

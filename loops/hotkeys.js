@@ -144,9 +144,11 @@ function handleTownHotkey(amount) {
   else if (amount === -1 && townShowing > 0) view.showTown(townShowing-1)
 }
 
-function handleStoryHotkey(showing) {
-  if (amount === 1 && maxTown > townShowing) view.showTown(townShowing+1)
-  else if (amount === -1 && townShowing > 0) view.showTown(townShowing-1)
+function undo() {
+  let temp = copyArray(actions.next)
+  actions.next = copyArray(actions.nextLast)
+  actions.nextLast = copyArray(temp)
+  view.updateNextActions();
 }
 
 GameKeyboard.bindHotkey("right", () => handleTownHotkey(1));
@@ -158,3 +160,5 @@ GameKeyboard.bindHotkey("shift+right", () => view.showActions(true));
 GameKeyboard.bindHotkey("shift+d", () => view.showActions(true));
 GameKeyboard.bindHotkey("shift+left", () => view.showActions(false));
 GameKeyboard.bindHotkey("shift+a", () => view.showActions(false));
+
+GameKeyboard.bindHotkey("shift+z", () => undo());

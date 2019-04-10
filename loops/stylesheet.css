@@ -17,7 +17,7 @@ body {
     cursor:default;
 }
 
-.showthis:hover, .showthis2:hover {
+.showthis:hover {
     display: none !important;
 }
 
@@ -33,8 +33,6 @@ body {
 
 .showthat2:hover .showthis2 {
     display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .showthis, .showthis2, .showthisH {
@@ -50,9 +48,19 @@ body {
     text-align:left;
 }
 
+.showthat2 {
+    width: 76px;
+}
+
 .showthis2 {
-    z-index:1000;
-    min-width:500px;
+    margin-top: -20px;
+    margin-left: 76px;
+    z-index: 1000;
+    min-width: 450px;
+    max-height: 600px;
+    overflow: auto;
+    flex-direction: column;
+    align-items: center;
 }
 
 .showthisbuff {
@@ -426,48 +434,52 @@ input[type="number"] {
     overflow-x: hidden !important;
 }
 
-#nextActionsList::-webkit-scrollbar, #curActionsList::-webkit-scrollbar  {
+#nextActionsList::-webkit-scrollbar, #curActionsList::-webkit-scrollbar, .showthis2::-webkit-scrollbar  {
     background: #cdded2;
 }
 
-#nextActionsList::-webkit-scrollbar-track, #curActionsList::-webkit-scrollbar-track  {
+#nextActionsList::-webkit-scrollbar-track, #curActionsList::-webkit-scrollbar-track, .showthis2::-webkit-scrollbar-track  {
     background: #99c193;
 }
 
-#nextActionsList::-webkit-scrollbar-thumb, #curActionsList::-webkit-scrollbar-thumb   {
+#nextActionsList::-webkit-scrollbar-thumb, #curActionsList::-webkit-scrollbar-thumb, .showthis2::-webkit-scrollbar-thumb   {
     background: #4caf50;
 }
 
-#nextActionsList::-webkit-scrollbar-thumb:hover, #curActionsList::-webkit-scrollbar-thumb:hover  {
+#nextActionsList::-webkit-scrollbar-thumb:hover, #curActionsList::-webkit-scrollbar-thumb:hover, .showthis2::-webkit-scrollbar-thumb:hover  {
     background: #3e8e41;
 }
 
-#nextActionsList::-webkit-scrollbar-button, #curActionsList::-webkit-scrollbar-button  {
+#nextActionsList::-webkit-scrollbar-button, #curActionsList::-webkit-scrollbar-button, .showthis2::-webkit-scrollbar-button  {
     color: black;
     background-color: #4caf50;
 }
 
-#nextActionsList::-webkit-scrollbar-button:vertical:decrement, #curActionsList::-webkit-scrollbar-button:vertical:decrement  {
+#nextActionsList::-webkit-scrollbar-button:vertical:decrement, #curActionsList::-webkit-scrollbar-button:vertical:decrement, .showthis2::-webkit-scrollbar-button:vertical:decrement {
     background-image: url("img/misc/arrowUpLight.svg");
     background-size: 17px 17px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
 
-#nextActionsList::-webkit-scrollbar-button:vertical:increment, #curActionsList::-webkit-scrollbar-button:vertical:increment  {
+#nextActionsList::-webkit-scrollbar-button:vertical:increment, #curActionsList::-webkit-scrollbar-button:vertical:increment, .showthis2::-webkit-scrollbar-button:vertical:increment {
     background-image: url("img/misc/arrowDownLight.svg");
     background-size: 17px 17px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
 
-#nextActionsList::-webkit-scrollbar-button:hover, #curActionsList::-webkit-scrollbar-button:hover  {
+.showthis2::-webkit-scrollbar-button:vertical:decrement:end, .showthis2::-webkit-scrollbar-button:vertical:increment:start {
+    display: none;
+}
+
+#nextActionsList::-webkit-scrollbar-button:hover, #curActionsList::-webkit-scrollbar-button:hover, .showthis2::-webkit-scrollbar-button:hover {
     background-color: #3e8e41;
 }
 
 /*styled scrollbar for firefox ( why can't there just be one browser that everybody uses :( )*/
 
-#nextActionsList, #curActionsList {
+#nextActionsList, #curActionsList, .showthis2 {
     scrollbar-color: #4caf50 #99c193;
 }
 
@@ -508,7 +520,7 @@ input[type="number"] {
 }
 
 .hidden {
-    display:none;
+    display:none !important;
 }
 
 .locked {

@@ -53,7 +53,7 @@ function Actions() {
                         curAction.loopsLeft = 0;
                         curAction.ticks = 0;
                         curAction.manaRemaining = timeNeeded - timer
-                        curAction.goldRemaining = gold
+                        curAction.goldRemaining = resources.gold
                         curAction.finish();
                         break;
                     }
@@ -73,7 +73,7 @@ function Actions() {
             this.completedTicks += curAction.adjustedTicks;
             curAction.finish();
             curAction.manaRemaining = timeNeeded - timer
-            curAction.goldRemaining = gold
+            curAction.goldRemaining = resources.gold
 
             if(curAction.cost) {
                 curAction.cost();
@@ -105,12 +105,13 @@ function Actions() {
             view.updateCurrentActionBar(this.currentPos);
             return undefined;
         }
-        if((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
+        while((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
             curAction.errorMessage = this.getErrorMessage(curAction);
             curAction.loopsFailed = curAction.loopsLeft;
             curAction.loopsLeft = 0;
             view.updateCurrentActionBar(this.currentPos);
             this.currentPos++;
+            if (this.currentPos >= this.current.length) break;
             curAction = this.current[this.currentPos];
         }
         return curAction;
@@ -137,7 +138,7 @@ function Actions() {
         towns[0].SDungeon = 0;
         towns[0].SDungeonLoopCounter = 0;
         towns[0].suppliesCost = 300;
-        view.updateSupplies();
+        view.updateResource("supplies");
         towns[1].DarkRitual = 0;
         towns[1].DarkRitualLoopCounter = 0;
         towns[2].AdvGuild = 0;

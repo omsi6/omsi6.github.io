@@ -96,11 +96,11 @@ function getBuffLevel(buff) {
 }
 
 function getSelfCombat() {
-    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * (1 + (armor * getCraftGuildRank().bonus)/5);
+    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * (1 + (resources.armor * getCraftGuildRank().bonus)/5);
 }
 
 function getTeamCombat() {
-    return getSelfCombat("Combat") + getSkillLevel("Combat")*teamNum/2 * getAdvGuildRank().bonus;
+    return getSelfCombat("Combat") + getSkillLevel("Combat") * resources.teamMembers/2 * getAdvGuildRank().bonus;
 }
 
 function getPrcToNextSkillLevel(skill) {

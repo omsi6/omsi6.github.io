@@ -5,6 +5,7 @@ let baseManaPerSecond = 50;
 
 let curTime = new Date();
 let gameTicksLeft = 0;
+let refund = false;
 let radarUpdateTime = 0;
 let timeCounter = 0;
 
@@ -30,7 +31,7 @@ function getActualGameSpeed() {
 function tick() {
     let newTime = new Date();
     gameTicksLeft += newTime - curTime;
-    radarUpdateTime += newTime - curTime;
+    if (document.getElementById("radarChart").style.display === "inline-block") radarUpdateTime += newTime - curTime;
     let delta = newTime - curTime
     curTime = newTime;
     if(stop) {
@@ -42,10 +43,10 @@ function tick() {
 
     while (gameTicksLeft > (1000 / baseManaPerSecond)) {
         if(gameTicksLeft > 2000) {
-            window.fps /= 2;
             console.warn(`too fast! (${gameTicksLeft})`);
             statGraph.graphObject.options.animation.duration = 0;
             gameTicksLeft = 0;
+            refund = true;
         }
         if(stop) {
             return;
@@ -78,6 +79,11 @@ function tick() {
 
     if(bonusSpeed > 1) {
         addOffline(-Math.abs(delta * (bonusSpeed - 1)));
+    }
+
+    if(refund) {
+        addOffline(delta);
+        refund = false;
     }
 
     if(radarUpdateTime > 1000) {
@@ -150,26 +156,7 @@ function restart() {
     timeCounter = 0;
     timeNeeded = timeNeededInitial;
     document.title = "Idle Loops";
-    if(initialGold) { //debugging only
-        gold = initialGold;
-        addGold(0);
-    } else {
-        addGold(-gold);
-    }
-    //items
-    addReputation(-reputation);
-    addSupplies(-supplies);
-    addHerbs(-herbs);
-    addHide(-hide);
-    addPotions(-potions);
-    addTeamNum(-teamNum);
-    addArmor(-armor);
-    addBlood(-blood);
-    addArtifacts(-artifacts);
-    //single items with icons
-    addGlasses(-glasses);
-    addPickaxe(-pickaxe);
-    addLoopingPotion(-loopingPotion);
+    resetResources();
     restartStats();
     for(let i = 0; i < towns.length; i++) {
         towns[i].restart();
@@ -183,6 +170,7 @@ function restart() {
 }
 
 function addActionToList(name, townNum, isTravelAction, insertAtIndex) {
+    actions.nextLast = copyObject(actions.next)
     for(let i = 0; i < towns[townNum].totalActionList.length; i++) {
         let action = towns[townNum].totalActionList[i];
         if(action.name === name) {
@@ -213,81 +201,28 @@ function addActionToList(name, townNum, isTravelAction, insertAtIndex) {
     view.updateLockedHidden();
 }
 
-//mana and gold
+//mana and resources
 
 function addMana(amount) {
     timeNeeded += amount;
 }
 
-function addGold(amount) {
-    gold += amount;
-    view.updateGold();
+function addResource(resource, amount) {
+    if (Number.isFinite(amount)) resources[resource] += amount;
+    else resources[resource] = amount;
+    view.updateResource(resource);
+
+    if (resource === "teamMembers" || resource === "armor") view.updateTeamCombat();
 }
 
-//items
-
-function addReputation(amount) {
-    reputation += amount;
-    view.updateReputation();
+function resetResource(resource) {
+    resources[resource] = resourcesTemplate[resource];
+    view.updateResource(resource);
 }
 
-function addSupplies(amount) {
-    supplies += amount;
-    view.updateSupplies();
-}
-
-function addHerbs(amount) {
-    herbs += amount;
-    view.updateHerbs();
-}
-
-function addHide(amount) {
-    hide += amount;
-    view.updateHide();
-}
-
-function addPotions(amount) {
-    potions += amount;
-    view.updatePotions();
-}
-
-function addTeamNum(amount) {
-    teamNum += amount;
-    view.updateTeamNum();
-    view.updateTeamCombat();
-}
-
-function addArmor(amount) {
-    armor += amount;
-    view.updateArmor();
-    view.updateTeamCombat();
-}
-
-function addBlood(amount) {
-    blood += amount;
-    view.updateBlood();
-}
-
-function addArtifacts(amount) {
-    artifacts += amount;
-    view.updateArtifacts();
-}
-
-//single items with icons
-
-function addPickaxe(amount) {
-    pickaxe += amount;
-    view.updatePickaxe();
-}
-
-function addGlasses(amount) {
-    glasses += amount;
-    view.updateGlasses();
-}
-
-function addLoopingPotion(amount) {
-    loopingPotion += amount;
-    view.updateLoopingPotion();
+function resetResources() {
+    resources = copyObject(resourcesTemplate);
+    view.updateResources();
 }
 
 function changeActionAmount(amount, num) {
@@ -402,6 +337,7 @@ function adjustAll() {
 }
 
 function capAmount(index, townNum) {
+    actions.nextLast = copyObject(actions.next)
     let varName = "good"+translateClassNames(actions.next[index].name).varName;
     let alreadyExisting = getNumOnList(actions.next[index].name)- actions.next[index].loops;
     let newLoops = towns[townNum][varName] - alreadyExisting;
@@ -410,6 +346,7 @@ function capAmount(index, townNum) {
 }
 
 function capTraining(index) {
+    actions.nextLast = copyObject(actions.next)
     let alreadyExisting = getNumOnList(actions.next[index].name) - actions.next[index].loops;
     let newLoops = trainingLimits - alreadyExisting;
     actions.next[index].loops = newLoops < 0 ? 0 : newLoops;
@@ -417,6 +354,7 @@ function capTraining(index) {
 }
 
 function addLoop(index) {
+    actions.nextLast = copyObject(actions.next)
     let theClass = translateClassNames(actions.next[index].name);
     let addAmount = actions.addAmount;
     if(theClass.allowed) {
@@ -432,6 +370,7 @@ function addLoop(index) {
     view.updateLockedHidden();
 }
 function removeLoop(index) {
+    actions.nextLast = copyObject(actions.next)
     actions.next[index].loops -= actions.addAmount;
     if(actions.next[index].loops < 0) {
         actions.next[index].loops = 0;
@@ -440,6 +379,7 @@ function removeLoop(index) {
     view.updateLockedHidden();
 }
 function split(index) {
+    actions.nextLast = copyObject(actions.next)
     const toSplit = actions.next[index];
     actions.addAction(toSplit.name, Math.ceil(toSplit.loops/2), index);
     toSplit.loops = Math.floor(toSplit.loops/2);
@@ -521,6 +461,7 @@ function moveQueuedAction(initialIndex, resultingIndex) {
 }
 
 function moveUp(index) {
+    actions.nextLast = copyObject(actions.next)
     if(index <= 0) {
         return;
     }
@@ -530,6 +471,7 @@ function moveUp(index) {
     view.updateNextActions();
 }
 function moveDown(index) {
+    actions.nextLast = copyObject(actions.next)
     if(index >= actions.next.length - 1) {
         return;
     }
@@ -539,6 +481,7 @@ function moveDown(index) {
     view.updateNextActions();
 }
 function removeAction(index) {
+    actions.nextLast = copyObject(actions.next)
     let travelNum = getTravelNum(actions.next[index].name);
     if(travelNum) {
         actionTownNum = travelNum - 1;

@@ -162,8 +162,8 @@ function hasCap(name) {
   return (name === "Smash Pots" || name === "Pick Locks" || name === "Short Quest" || name === "Long Quest" || name === "Gather Herbs" || name === "Wild Mana" || name === "Hunt" || name === "Gamble" || name === "Mana Geyser" || name === "Mine Soulstones");
 }
 function getTravelNum(name) {
-    if (name === "Face Judgement" && reputation <= 50) return 2
-    else if (name === "Face Judgement" && reputation >= 50) return 1
+    if (name === "Face Judgement" && resources.reputation <= 50) return 2
+    else if (name === "Face Judgement" && resources.reputation >= 50) return 1
     else if (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Fall From Grace") return 1
     return 0
 }
@@ -230,7 +230,7 @@ function Wander() {
         return true;
     };
     this.finish = function() {
-        towns[0].finishProgress(this.varName, 200 * (glasses ? 4 : 1))
+        towns[0].finishProgress(this.varName, 200 * (resources.glasses ? 4 : 1))
     };
 }
 function adjustPots() {
@@ -333,7 +333,7 @@ function PickLocks() {
     this.finish = function() {
         towns[0].finishRegular(this.varName, 10, function() {
             let goldGain = goldCostLocks();
-            addGold(goldGain);
+            addResource("gold", goldGain);
             return goldGain;
         })
     };
@@ -366,10 +366,10 @@ function BuyGlasses() {
         return 1;
     };
     this.canStart = function() {
-        return gold >= 10;
+        return resources.gold >= 10;
     };
     this.cost = function() {
-        addGold(-10);
+        addResource("gold", -10);;
     };
     this.manaCost = function() {
         return 50;
@@ -381,7 +381,7 @@ function BuyGlasses() {
         return towns[0].getLevel("Wander") >= 20;
     };
     this.finish = function() {
-        addGlasses(1);
+        addResource("glasses", true);
         unlockStory("glassesBought")
     };
 }
@@ -409,8 +409,8 @@ function BuyMana() {
         return towns[0].getLevel("Wander") >= 20;
     };
     this.finish = function() {
-        addMana(gold * 50);
-        addGold(-gold);
+        addMana(resources.gold * 50);
+        resetResource("gold");
     };
 }
 
@@ -546,7 +546,7 @@ function ShortQuest() {
     this.finish = function() {
         towns[0].finishRegular(this.varName, 5, function() {
             let goldGain = goldCostSQuests();
-            addGold(goldGain);
+            addResource("gold", goldGain);;
             return goldGain;
         })
         if (towns[0].goodSQuests >= 20 && towns[0].goodTempSQuests <= towns[0].goodSQuests - 20) unlockStory("maxSQuestsInALoop")
@@ -651,9 +651,9 @@ function LongQuest() {
     };
     this.finish = function() {
         towns[0].finishRegular(this.varName, 5, function() {
-            addReputation(1);
+            addResource("reputation", 1);
             let goldGain = goldCostLQuests();
-            addGold(goldGain);
+            addResource("gold", goldGain);
             return goldGain;
         })
         if (towns[0].goodLQuests >= 10 && towns[0].goodTempLQuests <= towns[0].goodLQuests - 10) unlockStory("maxLQuestsInALoop")
@@ -687,10 +687,10 @@ function ThrowParty() {
         return 1600;
     };
     this.canStart = function() {
-        return reputation >= 2;
+        return resources.reputation >= 2;
     };
     this.cost = function() {
-        addReputation(-2);
+        addResource("reputation", -2);
     };
     this.visible = function() {
         return towns[0].getLevel("Secrets") >= 20;
@@ -737,7 +737,7 @@ function WarriorLessons() {
         return 1000;
     };
     this.canStart = function() {
-        return reputation >= 2;
+        return resources.reputation >= 2;
     };
     this.cost = function() {
     };
@@ -793,7 +793,7 @@ function MageLessons() {
         return 1000;
     };
     this.canStart = function() {
-        return reputation >= 2;
+        return resources.reputation >= 2;
     };
     this.cost = function() {
     };
@@ -844,7 +844,7 @@ function HealTheSick() {
         return 2500;
     };
     this.canStart = function() {
-        return reputation >= 1;
+        return resources.reputation >= 1;
     };
     this.loopCost = function(segment) {
         return fibonacci(2+Math.floor((towns[0].HealLoopCounter+segment)/this.segments+.0000001)) * 5000;
@@ -853,7 +853,7 @@ function HealTheSick() {
         return getSkillLevel("Magic") * (1 + getLevel(this.loopStats[(towns[0].HealLoopCounter+offset) % this.loopStats.length])/100) * Math.sqrt(1 + towns[0].totalHeal/100);
     };
     this.loopsFinished = function() {
-        addReputation(3);
+        addResource("reputation", 3);
     };
     this.getPartName = function() {
         return _txt("actions>"+getXMLName(this.name)+">label_part") + " " + numberToWords(Math.floor((towns[0].HealLoopCounter+.0001)/this.segments+1));
@@ -919,7 +919,7 @@ function FightMonsters() {
         return 2000;
     };
     this.canStart = function() {
-        return reputation >= 2;
+        return resources.reputation >= 2;
     };
     this.loopCost = function(segment) {
         return fibonacci(Math.floor((towns[0].FightLoopCounter+segment) - towns[0].FightLoopCounter/3+.0000001)) * 10000;
@@ -930,7 +930,7 @@ function FightMonsters() {
     this.loopsFinished = function() {
     };
     this.segmentFinished = function() {
-        addGold(20);
+        addResource("gold", 20);
     };
     this.getPartName = function() {
         return monsterNames(towns[0].FightLoopCounter);
@@ -1021,7 +1021,7 @@ function SmallDungeon() {
     };
     this.canStart = function() {
         let curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter)/this.segments+.0000001);
-        return reputation >= 2 && curFloor < dungeons[this.dungeonNum].length;
+        return resources.reputation >= 2 && curFloor < dungeons[this.dungeonNum].length;
     };
     this.loopCost = function(segment) {
         return precision3(Math.pow(2, Math.floor((towns[this.townNum].SDungeonLoopCounter+segment)/this.segments+.0000001)) * 15000);
@@ -1108,10 +1108,10 @@ function BuySupplies() {
         return 200;
     };
     this.canStart = function() {
-        return gold >= towns[0].suppliesCost && supplies === 0;
+        return resources.gold >= towns[0].suppliesCost && !resources.supplies;
     };
     this.cost = function() {
-        addGold(-towns[0].suppliesCost);
+        addResource("gold", -towns[0].suppliesCost);
     };
     this.visible = function() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
@@ -1120,7 +1120,7 @@ function BuySupplies() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
     };
     this.finish = function() {
-        addSupplies(1);
+        addResource("supplies", true);
         if (towns[0].suppliesCost === 300) unlockStory("suppliesBoughtWithoutHaggling")
         unlockStory("suppliesBought")
     };
@@ -1153,10 +1153,10 @@ function Haggle() {
         return 100;
     };
     this.canStart = function() {
-        return reputation >= 1;
+        return resources.reputation >= 1;
     };
     this.cost = function() {
-        addReputation(-1);
+        addResource("reputation", -1);
     };
     this.visible = function() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
@@ -1171,7 +1171,7 @@ function Haggle() {
         if(towns[0].suppliesCost < 0 ) {
             towns[0].suppliesCost = 0;
         }
-        view.updateSupplies();
+        view.updateResource("supplies");
         unlockStory("haggle")
     };
 }
@@ -1202,10 +1202,10 @@ function StartJourney() {
         return 1000;
     };
     this.canStart = function() {
-        return supplies === 1;
+        return resources.supplies;
     };
     this.cost = function() {
-        addSupplies(-1);
+        addResource("supplies", false);
     };
     this.visible = function() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
@@ -1220,7 +1220,7 @@ function StartJourney() {
 
 function OpenRift() {
     this.name = "Open Rift";
-    this.expMult = 3;
+    this.expMult = 1;
     this.townNum = 0;
     this.tooltip = _txt("actions>"+getXMLName(this.name)+">tooltip");
     this.label = _txt("actions>"+getXMLName(this.name)+">label");
@@ -1235,10 +1235,7 @@ function OpenRift() {
         return 1;
     };
     this.manaCost = function() {
-        return 20000;
-    };
-    this.canStart = function() {
-        return supplies === 1;
+        return 100000;
     };
     this.visible = function() {
         return (getSkillLevel("Dark") >= 100 &&  getSkillLevel("Magic")) >= 15;
@@ -1298,7 +1295,7 @@ function ExploreForest() {
         return true;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
+        towns[1].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
     };
 }
 function adjustWildMana() {
@@ -1397,7 +1394,7 @@ function GatherHerbs() {
     };
     this.finish = function() {
         towns[1].finishRegular(this.varName, 10, function() {
-            addHerbs(1);
+            addResource("herbs", 1);
             return 1;
         })
     };
@@ -1446,7 +1443,7 @@ function Hunt() {
     };
     this.finish = function() {
         towns[1].finishRegular(this.varName, 10, function() {
-            addHide(1);
+            addResource("hide", 1);
             return 1;
         })
     };
@@ -1652,10 +1649,10 @@ function LearnAlchemy() {
         Alchemy: 50
     }
     this.canStart = function() {
-        return herbs >= 10;
+        return resources.herbs >= 10;
     };
     this.cost = function() {
-        addHerbs(-10);
+        addResource("herbs", -10);
     };
     this.manaCost = function() {
         return Math.ceil(5000 * (1 - towns[1].getLevel("Hermit") * .005))
@@ -1700,10 +1697,10 @@ function BrewPotions() {
         Alchemy: 25
     }
     this.canStart = function() {
-        return herbs >= 10 && reputation >= 5;
+        return resources.herbs >= 10 && resources.reputation >= 5;
     };
     this.cost = function() {
-        addHerbs(-10);
+        addResource("herbs", -10);
     };
     this.manaCost = function() {
         return Math.ceil(4000);
@@ -1715,7 +1712,7 @@ function BrewPotions() {
         return getSkillLevel("Alchemy") >= 10;
     };
     this.finish = function() {
-        addPotions(1);
+        addResource("potions", 1);
         handleSkillExp(this.skills);
         unlockStory("potionBrewed")
     };
@@ -1834,7 +1831,7 @@ function FollowFlowers() {
         return towns[1].getLevel("Forest") >= 50;
     };
     this.finish = function() {
-        towns[1].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
+        towns[1].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
     };
 }
 
@@ -1864,7 +1861,7 @@ function BirdWatching() {
         return 2000;
     };
     this.canStart = function() {
-        return glasses;
+        return resources.glasses;
     };
     this.visible = function() {
         return towns[1].getLevel("Flowers") >= 30;
@@ -2007,10 +2004,10 @@ function DarkMagic() {
         return Math.ceil(6000 * (1 - towns[1].getLevel("Witch") * .005));
     };
     this.canStart = function() {
-        return reputation <= 0;
+        return resources.reputation <= 0;
     };
     this.cost = function() {
-        addReputation(-1);
+        addResource("reputation", -1);
     };
     this.visible = function() {
         return towns[1].getLevel("Witch") >= 10;
@@ -2057,12 +2054,23 @@ function DarkRitual() {
         return 1;
     };
     this.canStart = function() {
-        let tempCost = (towns[1].totalDarkRitual+1) * 50
         let tempCanStart = true;
-        for(let i=0; i<9; i++) {
-            if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
+        let tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        let name = "";
+        let soulstones = 0;
+        for (let stat in stats) {
+            if (stats[stat].soulstone > soulstones) {
+                name = stat
+                soulstones = stats[stat].soulstone
+            }
         }
-        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
+        for (let stat in stats) {
+            if (stat !== name) {
+                if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false
+            }
+        }
+        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
+        return resources.reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
     };
     this.loopCost = function(segment) {
         return 1000000 * (segment*2+1);
@@ -2073,12 +2081,22 @@ function DarkRitual() {
     this.loopsFinished = function() {
         addBuffAmt("Ritual", 1)
         let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.ceil((towns[1].totalDarkRitual * 50) / 9);
-        for(let i=0; i<9; i++) {
-            if (tempSoulstonesSacrificed + tempSoulstonesToSacrifice > towns[1].totalDarkRitual * 50) tempSoulstonesToSacrifice = towns[1].totalDarkRitual * 50 - tempSoulstonesSacrificed
-            tempSoulstonesSacrificed += tempSoulstonesToSacrifice
-            stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
+        let tempSoulstonesToSacrifice = Math.floor(towns[1][`total${this.varName}`] * 50 / 9);
+        let name = "";
+        let soulstones = 0;
+        for (let stat in stats) {
+            if (stats[stat].soulstone > soulstones) {
+                name = stat
+                soulstones = stats[stat].soulstone
+            }
         }
+        for (let stat in stats) {
+            if (stat !== name) {
+                tempSoulstonesSacrificed += tempSoulstonesToSacrifice
+                stats[stat].soulstone -= tempSoulstonesToSacrifice
+            }
+        }
+        stats[name].soulstone -= towns[1][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
         view.updateSoulstones();
         view.adjustGoldCost("DarkRitual", goldCostDarkRitual());
     };
@@ -2175,7 +2193,7 @@ function ExploreCity() {
         return true;
     };
     this.finish = function() {
-        towns[2].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
+        towns[2].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
     };
 }
 function adjustSuckers() {
@@ -2203,11 +2221,11 @@ function Gamble() {
         Luck:.8
     };
     this.canStart = function() {
-        return gold >= 20 && reputation >= -5;
+        return resources.gold >= 20 && resources.reputation >= -5;
     };
     this.cost = function() {
-        addGold(-20);
-        addReputation(-1);
+        addResource("gold", -20);
+        addResource("reputation", -1);
     };
     this.manaCost = function() {
         return 1000;
@@ -2220,7 +2238,7 @@ function Gamble() {
     };
     this.finish = function() {
         towns[2].finishRegular(this.varName, 10, function() {
-            addGold(60);
+            addResource("gold", 60);
             return 60;
         })
     };
@@ -2242,10 +2260,10 @@ function GetDrunk() {
         Soul:.2
     };
     this.canStart = function() {
-        return reputation >= -3
+        return resources.reputation >= -3
     };
     this.cost = function() {
-        addReputation(-1);
+        addResource("reputation", -1);
     };
     this.manaCost = function() {
         return 1000;
@@ -2284,8 +2302,8 @@ function PurchaseMana() {
         return true;
     };
     this.finish = function() {
-        addMana(gold * 50);
-        addGold(-gold);
+        addMana(resources.gold * 50);
+        resetResource("gold");
     };
 }
 
@@ -2312,8 +2330,8 @@ function SellPotions() {
         return true;
     };
     this.finish = function() {
-        addGold(potions * getSkillLevel("Alchemy"));
-        addPotions(-potions);
+        addResource("gold", resources.potions * getSkillLevel("Alchemy"));
+        resetResource("potions");
     };
 }
 
@@ -2408,10 +2426,10 @@ function GatherTeam() {
         return 5;
     };
     this.canStart = function() {
-        return guild === "Adventure" && gold >= (teamNum+1)*200;
+        return guild === "Adventure" && resources.gold >= (resources.teamMembers+1)*200;
     };
     this.cost = function() {
-        addGold(-(teamNum)*200); //cost comes after finish
+        addResource("gold", -(resources.teamMembers)*200); //cost comes after finish
     };
     this.manaCost = function() {
         return 2000;
@@ -2423,7 +2441,7 @@ function GatherTeam() {
         return towns[2].getLevel("Drunk") >= 20;
     };
     this.finish = function() {
-        addTeamNum(1);
+        addResource("teamMembers", 1)
     };
 }
 
@@ -2465,7 +2483,7 @@ function LargeDungeon() {
     };
     this.canStart = function() {
         let curFloor = Math.floor((towns[this.townNum].LDungeonLoopCounter)/this.segments+.0000001);
-        return teamNum >= 1 && curFloor < dungeons[this.dungeonNum].length;
+        return resources.teamMembers >= 1 && curFloor < dungeons[this.dungeonNum].length;
     };
     this.loopCost = function(segment) {
         return precision3(Math.pow(3, Math.floor((towns[this.townNum].LDungeonLoopCounter+segment)/this.segments+.0000001)) * 5e5);
@@ -2545,7 +2563,7 @@ function CraftingGuild() {
     this.segmentFinished = function() {
         curCraftGuildSegment++;
         handleSkillExp(this.skills);
-        addGold(10);
+        addResource("gold", 10);
     };
     this.getPartName = function() {
         return "Rank " + getCraftGuildRank().name;
@@ -2598,10 +2616,10 @@ function CraftArmor() {
     };
     // this.affectedBy = ["Crafting Guild"];
     this.canStart = function() {
-        return hide >= 2;
+        return resources.hide >= 2;
     };
     this.cost = function() {
-        addHide(-2);
+        addResource("hide", -2);
     };
     this.manaCost = function() {
         return 1000;
@@ -2613,7 +2631,7 @@ function CraftArmor() {
         return towns[2].getLevel("Drunk") >= 30;
     };
     this.finish = function() {
-        addArmor(1);
+        addResource("armor", 1)
     };
 }
 
@@ -2749,7 +2767,7 @@ function ReadBooks() {
         return trainingLimits;
     };
     this.canStart = function() {
-        return glasses;
+        return resources.glasses;
     };
     this.manaCost = function() {
         return 2000;
@@ -2781,10 +2799,10 @@ function BuyPickaxe() {
         return 1;
     };
     this.canStart = function() {
-        return gold >= 200;
+        return resources.gold >= 200;
     };
     this.cost = function() {
-        addGold(-200);
+        addResource("gold", -200);;
     };
     this.manaCost = function() {
         return 3000;
@@ -2796,7 +2814,7 @@ function BuyPickaxe() {
         return towns[2].getLevel("City") >= 90;
     };
     this.finish = function() {
-        addPickaxe(1);
+        addResource("pickaxe", true);
     };
 }
 
@@ -2857,7 +2875,7 @@ function ClimbMountain() {
         return true;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100 * (pickaxe ? 2 : 1));
+        towns[3].finishProgress(this.varName, 100 * (resources.pickaxe ? 2 : 1));
     };
 }
 
@@ -2887,7 +2905,7 @@ function ManaGeyser() {
         return 2000;
     };
     this.canStart = function() {
-        return pickaxe;
+        return resources.pickaxe;
     };
     this.visible = function() {
         return true;
@@ -2930,7 +2948,7 @@ function DecipherRunes() {
         return towns[3].getLevel("Mountain") >= 20;
     };
     this.finish = function() {
-        towns[3].finishProgress(this.varName, 100 * (glasses ? 2 : 1));
+        towns[3].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
         view.adjustManaCost("Chronomancy");
         view.adjustManaCost("Pyromancy");
     };
@@ -2983,10 +3001,10 @@ function LoopingPotion() {
         Alchemy: 100
     }
     this.canStart = function() {
-        return herbs >= 200;
+        return resources.herbs >= 200;
     };
     this.cost = function() {
-        addHerbs(-200);
+        addResource("herbs", -200);
     };
     this.manaCost = function() {
         return Math.ceil(30000);
@@ -2998,7 +3016,7 @@ function LoopingPotion() {
         return getSkillLevel("Alchemy") >= 60 && getSkillLevel("Chronomancy") >= 100;
     };
     this.finish = function() {
-        addLoopingPotion(1);
+        addResource("loopingPotion", true);
         handleSkillExp(this.skills);
     };
 }
@@ -3089,7 +3107,7 @@ function MineSoulstones() {
         return 5000;
     };
     this.canStart = function() {
-        return pickaxe;
+        return resources.pickaxe;
     };
     this.visible = function() {
         return towns[3].getLevel("Cavern") >= 2;
@@ -3142,7 +3160,7 @@ function HuntTrolls() {
     };
     this.loopsFinished = function() {
         handleSkillExp(this.skills);
-        addBlood(1)
+        addResource("blood", 1)
     };
     this.segmentFinished = function() {
     };
@@ -3227,7 +3245,7 @@ function TakeArtifacts() {
     };
     this.finish = function() {
         towns[3].finishRegular(this.varName, 25, function() {
-            addArtifacts(1)
+            addResource("artifacts", 1)
         })
     };
 }
@@ -3259,11 +3277,22 @@ function ImbueMind() {
         return 1;
     };
     this.canStart = function() {
-        let tempCost = (towns[3].totalImbueMind+1) * 20
         let tempCanStart = true;
-        for(let i=0; i<9; i++) {
-            if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
+        let tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        let name = "";
+        let soulstones = 0;
+        for (let stat in stats) {
+            if (stats[stat].soulstone > soulstones) {
+                name = stat
+                soulstones = stats[stat].soulstone
+            }
         }
+        for (let stat in stats) {
+            if (stat !== name) {
+                if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false
+            }
+        }
+        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
         return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     };
     this.loopCost = function(segment) {
@@ -3276,12 +3305,22 @@ function ImbueMind() {
         trainingLimits++;
         addBuffAmt("Imbuement", 1);
         let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.ceil((towns[3].totalImbueMind * 20) / 9);
-        for(let i=0; i<9; i++) {
-            if (tempSoulstonesSacrificed + tempSoulstonesToSacrifice > towns[3].totalImbueMind * 20) tempSoulstonesToSacrifice = towns[3].totalImbueMind * 20 - tempSoulstonesSacrificed
-            tempSoulstonesSacrificed += tempSoulstonesToSacrifice
-            stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
+        let tempSoulstonesToSacrifice = Math.floor(towns[1][`total${this.varName}`] * 50 / 9);
+        let name = "";
+        let soulstones = 0;
+        for (let stat in stats) {
+            if (stats[stat].soulstone > soulstones) {
+                name = stat
+                soulstones = stats[stat].soulstone
+            }
         }
+        for (let stat in stats) {
+            if (stat !== name) {
+                tempSoulstonesSacrificed += tempSoulstonesToSacrifice
+                stats[stat].soulstone -= tempSoulstonesToSacrifice
+            }
+        }
+        stats[name].soulstone -= towns[1][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
         view.updateSoulstones();
         view.adjustGoldCost("ImbueMind", goldCostImbueMind());
     };
@@ -3333,14 +3372,14 @@ function FaceJudgement() {
         return 30000;
     };
     this.visible = function() {
-        return true;
+        return towns[3].getLevel("Mountain") >= 40;
     };
     this.unlocked = function() {
-        return true;
+        return towns[3].getLevel("Mountain") >= 100;
     };
     this.finish = function() {
-        //if (reputation >= 50) unlockTown(4);
-        //else if (reputation <= 50) unlockTown(5);
+        //if (resources.reputation >= 50) unlockTown(4);
+        //else if (resources.reputation <= 50) unlockTown(5);
     };
 }
 
@@ -3401,12 +3440,23 @@ function GreatFeast() {
         return 1;
     };
     this.canStart = function() {
-        let tempCost = (towns[1].totalDarkRitual+1) * 50
         let tempCanStart = true;
-        for(let i=0; i<9; i++) {
-            if (Math.ceil(tempCost/9) > stats[statList[i]].soulstone) tempCanStart = false;
+        let tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        let name = "";
+        let soulstones = 0;
+        for (let stat in stats) {
+            if (stats[stat].soulstone > soulstones) {
+                name = stat
+                soulstones = stats[stat].soulstone
+            }
         }
-        return reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
+        for (let stat in stats) {
+            if (stat !== name) {
+                if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false
+            }
+        }
+        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
+        return resources.reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
     };
     this.loopCost = function(segment) {
         return 1000000 * (segment*2+1);
@@ -3415,14 +3465,24 @@ function GreatFeast() {
         return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter+offset) % this.loopStats.length])/100) / (1 - towns[1].getLevel("Witch") * .005);
     };
     this.loopsFinished = function() {
-        addBuffAmt("Ritual", 1)
+        addBuffAmt("Feast", 1)
         let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.ceil((towns[1].totalDarkRitual * 50) / 9);
-        for(let i=0; i<9; i++) {
-            if (tempSoulstonesSacrificed + tempSoulstonesToSacrifice > towns[1].totalDarkRitual * 50) tempSoulstonesToSacrifice = towns[1].totalDarkRitual * 50 - tempSoulstonesSacrificed
-            tempSoulstonesSacrificed += tempSoulstonesToSacrifice
-            stats[statList[i]].soulstone -= tempSoulstonesToSacrifice
+        let tempSoulstonesToSacrifice = Math.floor(towns[1][`total${this.varName}`] * 50 / 9);
+        let name = "";
+        let soulstones = 0;
+        for (let stat in stats) {
+            if (stats[stat].soulstone > soulstones) {
+                name = stat
+                soulstones = stats[stat].soulstone
+            }
         }
+        for (let stat in stats) {
+            if (stat !== name) {
+                tempSoulstonesSacrificed += tempSoulstonesToSacrifice
+                stats[stat].soulstone -= tempSoulstonesToSacrifice
+            }
+        }
+        stats[name].soulstone -= towns[1][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
         view.updateSoulstones();
         view.adjustGoldCost("GreatFeast", goldCostGreatFeast());
     };

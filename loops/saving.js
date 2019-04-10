@@ -40,21 +40,23 @@ let totalTalent = 0;
 let prevState = {};
 let shouldRestart = true;
 
-let gold = 0, initialGold = 0;
-let reputation = 0;
-let supplies = 0;
-let herbs = 0;
-let hide = 0;
-let potions = 0;
-let teamNum = 0;
+let resources = {
+    gold: 0,
+    reputation: 0,
+    herbs: 0,
+    hide: 0,
+    potions: 0,
+    teamMembers: 0,
+    armor: 0,
+    blood: 0,
+    artifacts: 0,
+    glasses: false,
+    supplies: false,
+    pickaxe: false,
+    loopingPotion: false
+}
+let resourcesTemplate = copyObject(resources);
 let guild = "";
-let armor = 0;
-let blood = 0;
-let artifacts = 0;
-
-let glasses = 0;
-let pickaxe = 0;
-let loopingPotion = 0;
 
 let curLoadout = 0;
 let loadouts = [];
@@ -239,6 +241,7 @@ function load() {
     town = towns[5];
 
     actions.next = [];
+    actions.nextLast = []
     if(toLoad.nextList) {
         for (let i = 0; i < toLoad.nextList.length; i++) {
             let action = toLoad.nextList[i];

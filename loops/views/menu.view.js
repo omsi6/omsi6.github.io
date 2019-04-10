@@ -11,7 +11,7 @@ Views.registerView('menu',{
    htmlChangelog : function () {
      var html = "<div style='display:inline-block;height:30px;margin-left:10px;' class='showthatH'>";
        html += _txt("menu>changelog>meta>title");
-       html += "<div class='showthisH' id='changelog'>";
+       html += "<div style='max-width: 71px;' class='showthisH' id='changelog'>";
 
        var versions = _txtsObj("menu>changelog>version");
        $(versions).each(function(x,version) {

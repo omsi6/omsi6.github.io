@@ -12,7 +12,6 @@ function View() {
             this.updateBuff(buffList[i]);
         }
         this.updateTime();
-        this.updateGold();
         this.updateNextActions();
         this.updateCurrentActionsDivs();
         this.updateTotalTicks();
@@ -21,16 +20,15 @@ function View() {
         this.updateProgressActions();
         this.updateLockedHidden();
         this.updateSoulstones();
-        this.updateSupplies();
         this.showTown(0);
         this.showActions(false);
         this.updateTrainingLimits();
         this.changeStatView();
         this.adjustGoldCosts();
         this.adjustExpGains();
-        this.updateTeamNum();
         this.updateTeamCombat();
         this.updateLoadoutNames();
+        this.updateResources();
         setInterval(() => {
             view.updateStories();
             view.updateLockedHidden();
@@ -185,54 +183,16 @@ function View() {
     this.updateTotalTicks = function() {
         document.getElementById("totalTicks").textContent = actions.completedTicks + ' | ' + intToString(timeCounter, 2)+ _txt("time_controls>seconds");
     };
-    this.updateGold = function() {
-        document.getElementById("gold").textContent = gold;
-    };
-    this.updateReputation = function() {
-        document.getElementById("reputationDiv").style.display = reputation ? "inline-block" : "none";
-        document.getElementById("reputation").textContent = reputation;
-    };
-    this.updateSupplies = function() {
-        document.getElementById("suppliesDiv").style.display = supplies ? "inline-block" : "none";
-        document.getElementById("suppliesCost").textContent = towns[0].suppliesCost+"";
-    };
-    this.updateHerbs = function() {
-        document.getElementById("herbsDiv").style.display = herbs ? "inline-block" : "none";
-        document.getElementById("herbs").textContent = herbs;
-    };
-    this.updateHide = function() {
-        document.getElementById("hideDiv").style.display = hide ? "inline-block" : "none";
-        document.getElementById("hide").textContent = hide;
-    };
-    this.updatePotions = function() {
-        document.getElementById("potionsDiv").style.display = potions ? "inline-block" : "none";
-        document.getElementById("potions").textContent = potions;
-    };
-    this.updateTeamNum = function() {
-        document.getElementById("teamNumDiv").style.display = teamNum ? "inline-block" : "none";
-        document.getElementById("teamNum").textContent = teamNum;
-        document.getElementById("teamCost").textContent = (teamNum+1)*200+"";
-    };
-    this.updateArmor = function() {
-        document.getElementById("armorDiv").style.display = armor ? "inline-block" : "none";
-        document.getElementById("armor").textContent = armor;
-    };
-    this.updateBlood = function() {
-        document.getElementById("bloodDiv").style.display = blood ? "inline-block" : "none";
-        document.getElementById("blood").textContent = blood;
-    };
-    this.updateArtifacts = function() {
-        document.getElementById("artifactsDiv").style.display = artifacts ? "inline-block" : "none";
-        document.getElementById("artifacts").textContent = artifacts;
-    };
-    this.updateGlasses = function() {
-        document.getElementById("glassesDiv").style.display = glasses ? "inline-block" : "none";
-    };
-    this.updatePickaxe = function() {
-        document.getElementById("pickaxeDiv").style.display = pickaxe ? "inline-block" : "none";
-    };
-    this.updateLoopingPotion = function() {
-        document.getElementById("loopingPotionDiv").style.display = loopingPotion ? "inline-block" : "none";
+    this.updateResource = function(resource) {
+        if (resource !== "gold") document.getElementById(`${resource}Div`).style.display = resources[resource] ? "inline-block" : "none";
+
+        if (resource === "supplies") document.getElementById("suppliesCost").textContent = towns[0].suppliesCost;
+        if (resource === "teamMembers") document.getElementById("teamCost").textContent = (resources.teamMembers+1)*200;
+
+        if (Number.isFinite(resources[resource])) document.getElementById(resource).textContent = resources[resource];
+    }
+    this.updateResources = function() {
+        for (let resource in resources) this.updateResource(resource)
     };
     this.updateTeamCombat = function() {
         if(maxTown >= 2) {
@@ -357,42 +317,42 @@ function View() {
 
     this.updateCurrentActionBar = function(index) {
         const action = actions.current[index];
-        const div = document.getElementById("action"+index+"Bar");
+        const div = document.getElementById(`action${index}Bar`);
         if(!div) {
             return;
         }
-        div.style.width = (100 * action.ticks / action.adjustedTicks) + "%";
+        div.style.width = `${100 * action.ticks / action.adjustedTicks}%`;
         if(action.loopsFailed) {
-            document.getElementById("action" + index + "Failed").textContent = action.loopsFailed + "";
-            document.getElementById("action" + index + "Error").textContent = action.errorMessage + "";
-            document.getElementById("action"+index+"HasFailed").style.display = "block";
+            document.getElementById(`action${index}Failed`).textContent = action.loopsFailed;
+            document.getElementById(`action${index}Error`).textContent = action.errorMessage;
+            document.getElementById(`action${index}HasFailed`).style.display = "block";
             div.style.width = "100%";
             div.style.backgroundColor = "#ff0000";
             div.style.height = "30%";
             div.style.marginTop = "5px";
             if (action.name === "Heal The Sick") unlockStory("failedHeal")
             if (action.name === "Brew Potions") unlockStory("failedBrewPotions")
-            if (action.name === "Brew Potions" && reputation < 0) unlockStory("failedBrewPotionsNegativeRep")
+            if (action.name === "Brew Potions" && resources.reputation < 0) unlockStory("failedBrewPotionsNegativeRep")
         } else if(action.loopsLeft === 0) {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
         }
 
-        document.getElementById("action" + index + "ManaOrig").textContent = action.manaCost() * action.loops + "";
-        document.getElementById("action" + index + "ManaUsed").textContent = action.manaUsed + "";
-        document.getElementById("action"+index+"Remaining").textContent = action.manaRemaining+"";
-        document.getElementById("action"+index+"GoldRemaining").textContent = action.goldRemaining+"";
-        document.getElementById("action" + index + "TimeSpent").textContent = intToString(action.timeSpent, 2) + _txt("time_controls>seconds");
+        document.getElementById(`action${index}ManaOrig`).textContent = formatNumber(action.manaCost() * action.loops);
+        document.getElementById(`action${index}ManaUsed`).textContent = formatNumber(action.manaUsed);
+        document.getElementById(`action${index}Remaining`).textContent = formatNumber(action.manaRemaining);
+        document.getElementById(`action${index}GoldRemaining`).textContent = formatNumber(action.goldRemaining);
+        document.getElementById(`action${index}TimeSpent`).textContent = `${intToString(action.timeSpent, 2)}${_txt("time_controls>seconds")}`;
 
         let statExpGain = "";
-        let expGainDiv = document.getElementById("action"+index+"ExpGain");
+        let expGainDiv = document.getElementById(`action${index}ExpGain`);
         while (expGainDiv.firstChild) {
             expGainDiv.removeChild(expGainDiv.firstChild);
         }
         for(let i = 0; i < statList.length; i++) {
             let statName = statList[i];
-            if(action["statExp"+statName]) {
-                statExpGain += "<div class='bold'>"+_txt("stats>"+statName+">short_form")+":</div> " + intToString(action["statExp"+statName], 2) + "<br>";
+            if(action[`statExp${statName}`]) {
+                statExpGain += `<div class='bold'>${_txt(`stats>${statName}>short_form`)}: </div>${intToString(action[`statExp${statName}`], 2)}<br>`
             }
         }
         expGainDiv.innerHTML = statExpGain;
@@ -563,30 +523,30 @@ function View() {
 
     this.updateAddAmount = function(num) {
         for(let i = 0; i < 6; i++) {
-            let elem = document.getElementById("amount" + i);
+            let elem = document.getElementById(`amount${num}`);
             if(elem) {
                 addClassToDiv(elem, "unused");
             }
         }
-        if (num > 0) removeClassFromDiv(document.getElementById("amount"+num), "unused");
+        if (num > 0) removeClassFromDiv(document.getElementById(`amount${num}`), "unused");
     };
 
     this.updateLoadout = function(num) {
         for(let i = 0; i < 6; i++) {
-            let elem = document.getElementById("load" + i);
+            let elem = document.getElementById(`load${i}`);
             if(elem) {
                 addClassToDiv(elem, "unused");
             }
         }
-        let elem = document.getElementById("load"+num);
+        let elem = document.getElementById(`load${num}`);
         if(elem) {
-            removeClassFromDiv(document.getElementById("load" + num), "unused");
+            removeClassFromDiv(document.getElementById(`load${num}`), "unused");
         }
     };
 
     this.updateLoadoutNames = function() {
         for (let i=0; i<5; i++) {
-            document.getElementById("load"+(i+1)+"name").textContent = loadoutnames[i]
+            document.getElementById(`load${i+1}name`).textContent = loadoutnames[i]
         }
     }
 
@@ -840,7 +800,7 @@ function View() {
 
     this.createActionProgress = function(action) {
         const totalDivText =
-        "<div class='townStatContainer showthat' id='infoContainer"+action.varName+"'>"+
+        "<div class='townStatContainer showthat'>"+
             "<div class='bold townLabel'>"+action.labelDone+" </div> <div id='prc"+action.varName+"'>5</div>%"+
             "<div class='thinProgressBarUpper'><div id='expBar"+action.varName+"' class='statBar townExpBar'></div></div>"+
             "<div class='thinProgressBarLower'><div id='bar"+action.varName+"' class='statBar townBar'></div></div>"+
@@ -851,6 +811,7 @@ function View() {
             "</div>"+
         "</div>";
         let progressDiv = document.createElement("div");
+        progressDiv.id = `infoContainer${action.varName}`
         progressDiv.style.display = "block";
         progressDiv.innerHTML = totalDivText;
         townInfos[action.townNum].appendChild(progressDiv);
@@ -998,7 +959,7 @@ function View() {
 
     this.createTownInfo = function(action) {
         let totalInfoText =
-            "<div class='townInfoContainer showthat' id='infoContainer"+action.varName+"'>" +
+            "<div class='townInfoContainer showthat'>" +
                 "<div class='bold townLabel'>"+action.labelDone+"</div> " +
                 "<div id='goodTemp"+action.varName+"'>0</div> <i class='fa fa-arrow-left'></i> " +
                 "<div id='good"+action.varName+"'>0</div> <i class='fa fa-arrow-left'></i> " +
@@ -1012,6 +973,7 @@ function View() {
 
 
         let infoDiv = document.createElement("div");
+        infoDiv.id = `infoContainer${action.varName}`
         infoDiv.style.display = "block";
         infoDiv.innerHTML = totalInfoText;
         townInfos[action.townNum].appendChild(infoDiv);
@@ -1125,9 +1087,9 @@ function View() {
         for (let j = 0; j < dungeons.length; j++) {
             for(let i = 0; i < dungeons[j].length; i++) {
                 let level = dungeons[j][i];
-                document.getElementById("soulstoneChance"+j+"_"+i).textContent = intToString(level.ssChance * 100, 4);
-                document.getElementById("soulstonePrevious"+j+"_"+i).textContent = level.lastStat;
-                document.getElementById("soulstoneCompleted"+j+"_"+i).textContent = level.completed + "";
+                document.getElementById(`soulstoneChance${j}_${i}`).textContent = intToString(level.ssChance * 100, 4);
+                document.getElementById(`soulstonePrevious${j}_${i}`).textContent = level.lastStat;
+                document.getElementById(`soulstoneCompleted${j}_${i}`).textContent = level.completed.toFixed(0);
             }
         }
     };
@@ -1136,12 +1098,13 @@ function View() {
         for(let i = 0; i < statList.length; i++) {
             let statName = statList[i];
             if(stats[statName].soulstone) {
-                document.getElementById("ss" + statName + "Container").style.display = "inline-block";
-                document.getElementById("ss"+statName).textContent = intToString(stats[statName].soulstone, 1);
-                document.getElementById("stat" + statName + "SSBonus").textContent = intToString(stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 0);
-                document.getElementById("stat" + statName + "ss").textContent = intToString(stats[statName].soulstone, 1);
+                document.getElementById(`ss${statName}Container`).style.display = "inline-block";
+                document.getElementById(`ss${statName}`).textContent = intToString(stats[statName].soulstone, 1);
+                document.getElementById(`stat${statName}SSBonus`).textContent = intToString(stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 0);
+                document.getElementById(`stat${statName}ss`).textContent = intToString(stats[statName].soulstone, 1);
             } else {
-                document.getElementById("ss" + statName + "Container").style.display = "none";
+                document.getElementById(`ss${statName}Container`).style.display = "none";
+                document.getElementById(`stat${statName}ss`).textContent = "";
             }
         }
     };
@@ -1163,7 +1126,7 @@ function View() {
 
     this.updateTrainingLimits = function() {
         for(let i = 0; i < statList.length; i++) {
-            let trainingDiv = document.getElementById("trainingLimit"+statList[i]);
+            let trainingDiv = document.getElementById(`trainingLimit${statList[i]}`);
             if(trainingDiv) {
                 trainingDiv.textContent = trainingLimits;
             }
@@ -1218,6 +1181,7 @@ function View() {
                 node.firstChild.style.display = "none";
             }
             document.getElementById("statsColumn").style.width = "410px";
+            statGraph.update()
         }
     };
 }
@@ -1275,23 +1239,23 @@ function addStatColors(theDiv, stat) {
 }
 
 function dragOverDecorate(i) {
-    if(document.getElementById("nextActionContainer" + i))
-    document.getElementById("nextActionContainer" + i).classList.add("draggedOverAction");
+    if(document.getElementById(`nextActionContainer${i}`))
+    document.getElementById(`nextActionContainer${i}`).classList.add("draggedOverAction");
 }
 
 function dragExitUndecorate(i) {
-    if(document.getElementById("nextActionContainer" + i))
-    document.getElementById("nextActionContainer" + i).classList.remove("draggedOverAction");
+    if(document.getElementById(`nextActionContainer${i}`))
+    document.getElementById(`nextActionContainer${i}`).classList.remove("draggedOverAction");
 }
 
 function draggedDecorate(i) {
-    if(document.getElementById("nextActionContainer" + i))
-    document.getElementById("nextActionContainer" + i).classList.add("draggedAction");
+    if(document.getElementById(`nextActionContainer${i}`))
+    document.getElementById(`nextActionContainer${i}`).classList.add("draggedAction");
 }
 
 function draggedUndecorate(i) {
-    if(document.getElementById("nextActionContainer" + i))
-    document.getElementById("nextActionContainer" + i).classList.remove("draggedAction");
+    if(document.getElementById(`nextActionContainer${i}`))
+    document.getElementById(`nextActionContainer${i}`).classList.remove("draggedAction");
 }
 
 function adjustActionListSize(amt) {
@@ -1314,7 +1278,7 @@ function adjustActionListSize(amt) {
 
 function updateBuffCaps() {
     for (let i in buffList) {
-        document.getElementById("buff"+buffList[i]+"Cap").value = Math.min(parseInt(document.getElementById("buff"+buffList[i]+"Cap").value), buffHardCaps[i])
+        document.getElementById(`buff${buffList[i]}Cap`).value = Math.min(parseInt(document.getElementById(`buff${buffList[i]}Cap`).value), buffHardCaps[i])
     }
 }
 

@@ -37,6 +37,10 @@ function copyArray(arr) {
     return JSON.parse(JSON.stringify(arr));
 }
 
+function copyObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 function withinDistance(x1, y1, x2, y2, radius) {
     return getDistance(x1, y1, x2, y2) < radius;
 }
