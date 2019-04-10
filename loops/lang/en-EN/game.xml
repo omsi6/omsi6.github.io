@@ -22,7 +22,7 @@
             • Minor performance improvements. (higher for those not using the radar chart)<br>
             • Changes on patch notes are now preceded by • instead of *.<br>
             • Modified the Throw Party and Old Shortcut tooltips for clarity.<br>
-            • Face judgement now requires 100% Mountain Explored.<br>
+            • Face Judgement now requires 100% Mountain Explored.<br>
             • Translations now fallback to english if there's no translated version of the text. This means that the French translation has been re-enabled, but do note that it's only a partial translation.<br>
             • Slightly adjusted the spacing and location of buttons on the saving menu.<br>
             • Added a button on the saving menu to export your save in a Stopsign compatible form.<br>

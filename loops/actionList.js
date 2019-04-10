@@ -3278,7 +3278,7 @@ function ImbueMind() {
     };
     this.canStart = function() {
         let tempCanStart = true;
-        let tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        let tempSoulstonesToSacrifice = Math.floor((towns[3][`total${this.varName}`] + 1) * 50 / 9);
         let name = "";
         let soulstones = 0;
         for (let stat in stats) {
@@ -3292,7 +3292,7 @@ function ImbueMind() {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false
             }
         }
-        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
+        if (stats[name].soulstone < (towns[3][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
         return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     };
     this.loopCost = function(segment) {
@@ -3305,7 +3305,7 @@ function ImbueMind() {
         trainingLimits++;
         addBuffAmt("Imbuement", 1);
         let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.floor(towns[1][`total${this.varName}`] * 50 / 9);
+        let tempSoulstonesToSacrifice = Math.floor(towns[3][`total${this.varName}`] * 50 / 9);
         let name = "";
         let soulstones = 0;
         for (let stat in stats) {
@@ -3320,7 +3320,7 @@ function ImbueMind() {
                 stats[stat].soulstone -= tempSoulstonesToSacrifice
             }
         }
-        stats[name].soulstone -= towns[1][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
+        stats[name].soulstone -= towns[3][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
         view.updateSoulstones();
         view.adjustGoldCost("ImbueMind", goldCostImbueMind());
     };
