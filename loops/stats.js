@@ -9,6 +9,7 @@ function addNewStat(name) {
     stats[name] = {};
     stats[name].exp = 0;
     stats[name].talent = 0;
+    stats[name].soulstone = 0;
 }
 
 function initializeSkills() {

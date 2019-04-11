@@ -175,7 +175,7 @@ function getXMLName(name) {
     return name.toLowerCase().replace(/ /g, "_")
 }
 
-let townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus", "Valhalla", "Beginnersville"];
+let townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus", "Valhalla", "Adeptsville"];
 
 
 //there are 4 types of actions
@@ -2055,9 +2055,9 @@ function DarkRitual() {
     };
     this.canStart = function() {
         let tempCanStart = true;
-        let tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        let tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9);
         let name = "";
-        let soulstones = 0;
+        let soulstones = -1;
         for (let stat in stats) {
             if (stats[stat].soulstone > soulstones) {
                 name = stat
@@ -2069,8 +2069,8 @@ function DarkRitual() {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false
             }
         }
-        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
-        return resources.reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
+        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false
+        return resources.reputation <= -5 && towns[this.townNum].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
     };
     this.loopCost = function(segment) {
         return 1000000 * (segment*2+1);
@@ -2080,10 +2080,9 @@ function DarkRitual() {
     };
     this.loopsFinished = function() {
         addBuffAmt("Ritual", 1)
-        let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.floor(towns[1][`total${this.varName}`] * 50 / 9);
+        let tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9);
         let name = "";
-        let soulstones = 0;
+        let soulstones = -1;
         for (let stat in stats) {
             if (stats[stat].soulstone > soulstones) {
                 name = stat
@@ -2092,11 +2091,10 @@ function DarkRitual() {
         }
         for (let stat in stats) {
             if (stat !== name) {
-                tempSoulstonesSacrificed += tempSoulstonesToSacrifice
                 stats[stat].soulstone -= tempSoulstonesToSacrifice
             }
         }
-        stats[name].soulstone -= towns[1][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
+        stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 50 - tempSoulstonesToSacrifice * 8
         view.updateSoulstones();
         view.adjustGoldCost("DarkRitual", goldCostDarkRitual());
     };
@@ -3278,9 +3276,9 @@ function ImbueMind() {
     };
     this.canStart = function() {
         let tempCanStart = true;
-        let tempSoulstonesToSacrifice = Math.floor((towns[3][`total${this.varName}`] + 1) * 20 / 9);
+        let tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 20 / 9);
         let name = "";
-        let soulstones = 0;
+        let soulstones = -1;
         for (let stat in stats) {
             if (stats[stat].soulstone > soulstones) {
                 name = stat
@@ -3292,7 +3290,7 @@ function ImbueMind() {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false
             }
         }
-        if (stats[name].soulstone < (towns[3][`total${this.varName}`] + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false
+        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false
         return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     };
     this.loopCost = function(segment) {
@@ -3304,10 +3302,9 @@ function ImbueMind() {
     this.loopsFinished = function() {
         trainingLimits++;
         addBuffAmt("Imbuement", 1);
-        let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.floor(towns[3][`total${this.varName}`] * 20 / 9);
+        let tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 20 / 9);
         let name = "";
-        let soulstones = 0;
+        let soulstones = -1;
         for (let stat in stats) {
             if (stats[stat].soulstone > soulstones) {
                 name = stat
@@ -3316,11 +3313,10 @@ function ImbueMind() {
         }
         for (let stat in stats) {
             if (stat !== name) {
-                tempSoulstonesSacrificed += tempSoulstonesToSacrifice
                 stats[stat].soulstone -= tempSoulstonesToSacrifice
             }
         }
-        stats[name].soulstone -= towns[3][`total${this.varName}`] * 20 - tempSoulstonesSacrificed
+        stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 20 - tempSoulstonesToSacrifice * 8
         view.updateSoulstones();
         view.adjustGoldCost("ImbueMind", goldCostImbueMind());
     };
@@ -3466,10 +3462,9 @@ function GreatFeast() {
     };
     this.loopsFinished = function() {
         addBuffAmt("Feast", 1)
-        let tempSoulstonesSacrificed = 0;
-        let tempSoulstonesToSacrifice = Math.floor(towns[1][`total${this.varName}`] * 50 / 9);
+        let tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 5000 / 9);
         let name = "";
-        let soulstones = 0;
+        let soulstones = -1;
         for (let stat in stats) {
             if (stats[stat].soulstone > soulstones) {
                 name = stat
@@ -3478,11 +3473,10 @@ function GreatFeast() {
         }
         for (let stat in stats) {
             if (stat !== name) {
-                tempSoulstonesSacrificed += tempSoulstonesToSacrifice
                 stats[stat].soulstone -= tempSoulstonesToSacrifice
             }
         }
-        stats[name].soulstone -= towns[1][`total${this.varName}`] * 50 - tempSoulstonesSacrificed
+        stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 5000 - tempSoulstonesToSacrifice * 8
         view.updateSoulstones();
         view.adjustGoldCost("GreatFeast", goldCostGreatFeast());
     };
@@ -3511,5 +3505,5 @@ function GreatFeast() {
     };
 }
 function goldCostGreatFeast() {
-    return 500*(getBuffLevel("Feast")+1);
+    return 5000*(getBuffLevel("Feast")+1);
 }

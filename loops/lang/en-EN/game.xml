@@ -1490,7 +1490,7 @@
             <label>Great Feast</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            All this adventuring is making you famished, it's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (500 * (feasts+1)) soulstones. Currently sacrificing 
+            All this adventuring is making you famished, it's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              soulstones.
