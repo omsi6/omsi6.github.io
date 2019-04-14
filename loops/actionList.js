@@ -369,7 +369,7 @@ function BuyGlasses() {
         return resources.gold >= 10;
     };
     this.cost = function() {
-        addResource("gold", -10);;
+        addResource("gold", -10);
     };
     this.manaCost = function() {
         return 50;

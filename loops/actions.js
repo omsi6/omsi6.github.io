@@ -57,6 +57,7 @@ function Actions() {
                         curAction.finish();
                         break;
                     }
+                    towns[curAction.townNum][curAction.varName] = curProgress;
                 }
                 if(curAction.segmentFinished) {
                     curAction.segmentFinished();
