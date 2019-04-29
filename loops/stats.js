@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 function initializeStats() {
-    for(let i = 0; i < statList.length; i++) {
+    for (let i = 0; i < statList.length; i++) {
         addNewStat(statList[i]);
     }
 }
@@ -13,7 +13,7 @@ function addNewStat(name) {
 }
 
 function initializeSkills() {
-    for(let i = 0; i < skillList.length; i++) {
+    for (let i = 0; i < skillList.length; i++) {
         addNewSkill(skillList[i]);
     }
 }
@@ -24,7 +24,7 @@ function addNewSkill(name) {
 }
 
 function initializeBuffs() {
-    for(let i = 0; i < buffList.length; i++) {
+    for (let i = 0; i < buffList.length; i++) {
         addNewBuff(buffList[i]);
     }
 }
@@ -47,7 +47,7 @@ function getTotalTalentPrc() {
 }
 
 function getLevelFromExp(exp) {
-    return Math.floor((Math.sqrt(8*exp/100+1)-1)/2);
+    return Math.floor((Math.sqrt(8 * exp / 100 + 1) - 1) / 2);
 }
 
 function getExpOfLevel(level) {
@@ -59,7 +59,7 @@ function getTalent(stat) {
 }
 
 function getLevelFromTalent(exp) {
-    return Math.floor((Math.sqrt(8*exp/100+1)-1)/2);
+    return Math.floor((Math.sqrt(8 * exp / 100 + 1) - 1) / 2);
 }
 
 function getExpOfTalent(level) {
@@ -67,21 +67,21 @@ function getExpOfTalent(level) {
 }
 
 function getPrcToNextLevel(stat) {
-    let expOfCurLevel = getExpOfLevel(getLevel(stat));
-    let curLevelProgress = stats[stat].exp - expOfCurLevel;
-    let nextLevelNeeds = getExpOfLevel(getLevel(stat)+1) - expOfCurLevel;
-    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
+    const expOfCurLevel = getExpOfLevel(getLevel(stat));
+    const curLevelProgress = stats[stat].exp - expOfCurLevel;
+    const nextLevelNeeds = getExpOfLevel(getLevel(stat) + 1) - expOfCurLevel;
+    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10;
 }
 
 function getPrcToNextTalent(stat) {
-    let expOfCurLevel = getExpOfTalent(getTalent(stat));
-    let curLevelProgress = stats[stat].talent - expOfCurLevel;
-    let nextLevelNeeds = getExpOfTalent(getTalent(stat)+1) - expOfCurLevel;
-    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
+    const expOfCurLevel = getExpOfTalent(getTalent(stat));
+    const curLevelProgress = stats[stat].talent - expOfCurLevel;
+    const nextLevelNeeds = getExpOfTalent(getTalent(stat) + 1) - expOfCurLevel;
+    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10;
 }
 
 function getSkillLevelFromExp(exp) {
-    return Math.floor((Math.sqrt(8*exp/100+1)-1)/2);
+    return Math.floor((Math.sqrt(8 * exp / 100 + 1) - 1) / 2);
 }
 
 function getExpOfSkillLevel(level) {
@@ -97,27 +97,27 @@ function getBuffLevel(buff) {
 }
 
 function getSelfCombat() {
-    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * (1 + (resources.armor * getCraftGuildRank().bonus)/5);
+    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * (1 + (resources.armor * getCraftGuildRank().bonus) / 5);
 }
 
 function getTeamCombat() {
-    return getSelfCombat("Combat") + getSkillLevel("Combat") * resources.teamMembers/2 * getAdvGuildRank().bonus;
+    return getSelfCombat("Combat") + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
 }
 
 function getPrcToNextSkillLevel(skill) {
-    let expOfCurLevel = getExpOfSkillLevel(getSkillLevel(skill));
-    let curLevelProgress = skills[skill].exp - expOfCurLevel;
-    let nextLevelNeeds = getExpOfSkillLevel(getSkillLevel(skill)+1) - expOfCurLevel;
-    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10
+    const expOfCurLevel = getExpOfSkillLevel(getSkillLevel(skill));
+    const curLevelProgress = skills[skill].exp - expOfCurLevel;
+    const nextLevelNeeds = getExpOfSkillLevel(getSkillLevel(skill) + 1) - expOfCurLevel;
+    return Math.floor(curLevelProgress / nextLevelNeeds * 100 * 10) / 10;
 }
 
 function addSkillExp(name, amount) {
     skills[name].exp += amount;
-    view.updateSkill(name);
+    view.requestUpdate("updateSkill", name);
 }
 
 function handleSkillExp(list) {
-    for (let skill in list) {
+    for (const skill in list) {
         if (Number.isInteger(list[skill])) addSkillExp(skill, list[skill]);
         else addSkillExp(skill, list[skill]());
     }
@@ -132,16 +132,17 @@ function addExp(name, amount) {
     stats[name].exp += amount;
     stats[name].talent += amount / 100;
     totalTalent += amount / 100;
+    view.requestUpdate("updateStat", name);
 }
 
 function restartStats() {
-    for(let i = 0; i < statList.length; i++) {
+    for (let i = 0; i < statList.length; i++) {
         stats[statList[i]].exp = 0;
         view.updateStat(statList[i]);
     }
 }
 
 function getTotalBonusXP(statName) {
-    let soulstoneBonus = stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 1;
+    const soulstoneBonus = stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 1;
     return soulstoneBonus * calcTalentMult(getTalent(statName));
 }

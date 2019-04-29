@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 function Actions() {
     this.current = [];
@@ -11,8 +11,9 @@ function Actions() {
     this.timeSinceLastUpdate = 0;
 
     this.tick = function() {
-        let curAction = this.getNextValidAction();
-        if(!curAction) { //out of actions
+        const curAction = this.getNextValidAction();
+        // out of actions
+        if (!curAction) {
             shouldRestart = true;
             return;
         }
@@ -20,72 +21,73 @@ function Actions() {
 
         curAction.ticks++;
         curAction.manaUsed++;
-        curAction.timeSpent += 1/baseManaPerSecond/getActualGameSpeed();
-        if(curAction.loopStats) { //only for multi-part progress bars
+        curAction.timeSpent += 1 / baseManaPerSecond / getActualGameSpeed();
+        // only for multi-part progress bars
+        if (curAction.loopStats) {
             let segment = 0;
             let curProgress = towns[curAction.townNum][curAction.varName];
-            while(curProgress >= curAction.loopCost(segment)) {
+            while (curProgress >= curAction.loopCost(segment)) {
                 curProgress -= curAction.loopCost(segment);
                 segment++;
             }
-            //segment is 0,1,2
-            let toAdd = curAction.tickProgress(segment) * (curAction.manaCost() / curAction.adjustedTicks);
+            // segment is 0,1,2
+            const toAdd = curAction.tickProgress(segment) * (curAction.manaCost() / curAction.adjustedTicks);
             // console.log("using: "+curAction.loopStats[(towns[curAction.townNum][curAction.varName + "LoopCounter"]+segment) % curAction.loopStats.length]+" to add: " + toAdd + " to segment: " + segment + " and part " +towns[curAction.townNum][curAction.varName + "LoopCounter"]+" of progress " + curProgress + " which costs: " + curAction.loopCost(segment));
             towns[curAction.townNum][curAction.varName] += toAdd;
             curProgress += toAdd;
-            while(curProgress >= curAction.loopCost(segment)) {
+            while (curProgress >= curAction.loopCost(segment)) {
                 curProgress -= curAction.loopCost(segment);
-                //segment finished
+                // segment finished
                 if (segment === curAction.segments - 1) {
-                    //part finished
-                    if(curAction.name === "Dark Ritual" && towns[curAction.townNum][curAction.varName] >= 4000000) unlockStory("darkRitualThirdSegmentReached")
+                    // part finished
+                    if (curAction.name === "Dark Ritual" && towns[curAction.townNum][curAction.varName] >= 4000000) unlockStory("darkRitualThirdSegmentReached");
                     towns[curAction.townNum][curAction.varName] = 0;
-                    towns[curAction.townNum][curAction.varName + "LoopCounter"] += curAction.segments;
-                    towns[curAction.townNum]["total"+curAction.varName]++;
+                    towns[curAction.townNum][`${curAction.varName}LoopCounter`] += curAction.segments;
+                    towns[curAction.townNum][`total${curAction.varName}`]++;
                     segment -= curAction.segments;
                     curAction.loopsFinished();
-                    if(!curAction.segmentFinished) {
+                    if (!curAction.segmentFinished) {
                         view.updateMultiPart(curAction);
                     }
-                    if(curAction.canStart && !curAction.canStart()) {
-                        this.completedTicks += curAction.ticks
+                    if (curAction.canStart && !curAction.canStart()) {
+                        this.completedTicks += curAction.ticks;
                         view.updateTotalTicks();
                         curAction.loopsLeft = 0;
                         curAction.ticks = 0;
-                        curAction.manaRemaining = timeNeeded - timer
-                        curAction.goldRemaining = resources.gold
+                        curAction.manaRemaining = timeNeeded - timer;
+                        curAction.goldRemaining = resources.gold;
                         curAction.finish();
                         break;
                     }
                     towns[curAction.townNum][curAction.varName] = curProgress;
                 }
-                if(curAction.segmentFinished) {
+                if (curAction.segmentFinished) {
                     curAction.segmentFinished();
                     view.updateMultiPart(curAction);
                 }
                 segment++;
             }
-            view.updateMultiPartSegments(curAction);
+            view.requestUpdate("updateMultiPartSegments", curAction);
         }
-        if(curAction.ticks >= curAction.adjustedTicks) {
+        if (curAction.ticks >= curAction.adjustedTicks) {
             curAction.ticks = 0;
             curAction.loopsLeft--;
 
             this.completedTicks += curAction.adjustedTicks;
             curAction.finish();
-            curAction.manaRemaining = timeNeeded - timer
-            curAction.goldRemaining = resources.gold
-
-            if(curAction.cost) {
+            curAction.manaRemaining = timeNeeded - timer;
+            
+            if (curAction.cost) {
                 curAction.cost();
             }
+            curAction.goldRemaining = resources.gold;
 
             this.adjustTicksNeeded();
             view.updateCurrentActionLoops(this.currentPos);
         }
-        view.updateCurrentActionBarRequest(this.currentPos);
-        if(curAction.loopsLeft === 0) {
-            if(!this.current[this.currentPos + 1] && document.getElementById("repeatLastAction").checked &&
+        view.requestUpdate("updateCurrentActionBar", this.currentPos);
+        if (curAction.loopsLeft === 0) {
+            if (!this.current[this.currentPos + 1] && document.getElementById("repeatLastAction").checked &&
                 (!curAction.canStart || curAction.canStart()) && curAction.townNum === curTown) {
                 curAction.loopsLeft++;
                 curAction.loops++;
@@ -97,16 +99,16 @@ function Actions() {
 
     this.getNextValidAction = function() {
         let curAction = this.current[this.currentPos];
-        if(!curAction) {
+        if (!curAction) {
             return curAction;
         }
-        if(curAction.allowed && getNumOnCurList(curAction.name) > curAction.allowed()) {
+        if (curAction.allowed && getNumOnCurList(curAction.name) > curAction.allowed()) {
             curAction.ticks = 0;
             curAction.timeSpent = 0;
             view.updateCurrentActionBar(this.currentPos);
             return undefined;
         }
-        while((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
+        while ((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
             curAction.errorMessage = this.getErrorMessage(curAction);
             curAction.loopsFailed = curAction.loopsLeft;
             curAction.loopsLeft = 0;
@@ -119,11 +121,11 @@ function Actions() {
     };
 
     this.getErrorMessage = function(action) {
-        if(action.townNum !== curTown) {
-            return "You were in area " + (curTown+1) + " when you tried this action, and needed to be in area " + (action.townNum+1);
+        if (action.townNum !== curTown) {
+            return `You were in zone ${curTown + 1} when you tried this action, and needed to be in zone ${action.townNum + 1}`;
         }
-        if(action.canStart && !action.canStart()) {
-            return "You could not make the cost for the action."
+        if (action.canStart && !action.canStart()) {
+            return "You could not make the cost for this action.";
         }
         return "??";
     };
@@ -155,12 +157,11 @@ function Actions() {
         towns[3].ImbueMind = 0;
         towns[3].ImbueMindLoopCounter = 0;
         guild = "";
-        if(document.getElementById("currentListActive").checked) {
+        if (document.getElementById("currentListActive").checked) {
             this.currentPos = 0;
             this.completedTicks = 0;
 
-            for(let i = 0; i < this.current.length; i++) {
-                let action = this.current[i];
+            for (const action of this.current) {
                 action.loopsLeft = action.loops;
                 action.ticks = 0;
                 action.manaUsed = 0;
@@ -171,12 +172,12 @@ function Actions() {
 
         } else {
             this.current = [];
-            for(let i = 0; i < this.next.length; i++) {
-                let action = this.next[i];
-                if (action.loops === 0) { //don't add blank ones
+            for (const action of this.next) {
+                // don't add empty/disabled ones
+                if (action.loops === 0 || action.disabled) {
                     continue;
                 }
-                let toAdd = translateClassNames(action.name);
+                const toAdd = translateClassNames(action.name);
 
                 toAdd.loops = action.loops;
                 toAdd.loopsLeft = action.loops;
@@ -189,7 +190,7 @@ function Actions() {
                 this.current.push(toAdd);
             }
         }
-        if(this.current.length === 0) {
+        if (this.current.length === 0) {
             pauseGame();
         }
         this.adjustTicksNeeded();
@@ -200,9 +201,9 @@ function Actions() {
 
     this.adjustTicksNeeded = function() {
         let remainingTicks = 0;
-        for(let i = 0; i < this.current.length; i++) {
-            let action = this.current[i];
-            if(i < this.currentPos) {
+        for (let i = 0; i < this.current.length; i++) {
+            const action = this.current[i];
+            if (i < this.currentPos) {
                 continue;
             }
             setAdjustedTicks(action);
@@ -214,60 +215,63 @@ function Actions() {
 
 
     this.addAction = function(action, loops, initialOrder) {
-        let toAdd = {};
+        const toAdd = {};
         toAdd.name = action;
+        toAdd.disabled = false;
 
-        toAdd.loops = loops !== undefined ? loops : this.addAmount;
+        toAdd.loops = loops === undefined ? this.addAmount : loops;
 
-        if(initialOrder !== undefined) {
-            this.next.splice(initialOrder, 0, toAdd) //insert at index
-        } else {
-            if(document.getElementById("addActionTop").checked) {
+        if (initialOrder === undefined) {
+            if (document.getElementById("addActionTop").checked) {
                 this.next.splice(0, 0, toAdd);
             } else {
                 this.next.push(toAdd);
             }
+        } else {
+            // insert at index
+            this.next.splice(initialOrder, 0, toAdd);
         }
     };
 }
 
 function setAdjustedTicks(action) {
     let newCost = 0;
-    for(let i = 0; i < statList.length; i++) {
-        let statName = statList[i];
-        if(action.stats[statName]) {
-            newCost += action.stats[statName] / (1 + getLevel(statName)/100);
+    for (let i = 0; i < statList.length; i++) {
+        const statName = statList[i];
+        if (action.stats[statName]) {
+            newCost += action.stats[statName] / (1 + getLevel(statName) / 100);
         }
     }
-    action.adjustedTicks = Math.ceil(action.manaCost() * newCost - .000001);
+    action.adjustedTicks = Math.ceil(action.manaCost() * newCost - 0.000001);
 }
 
 function calcSoulstoneMult(soulstones) {
-    return 1+Math.pow(soulstones, .8)/30;
+    return 1 + Math.pow(soulstones, 0.8) / 30;
 }
 
 function calcTalentMult(talent) {
-    return 1+Math.pow(talent, .4)/3;
+    return 1 + Math.pow(talent, 0.4) / 3;
 }
 
 function addExpFromAction(action) {
-    for(let i = 0; i < statList.length; i++) {
-        let statName = statList[i];
-        if(action.stats[statName]) {
-            let expToAdd = action.stats[statName] * action.expMult * (action.manaCost() / action.adjustedTicks) * getTotalBonusXP(statName);
-            if(!action["statExp"+statName]) {
-                action["statExp"+statName] = 0;
+    const adjustedExp = action.expMult * (action.manaCost() / action.adjustedTicks);
+    for (const stat of statList) {
+        if (action.stats[stat]) {
+            const expToAdd = action.stats[stat] * adjustedExp * getTotalBonusXP(stat);
+            const statExp = `statExp${stat}`;
+            if (!action[statExp]) {
+                action[statExp] = 0;
             }
-            action["statExp"+statName] += expToAdd;
-            addExp(statName, expToAdd);
+            action[statExp] += expToAdd;
+            addExp(stat, expToAdd);
         }
     }
 }
 
 function getNumOnList(actionName) {
     let count = 0;
-    for(let i = 0; i < actions.next.length; i++) {
-        if(actions.next[i].name === actionName) {
+    for (let i = 0; i < actions.next.length; i++) {
+        if (actions.next[i].name === actionName) {
             count += actions.next[i].loops;
         }
     }
@@ -276,8 +280,8 @@ function getNumOnList(actionName) {
 
 function getNumOnCurList(actionName) {
     let count = 0;
-    for(let i = 0; i < actions.current.length; i++) {
-        if(actions.current[i].name === actionName) {
+    for (let i = 0; i < actions.current.length; i++) {
+        if (actions.current[i].name === actionName) {
             count += actions.current[i].loops;
         }
     }

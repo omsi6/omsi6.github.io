@@ -27,7 +27,7 @@ body {
 .showthatH:hover .showthisH {
     display: block;
 }
-.showthat:hover .showthis, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisbuff, .showthat:hover .showthisstory {
+.showthat:hover .showthis, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisstory {
     display: block;
 }
 
@@ -61,20 +61,6 @@ body {
     overflow: auto;
     flex-direction: column;
     align-items: center;
-}
-
-.showthisbuff {
-    display:none;
-    position:absolute;
-    color: black;
-    background-color: #c0e4c7;
-    border:1px solid;
-    padding:3px 5px;
-    border-radius:4px;
-    margin-top:23px;
-    width: 263px;
-    z-index: 999999;
-    text-align:left;
 }
 
 .showthisname {
@@ -142,6 +128,13 @@ body {
     width: 16px;
     height: 16px;
 }
+.buffIcon {
+    height: 12px;
+    width:12px;
+    top: 2px;
+    left: 4px;
+    position: absolute;
+}
 
 .notification {
     position: absolute;
@@ -174,17 +167,17 @@ input {
     margin-right:0;
     top: 2px;
     position: relative;
+    font-family: Arial, Helvetica, serif;
 }
 
 .buffmaxinput {
     top: 0px;
-    width: 44px;
-    height: 21px;
+    left: -3px;
+    width: 24px;
+    height: 12px;
     border: none;
-    background: #e4ece5;
-    margin-right: 3.5px;
-    font-size: 27px;
-    margin-top: 4px;
+    background: none;
+    font-size: 14px;
 }
 
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
@@ -262,9 +255,24 @@ input[type="number"] {
 }
 
 .buffContainer {
+    display: none;
     width:100%;
     position:relative;
-    justify-content: left;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.buffNameContainer {
+    align-items: center;
+}
+
+.buffNumContainer {
+    flex-direction: row;
+    text-align: right;
+    font-size: 14px;
+    justify-content: flex-end;
+    flex: 1;
+    margin-right: 7px;
 }
 
 .statRadarContainer {
@@ -288,17 +296,6 @@ input[type="number"] {
     text-align:right;
     margin:5px 10px 0;
     float:right;
-}
-
-.buffNumDiv {
-    display: flex;
-    flex-direction: row;
-    width: 105px;
-    height: 23px;
-    text-align: right;
-    margin-top: -1px;
-    font-size: 27px;
-    justify-content: flex-end;
 }
 
 .skillLabel {
@@ -389,7 +386,6 @@ input[type="number"] {
     width: 102px;
     height: 50px;
     vertical-align: top;
-    margin: 0 2px;
     font-size: 13px;
     color: #b89651;
     border: 1px solid #b89651;
@@ -407,13 +403,27 @@ input[type="number"] {
 .travelContainer {
     cursor:pointer;
     display:block;
-    width:200px;
+    width:205px;
     height:50px;
-    vertical-align:top;
     margin:2px auto;
     font-size: 13px;
 }
 
+#curActionsListContainer {
+    width: 34.9%;
+    height: 100%;
+    background-color: #c2e6cc;
+    position: relative;
+}
+
+#nextActionsListContainer {
+    width: 65%;
+    height: 100%;
+    background-color: #cdded2;
+    vertical-align: top;
+    margin-left: -4px;
+    position: relative;
+}
 
 .nextActionContainer, .curActionContainer {
     margin-left:3px;
@@ -424,14 +434,30 @@ input[type="number"] {
     position:relative;
 }
 .nextActionContainer {
-    width:188px;
+    width:205px;
 }
 .curActionContainer {
     width:102px;
 }
 
-#nextActionsList, #curActionsList {
+#curActionsList, #nextActionsList {
     overflow-x: hidden !important;
+}
+
+#curActionsList {
+    margin-top: 10px;
+    text-align: left;
+    max-height: 457px;
+    overflow: auto;
+    width: 100%;
+}
+
+#nextActionsList {
+    margin-top: 10px;
+    width: 100%;
+    text-align: left;
+    max-height: 457px;
+    overflow: auto;
 }
 
 #nextActionsList::-webkit-scrollbar, #curActionsList::-webkit-scrollbar, .showthis2::-webkit-scrollbar  {
@@ -490,7 +516,7 @@ input[type="number"] {
 .actionIcon:hover {
     color:red;
     cursor:pointer;
-    background-color:#b3b3b3;
+    background-color:rgba(0, 0, 0, 0.2);
 }
 
 .curActionBar {
@@ -532,6 +558,15 @@ input[type="number"] {
     background-color: #a8a8a8;
 }
 
+.capped {
+    background-color: #ccb3b3;
+    cursor:default;
+    border-radius:10px;
+}
+.capped:hover {
+    background-color: #ba9797;
+}
+
 .statTooltipPerc {
     float: right;
     margin-left: 3px;
@@ -559,16 +594,19 @@ input[type="number"] {
 }
 
 .draggedOverAction {
-    background:lightblue;
+    background:#bef8ff !important;
 }
 
 .draggedAction{
     opacity:0.4;
 }
 
+.disabled .actionIcon {
+    display: none;
+}
+
 .imageDragFix {
     pointer-events:none;
-    user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-drag: none;
@@ -585,4 +623,135 @@ input[type="number"] {
     justify-content: center;
     margin-bottom: -15px;
     height: 16px;
+}
+
+#talentTree {
+    height: 700px;
+    width: 500px;
+    background: #e4ece5;
+}
+
+/* dark theme */
+
+.t-dark {
+    filter: invert(1);
+    background: #111;
+    color: #222;
+}
+
+.t-dark .buffmaxinput {
+    color: #222;
+}
+
+.t-dark .storyContainer {
+    box-shadow: -2px 2px 1px #fff;
+}
+
+.t-dark .button {
+    box-shadow: 0 3px #99d98c;
+}
+
+.t-dark img {
+    filter: invert(0.2);
+}
+
+/* cubic theme */
+
+.t-cubic .thickProgressBar {
+    border: 1px solid black;
+    margin: 0 0 2px 2px;
+}
+
+.t-cubic .thinProgressBarUpper, .t-cubic .thinProgressBarLower {
+    border: 1px solid black;
+}
+
+.t-cubic .thinProgressBarLower {
+    margin-top: -3px;
+}
+
+.t-cubic .statLevelBar, .t-cubic .townExpBar, .t-cubic .skillExpBar {
+    background-color: #ba68c8;
+}
+
+.t-cubic .statTalentBar {
+    background-color: #ffb74d;
+}
+
+.t-cubic .townBar {
+    background-color: #64b5f6;
+}
+
+.t-cubic #timeBarContainer {
+    border: 1px solid black;
+    border-left: none;
+    border-right: none;
+}
+
+.t-cubic .button {
+    border-radius: 0;
+    box-shadow: 0 3px #3d8a3f;
+}
+
+.t-cubic .button:hover, .t-cubic .button:active {
+    box-shadow: 0 3px #2f6a31;
+}
+
+.t-cubic .unused {
+    box-shadow: 0 3px #7caf74;
+}
+
+.t-cubic .showthis, .t-cubic .showthis2, .t-cubic .showthisH, .t-cubic .showthisname {
+    border: 1px solid black;
+    border-radius: 0;
+}
+
+.t-cubic #nextActionsList::-webkit-scrollbar-button:vertical:decrement, .t-cubic #curActionsList::-webkit-scrollbar-button:vertical:decrement, .t-cubic .showthis2::-webkit-scrollbar-button:vertical:decrement {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.t-cubic #nextActionsList::-webkit-scrollbar-button:vertical:increment, .t-cubic #curActionsList::-webkit-scrollbar-button:vertical:increment, .t-cubic .showthis2::-webkit-scrollbar-button:vertical:increment {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.t-cubic .actionContainer {
+    background: #c0e4c7;
+    margin: -0.5px -0.5px;
+    border: 1px solid black;
+}
+
+.t-cubic .travelContainer {
+    background: #c0e4c7;
+    margin-top: -0.5px;
+    border: 1px solid black;
+}
+
+.t-cubic .actionContainer:hover, .t-cubic .travelContainer:hover {
+    background-color: #e2f3e6;
+}
+
+.t-cubic .storyContainer {
+    border-radius: 0;
+    margin: -0.5px -0.5px;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.t-cubic .locked {
+    background-color: #bdbdbd;
+    border-radius: 0;
+}
+
+.t-cubic .locked:hover {
+    background-color: #9e9e9e;
+}
+
+.t-cubic .capped {
+    background-color: #ccb3b3;
+    border-radius: 0;
+}
+.t-cubic .capped:hover {
+    background-color: #ba9797;
 }

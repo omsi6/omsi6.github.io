@@ -11,18 +11,21 @@
 
     <title>Idle Loops</title>
     <link rel="stylesheet" href="stylesheet.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     
-    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script src='lib/jquery.min.js'></script>
+    <script src='lib/chart.min.js'></script>
+    <script src='lib/mousetrap.min.js'></script>
+    
 </head>
 <body id="theBody" style="min-width:1210px">
     <canvas id="talentTreeCanvas" style="display: none;"></canvas>
+    <div id="talentTree" style="display: none;"></div>
     <div id="timeInfo" style="width:100%;text-align:center;">
         <button id="cheat" class="button showthat control" style="display: none; margin-top: 5px;" onclick="cheat()">Cheat</button>
-        <div style="width:100%;height:10px;background:white;text-align:center;position:relative;">
+        <div id="timeBarContainer" style="width:100%;height:10px;background:white;text-align:center;position:relative;">
             <div id="timeBar" style="height:100%;width:20%;background-color:#8293ff;display:block;margin:auto;"></div>
         </div>
         <div id='menu' style='float: left; height: 30px; margin-left: 24px; margin-right: -24px;'></div>
@@ -67,7 +70,7 @@
                         <span class="localized" data-lockey="skills>tcombat>desc"></span><br>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillCombatContainer">
+                <div class="skillContainer showthat" id="skillCombatContainer" onmouseover="view.showSkill('Combat')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>combat>label"></div>
                     <div class="statNum medium"><div id="skillCombatLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -77,7 +80,7 @@
                         <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillCombatLevelExp"></div>/<div id="skillCombatLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillCombatLevelProgress"></div>%)</div><br>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillMagicContainer">
+                <div class="skillContainer showthat" id="skillMagicContainer" onmouseover="view.showSkill('Magic')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>magic>label"></div>
                     <div class="statNum medium"><div id="skillMagicLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -87,7 +90,7 @@
                         <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillMagicLevelExp"></div>/<div id="skillMagicLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillMagicLevelProgress"></div>%)</div><br>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillPracticalContainer">
+                <div class="skillContainer showthat" id="skillPracticalContainer" onmouseover="view.showSkill('Practical')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>practical>label"></div>
                     <div class="statNum medium"><div id="skillPracticalLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -98,7 +101,7 @@
                         <span class="localized" data-lockey="skills>practical>desc2"></span>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillAlchemyContainer">
+                <div class="skillContainer showthat" id="skillAlchemyContainer" onmouseover="view.showSkill('Alchemy')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>alchemy>label">Alchemy</div>
                     <div class="statNum medium"><div id="skillAlchemyLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -109,7 +112,7 @@
                         <span class="localized" data-lockey="skills>alchemy>desc2"></span><br>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillDarkContainer">
+                <div class="skillContainer showthat" id="skillDarkContainer" onmouseover="view.showSkill('Dark')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>dark>label"></div>
                     <div class="statNum medium"><div id="skillDarkLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -120,7 +123,7 @@
                         <span class="localized" data-lockey="skills>dark>desc2"></span>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillCraftingContainer">
+                <div class="skillContainer showthat" id="skillCraftingContainer" onmouseover="view.showSkill('Crafting')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>crafting>label"></div>
                     <div class="statNum medium"><div id="skillCraftingLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -130,7 +133,7 @@
                         <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillCraftingLevelExp"></div>/<div id="skillCraftingLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillCraftingLevelProgress"></div>%)</div><br>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillChronomancyContainer">
+                <div class="skillContainer showthat" id="skillChronomancyContainer" onmouseover="view.showSkill('Chronomancy')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>chronomancy>label"></div>
                     <div class="statNum medium"><div id="skillChronomancyLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -141,7 +144,7 @@
                         <span class="localized" data-lockey="skills>chronomancy>desc2"></span>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillPyromancyContainer">
+                <div class="skillContainer showthat" id="skillPyromancyContainer" onmouseover="view.showSkill('Pyromancy')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>pyromancy>label"></div>
                     <div class="statNum medium"><div id="skillPyromancyLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -152,7 +155,7 @@
                         <span class="localized" data-lockey="skills>pyromancy>desc2"></span>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillRestorationContainer">
+                <div class="skillContainer showthat" id="skillRestorationContainer" onmouseover="view.showSkill('Restoration')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>restoration>label"></div>
                     <div class="statNum medium"><div id="skillRestorationLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -163,7 +166,7 @@
                         <span class="localized" data-lockey="skills>restoration>desc2"></span>
                     </div>
                 </div>
-                <div class="skillContainer showthat" id="skillSpatiomancyContainer">
+                <div class="skillContainer showthat" id="skillSpatiomancyContainer" onmouseover="view.showSkill('Spatiomancy')" onmouseout="view.showSkill(undefined)">
                     <div class="skillLabel medium bold localized" data-lockey="skills>spatiomancy>label"></div>
                     <div class="statNum medium"><div id="skillSpatiomancyLevel">0</div></div>
                     <div style="margin-top:18px;"></div>
@@ -179,44 +182,47 @@
                 <div class="showthat">
                     <div class="large bold localized" data-lockey="buffs>title"></div>
                     <div class="showthis localized" data-lockey="buffs>tooltip>no_reset_on_restart"></div>
-                </div><br>
-                <div style="display: flex;flex-direction: row;">
-                    <div style="display: flex;flex-direction: column;">
-                        <div class="buffContainer showthat" id="buffRitualContainer">
-                            <img src="img/darkRitual.svg" style="height: 20px;width:20px;margin-right: -15px;margin-top: -3px;">
-                            <div class="skillLabel bold localized" style="font-size: 27px;margin-top: -7px;" data-lockey="buffs>dark_ritual>label"></div>
-                            <div class="showthisbuff">
+                </div>
+                <br>
+                <div style="display: flex;flex-direction: column;">
+                    <div class="buffContainer showthat" id="buffRitualContainer">
+                        <div class="buffNameContainer">
+                            <img class="buffIcon" src="img/darkRitual.svg">
+                            <div class="skillLabel medium bold localized" data-lockey="buffs>dark_ritual>label"></div>
+                            <div class="showthis">
                                 <span class="localized" data-lockey="buffs>dark_ritual>desc"></span><br>
                                 <span class="localized" data-lockey="buffs>dark_ritual>desc2"></span>
                             </div>
                         </div>
-                        <div class="buffContainer showthat" id="buffImbuementContainer">
-                                <img src="img/imbueMind.svg" style="height: 20px;width:20px;margin-right: -15px;margin-top: -3px;">
-                            <div class="skillLabel bold localized" style="font-size: 27px;margin-top: -7px;" data-lockey="buffs>imbue_mind>label"></div>
-                            <div class="showthisbuff">
+                        <div class="buffNumContainer">
+                            <div id="buffRitualLevel">0/</div>
+                            <input type="number" id="buffRitualCap" class="buffmaxinput" value="666" onchange="updateBuffCaps()">
+                        </div>
+                    </div>
+                    <div class="buffContainer showthat" id="buffImbuementContainer">
+                        <div class="buffNameContainer">
+                            <img class="buffIcon" src="img/imbueMind.svg">
+                            <div class="skillLabel medium bold localized" data-lockey="buffs>imbue_mind>label"></div>
+                            <div class="showthis">
                                 <span class="localized" data-lockey="buffs>imbue_mind>desc"></span>
                             </div>
                         </div>
-                        <div class="buffContainer showthat" id="buffFeastContainer">
-                            <img src="img/greatFeast.svg" style="height: 20px;width:20px;margin-right: -18px;margin-top: -3px;">
-                        <div class="skillLabel bold localized" style="font-size: 27px;margin-top: -7px;" data-lockey="buffs>great_feast>label"></div>
-                        <div class="showthisbuff">
-                            <span class="localized" data-lockey="buffs>great_feast>desc"></span>
-                        </div>
-                    </div>
-                    </div>
-                    <div style="width: 100px;display: flex;flex-direction: column;margin-top: -6px;">
-                        <div class="buffNumDiv medium" id="buffRitualLevelContainer">
-                            <div id="buffRitualLevel">0/</div>
-                            <input type="number" id="buffRitualCap" class="buffmaxinput medium" value="666" onchange="updateBuffCaps()">
-                        </div>
-                        <div class="buffNumDiv medium" id="buffImbuementLevelContainer">
+                        <div class="buffNumContainer">
                             <div id="buffImbuementLevel">0/</div>
-                            <input type="number" id="buffImbuementCap" class="buffmaxinput medium" value="490" onchange="updateBuffCaps()">
+                            <input type="number" id="buffImbuementCap" class="buffmaxinput" value="490" onchange="updateBuffCaps()">
                         </div>
-                        <div class="buffNumDiv medium" id="buffFeastLevelContainer">
+                    </div>
+                    <div class="buffContainer showthat" id="buffFeastContainer">
+                        <div class="buffNameContainer">
+                            <img class="buffIcon" src="img/greatFeast.svg">
+                            <div class="skillLabel medium bold localized" data-lockey="buffs>great_feast>label"></div>
+                            <div class="showthis">
+                                <span class="localized" data-lockey="buffs>great_feast>desc"></span>
+                            </div>
+                        </div>
+                        <div class="buffNumContainer">
                             <div id="buffFeastLevel">0/</div>
-                            <input type="number" id="buffFeastCap" class="buffmaxinput medium" value="100" onchange="updateBuffCaps()">
+                            <input type="number" id="buffFeastCap" class="buffmaxinput" value="100" onchange="updateBuffCaps()">
                         </div>
                     </div>
                 </div>
@@ -229,13 +235,14 @@
             <div class="showthat">
                 <div class="large bold localized" style="margin-right: -49px;" data-lockey="actions>title_list"></div>
                 <div class="showthis">
-                    <i class='actionIcon fa fa-circle-thin'></i> <span class='localized' data-lockey="actions>tooltip>icons>circle_thin"></span><br>
-                    <i class='actionIcon fa fa-plus'></i> <span class='localized' data-lockey="actions>tooltip>icons>plus"></span><br>
-                    <i class='actionIcon fa fa-minus'></i> <span class='localized' data-lockey="actions>tooltip>icons>minus"></span><br>
-                    <i class='actionIcon fa fa-arrows-h'></i> <span class='localized' data-lockey="actions>tooltip>icons>arrows_h"></span><br>
-                    <i class='actionIcon fa fa-sort-up'></i> <span class='localized' data-lockey="actions>tooltip>icons>sort_up"></span><br>
-                    <i class='actionIcon fa fa-sort-down'></i> <span class='localized' data-lockey="actions>tooltip>icons>sort_down"></span><br>
-                    <i class='actionIcon fa fa-times'></i> <span class='localized' data-lockey="actions>tooltip>icons>times"></span><br>
+                    <i class='actionIcon far fa-circle'></i> <span class='localized' data-lockey="actions>tooltip>icons>circle"></span><br>
+                    <i class='actionIcon fas fa-plus'></i> <span class='localized' data-lockey="actions>tooltip>icons>plus"></span><br>
+                    <i class='actionIcon fas fa-minus'></i> <span class='localized' data-lockey="actions>tooltip>icons>minus"></span><br>
+                    <i class='actionIcon fas fa-arrows-alt-h'></i> <span class='localized' data-lockey="actions>tooltip>icons>arrows_h"></span><br>
+                    <i class='actionIcon fas fa-sort-up'></i> <span class='localized' data-lockey="actions>tooltip>icons>sort_up"></span><br>
+                    <i class='actionIcon fas fa-sort-down'></i> <span class='localized' data-lockey="actions>tooltip>icons>sort_down"></span><br>
+                    <i class='actionIcon far fa-check-circle'></i><span style="margin-left: -2px;"> /</span><i class='actionIcon far fa-times-circle'></i> <span class='localized' data-lockey="actions>tooltip>icons>circles"></span><br>
+                    <i class='actionIcon fas fa-times'></i> <span class='localized' data-lockey="actions>tooltip>icons>times"></span><br>
                     <span class='localized' data-lockey="actions>tooltip>list_explanation"></span>
                 </div>
             </div>
@@ -245,14 +252,16 @@
             </div>
             <br>
             <div id="expandableList">
-                <div style="width:34.9%;height:100%;background-color:#c2e6cc;text-align:center;vertical-align:top;position:relative;">
-                    <div id="curActionsList" style="margin-top:10px;text-align:left;max-height:457px;overflow:auto;width:100%;"></div>
+                <div id="curActionsListContainer">
+                    <div id="curActionsList"></div>
                     <div class="showthat" style="position:absolute;bottom:0;left:0;width:100%;">
-                        <div class="bold localized" data-lockey="actions>tooltip>mana_used"></div> <div id="totalTicks"></div>
+                        <div class="bold localized" data-lockey="actions>tooltip>mana_used"></div>
+                        <div id="totalTicks" style="font-size: 0.75rem;"></div>
                         <div class="showthis localized" data-lockey="actions>tooltip>mana_used_explanation"></div>
                     </div>
-                </div><div style="width:65%;height:100%;background-color:#cdded2;text-align:center;vertical-align:top;position:relative;">
-                    <div id="nextActionsList" style="margin-top:10px;width:100%;text-align:left;max-height:457px;overflow:auto;"></div>
+                </div>
+                <div id="nextActionsListContainer">
+                    <div id="nextActionsList"></div>
                     <div id="actionTooltipContainer" style="margin-top:10px;width:100%;text-align:left;max-height:357px;overflow:auto;"></div>
                     <div style="position:absolute;bottom:0;left:0;width:100%;">
                         <div class="bold localized" data-lockey="actions>tooltip>amount"></div>
@@ -311,12 +320,12 @@
 
     <div id="townColumn" style="width:535px;vertical-align:top;">
         <div id="townWindow" style="width:100%;text-align:center;">
-            <div style="float:left;margin-left:150px;" class="actionIcon fa fa-arrow-left" id="townViewLeft" onclick="view.showTown(townShowing-1)"></div>
+            <div style="float:left;margin-left:150px;" class="actionIcon fa fa-arrow-left" id="townViewLeft" onclick="view.showTown(townsUnlocked[townsUnlocked.indexOf(townShowing)-1])"></div>
             <div class="showthat">
                 <div class="large bold"><div class="bold" id="townName"></div></div>
                 <div id='townDesc' class='showthis'></div>
             </div>
-            <div style="float:right;margin-right:150px;" class="actionIcon fa fa-arrow-right" id="townViewRight" onclick="view.showTown(townShowing+1)"></div>
+            <div style="float:right;margin-right:150px;" class="actionIcon fa fa-arrow-right" id="townViewRight" onclick="view.showTown(townsUnlocked[townsUnlocked.indexOf(townShowing)+1])"></div>
         </div><br>
         <div id="townInfo0" class='townInfo'></div>
         <div id="townInfo1" class='townInfo' style="display:none;"></div>
@@ -353,23 +362,24 @@
         </div>
     </div>
 
-    <script src="helpers.js?91"></script>
-    <script src="interval.js?91"></script>
-    <script src="driver.js?91"></script>
-    <script src="stats.js?91"></script>
-    <script src="statsgraph.js?91"></script>
-    <script src="views/main.view.js?91"></script>
-    <script src="actions.js?91"></script>
-    <script src="actionList.js?91"></script>
-    <script src="town.js?91"></script>
-    <script src="talents.js?91"></script>
-    <script src="saving.js?91"></script>
-    <script src="hotkeys.js?91"></script>
-    <script src="localization.js?91"></script>
-    <script src="views/views.js?91"></script>
-    <script src="views/menu.view.js?91"></script>
-    <script src="views/trackedresources.view.js?91"></script>
-    <script src="views/timecontrols.view.js?91"></script>
+    <script src="helpers.js?92"></script>
+    <script src="interval.js?92"></script>
+    <script src="driver.js?92"></script>
+    <script src="stats.js?92"></script>
+    <script src="statsgraph.js?92"></script>
+    <script src="views/main.view.js?92"></script>
+    <script src="actions.js?92"></script>
+    <script src="actionList.js?92"></script>
+    <script src="town.js?92"></script>
+    <script src="talents.js?92"></script>
+    <script src="saving.js?92"></script>
+    <script src="hotkeys.js?92"></script>
+    <script src="localization.js?92"></script>
+    <script src="views/views.js?92"></script>
+    <script src="views/menu.view.js?92"></script>
+    <script src="views/trackedresources.view.js?92"></script>
+    <script src="views/timecontrols.view.js?92"></script>
+    <script src="views/talenttree.view.js?92"></script>
     <script>
         $(function() {
             Localization.init();

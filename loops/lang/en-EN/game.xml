@@ -6,8 +6,39 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".92"><![CDATA[
+            <b> April 29th, 2019 - The current date</b>
+            <b> v0.92 - "For your eyes."</b><br>
+            • Added Themes. You can find these under a dropdown in the options menu. Currently there are 3 themes: Normal, Dark, and Cubic.<br>
+            • Actions in the next action list now have backgrounds depending on the zone the action is from.<br>
+            • Added a disable action button next to the remove action button. (this ignores the action when creating your current action list on restart)<br>
+            • Added a visual indicator for actions with 0 loops, that indicates they will be ignored when creating your current action list on restart.<br>
+            • Increased the horizontal size of actions on the next action list.<br>
+            • Action list buttons now hide when you begin to drag an action, and reappear when you finish the drag.<br>
+            • Adjusted the next action list buttons for consistency.<br>
+            • Reduced the space between the "x" and the loop count for actions on the current action bar.<br>
+            • Made the loop count for actions on the current action bar apply the same number formatting as actions on the next action list.<br>
+            • When you have the max allowed amount of an action on your list, it will now show with a red tinted background, distinguishing it from locked actions.<br>
+            • Buffs now display under the buff section upon unlocking them, rather than obtaining them at least once.<br>
+            • Adjusted the buff displays, to be more consistent with stats and skills.<br>
+            • Notable performance improvements, especially in edge cases.<br>
+            • Added missing commas to the Small dungeon and Large Dungeon floor looted counts in their tooltips.<br>
+            • Abjusted the current actions mana used display to allow space for larger numbers, and improved formatting.<br>
+            • Changed the self combat and team combat tooltips to mention guild multiplier instead of guild rank, for clarity.<br>
+            • Replaced references to "combined skill" with "combined Combat and Magic skill", for clarity.<br>
+            • Replaced references to "rank bonus" with "guild multiplier", for clarity.<br>
+            • Added an additional decimal point of precision for time values of < 10 seconds.<br>
+            • Fixed action buttons not being properly vertically centered.<br>
+            • Fixed visual elements not correctly updating upon import.<br>
+            • Fixed various typos.<br>
+            • Fixed actions with gold costs not properly updating their gold remaining upon completion.<br>
+            • Fixed the seconds left in loop display not updating if you toggled bonus seconds on/off while paused.<br>
+            • Fixed missing spaces between the stat shortforms and the exp gains on the current action bar tooltips.<br>
+            • Fixed improper vertical spacing between buff/buff cap numbers.<br>
+            • Fixed export to Stopsign not correctly removing new actions from the current action list.
+        ]]></version>
             <version verNum=".91"><![CDATA[
-            <b> April 2nd, 2019 - The current date</b>
+            <b> April 2nd, 2019 - April 29th, 2019</b>
             <b> v0.91 - "A storied future."</b><br>
             • Added action stories. These are short stories for most actions. These were written by Jacmac from the Discord. As of now, there are 120 individual entries. These become visible when their corresponding action is unlocked, and readable when a certain listed requirement is fulfilled. (arrow to the right of "Action Options" to view them)<br>
             • Changed bonus seconds gains from 80% > 100%, and drain from 3/s > 4/s. (this will result in a 5x speed multiplier, up from the previous 4x)<br>
@@ -42,7 +73,8 @@
             • Fixed mana/gold remaining displays on the action list sometimes being incorrect at high game speeds.<br>
             • Fixed failed actions being able to spend mana for a single tick before failing.<br>
             • Fixed soulstone count not updating if you sacrificed exactly the amount of soulstones you had in a specific stat.<br>
-            • Fixed improper margins between town info and action options/stories before everything in a town is unlocked.
+            • Fixed improper margins between town info and action options/stories before everything in a town is unlocked.<br>
+            • Fixed improper progress gains on multi part actions in certain cases.
         ]]></version>
             <version verNum=".90"><![CDATA[
             <b> February 16th, 2019 - April 2nd, 2019</b>
@@ -204,8 +236,8 @@
         <faq>
             <meta>
                 <title>FAQ</title>
-                <q_prefix>Q</q_prefix>
-                <a_prefix>A</a_prefix>
+                <q_prefix><![CDATA[<b>Q:</b>]]></q_prefix>
+                <a_prefix><![CDATA[<b>A:</b>]]></a_prefix>
             </meta>
             <q_a>
                 <q>What do stats do?</q>
@@ -215,14 +247,14 @@
             </q_a>
             <q_a>
                 <q>Short runs seem better.</q>
-                <a>Short runs are better, for the early game and current balance. As your runs get longer and you accrue
-                    talent and soulstones they become more useful.
+                <a>Short runs are better, for the early game and current balance. But as your runs get longer and you accrue
+                    talent and soulstones, longer runs become more useful.
                 </a>
             </q_a>
             <q_a>
                 <q>What should my first goal be?</q>
                 <a>Start with wandering until you have ways of getting mana back. Then try to find how to get some
-                    combat training which gives you a permanent boost, and then try fighting monsters!
+                    warrior lessions to give yourself a permanent boost, and then try fighting monsters!
                 </a>
             </q_a>
         </faq>
@@ -231,13 +263,22 @@
                 <title>Options</title>
             </meta>
             <localization_title>Language</localization_title>
+            <theme_title>Theme</theme_title>
+            <theme>
+                <normal>Normal</normal>
+            </theme>
+            <theme>
+                <dark>Dark</dark>
+            </theme>
+            <theme>
+                <cubic>Cubic</cubic>
+            </theme>
             <!--changed discord link for analytical reasons-->
             <discord>
                 <link>https://discord.gg/dnKA6Xd</link>
                 <title>Discord Link</title>
             </discord>
-            <adblock_warning>WARNING: for some reason Adblock Plus can cause massive lag. I won't ever have ads so if
-                your game is freezing frequently please disable for this page.
+            <adblock_warning>WARNING: For some reason, Adblock Plus can cause massive lag. This game won't ever have ads, so if your game is freezing frequently, please disable it on this page.
             </adblock_warning>
             <pause_audio_cue>Ping on pause</pause_audio_cue>
             <hotkeys>Hotkeys</hotkeys>
@@ -354,6 +395,8 @@
         <pause_on_failed_loop>Pause on failed loop</pause_on_failed_loop>
         <restart_button>Restart</restart_button>
         <restart_text>Resets the loop. Not a hard reset.</restart_text>
+        <hours>h</hours>
+        <minutes>m</minutes>
         <seconds>s</seconds>
         <talents_button>Talents</talents_button>
         <story_title>Story</story_title>
@@ -483,11 +526,11 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + armor * Crafting Guild Rank / 5)</desc>
+            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + armor * Crafting Guild Multiplier / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
-            <desc>Team Combat = Self Combat + Combat Skill * Team Members * Adventure Guild Rank / 2</desc>
+            <desc>Team Combat = Self Combat + Combat Skill * Team Members * Adventure Guild Multiplier / 2</desc>
         </tcombat>
         <combat>
             <label>Combat</label>
@@ -569,7 +612,7 @@
         </imbue_mind>
          <great_feast>
             <label>Great Feast</label>
-            <desc><![CDATA[That feast was so filling that it manages to keep you well satiated through your loops.<br>
+            <desc><![CDATA[That feast was so filling that it manages to keep you well satiated through your loops! That's some impressive magic.<br>
             Self combat is increased by 5% per level (rounded down).]]>
             </desc>
         </great_feast>
@@ -608,6 +651,20 @@
             <desc>A once familiar place, now crawling with shadows and ominous feelings of wasted sick days. There stands a large pillar of gloomy purple light in the center of it all, eminating from a spire surrounded by black clouds. It's emitting 10 weak beams of purple light to various points around the town, and appears to be casting all the shadows. Maybe you should check those spots out.</desc>
         </town5>
     </towns>
+    <talents>
+        <calculated_shattering>
+            <name>Calculated Shattering</name>
+            <desc><![CDATA[
+            Practicing your shattering technique to get through all these pots as quickly as possible seems rather productive.<br>Reduces the mana cost of <span class="localized" data-lockey="actions>smash_pots>name"></span> by 1 per level.
+        ]]></desc>
+        </calculated_shattering>
+        <no_frill_frames>
+            <name>No-frill Frames</name>
+            <desc><![CDATA[
+            If you dedicate a bit of time to perusing for glasses, you can find some cheaper frames. And considering you won't be using them for too long until everything starts over again, you figure it's a good idea to skimp.<br>Reduces the gold cost of <span class="localized" data-lockey="actions>buy_glasses>name"></span> by 1 per level.
+        ]]></desc>
+        </no_frill_frames>
+    </talents>
     <actions>
         <title>Action Options</title>
         <title_stories>Action Stories</title_stories>
@@ -639,12 +696,13 @@
             <total_found>Total Found</total_found>
             <total_checked>Total Checked</total_checked>
             <icons>
-                <circle_thin>Cap to current max</circle_thin>
+                <circle>Cap to current max</circle>
                 <plus>Add one loop</plus>
                 <minus>Subtract one loop</minus>
                 <arrows_h>Split action</arrows_h>
                 <sort_up>Move action up</sort_up>
                 <sort_down>Move action down</sort_down>
+                <circles>Enable/disable action</circles>
                 <times>Remove action</times>
             </icons>
             <list_explanation><![CDATA[
@@ -847,7 +905,7 @@
                 <name>Ogres</name>
                 <name>Pixies</name>
                 <name>Treants</name>
-                <name>Gelatanous Cubes</name>
+                <name>Gelatinous Cubes</name>
                 <name>Fairies</name>
                 <name>Orcs</name>
                 <name>Beholders</name>
@@ -879,7 +937,7 @@
                 <name>Ogres but they're smarter</name>
                 <name>Pixies with sand instead of pixie dust</name>
                 <name>Treants but they're on fire</name>
-                <name>Gelatanous Cubes that are constantly growing in size</name>
+                <name>Gelatinous Cubes that are constantly growing in size</name>
                 <name>Fairies with blindingly bright dresses</name>
                 <name>Orcs with multiple weapons</name>
                 <name>Beholders with mouthes on every eye</name>
@@ -906,9 +964,11 @@
                 <name>Tough Monsters</name>
                 <name>Scary Monsters</name>
             </segment_alt_names>
-            <segment_modifier_1>A couple</segment_modifier_1>
-            <segment_modifier_2>A few</segment_modifier_2>
-            <segment_modifier_3>A bunch of</segment_modifier_3>
+            <segment_modifiers>
+                <segment_modifier>A couple</segment_modifier>
+                <segment_modifier>A few</segment_modifier>
+                <segment_modifier>A bunch of</segment_modifier>
+            </segment_modifiers>
             <story_1><![CDATA[<b>Monster killed:</b>⮀ It's all so new, the way they respond and attack, you're not ashamed to admit that you almost got brained by a deer. Either way, their hides and rendered components will sell well.]]></story_1>
             <story_2><![CDATA[<b>100 Monsters killed:</b>⮀ You've fought enough that you're really starting to figure out how they'll respond to most things.]]></story_2>
             <story_3><![CDATA[<b>500 Monsters killed:</b>⮀ You've pretty much figured out their patterns now, how they respond to what you do.]]></story_3>
@@ -923,7 +983,7 @@
             <label_complete>Completed</label_complete>
             <label_part>Small Dungeon</label_part>
             <tooltip><![CDATA[
-            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a combined skill of 35, and a reputation of 2 or above.<br>Gives 1 soulstone per completion - hover over Completed for info.
+            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a combined Combat and Magic skill of 35, and a reputation of 2 or above.<br>Gives 1 soulstone per completion - hover over Completed for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
             Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
@@ -948,7 +1008,7 @@
         <buy_supplies>
             <label>Buy Supplies</label>
             <tooltip><![CDATA[
-            Prepare to move on.<br>Costs <div id='suppliesCost'></div> gold.<br>You only need one set of supplies.<br>Unlocks at a combined skill of 35.
+            Prepare to move on.<br>Costs <div id='suppliesCost'></div> gold.<br>You only need one set of supplies.<br>Unlocks at a combined Combat and Magic skill of 35.
         ]]></tooltip>
             <story_1><![CDATA[<b>Supplies bought:</b>⮀ A tent, enough rations to last for a month, portable cooking equipment and other assorted paraphernalia for your trip. The tent is durable and the rations don't taste bland and lifeless. It was probably worth the 300 gold asking price. Good thing you knew how to haggle.]]></story_1>
             <story_2><![CDATA[<b>Supplies bought without haggling:</b>⮀ How luxurious! You had the gold to just throw it away now, even though the mana would've been more beneficial in the long run, not having to haggle once in awhile was surprisingly nice. Truly, you have grown luxuriant.]]></story_2>
@@ -956,16 +1016,16 @@
         <haggle>
             <label>Haggle</label>
             <tooltip><![CDATA[
-            They won't like you as much, but hey - you're leaving.<br>Costs 1 reputation to reduce the price of supplies by 20. <br>Unlocks at a combined skill of 35.
+            They won't like you as much, but hey - you're leaving.<br>Costs 1 reputation to reduce the price of supplies by 20. <br>Unlocks at a combined Combat and Magic skill of 35.
         ]]></tooltip>
             <story_1><![CDATA[<b>Haggle:</b>⮀ The shopkeep has some of the supplies you need, but they are of inferior quality and you're not paying his asking price for them, at least that's what you tell him. You argue, grumble, make sharp comments and are just in general unpleasant to one another.]]></story_1>
             <story_2><![CDATA[<b>15 Haggles in a loop:</b>⮀ The shopkeep basically throws you out the store shouting and cursing vociferously at you. You ears ring slightly at the barrage.]]></story_2>
-            <story_3><![CDATA[<b>16 Haggles in a loop:</b>⮀ At this point, it served no purpose, you were doing this solely for the fun of it. No matter how much you haggled, the merchant wasn't going to pay you to take the supplies. That was just wishful thinking. Although, loosing the reputation you had accrued could be useful in the long run...]]></story_3>
+            <story_3><![CDATA[<b>16 Haggles in a loop:</b>⮀ At this point, it served no purpose, you were doing this solely for the fun of it. No matter how much you haggled, the merchant wasn't going to pay you to take the supplies. That was just wishful thinking. Although, losing the reputation you had accrued could be useful in the long run...]]></story_3>
         </haggle>
         <start_journey>
             <label>Start Journey</label>
             <tooltip><![CDATA[
-            Follow the trail to end up at the next town. You need to keep moving until you can learn how to shut these loops off.<br>Costs 1 supplies. Finish once to unlock Forest Path's actions, then finish this in order to use Forest Path's actions.<br>Unlocks at a combined skill of 35.
+            Follow the trail to end up at the next town. You need to keep moving until you can learn how to shut these loops off.<br>Costs 1 supplies. Finish once to unlock Forest Path's actions, then finish this in order to use Forest Path's actions.<br>Unlocks at a combined Combat and Magic skill of 35.
         ]]></tooltip>
             <story_1><![CDATA[<b>Traveled to the second zone:</b>⮀ You leave town, heading towards the forest that stood between the village and Merchanton. You had exhausted every option in Beginnersville and there was nothing here that would stop the loops, it was time to look for other areas and solutions.]]></story_1>
         </start_journey>
@@ -1280,7 +1340,7 @@
         <craft_armor>
             <label>Craft Armor</label>
             <tooltip><![CDATA[
-            Turn hide into armor through hard work.<br>Gives (20% * Crafting Rank Bonus) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% rumors heard.
+            Turn hide into armor through hard work.<br>Gives (20% * Crafting Guild Multiplier) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocks at 30% rumors heard.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </craft_armor>
@@ -1288,7 +1348,7 @@
             <label>Apprentice</label>
             <label_done>Apprenticeship</label_done>
             <tooltip><![CDATA[
-            You decided that knowing more about construction would help. You use your Crafting Guild license to hit the books.<br>Goes faster with a higher rank bonus.<br>Gives 10-20 exp to Crafting for 0-100%<br>Requires Crafting Guild.<br>Unlocked at 40% Rumors heard.
+            You decided that knowing more about construction would help. You use your Crafting Guild license to hit the books.<br>Goes faster with a higher guild multiplier.<br>Gives 10-20 exp to Crafting for 0-100%<br>Requires Crafting Guild.<br>Unlocked at 40% Rumors heard.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </apprentice>
@@ -1296,7 +1356,7 @@
             <label>Mason</label>
             <label_done>Buildings Built</label_done>
             <tooltip><![CDATA[
-            You've completed your apprenticeship and have the theoretical knowledge - now you need to get hands on.<br>Goes faster with a higher rank bonus.<br>Requires Crafting Guild.<br>Gives 20-40 exp to Crafting for 0-100%<br>Unlocked at 60% Rumors heard and 100% Apprenticeship.
+            You've completed your apprenticeship and have the theoretical knowledge - now you need to get hands on.<br>Goes faster with a higher guild multiplier.<br>Requires Crafting Guild.<br>Gives 20-40 exp to Crafting for 0-100%<br>Unlocked at 60% Rumors heard and 100% Apprenticeship.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </mason>
@@ -1304,7 +1364,7 @@
             <label>Architect</label>
             <label_done>Projects Planned</label_done>
             <tooltip><![CDATA[
-            Now that you know how things work, it's better to learn how to design them.<br>Goes faster with a higher rank bonus.<br>Requires Crafting Guild.<br>Gives 40-80 exp to Crafting for 0-100%<br>Unlocked at 80% Rumors heard and 100% Buildings Built.
+            Now that you know how things work, it's better to learn how to design them.<br>Goes faster with a higher guild multiplier.<br>Requires Crafting Guild.<br>Gives 40-80 exp to Crafting for 0-100%<br>Unlocked at 80% Rumors heard and 100% Buildings Built.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </architect>
