@@ -647,7 +647,7 @@ function ShortQuest() {
     };
 }
 function goldCostSQuests() {
-    let practical = getSkillLevel("Practical") - 100;
+    let practical = Math.max(getSkillLevel("Practical") - 100, 0);
     practical = Math.min(practical, 200);
     return Math.floor(20 * (1 + practical / 100));
 }
@@ -756,7 +756,7 @@ function LongQuest() {
     };
 }
 function goldCostLQuests() {
-    let practical = getSkillLevel("Practical") - 200;
+    let practical = Math.max(getSkillLevel("Practical") - 200, 0);
     practical = Math.min(practical, 200);
     return Math.floor(30 * (1 + practical / 100));
 }
