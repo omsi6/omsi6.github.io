@@ -550,12 +550,12 @@ input[type="number"] {
 }
 
 .locked {
-    background-color: #ccb3b3;
+    background-color: #d2acac;
     cursor:default;
     border-radius:10px;
 }
 .locked:hover {
-    background-color: #ba9797;
+    background-color: #c28e8e;
 }
 
 .capped {
@@ -740,12 +740,12 @@ input[type="number"] {
 }
 
 .t-cubic .locked {
-    background-color: #ccb3b3;
+    background-color: #d2acac;
     border-radius: 0;
 }
 
 .t-cubic .locked:hover {
-    background-color: #ba9797;
+    background-color: #c28e8e;
 }
 
 .t-cubic .capped {
