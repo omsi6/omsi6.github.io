@@ -730,7 +730,7 @@
             <story_2><![CDATA[<b>40% Explored:</b>⮀ You're starting to really know your way around, you can almost figure your way around without following a set path!]]></story_2>
             <story_3><![CDATA[<b>60% Explored:</b>⮀ You've tread all the main roads and you avail yourself to the unkempt side paths and well worn paths. If you let yourself into some houses, well, no one needs to know, do they?]]></story_3>
             <story_4><![CDATA[<b>80% Explored:</b>⮀ You've decided to explore the houses now that you've trod every single feasible path in this small village. Man, the stuff people keep around.]]></story_4>
-            <story_5><![CDATA[<b>100% Explored:</b>⮀ You've been everywhere, there is absolutely nowhere in this town you haven't been. You've been in every cellar, under every bed, and in every closet. You've pried all the floorboard and just in general, been into everything. Except the houses with locks, dastardly locks.]]></story_5>
+            <story_5><![CDATA[<b>100% Explored:</b>⮀ You've been everywhere, there is absolutely nowhere in this town you haven't been. You've been in every cellar, under every bed, and in every closet. You've pried all the floorboards, and just in general, been into everything. Except the houses with locks, those dastardly locks.]]></story_5>
         </wander>
         <smash_pots>
             <label>Smash Pots</label>
@@ -758,7 +758,7 @@
             <tooltip2><![CDATA[
             gold.<br>Every 10 houses have gold.<br>Unlocked at 20% Explored.
         ]]></tooltip2>
-            <story_1><![CDATA[<b>House checked:</b>⮀ You manage to pick a lock that was in disrepair and opened the door, only to walk into the homes inhabitant. Good thing the loop ended not soon after. You're gonna have to figure out which houses are worth hitting. Some money wouldn't go astray.]]></story_1>
+            <story_1><![CDATA[<b>House checked:</b>⮀ You manage to pick a lock that was in disrepair and opened the door, only to walk into the home's inhabitant. Good thing the loop ended not soon after. You're gonna have to figure out which houses are worth hitting. Some money wouldn't go astray.]]></story_1>
             <story_2><![CDATA[<b>50 Houses known:</b>⮀ You really should look at hitting those locked houses around, who knows what goodies you'll manage to scrounge up.]]></story_2>
             <story_3><![CDATA[<b>10 Houses with loot:</b>⮀ You've figured out which houses are uninhabited and have enough gold for it to be worth your time. As they say, time is mana!]]></story_3>
         </pick_locks>
@@ -767,7 +767,7 @@
             <tooltip><![CDATA[
             That's not fair. There was time now. There was all the time I needed.<br>Now you have to get new glasses again for 10 gold!<br>Causes Wander to be 4x as effective for the rest of the loop.<br>Affects any action with the glasses icon<br>Can only have 1 Buy Glasses action.<br>Unlocked at 20% explored.
         ]]></tooltip>
-            <story_1><![CDATA[<b>Glasses bought:</b>⮀ The world snaps into sharp focus as you put them on and you gawk a little as details that had slipped your eyes previously stood out in sharp contrast. Your were a little gobsmacked at how much of a difference they made.]]></story_1>
+            <story_1><![CDATA[<b>Glasses bought:</b>⮀ The world snaps into sharp focus as you put them on and you gawk a little as details that had slipped your eyes previously stood out in sharp contrast. You're a little gobsmacked at how much of a difference they make.]]></story_1>
         </buy_glasses>
         <buy_mana>
             <label>Buy Mana</label>
@@ -783,7 +783,7 @@
             They won't let you get away with a simple chat.<br>Unlocked at 22% Explored.
         ]]></tooltip>
             <story_1><![CDATA[<b>1% People Met:</b>⮀ You stand there, a little stumped at the situation you’ve gotten yourself into, when a young lass asks you about your day so far.]]></story_1>
-            <story_2><![CDATA[<b>20% People Met:</b>⮀ The people here are generally nice enough, if a bit brusque at times. Some people have small asks that they're happy to pay for.]]></story_2>
+            <story_2><![CDATA[<b>20% People Met:</b>⮀ The people here are generally nice enough, if a bit brusque at times. Some people have small tasks that they're happy to pay for.]]></story_2>
             <story_3><![CDATA[<b>40% People Met:</b>⮀ There are a surprising amount of people in the village. You didn’t catch that when you were looking around.]]></story_3>
             <story_4><![CDATA[<b>60% People Met:</b>⮀ It almost seems that most people have something they want done, the real problem is figuring out whats worth your time.]]></story_4>
             <story_5><![CDATA[<b>80% People Met:</b>⮀ Having met such a large portion of the people in this village, you almost feel guilty about stealing from them. Almost.]]></story_5>
@@ -898,7 +898,7 @@
                 <name>Giant Turtles</name>
                 <name>Goblins</name>
                 <name>Demon Rabbits</name>
-                <name>Giant Honeybadgers</name>
+                <name>Giant Honey badgers</name>
                 <name>Venomous Snakes</name>
                 <name>Angry Monkeys</name>
                 <name>Trolls</name>
@@ -930,7 +930,7 @@
                 <name>Giant Turtles with spherical shells</name>
                 <name>Goblins but they're late on their rent</name>
                 <name>Demon rabbits but they have massive teeth</name>
-                <name>Giant Honeybadgers but they can turn invisible</name>
+                <name>Giant Honey badgers but they can turn invisible</name>
                 <name>Venomous Snakes that are also poisonous</name>
                 <name>Angry Monkeys with twelve arms</name>
                 <name>Trolls that aren't weak against fire</name>
