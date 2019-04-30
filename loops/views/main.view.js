@@ -1001,8 +1001,8 @@ function View() {
     };
     this.adjustExpGain = function(action) {
         for (const skill in action.skills) {
-            if (Number.isInteger(action.skills[skill])) document.getElementById(`expGain${action.varName}${skill}`).textContent = action.skills[skill].toFixed(0);
-            else document.getElementById(`expGain${action.varName}${skill}`).textContent = action.skills[skill]().toFixed(0);
+            if (Number.isInteger(action.skills[skill])) document.getElementById(`expGain${action.varName}${skill}`).textContent = ` ${action.skills[skill].toFixed(0)}`;
+            else document.getElementById(`expGain${action.varName}${skill}`).textContent = ` ${action.skills[skill]().toFixed(0)}`;
         }
     };
     this.adjustExpGains = function() {
