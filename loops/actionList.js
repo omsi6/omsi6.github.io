@@ -1144,7 +1144,7 @@ function SmallDungeon() {
     };
     this.getPartName = function() {
         const floor = Math.floor((towns[0].SDungeonLoopCounter + 0.0001) / this.segments + 1);
-        return _txt(`actions>${getXMLName(this.name)}>label_part`) + floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`);
+        return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
     };
     this.getSegmentName = function(segment) {
         return this.segmentNames[segment % this.segmentNames.length];
@@ -2631,7 +2631,7 @@ function LargeDungeon() {
     };
     this.getPartName = function() {
         const floor = Math.floor((towns[2].LDungeonLoopCounter + 0.0001) / this.segments + 1);
-        return _txt(`actions>${getXMLName(this.name)}>label_part`) + floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`);
+        return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
     };
     this.getSegmentName = function(segment) {
         return this.segmentNames[segment % this.segmentNames.length];

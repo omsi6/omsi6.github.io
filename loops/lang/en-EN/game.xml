@@ -1285,7 +1285,7 @@
         <sell_potions>
             <label>Sell Potions</label>
             <tooltip><![CDATA[
-            Potions are worth 1 gold per alchemy skill, but it takes a bit to find a seller.
+            Potions are worth 1 gold per alchemy skill, but it takes a while to find a buyer.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </sell_potions>
