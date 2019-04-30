@@ -2685,6 +2685,9 @@ function CraftingGuild() {
                 (1 + getLevel(this.loopStats[(towns[2].CraftGuildLoopCounter + offset) % this.loopStats.length]) / 100) *
                 Math.sqrt(1 + towns[2].totalCraftGuild / 1000);
     };
+    this.loopsFinished = function() {
+        // empty
+    };
     this.segmentFinished = function() {
         curCraftGuildSegment++;
         handleSkillExp(this.skills);
