@@ -60,7 +60,7 @@ let guild = "";
 
 let curLoadout = 0;
 let loadouts = [];
-const loadoutnames = ["1", "2", "3", "4", "5"];
+let loadoutnames = ["1", "2", "3", "4", "5"];
 const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Feast"];
@@ -302,6 +302,8 @@ function load() {
         for (let i = 0; i < 5; i++) {
             loadoutnames[i] = toLoad.loadoutnames[i];
         }
+    } else {
+        loadoutnames = ["1", "2", "3", "4", "5"];
     }
     curLoadout = toLoad.curLoadout;
     const elem = document.getElementById(`load${curLoadout}`);
@@ -370,6 +372,7 @@ function load() {
 
     adjustAll();
 
+    view.updateLoadoutNames();
     view.changeStatView();
     view.updateNextActions();
     view.updateMultiPartActions();

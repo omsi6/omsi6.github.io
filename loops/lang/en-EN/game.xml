@@ -35,7 +35,8 @@
             • Fixed the seconds left in loop display not updating if you toggled bonus seconds on/off while paused.<br>
             • Fixed missing spaces between the stat shortforms and the exp gains on the current action bar tooltips.<br>
             • Fixed improper vertical spacing between buff/buff cap numbers.<br>
-            • Fixed export to Stopsign not correctly removing new actions from the current action list.
+            • Fixed export to Stopsign not correctly removing new actions from the current action list.<br>
+            • Fixed loadout names not correctly resetting when you wiped your save.
         ]]></version>
             <version verNum=".91"><![CDATA[
             <b> April 2nd, 2019 - April 29th, 2019</b>
