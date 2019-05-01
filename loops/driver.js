@@ -480,14 +480,19 @@ function moveDown(index) {
     view.updateNextActions();
 }
 function disableAction(index) {
-    if (actions.next[index].loops === 0) return;
+    const action = actions.next[index];
+    if (action.loops === 0) return;
     actions.nextLast = copyObject(actions.next);
-    const travelNum = getTravelNum(actions.next[index].name);
+    const travelNum = getTravelNum(action.name);
     if (travelNum) {
         actionTownNum = travelNum - 1;
     }
-    if (actions.next[index].disabled) actions.next[index].disabled = false;
-    else actions.next[index].disabled = true;
+    const translated = translateClassNames(action.name);
+    if (action.disabled) {
+        if (!translated.allowed || getNumOnList(action.name) < translated.allowed()) action.disabled = false;
+    } else {
+        action.disabled = true;
+    }
     view.updateNextActions();
     view.updateLockedHidden();
 }

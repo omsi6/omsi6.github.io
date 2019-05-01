@@ -270,9 +270,9 @@ function addExpFromAction(action) {
 
 function getNumOnList(actionName) {
     let count = 0;
-    for (let i = 0; i < actions.next.length; i++) {
-        if (actions.next[i].name === actionName) {
-            count += actions.next[i].loops;
+    for (const action of actions.next) {
+        if (!action.disabled && action.name === actionName) {
+            count += action.loops;
         }
     }
     return count;
@@ -280,9 +280,9 @@ function getNumOnList(actionName) {
 
 function getNumOnCurList(actionName) {
     let count = 0;
-    for (let i = 0; i < actions.current.length; i++) {
-        if (actions.current[i].name === actionName) {
-            count += actions.current[i].loops;
+    for (const action of actions.current) {
+        if (action.name === actionName) {
+            count += action.loops;
         }
     }
     return count;
