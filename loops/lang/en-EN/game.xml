@@ -614,9 +614,15 @@
          <great_feast>
             <label>Great Feast</label>
             <desc><![CDATA[That feast was so filling that it manages to keep you well satiated through your loops! That's some impressive magic.<br>
-            Self combat is increased by 5% per level (rounded down).]]>
+            Self combat is increased by 5% per level. (rounded down)]]>
             </desc>
         </great_feast>
+        <the_spire>
+            <label>The Spire</label>
+            <desc><![CDATA[Reaching new heights in the spire fills your mind and soul with vigor and clarity.<br>
+            Talent Exp gain is increased by 1% per level. (rounded down).]]>
+            </desc>
+        </the_spire>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart>Buffs last through resets.</no_reset_on_restart>
@@ -1272,7 +1278,7 @@
             <label>Get Drunk</label>
             <label_done>Rumors Heard</label_done>
             <tooltip><![CDATA[
-            Sometimes you just need a drink.<br>Requires a reputation above -4.<br>Has 3x exp/talent gain<br>Costs 1 reputation.<br>Unlocked at 20% City Explored.
+            Sometimes you just need a drink.<br>Requires a reputation above -4.<br>Has 3x exp/talent gain.<br>Costs 1 reputation.<br>Unlocked at 20% City Explored.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </get_drunk>
@@ -1518,6 +1524,13 @@
             <!--TODO: give this action story-->
         </face_judgement>
         <!--town 5-->
+        <guided_tour>
+            <label>Guided Tour</label>
+            <label_done>Tour Routes Followed</label_done>
+            <tooltip><![CDATA[
+            The city doesn't take too kindly to visitors snooping around, so you'll have to take all their tours to scope it out instead.<br>Costs 10 gold.
+        ]]></tooltip>
+        </guided_tour>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
@@ -1572,6 +1585,39 @@
             <!--TODO: give this action story-->
         </fall_from_grace>
         <!--town 6-->
+        <raise_zombie>
+            <label>Raise Zombie</label>
+            <tooltip><![CDATA[
+            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic / 2) to your team combat.<br>Unlocked at ???.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </raise_zombie>
+        <the_spire>
+            <label>The Spire</label>
+            <label_done>Looted</label_done>
+            <label_complete>Completed</label_complete>
+            <label_part>The Spire</label_part>
+            <tooltip><![CDATA[
+            Standing tall in the dead center of the town is the towering spire. Surrounded by a storm, and almost emanating gloom. This is surely your greatest task yet.<br>Gives (team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Progress scaling per floor is reduced by 0.1x per pylon disabled.<br>Unlocked at 20% Rumors Heard.<br>Gives 50 soulstones per completion - hover over Looted for info.
+        ]]></tooltip>
+            <completed_tooltip><![CDATA[
+            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
+        ]]></completed_tooltip>
+            <chance_label>Chance</chance_label>
+            <last_stat_label>Last Stat</last_stat_label>
+            <segment_names>
+                <name>Locate Entrance</name>
+                <name>Navigate Door Maze</name>
+                <name>Slay Spectres</name>
+                <name>Escape Evaporating Tunnel</name>
+                <name>Fend Off Spider Ambush</name>
+                <name>Avoid Explosive Runes</name>
+                <name>Disable Miniature Pylons</name>
+                <name>Fight Dark Amalgamation</name>
+                <name>Cleanse Floor</name>
+            </segment_names>
+            <!--TODO: give this action story-->
+        </the_spire>
     </actions>
     <spells>
         <title>Spells</title>

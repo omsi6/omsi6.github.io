@@ -1305,7 +1305,7 @@ function adjustActionListSize(amt) {
 }
 
 function updateBuffCaps() {
-    for (const i in buffList) {
-        document.getElementById(`buff${buffList[i]}Cap`).value = Math.min(parseInt(document.getElementById(`buff${buffList[i]}Cap`).value), buffHardCaps[i]);
+    for (const buff of buffList) {
+        document.getElementById(`buff${buff}Cap`).value = Math.min(parseInt(document.getElementById(`buff${buff}Cap`).value), buffHardCaps[buff]);
     }
 }

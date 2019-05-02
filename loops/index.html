@@ -18,7 +18,7 @@
     <script src='lib/jquery.min.js'></script>
     <script src='lib/chart.min.js'></script>
     <script src='lib/mousetrap.min.js'></script>
-    
+
 </head>
 <body id="theBody" style="min-width:1210px">
     <canvas id="talentTreeCanvas" style="display: none;"></canvas>
@@ -184,48 +184,7 @@
                     <div class="showthis localized" data-lockey="buffs>tooltip>no_reset_on_restart"></div>
                 </div>
                 <br>
-                <div style="display: flex;flex-direction: column;">
-                    <div class="buffContainer showthat" id="buffRitualContainer">
-                        <div class="buffNameContainer">
-                            <img class="buffIcon" src="img/darkRitual.svg">
-                            <div class="skillLabel medium bold localized" data-lockey="buffs>dark_ritual>label"></div>
-                            <div class="showthis">
-                                <span class="localized" data-lockey="buffs>dark_ritual>desc"></span><br>
-                                <span class="localized" data-lockey="buffs>dark_ritual>desc2"></span>
-                            </div>
-                        </div>
-                        <div class="buffNumContainer">
-                            <div id="buffRitualLevel">0/</div>
-                            <input type="number" id="buffRitualCap" class="buffmaxinput" value="666" onchange="updateBuffCaps()">
-                        </div>
-                    </div>
-                    <div class="buffContainer showthat" id="buffImbuementContainer">
-                        <div class="buffNameContainer">
-                            <img class="buffIcon" src="img/imbueMind.svg">
-                            <div class="skillLabel medium bold localized" data-lockey="buffs>imbue_mind>label"></div>
-                            <div class="showthis">
-                                <span class="localized" data-lockey="buffs>imbue_mind>desc"></span>
-                            </div>
-                        </div>
-                        <div class="buffNumContainer">
-                            <div id="buffImbuementLevel">0/</div>
-                            <input type="number" id="buffImbuementCap" class="buffmaxinput" value="490" onchange="updateBuffCaps()">
-                        </div>
-                    </div>
-                    <div class="buffContainer showthat" id="buffFeastContainer">
-                        <div class="buffNameContainer">
-                            <img class="buffIcon" src="img/greatFeast.svg">
-                            <div class="skillLabel medium bold localized" data-lockey="buffs>great_feast>label"></div>
-                            <div class="showthis">
-                                <span class="localized" data-lockey="buffs>great_feast>desc"></span>
-                            </div>
-                        </div>
-                        <div class="buffNumContainer">
-                            <div id="buffFeastLevel">0/</div>
-                            <input type="number" id="buffFeastCap" class="buffmaxinput" value="100" onchange="updateBuffCaps()">
-                        </div>
-                    </div>
-                </div>
+                <div id="buffsContainer" style="display: flex;flex-direction: column;"></div>
             </div>
         </div>
     </div>
@@ -379,6 +338,7 @@
     <script src="views/menu.view.js?92"></script>
     <script src="views/trackedresources.view.js?92"></script>
     <script src="views/timecontrols.view.js?92"></script>
+    <script src="views/buffs.view.js?92"></script>
     <script src="views/talenttree.view.js?92"></script>
     <script>
         $(function() {

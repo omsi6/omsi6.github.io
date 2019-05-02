@@ -304,6 +304,7 @@ function clearList() {
 function unlockTown(townNum) {
     if (!towns[townNum].unlocked()) {
         townsUnlocked.push(townNum);
+        townsUnlocked.sort();
         // refresh current
         view.showTown(townNum);
     }
@@ -326,43 +327,49 @@ function adjustAll() {
 }
 
 function capAmount(index, townNum) {
-    actions.nextLast = copyObject(actions.next);
-    const varName = `good${translateClassNames(actions.next[index].name).varName}`;
-    const alreadyExisting = getNumOnList(actions.next[index].name) - actions.next[index].loops;
+    const action = actions.next[index];
+    const varName = `good${translateClassNames(action.name).varName}`;
+    const alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
     const newLoops = towns[townNum][varName] - alreadyExisting;
-    actions.next[index].loops = newLoops < 0 ? 0 : newLoops;
+    actions.nextLast = copyObject(actions.next);
+    action.loops += newLoops;
     view.updateNextActions();
+    view.updateLockedHidden();
 }
 
 function capTraining(index) {
-    actions.nextLast = copyObject(actions.next);
-    const alreadyExisting = getNumOnList(actions.next[index].name) - actions.next[index].loops;
+    const action = actions.next[index];
+    const alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
     const newLoops = trainingLimits - alreadyExisting;
-    actions.next[index].loops = newLoops < 0 ? 0 : newLoops;
+    actions.nextLast = copyObject(actions.next);
+    action.loops += newLoops;
     view.updateNextActions();
+    view.updateLockedHidden();
 }
 
 function addLoop(index) {
     actions.nextLast = copyObject(actions.next);
-    const theClass = translateClassNames(actions.next[index].name);
+    const action = actions.next[index];
+    const theClass = translateClassNames(action.name);
     let addAmount = actions.addAmount;
     if (theClass.allowed) {
         const numMax = theClass.allowed();
-        const numHave = getNumOnList(theClass.name);
+        const numHave = getNumOnList(theClass.name) + (action.disabled ? action.loops : 0);
         if ((numMax - numHave) < addAmount) {
             addAmount = numMax - numHave;
         }
     }
-    if (actions.next[index].loops + addAmount === Infinity) actions.next[index].loops = 1e12;
-    else actions.next[index].loops += addAmount;
+    if (action.loops + addAmount === Infinity) action.loops = 1e12;
+    else action.loops += addAmount;
     view.updateNextActions();
     view.updateLockedHidden();
 }
 function removeLoop(index) {
     actions.nextLast = copyObject(actions.next);
-    actions.next[index].loops -= actions.addAmount;
-    if (actions.next[index].loops < 0) {
-        actions.next[index].loops = 0;
+    const action = actions.next[index];
+    action.loops -= actions.addAmount;
+    if (action.loops < 0) {
+        action.loops = 0;
     }
     view.updateNextActions();
     view.updateLockedHidden();
@@ -370,7 +377,8 @@ function removeLoop(index) {
 function split(index) {
     actions.nextLast = copyObject(actions.next);
     const toSplit = actions.next[index];
-    actions.addAction(toSplit.name, Math.ceil(toSplit.loops / 2), index);
+    const isDisabled = toSplit.disabled;
+    actions.addAction(toSplit.name, Math.ceil(toSplit.loops / 2), index, isDisabled);
     toSplit.loops = Math.floor(toSplit.loops / 2);
     view.updateNextActions();
 }
@@ -480,16 +488,15 @@ function moveDown(index) {
     view.updateNextActions();
 }
 function disableAction(index) {
-    const action = actions.next[index];
-    if (action.loops === 0) return;
     actions.nextLast = copyObject(actions.next);
+    const action = actions.next[index];
     const travelNum = getTravelNum(action.name);
     if (travelNum) {
         actionTownNum = travelNum - 1;
     }
     const translated = translateClassNames(action.name);
     if (action.disabled) {
-        if (!translated.allowed || getNumOnList(action.name) < translated.allowed()) action.disabled = false;
+        if (!translated.allowed || getNumOnList(action.name) + action.loops <= translated.allowed()) action.disabled = false;
     } else {
         action.disabled = true;
     }

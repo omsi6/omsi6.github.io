@@ -214,10 +214,11 @@ function Actions() {
     };
 
 
-    this.addAction = function(action, loops, initialOrder) {
+    this.addAction = function(action, loops, initialOrder, disabled) {
         const toAdd = {};
         toAdd.name = action;
-        toAdd.disabled = false;
+        if (disabled) toAdd.disabled = true;
+        else toAdd.disabled = false;
 
         toAdd.loops = loops === undefined ? this.addAmount : loops;
 

@@ -63,8 +63,13 @@ let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
 const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy"];
 const skills = {};
-const buffList = ["Ritual", "Imbuement", "Feast"];
-const buffHardCaps = [666, 490, 100];
+const buffList = ["Ritual", "Imbuement", "Feast", "Aspirant"];
+const buffHardCaps = {
+    Ritual: 666,
+    Imbuement: 490,
+    Feast: 100,
+    Aspirant: 20
+};
 const buffs = {};
 // eslint-disable-next-line prefer-const
 let townShowing = 0;
