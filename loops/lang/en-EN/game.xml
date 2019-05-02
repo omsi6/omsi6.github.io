@@ -984,7 +984,7 @@
             <label_complete>Completed</label_complete>
             <label_part>Small Dungeon</label_part>
             <tooltip><![CDATA[
-            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at a combined Combat and Magic skill of 35.<br>Requires a reputation of 1 or above.<br>Gives 1 soulstone per completion - hover over Looted for info.
+            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at a combined Combat and Magic skill of 35.<br>Requires a reputation of 2 or above.<br>Gives 1 soulstone per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
             Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
