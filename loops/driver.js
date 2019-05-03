@@ -332,7 +332,8 @@ function capAmount(index, townNum) {
     const alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
     const newLoops = towns[townNum][varName] - alreadyExisting;
     actions.nextLast = copyObject(actions.next);
-    action.loops += newLoops;
+    if (action.loops + newLoops < 0) action.loops = 0;
+    else action.loops += newLoops;
     view.updateNextActions();
     view.updateLockedHidden();
 }
@@ -342,7 +343,8 @@ function capTraining(index) {
     const alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
     const newLoops = trainingLimits - alreadyExisting;
     actions.nextLast = copyObject(actions.next);
-    action.loops += newLoops;
+    if (action.loops + newLoops < 0) action.loops = 0;
+    else action.loops += newLoops;
     view.updateNextActions();
     view.updateLockedHidden();
 }
