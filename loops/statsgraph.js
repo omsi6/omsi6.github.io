@@ -1,5 +1,7 @@
 const statGraph = {
+    initalized: false,
     init() {
+        if (this.initalized) return;
         const statChartCtx = document.getElementById("statChartCtx");
         const dataset = this.getGraphDatasets();
         const statLabels = [];
@@ -41,6 +43,7 @@ const statGraph = {
                 datasets: dataset,
             }
         });
+        this.initalized = true;
     },
     graphObject: null,
     getGraphDatasets() {

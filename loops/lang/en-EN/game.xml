@@ -76,7 +76,8 @@
             • Fixed soulstone count not updating if you sacrificed exactly the amount of soulstones you had in a specific stat.<br>
             • Fixed improper margins between town info and action options/stories before everything in a town is unlocked.<br>
             • Fixed improper progress gains on multi part actions in certain cases.<br>
-            • Fixed bonus seconds provding a speed boost for a tick after enabling them, even when you had none.
+            • Fixed bonus seconds provding a speed boost for a tick after enabling them, even when you had none.<br>
+            • Fixed the radar chart breaking if you imported a save and then swapped to it.
         ]]></version>
             <version verNum=".90"><![CDATA[
             <b> February 16th, 2019 - April 2nd, 2019</b>
