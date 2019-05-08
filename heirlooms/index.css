@@ -8,8 +8,20 @@ body {
     font-family: sans-serif;
 	background: #212121;
 	color: #bbb;
-	font-size: 14px;
+	font-size: 1.4rem;
 	user-select: none;
+}
+
+body {
+    -ms-overflow-style: none;
+	scrollbar-width: none;
+}
+body::-webkit-scrollbar { 
+    display: none;
+}
+
+p {
+    margin: 0 0 1rem;
 }
 
 *:focus {
@@ -20,9 +32,92 @@ body {
 	transform-origin: center center;
 }
 
+#inputsContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-left: -2.24rem;
+}
+
+#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #weaponLevelsInput, #portalZoneInput, #voidZoneInput {
+	color: black;
+	border: 0.1rem solid black;
+	margin-bottom: -0.1rem;
+}
+
 #saveInput {
+	height: 2.6rem;
+	width: 31.3rem;
+	min-height: 2.6rem;
+	max-height: 30rem;
+	min-width: 31.3rem;
+	max-width: 31.3rem;
 	overflow-x: hidden;
 	overflow-y: hidden;
+}
+
+#calculateButton {
+	height: 2.4rem;
+	width: 31.3rem;
+	background: white;
+}
+
+#VMWeightInput {
+	font-size: 1.1rem;
+	height: 2.6rem;
+	width: 15.7rem;
+}
+
+#XPWeightInput {
+	font-size: 1.1rem;
+	height: 2.6rem;
+	width: 15.7rem;
+	margin-left: -0.5rem;
+}
+
+#weaponLevelsInput {
+	font-size: 1.1rem;
+	height: 2.6rem;
+	width: 10.5rem;
+	margin-bottom: -0.1rem;
+}
+
+#portalZoneInput, #voidZoneInput {
+	font-size: 1.1rem;
+	height: 2.6rem;
+	width: 10.5rem;
+	margin-left: -0.5rem;
+}
+
+#checkboxesContainer {
+	display: flex;
+	flex-direction: row;
+	height: 1.6rem;
+	margin-bottom: 0.1rem;
+	font-size: 1.15rem;
+}
+
+#heirloomInventory {
+	height: 17.3rem;
+	margin-bottom: -7rem;
+	margin-left: -9.2rem;
+	flex-direction: row;
+}
+
+#inventoryColumn1 {
+	margin-top: -0.6rem;
+	margin-left: -0.6rem;
+	margin-right: 0.6rem;
+}
+
+#inventoryColumn2 {
+	margin-top: -0.6rem;
+}
+
+#shieldOld\?, #staffOld\?, #coreOld\?, #shieldNew\?, #staffNew\?, #coreNew\? {
+	display: none;
+	right: -33.1rem;
+	top: -5.1rem;
 }
 
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
@@ -36,14 +131,14 @@ input[type="number"] {
 }
 
 input[type="checkbox"] {
-	margin: 0px;
-	margin-top: 3px;
-	margin-left: 5px;
+	margin: 0rem;
+	margin-top: 0.3rem;
+	margin-left: 0.5rem;
 }
 
 .checkboxContainer {
 	display: flex;
-	width: 104px;
+	width: 10.4rem;
 }
 
 ::placeholder {
@@ -63,16 +158,16 @@ a:hover, a:active {
 
 .help {
 	position: relative;
-    top: -30px;
-    right: -72px;
+    top: -3rem;
+    right: -7.2rem;
     text-align: center;
     background-color: #333;
 	border-radius: 50%;
-	border: 1px solid black;
-    width: 20px;
-    height: 20px;
-    font-size: 14px;
-    line-height: 20px;
+	border: 0.1rem solid black;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.4rem;
+    line-height: 2rem;
 	cursor: default;
 	z-index: 999;
 	text-shadow: none;
@@ -94,12 +189,12 @@ a:hover, a:active {
     text-align: left;
     background-color: #111111;
 	padding: 1.5rem;
-	margin-left: -191px;
-    width: 400px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    right: -4px;
+	margin-left: -19.1rem;
+    width: 40rem;
+    box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+    right: -0.4rem;
     color: #FFF;
-    font-size: 13px;
+    font-size: 1.3rem;
 	line-height: 1.4;
 	z-index: 9999;
 	border: 0.2rem solid #555;
@@ -107,18 +202,19 @@ a:hover, a:active {
 
 .help p:after{
     width:100%;
-    height:40px;
+    height:4rem;
     content:'';
     position: absolute;
-    top:-40px;
+    top:-4rem;
     left:0;
 }
 
 #footer {
 	position: absolute;
-	bottom: 10px;
-	right: 10px;
-	align-self: flex-end;
+	transform: translateY(1100%);
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
 }
 
 #content {
@@ -139,13 +235,13 @@ a:hover, a:active {
 	height: 26rem;
 	width: 37rem;
 	font-size: 1.9rem;
-	margin: 10px;
-	margin-top: 9px;
+	margin: 1rem;
+	margin-top: 0.9rem;
     border: 0.3rem solid #555;
     padding: 1rem;
     text-align: left;
 	background-color: #111111;
-	box-shadow: -1px 1px 10px #111;
+	box-shadow: -0.1rem 0.1rem 1rem #111;
 }
 
 .heirloomContainerTopRow {
@@ -160,16 +256,16 @@ a:hover, a:active {
 }
 
 .nullifiumContainer {
-	width: 312px;
-	height: 5.6rem;
-	font-size: 1.5rem;
+	width: 31.2rem;
+	height: 5.7rem;
+	font-size: 1.3rem;
 	line-height: 1.5rem;
     border: 0.3rem solid #555;
 	padding: 0.3rem;
 	padding-top: 0.2rem;
     text-align: left;
 	background-color: #111111;
-	box-shadow: -1px 1px 10px #111;
+	box-shadow: -0.1rem 0.1rem 1rem #111;
 	color: #8a008a;
 	text-align: center;
 }
@@ -195,11 +291,6 @@ a:hover, a:active {
 	line-height: 1.5rem
 }
 
-.inventoryHeirloomName {
-	font-size: 2rem;
-	line-height: 4rem;
-}
-
 #heirloomInventory .heirloomMod:hover {
     border-color: #983;
 }
@@ -217,9 +308,25 @@ a:hover, a:active {
     padding: 0.2rem 0.4rem 0.2rem 0.4rem;
     border: 0.2rem solid #333;
     background-color: #111;
-    border-radius: 40px;
+    border-radius: 4rem;
     margin-bottom: 0.3rem;
     display: inline-block;
+}
+
+.inventoryHeirloom {
+	display:flex;
+	height:2rem;
+	width: 17.5rem;
+}
+
+.inventoryHeirloomName {
+	font-size: 1rem;
+	line-height: 1.1rem;
+}
+
+.inventoryHeirloomIconContainer {
+	width: 8%;
+	margin-right:0.3rem;
 }
 
 .heirloomRare0{
@@ -293,9 +400,9 @@ a:hover, a:active {
 .heirloomRare7, .heirloomRare7Anim {
 	color: #730000;
 	text-shadow: 
-			1px 1px 2px #ff9326, 
-			0 0 25px #ff4000, 
-			0 0 5px #f37900, 
+			0.1rem 0.1rem 0.2rem #ff9326, 
+			0 0 2.5rem #ff4000, 
+			0 0 0.5rem #f37900, 
 			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
@@ -319,9 +426,9 @@ a:hover, a:active {
 .heirloomRare8, .heirloomRare8Anim {
 	color: #0e5a07;
 	text-shadow: 
-			1px 1px 2px rgba(15, 158, 74, 0.6), 
-			0 0 25px rgba(43, 64, 185, 0.6), 
-			0 0 5px rgba(33, 114, 51, 0.6);
+			0.1rem 0.1rem 0.2rem rgba(15, 158, 74, 0.6), 
+			0 0 2.5rem rgba(43, 64, 185, 0.6), 
+			0 0 0.5rem rgba(33, 114, 51, 0.6);
 }
 
 .heirloomRare8 .heirloomIconContainer {
@@ -344,9 +451,9 @@ a:hover, a:active {
 @keyframes heirloomRare7Animated {
 	0% {
 		text-shadow: 
-			1px 1px 2px #ff9326, 
-			0 0 25px #ff4000, 
-			0 0 5px #f37900, 
+			0.1rem 0.1rem 0.2rem #ff9326, 
+			0 0 2.5rem #ff4000, 
+			0 0 0.5rem #f37900, 
 			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
@@ -355,9 +462,9 @@ a:hover, a:active {
 	}
 	50% {
 		text-shadow: 
-			1px 1px 8px #ff9326, 
-			0 0 50px #ff4000, 
-			0 0 25px #f37900, 
+			0.1rem 0.1rem 0.8rem #ff9326, 
+			0 0 5rem #ff4000, 
+			0 0 2.5rem #f37900, 
 			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
@@ -366,9 +473,9 @@ a:hover, a:active {
 	}
 	100% {
 	text-shadow: 
-			1px 1px 2px #ff9326, 
-			0 0 25px #ff4000, 
-			0 0 5px #f37900, 
+			0.1rem 0.1rem 0.2rem #ff9326, 
+			0 0 2.5rem #ff4000, 
+			0 0 0.5rem #f37900, 
 			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
@@ -379,9 +486,9 @@ a:hover, a:active {
 @keyframes heirloomRare8Animated {
 	0% {
 		text-shadow: 
-			1px 1px 2px #0f9e4a, 
-			0 0 25px #2a40bb, 
-			0 0 5px #217233, 
+			0.1rem 0.1rem 0.2rem #0f9e4a, 
+			0 0 2.5rem #2a40bb, 
+			0 0 0.5rem #217233, 
 			-0.17rem -0.17rem 0.17rem rgba(70, 3, 82, 0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(37, 80, 12, 0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(124, 126, 9, 0.58),
@@ -391,9 +498,9 @@ a:hover, a:active {
 	}
 	50% {
 		text-shadow: 
-			1px 1px 8px #0f9e4a, 
-			0 0 50px #2a40bb, 
-			0 0 25px #217233, 
+			0.1rem 0.1rem 0.8rem #0f9e4a, 
+			0 0 5rem #2a40bb, 
+			0 0 2.5rem #217233, 
 			-0.17rem -0.17rem 0.17rem rgba(70, 3, 82, 0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(37, 80, 12, 0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(124, 126, 9, 0.58),
@@ -403,9 +510,9 @@ a:hover, a:active {
 	}
 	100% {
 	text-shadow: 
-			1px 1px 2px #0f9e4a, 
-			0 0 25px #2a40bb, 
-			0 0 5px #217233, 
+			0.1rem 0.1rem 0.2rem #0f9e4a, 
+			0 0 2.5rem #2a40bb, 
+			0 0 0.5rem #217233, 
 			-0.17rem -0.17rem 0.17rem rgba(70, 3, 82, 0.8),  
 			  0.17rem -0.17rem 0.17rem rgba(37, 80, 12, 0.72),
 			 -0.17rem 0.17rem 0.17rem rgba(124, 126, 9, 0.58),
@@ -415,11 +522,16 @@ a:hover, a:active {
 }
 
 @keyframes moveRight {
-	0% {transform: translateX(-200px)}
-	100% {transform: translateX(0px)}
+	0% {transform: translateX(-20rem)}
+	100% {transform: translateX(0rem)}
 }
 
 @keyframes moveLeft {
-	0% {transform: translateX(190px)}
-	100% {transform: translateX(0px)}
+	0% {transform: translateX(19rem)}
+	100% {transform: translateX(0rem)}
+}
+
+@keyframes moveDown {
+	0% {transform: translateY(-27.9rem)}
+	100% {transform: translateY(0rem)}
 }

@@ -10,13 +10,13 @@
 
 <body>
 	<div id="content">
-		<div style="display: flex; flex-direction: column; align-items: center; margin-left: -22.4px;">
+		<div id="inputsContainer">
 			<p id="content-text">
 				Paste your save into the box below to get recommendations for heirloom upgrades.
 				<div class="help">
-					<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, and Miner Efficiency. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
+					<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, Miner Efficiency, and any core mods. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
 						<br><br>
-						Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones.
+						Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones, nor saving spirestones for additional floors. But you probably shouldn't spend spirestones until you have a quite a few floors, or have a replacement core so you can recycle your current to afford the next floor.
 						<br><br>
 						To the right of the inputs, you'll see your inventory of carried heirlooms. To weigh mods using one of these heirlooms rather than your currently equipped heirloom, click on the one you'd like to weigh. To go back to your equipped heirloom, click on your currently selected heirloom to unselect it.
 						<br><br>
@@ -33,18 +33,18 @@
 				</div>
 			</p>
 			<div style="display: flex; flex-direction: column;">
-				<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()" style="height: 26px; width: 312.9px; min-height: 26px; max-height: 300px; min-width: 312.9px; max-width: 312.9px; margin-bottom: -1px; color: black; border: 1px solid black;"></textarea>
-				<button onclick="calculate()" style="width: 312.9px; color: black; background: white; border: 1px solid black; margin-bottom: -1px;">Calculate upgrades</button>
+				<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()"></textarea>
+				<button id="calculateButton" onclick="calculate()">Calculate upgrades</button>
 				<div>
-					<input placeholder="VM weight (default 12)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
-					<input placeholder="XP weight (default 11.25)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')" style="font-size: 1.1rem; height: 26px; width: 157px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+					<input placeholder="VM weight (default 12)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')"></input>
+					<input placeholder="XP weight (default 11.25)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')"></input>
 				</div>
 				<div>
-					<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; color: black; border: 1px solid black;"></input>
-					<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
-					<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')" style="font-size: 1.1rem; height: 26px; width: 105px; margin-bottom: -1px; margin-left: -5px; color: black; border: 1px solid black;"></input>
+					<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')"></input>
+					<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')"></input>
+					<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')"></input>
 				</div>
-				<div style="display: flex; flex-direction: row; margin-bottom: 1px; font-size: 1.33rem;">
+				<div id="checkboxesContainer">
 					<div class="checkboxContainer">
 						Fluffy E4L10:
 						<input id="E4Input" type="checkbox" onchange="updateInput('E4')">
@@ -60,17 +60,17 @@
 				</div>
 			</div>
 			<div class="nullifiumContainer" style="color: #8a008a;">
-				You have <span id="nuAmount">???</span> Nullifium.<br>
+				You have <span id="resourceAmounts">??? Nullifium.</span><br>
 				Your next upgrade should be <span id="nextUpgrade">???</span> at <span id="nuCost">???</span> Nullifium.
 			</div>
 		</div>
-		<div id="heirloomInventory" class="heirloomContainer" style="height: 17.3rem; margin-bottom: -70px; margin-left: -92px; flex-direction: row;">
-			<div id="inventoryColumn1" style="margin-top: -6px; margin-left: -6px; margin-right: 6px;"></div>
-			<div id="inventoryColumn2" style="margin-top: -6px;"></div>
+		<div id="heirloomInventory" class="heirloomContainer">
+			<div id="inventoryColumn1"></div>
+			<div id="inventoryColumn2"></div>
 		</div>
 	</div>
 	<div style="display: flex; flex-direction: row;">
-		<div id="shieldOldContainer" class="heirloomContainer" style="transform: translateX(190px);">
+		<div id="shieldOldContainer" class="heirloomContainer">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
 					<span class="icomoon icon-shield3"></span>
@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<div style="width: 0px; height: 0px; z-index: 2;">
-				<div class="help" id="shieldOld?" style="display: none; right: -331px; top: -51px;">
+				<div class="help" id="shieldOld?">
 					<p id="shieldOldInfo"></p>
 				</div>
 			</div>
@@ -105,6 +105,78 @@
 				<span id="shieldOldMod4" class="heirloomMod">???</span>
 			</div>
 		</div>
+		<div id="staffOldContainer" class="heirloomContainer">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="glyphicon glyphicon-grain"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="staffOldName">???</span>
+				</div>
+			</div>
+			<div style="width: 0px; height: 0px; z-index: 3;">
+				<div class="help" id="staffOld?">
+					<p id="staffOldInfo"></p>
+				</div>
+			</div>
+			<div id="staffOldModContainer0">
+				• 
+				<span id="staffOldMod0" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer1">
+				• 
+				<span id="staffOldMod1" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer2">
+				• 
+				<span id="staffOldMod2" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer3">
+				• 
+				<span id="staffOldMod3" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldModContainer4">
+				• 
+				<span id="staffOldMod4" class="heirloomMod">???</span>
+			</div>
+		</div>
+		<div id="coreOldContainer" class="heirloomContainer" style="display: none">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="glyphicon glyphicon-adjust"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="coreOldName">???</span>
+				</div>
+			</div>
+			<div style="width: 0px; height: 0px; z-index: 2;">
+				<div class="help" id="coreOld?">
+					<p id="coreOldInfo"></p>
+				</div>
+			</div>
+			<div id="coreOldModContainer0">
+				• 
+				<span id="coreOldMod0" class="heirloomMod">???</span>
+			</div>
+			<div id="coreOldModContainer1">
+				• 
+				<span id="coreOldMod1" class="heirloomMod">???</span>
+			</div>
+			<div id="coreOldModContainer2">
+				• 
+				<span id="coreOldMod2" class="heirloomMod">???</span>
+			</div>
+			<div id="coreOldModContainer3">
+				• 
+				<span id="coreOldMod3" class="heirloomMod">???</span>
+			</div>
+			<div id="coreOldModContainer4">
+				• 
+				<span id="coreOldMod4" class="heirloomMod">???</span>
+			</div>
+		</div>
+	</div>
+	<div style="display: flex; flex-direction: row;">
 		<div id="shieldNewContainer" class="heirloomContainer" style="opacity: 0;">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
@@ -114,8 +186,8 @@
 					<span class="heirloomName" id="shieldNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 2;">
-				<div class="help" id="shieldNew?" style="display: none; right: -331px; top: -51px;">
+			<div style="width: 0px; height: 0px; z-index: 1;">
+				<div class="help" id="shieldNew?">
 					<p id="shieldNewInfo"></p>
 				</div>
 			</div>
@@ -145,43 +217,6 @@
 				<span id="shieldNewMod4Plus">+?</span>
 			</div>
 		</div>
-	</div>
-	<div style="display: flex; flex-direction: row;">
-		<div id="staffOldContainer" class="heirloomContainer" style="transform: translateX(190px);">
-			<div class="heirloomContainerTopRow">
-				<div class="heirloomIconContainer">
-					<span class="glyphicon glyphicon-grain"></span>
-				</div>
-				<div>
-					<span class="heirloomName" id="staffOldName">???</span>
-				</div>
-			</div>
-			<div style="width: 0px; height: 0px; z-index: 1;">
-				<div class="help" id="staffOld?" style="display: none; right: -331px; top: -51px;">
-					<p id="staffOldInfo"></p>
-				</div>
-			</div>
-			<div id="staffOldModContainer0">
-				• 
-				<span id="staffOldMod0" class="heirloomMod">???</span>
-			</div>
-			<div id="staffOldModContainer1">
-				• 
-				<span id="staffOldMod1" class="heirloomMod">???</span>
-			</div>
-			<div id="staffOldModContainer2">
-				• 
-				<span id="staffOldMod2" class="heirloomMod">???</span>
-			</div>
-			<div id="staffOldModContainer3">
-				• 
-				<span id="staffOldMod3" class="heirloomMod">???</span>
-			</div>
-			<div id="staffOldModContainer4">
-				• 
-				<span id="staffOldMod4" class="heirloomMod">???</span>
-			</div>
-		</div>
 		<div id="staffNewContainer" class="heirloomContainer" style="opacity: 0;">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
@@ -191,8 +226,8 @@
 					<span class="heirloomName" id="staffNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 1;">
-				<div class="help" id="staffNew?" style="display: none; right: -331px; top: -51px;">
+			<div style="width: 0px; height: 0px; z-index: 2;">
+				<div class="help" id="staffNew?">
 					<p id="staffNewInfo"></p>
 				</div>
 			</div>
@@ -222,6 +257,46 @@
 				<span id="staffNewMod4Plus">+?</span>
 			</div>
 		</div>
+		<div id="coreNewContainer" class="heirloomContainer" style="display: none; z-index: 1;">
+			<div class="heirloomContainerTopRow">
+				<div class="heirloomIconContainer">
+					<span class="glyphicon glyphicon-adjust"></span>
+				</div>
+				<div>
+					<span class="heirloomName" id="coreNewName">???</span>
+				</div>
+			</div>
+			<div style="width: 0px; height: 0px; z-index: 1;">
+				<div class="help" id="coreNew?">
+					<p id="coreNewInfo"></p>
+				</div>
+			</div>
+			<div id="coreNewModContainer0">
+				• 
+				<span id="coreNewMod0" class="heirloomMod">???</span>
+				<span id="coreNewMod0Plus">+?</span>
+			</div>
+			<div id="coreNewModContainer1">
+				• 
+				<span id="coreNewMod1" class="heirloomMod">???</span>
+				<span id="coreNewMod1Plus">+?</span>
+			</div>
+			<div id="coreNewModContainer2">
+				• 
+				<span id="coreNewMod2" class="heirloomMod">???</span>
+				<span id="coreNewMod2Plus">+?</span>
+			</div>
+			<div id="coreNewModContainer3">
+				• 
+				<span id="coreNewMod3" class="heirloomMod">???</span>
+				<span id="coreNewMod3Plus">+?</span>
+			</div>
+			<div id="coreNewModContainer4">
+				• 
+				<span id="coreNewMod4" class="heirloomMod">???</span>
+				<span id="coreNewMod4Plus">+?</span>
+			</div>
+		</div>
 	</div>
 
 	<footer id="footer">
@@ -232,9 +307,9 @@
 		<a href="https://omsi6.github.io/heirlooms/index.js" style="text-decoration: underline">Heirlooms v<span id="versionNumber">0.00</span></a>
 	</footer>
 
-	<script src="lz-string.js"></script>
-	<script src="jquery.js"></script>
-	<!--<script src="tdcalc.js"></script>-->
+	<script src="lz-string.min.js"></script>
+	<script src="jquery.min.js"></script>
+	<script src="tdcalc.js"></script>
 	<script src="index.js"></script>
 </body>
 </html>
