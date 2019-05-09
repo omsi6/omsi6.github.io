@@ -263,10 +263,10 @@ const stepAmounts = {
 
     fireTrap: [1, 1, 1, 1, 2, 3, 4],
     poisonTrap: [1, 1, 1, 1, 2, 3, 4],
-    lightningTrap: [0, 0, 1, 1, 2, 3, 4],
+    lightningTrap: [0, 0, 1, 1, 2, 2, 3],
     strengthEffect: [1, 1, 1, 1, 2, 2, 3],
     condenserEffect: [0, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5],
-    runestones: [1, 1, 1, 1, 2, 2, 3]
+    runestones: [1, 1, 1, 1, 2, 3, 4]
 };
 
 const maxAmounts = {
