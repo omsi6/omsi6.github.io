@@ -944,7 +944,7 @@ function getModCost(type, heirloom) {
             let currentValue = mod[1] - (mod[3] * stepAmount);
             let modCost = 0;
             while (currentValue < targetValue) {
-                modCost += getUpgCost(name, { mods: [[name, currentValue]], rarity: heirloom.rarity });
+                modCost += getUpgCost(name, { type: heirloom.type, mods: [[name, currentValue]], rarity: heirloom.rarity });
                 currentValue += stepAmount;
             }
             cost += modCost;
