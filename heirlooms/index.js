@@ -1055,8 +1055,8 @@ function calculate(manualInput) {
         while (true) {
             let eff = 0;
             for (const mod of newShield.mods) {
-                if (getUpgEff(mod[0], newShield, newStaff) > eff) {
-                    eff = getUpgEff(mod[0], newShield, newStaff);
+                if (getUpgEff(mod[0], newShield, newShield) > eff) {
+                    eff = getUpgEff(mod[0], newShield, newShield);
                     cost = getUpgCost(mod[0], newShield);
                     name = mod[0];
                     modToUpgrade = mod;
