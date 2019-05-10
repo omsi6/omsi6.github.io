@@ -678,6 +678,8 @@
         <title>Action Options</title>
         <title_stories>Action Stories</title_stories>
         <title_list>Action List</title_list>
+        <active_title>Active</active_title>
+        <next_title>Next</next_title>
         <title_loadout>Loadouts</title_loadout>
         <tooltip>
             <desc><![CDATA[
