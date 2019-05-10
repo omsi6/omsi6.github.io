@@ -278,7 +278,7 @@ function saveList() {
     setTimeout(() => {
         document.getElementById("amountCustom").value = globalCustomInput;
     }, 1000);
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < loadouts.length - 1; i++) {
         document.getElementById(`load${i + 1}name`).textContent = loadoutnames[i];
     }
 }
