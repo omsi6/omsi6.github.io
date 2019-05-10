@@ -301,6 +301,15 @@ function clearList() {
     view.updateNextActions();
 }
 
+function loadActive() {
+    let newNext = [];
+    for(let i = 0; i < actions.current.length; i++) {
+        newNext.push({name:actions.current[i].name, disabled:false, loops:actions.current[i].loops});
+    }
+    actions.next = newNext;
+    view.updateNextActions();
+}
+
 function unlockTown(townNum) {
     if (!towns[townNum].unlocked()) {
         townsUnlocked.push(townNum);

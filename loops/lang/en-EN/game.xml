@@ -702,6 +702,7 @@
             <save_loadout>Save List</save_loadout>
             <load_loadout>Load Selected List</load_loadout>
             <clear_list>Clear List</clear_list>
+            <load_active>Load Active List</load_active>
             <higher_done_percent_benefic>You can find more stuff with higher %.</higher_done_percent_benefic>
             <progress_label>Progress</progress_label>
             <total_found>Total Found</total_found>
