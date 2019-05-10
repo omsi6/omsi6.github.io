@@ -302,6 +302,7 @@ function clearList() {
 }
 
 function loadActive() {
+    actions.nextLast = copyArray(next);
     const newNext = [];
     for (let i = 0; i < actions.current.length; i++) {
         newNext.push({ name: actions.current[i].name, disabled: false, loops: actions.current[i].loops });
