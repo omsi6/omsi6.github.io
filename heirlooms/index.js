@@ -11,7 +11,7 @@
 
 /*
 
-v1.15 fix empty mods breaking, fix breaking if spire 1 not cleared
+v1.15 fix empty mods breaking, fix breaking if spire 1 not cleared, fix log notation
 v1.14 fix no core hard caps
 v1.13 add core weighting, heirloom cost display, truncate gain/eff display nums, bug fixes, code cleanup, and html/css cleanup
 v1.12 allow swapping of weighted heirlooms from carried looms, move new vm/xp calculations to a beta switch and use legacy calcs by default, fix crit dmg/chance calcs breaking if the shield only had one of said stats, fix all calcs breaking if you didn't have trimp attack, new versioning system
@@ -769,23 +769,34 @@ function prettify(number) {
 
     let base = Math.floor(Math.log(number) / Math.log(1000));
     if (base <= 0) return prettifySub(number);
+
+    if (game.options.menu.standardNotation.enabled === 5) {
+        // thanks ZXV
+        const logBase = game.options.menu.standardNotation.logBase;
+        const exponent = Math.log(number) / Math.log(logBase);
+        return `${prettifySub(exponent)}L${logBase}`;
+    }
+
+
     number /= Math.pow(1000, base);
-    let suffix;
     if (number >= 999.5) {
         // 999.5 rounds to 1000 and we don’t want to show “1000K” or such
         number /= 1000;
         ++base;
     }
-    if (save.options.menu.standardNotation.enabled === 3) {
-        const suffices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    
+    let suffices;
+    let suffix;
+    if (game.options.menu.standardNotation.enabled === 3) {
+        suffices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
         if (base <= suffices.length) suffix = suffices[base - 1];
         else {
             let suf2 = (base % suffices.length) - 1;
             if (suf2 < 0) suf2 = suffices.length - 1;
-            suffix = `${suffices[Math.ceil(base / suffices.length) - 2]}${suffices[suf2]}`;
+            suffix = suffices[Math.ceil(base / suffices.length) - 2] + suffices[suf2];
         }
     } else {
-        const suffices = [
+        suffices = [
             "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud",
             "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv",
             "Tv", "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tg", "Utg", "Dtg", "Ttg",
@@ -799,7 +810,7 @@ function prettify(number) {
             "Nn", "Ct", "Uc"
         ];
         if (save.options.menu.standardNotation.enabled === 2 || (save.options.menu.standardNotation.enabled === 1 && base > suffices.length) || (save.options.menu.standardNotation.enabled === 4 && base > 31))
-            suffix = `e${((base) * 3)}`;
+            suffix = `e${(base) * 3}`;
         else if (save.options.menu.standardNotation.enabled && base <= suffices.length)
             suffix = suffices[base - 1];
         else {
