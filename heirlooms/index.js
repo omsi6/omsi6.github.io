@@ -32,7 +32,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.14;
+const globalVersion = 1.15;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["E4", "E5", "CC", "Beta"];
@@ -84,7 +84,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
 }
 
 function updateVersion() {
-    if (inputs.version < 1.14) inputs.version = 1.14;
+    if (inputs.version < 1.15) inputs.version = 1.15;
 }
 
 updateVersion();
