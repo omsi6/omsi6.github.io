@@ -11,6 +11,7 @@
 
 /*
 
+v1.14 fix no core hard caps
 v1.13 add core weighting, heirloom cost display, truncate gain/eff display nums, bug fixes, code cleanup, and html/css cleanup
 v1.12 allow swapping of weighted heirlooms from carried looms, move new vm/xp calculations to a beta switch and use legacy calcs by default, fix crit dmg/chance calcs breaking if the shield only had one of said stats, fix all calcs breaking if you didn't have trimp attack, new versioning system
 v1.11 fix classy breaking caluclations, minor code cleanup
@@ -30,7 +31,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.13;
+const globalVersion = 1.14;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["E4", "E5", "CC", "Beta"];
@@ -82,7 +83,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
 }
 
 function updateVersion() {
-    if (inputs.version < 1.13) inputs.version = 1.13;
+    if (inputs.version < 1.14) inputs.version = 1.14;
 }
 
 updateVersion();
@@ -549,14 +550,8 @@ function getUpgCost(type, heirloom) {
         return basePrice;
     }
     const amount = (value - maxAmounts[type][rarity]) / stepAmounts[type][rarity];
-    if (type === "critChance") {
-        return (value >= hardCaps[type][rarity]) ? 1e10 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
-    }
-    if (type === "voidMaps") {
-        return (value >= hardCaps[type][rarity]) ? 1e10 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
-    }
-    if (type === "plaguebringer") {
-        return (value >= hardCaps[type][rarity]) ? 1e10 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
+    if (hardCaps[type]) {
+        return (value >= hardCaps[type][rarity]) ? 1e20 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
     }
     return Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
 }
