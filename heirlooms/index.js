@@ -11,6 +11,7 @@
 
 /*
 
+v1.15 fix empty mods breaking, fix breaking if spire 1 not cleared
 v1.14 fix no core hard caps
 v1.13 add core weighting, heirloom cost display, truncate gain/eff display nums, bug fixes, code cleanup, and html/css cleanup
 v1.12 allow swapping of weighted heirlooms from carried looms, move new vm/xp calculations to a beta switch and use legacy calcs by default, fix crit dmg/chance calcs breaking if the shield only had one of said stats, fix all calcs breaking if you didn't have trimp attack, new versioning system
@@ -931,8 +932,10 @@ function containsDuplicate(heirlooms, name) {
 
 function getModCost(type, heirloom) {
     let cost = 0;
+    if (type === "empty") return cost;
     for (const mod of heirloom.mods) {
         if (mod[0] === type) {
+            console.log(mod[0])
             const stepAmount = stepAmounts[mod[0]][heirloom.rarity];
             const name = mod[0];
             const targetValue = mod[1];
@@ -1026,11 +1029,13 @@ function calculate(manualInput) {
         }
     }
 
-    startTDCalc();
-    loadCore(startingCore);
-
     // show cores by default if you know they exist
-    if (save.global.spiresCompleted >= 1) inputs.setInput("coreUnlocked", true);
+    // and init player spire stuff
+    if (save.global.spiresCompleted >= 1) {
+        inputs.setInput("coreUnlocked", true);
+        startTDCalc();
+        loadCore(startingCore);
+    }
 
     const shieldAddAmounts = [0, 0, 0, 0, 0];
     const staffAddAmounts = [0, 0, 0, 0, 0];
@@ -1142,7 +1147,10 @@ function calculate(manualInput) {
     document.getElementById("shieldNewContainer").style.opacity = 1;
     document.getElementById("staffNewContainer").style.animation = "moveDown 1s 1 cubic-bezier(0, 0, 0, 1)";
     document.getElementById("staffNewContainer").style.opacity = 1;
-    if (!isEmpty(startingCore)) {
+    if (isEmpty(startingCore)) {
+        document.getElementById("coreOldContainer").style.display = "none";
+        document.getElementById("coreNewContainer").style.display = "none";
+    } else {
         document.getElementById("coreNewContainer").style.animation = "moveDown 1s 1 cubic-bezier(0, 0, 0, 1)";
         document.getElementById("coreOldContainer").style.display = "block";
         document.getElementById("coreNewContainer").style.display = "block";
