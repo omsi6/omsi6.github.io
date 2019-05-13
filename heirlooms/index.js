@@ -11,6 +11,7 @@
 
 /*
 
+v1.17 next core upgrade display
 v1.16 more accurate core calculations
 v1.15 fix empty mods breaking, fix breaking if spire 1 not cleared, fix log notation
 v1.14 fix no core hard caps
@@ -33,7 +34,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.16;
+const globalVersion = 1.17;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["E4", "E5", "CC", "Beta"];
@@ -78,14 +79,17 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
         else if (input === "XPWeight" && savedInputs[input] === 11.25) continue;
         else if (input === "coreUnlocked" && savedInputs[input]) {
             document.getElementById("coreOldContainer").style.display = "block";
-            document.getElementById("resourceAmounts").textContent = "??? Nullifium and ??? Spirestones.";
+            document.getElementById("nextUpgradesContainer").innerHTML =
+                `You have ??? Nullifium and ??? Spirestones.
+                <br>
+                Your next upgrades should be ??? at ??? Nullifium, and ??? at ??? Spirestones.`;
         }
         inputs.setInput(input, savedInputs[input]);
     }
 }
 
 function updateVersion() {
-    if (inputs.version < 1.16) inputs.version = 1.16;
+    if (inputs.version < 1.17) inputs.version = 1.17;
 }
 
 updateVersion();
@@ -217,12 +221,12 @@ const fancyModNames = {
     metalDrop: "Metal Drop Rate",
     woodDrop: "Wood Drop Rate",
 
-    fireTrap: "Fire Trap Damage",
-    poisonTrap: "Poison Trap Damage",
-    lightningTrap: "Lightning Trap Damage",
-    strengthEffect: "Strength Tower Effect",
-    condenserEffect: "Condenser Effect",
-    runestones: "Runestone Drop Rate"
+    fireTrap: "Fire",
+    poisonTrap: "Poison",
+    lightningTrap: "Lightning",
+    strengthEffect: "Strength",
+    condenserEffect: "Condenser",
+    runestones: "Runestones"
 };
 
 const modsToWeigh = ["trimpAttack", "critDamage", "critChance", "voidMaps", "plaguebringer", "FluffyExp", "MinerSpeed", "fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
@@ -1135,10 +1139,12 @@ function calculate(manualInput) {
     }
 
     // current nu/ss, next goal nu price, next goal name
-    if (inputs.coreUnlocked) document.getElementById("resourceAmounts").textContent = `${prettify(nu)} Nullifium and ${prettify(ss)} Spirestones.`;
-    else document.getElementById("resourceAmounts").textContent = `${prettify(nu)} Nullifium.`;
-    document.getElementById("nuCost").textContent = prettify(cost);
-    document.getElementById("nextUpgrade").textContent = fancyModNames[name];
+    document.getElementById("nextUpgradesContainer").innerHTML =
+        `You have ${prettify(nu)} Nullifium${isEmpty(startingCore) ? "." : ` and ${prettify(ss)} Spirestones.`}
+        <br>
+        Your next upgrade${isEmpty(startingCore)
+        ? ` should be ${fancyModNames[name]} at ${prettify(cost)} Nullifium.`
+        : `s should be ${fancyModNames[name]} at ${prettify(cost)} Nullifium, and ${fancyModNames[coreName]} at ${prettify(coreCost)} Spirestones.`}`;
 
     // add upg amounts
     for (let i = 0; i < 5; i++) {

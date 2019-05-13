@@ -255,17 +255,16 @@ a:hover, a:active {
 	text-align: center;
 }
 
-.nullifiumContainer {
+.nextUpgradesContainer {
 	width: 31.2rem;
-	height: 5.7rem;
-	font-size: 1.3rem;
-	line-height: 1.5rem;
+    height: 5.7rem;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
     border: 0.3rem solid #555;
-	padding: 0.3rem;
-	padding-top: 0.2rem;
-    text-align: left;
-	background-color: #111111;
-	box-shadow: -0.1rem 0.1rem 1rem #111;
+    padding: 0.3rem;
+    padding-top: 0.4rem;
+    background-color: #111111;
+    box-shadow: -0.1rem 0.1rem 1rem #111;
 	color: #8a008a;
 	text-align: center;
 }
