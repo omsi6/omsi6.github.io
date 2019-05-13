@@ -11,6 +11,7 @@
 
 /*
 
+v1.16 more accurate core calculations
 v1.15 fix empty mods breaking, fix breaking if spire 1 not cleared, fix log notation
 v1.14 fix no core hard caps
 v1.13 add core weighting, heirloom cost display, truncate gain/eff display nums, bug fixes, code cleanup, and html/css cleanup
@@ -32,7 +33,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.15;
+const globalVersion = 1.16;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["E4", "E5", "CC", "Beta"];
@@ -84,7 +85,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
 }
 
 function updateVersion() {
-    if (inputs.version < 1.15) inputs.version = 1.15;
+    if (inputs.version < 1.16) inputs.version = 1.16;
 }
 
 updateVersion();
@@ -725,12 +726,15 @@ function getUpgGain(type, heirloom) {
     }
     if (modsToWeighCore.includes(type)) {
         loadCore(heirloom);
-        const before = estimatedMaxDifficulty(getMaxEnemyHP());
-        before.damage = getMaxEnemyHP();
+        const before = getMaxEnemyHP();
+        const beforeRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
         loadCore(heirloom, modNamesToTraps[type], value + stepAmount);
-        const after = estimatedMaxDifficulty(getMaxEnemyHP());
-        after.damage = getMaxEnemyHP();
-        return after.runestones / before.runestones + after.damage / before.damage - 1;
+        const after = getMaxEnemyHP();
+        const afterRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
+        // 0.971 is the andrew constant, thanks andrew
+        // also ghostfrog, pls pm me to tell me how I did this wrong again
+        if (type === "runestones") return (afterRS / beforeRS - 1) * 0.971;
+        return after / before - 1;
     }
     return false;
 }
@@ -746,7 +750,7 @@ function getUpgEff(type, shield, heirloom) {
         return Math.log(getUpgGain(type, heirloom), getUpgGain("trimpAttack", shield)) * getUpgCost("trimpAttack", shield) / getUpgCost(type, heirloom);
     }
     if (modsToWeighCore.includes(type)) {
-        return (getUpgGain(type, heirloom) / getUpgCost(type, heirloom)) * coreBasePrices[heirloom.rarity];
+        return (getUpgGain(type, heirloom) * 100 / getUpgCost(type, heirloom)) * coreBasePrices[heirloom.rarity];
     }
     return false;
 }
@@ -848,12 +852,23 @@ function updateModContainer(divName, shield, staff, core) {
                 else document.getElementById(`${divName}Mod${i}`).textContent = `${parseFloat(heirloomToUse.mods[i][1].toPrecision(4)).toString()}% ${modNames[heirloomToUse.mods[i][0]]}`;
                 document.getElementById(`${divName}ModContainer${i}`).style.opacity = 1;
                 if (modsToWeigh.includes(heirloomToUse.mods[i][0])) {
-                    infoText += `${fancyModNames[heirloomToUse.mods[i][0]]}:
+                    if (heirloomToUse.type === "Core") {
+                        infoText +=
+                            `${fancyModNames[heirloomToUse.mods[i][0]]}:
                                 <ul>
-                                    <li>Cost: ${prettifyCommas(getUpgCost(heirloomToUse.mods[i][0], heirloomToUse))}</li>
-                                    <li>Gain: ${humanify(getUpgGain(heirloomToUse.mods[i][0], heirloomToUse), 4)}</li>
-                                    <li>Efficiency: ${humanify(getUpgEff(heirloomToUse.mods[i][0], shield, heirloomToUse), 4)}</li>
-                                </ul>`;
+                                <li>Cost: ${prettifyCommas(getUpgCost(heirloomToUse.mods[i][0], heirloomToUse))}</li>
+                                <li>Gain: ${humanify(getUpgGain(heirloomToUse.mods[i][0], heirloomToUse) * 100, 4)}%</li>
+                                <li>Efficiency: ${humanify(getUpgEff(heirloomToUse.mods[i][0], shield, heirloomToUse), 4)}</li>
+                            </ul>`;
+                    } else {
+                        infoText +=
+                            `${fancyModNames[heirloomToUse.mods[i][0]]}:
+                                <ul>
+                                <li>Cost: ${prettifyCommas(getUpgCost(heirloomToUse.mods[i][0], heirloomToUse))}</li>
+                                <li>Gain: ${humanify(getUpgGain(heirloomToUse.mods[i][0], heirloomToUse), 4)}</li>
+                                <li>Efficiency: ${humanify(getUpgEff(heirloomToUse.mods[i][0], shield, heirloomToUse), 4)}</li>
+                            </ul>`;
+                    }
                 }
             } else {
                 document.getElementById(`${divName}Mod${i}`).textContent = "N/A";
