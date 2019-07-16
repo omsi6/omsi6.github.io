@@ -3467,7 +3467,7 @@ function ImbueMind() {
         const toUnlock = towns[3].getLevel("Illusions") >= 70 && getSkillLevel("Magic") >= 300;
         if (toUnlock && !isVisible(document.getElementById("buffList"))) {
             document.getElementById("buffList").style.display = "flex";
-            document.getElementById(`buffImbueContainer`).style.display = "flex";
+            document.getElementById(`buffImbuementContainer`).style.display = "flex";
         }
         return toUnlock;
     };
