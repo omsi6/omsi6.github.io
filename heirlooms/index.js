@@ -11,6 +11,7 @@
 
 /*
 
+v1.18 radiating heirloom support for test version
 v1.17 next core upgrade display
 v1.16 more accurate core calculations
 v1.15 fix empty mods breaking, fix breaking if spire 1 not cleared, fix log notation
@@ -34,7 +35,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.17;
+const globalVersion = 1.18;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["E4", "E5", "CC", "Beta"];
@@ -89,7 +90,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
 }
 
 function updateVersion() {
-    if (inputs.version < 1.17) inputs.version = 1.17;
+    if (inputs.version < 1.18) inputs.version = 1.18;
 }
 
 updateVersion();
@@ -173,6 +174,8 @@ const modNames = {
     trimpBlock: "Trimp Block",
     trimpHealth: "Trimp Health",
     voidMaps: "Void Map Drop Chance",
+    prismatic: "Prismatic Shield",
+    gammaBurst: "Gamma Burst",
 
     DragimpSpeed: "Dragimp Efficiency",
     ExplorerSpeed: "Explorer Efficiency",
@@ -207,6 +210,8 @@ const fancyModNames = {
     trimpBlock: "Trimp Block",
     trimpHealth: "Trimp Health",
     voidMaps: "Void Map Drop Chance",
+    prismatic: "Prismatic Shield",
+    gammaBurst: "Gamma Burst",
 
     DragimpSpeed: "Dragimp Efficiency",
     ExplorerSpeed: "Explorer Efficiency",
@@ -234,39 +239,41 @@ const modsToWeighShield = ["trimpAttack", "critDamage", "critChance", "voidMaps"
 const modsToWeighStaff = ["FluffyExp", "MinerSpeed"];
 const modsToWeighCore = ["fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
 
-const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued"];
+const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
 
-const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500];
-const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000];
-const priceIncreases = [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04];
+const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500, 5000];
+const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000, 20000000000];
+const priceIncreases = [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03];
 
 const stepAmounts = {
-    playerEfficiency: [1, 1, 1, 2, 4, 8, 16, 32, 64],
-    trainerEfficiency: [1, 1, 1, 2, 2, 2, 2, 2, 2],
-    storageSize: [4, 4, 4, 4, 8, 16, 16, 16, 16],
-    breedSpeed: [1, 1, 1, 1, 3, 3, 3, 3, 3],
-    trimpHealth: [2, 2, 2, 2, 5, 5, 5, 6, 8],
-    trimpBlock: [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    playerEfficiency: [1, 1, 1, 2, 4, 8, 16, 32, 64, 128],
+    trainerEfficiency: [1, 1, 1, 2, 2, 2, 2, 2, 2, 0],
+    storageSize: [4, 4, 4, 4, 8, 16, 16, 16, 16, 0],
+    breedSpeed: [1, 1, 1, 1, 3, 3, 3, 3, 3, 5],
+    trimpHealth: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
+    trimpBlock: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
+    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 
-    critChance: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5],
-    critDamage: [5, 5, 5, 5, 10, 10, 10, 10, 15],
-    trimpAttack: [2, 2, 2, 2, 5, 5, 5, 6, 8],
-    voidMaps: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 0.5],
+    critChance: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.5],
+    critDamage: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20],
+    trimpAttack: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
+    voidMaps: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 0.25],
+    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0],
 
-    metalDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    foodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    woodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    gemsDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    fragmentsDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    FarmerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    LumberjackSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    DragimpSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    ExplorerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32],
-    ScientistSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32],
+    metalDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    foodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    woodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    gemsDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    fragmentsDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    FarmerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    LumberjackSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    DragimpSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    ExplorerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+    ScientistSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
 
-    FluffyExp: [0, 0, 0, 0, 0, 0, 0, 0, 1],
-    MinerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32],
+    FluffyExp: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+    MinerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
 
     fireTrap: [1, 1, 1, 1, 2, 3, 4],
     poisonTrap: [1, 1, 1, 1, 2, 3, 4],
@@ -277,32 +284,34 @@ const stepAmounts = {
 };
 
 const maxAmounts = {
-    playerEfficiency: [16, 16, 16, 32, 64, 128, 256, 512, 1024],
-    trainerEfficiency: [20, 20, 20, 40, 60, 80, 100, 120, 140],
-    storageSize: [64, 64, 64, 128, 256, 512, 768, 1024, 1280],
-    breedSpeed: [10, 10, 10, 20, 100, 130, 160, 190, 220],
-    trimpHealth: [20, 20, 20, 40, 100, 150, 200, 260, 356],
-    trimpBlock: [7, 7, 7, 10, 40, 60, 80, 100, 120],
+    playerEfficiency: [16, 16, 16, 32, 64, 128, 256, 512, 1024, 2048],
+    trainerEfficiency: [20, 20, 20, 40, 60, 80, 100, 120, 140, 0],
+    storageSize: [64, 64, 64, 128, 256, 512, 768, 1024, 1280, 0],
+    breedSpeed: [10, 10, 10, 20, 100, 130, 160, 190, 220, 280],
+    trimpHealth: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
+    trimpBlock: [7, 7, 7, 10, 40, 60, 80, 100, 120, 0],
+    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2000],
+    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 50],
 
-    critChance: [2.6, 2.6, 2.6, 5.0, 7.4, 9.8, 12.2, 15.9, 30],
-    critDamage: [60, 60, 60, 100, 200, 300, 400, 500, 650],
-    trimpAttack: [20, 20, 20, 40, 100, 150, 200, 260, 356],
-    voidMaps: [7, 7, 7, 11, 16, 22, 30, 38, 50],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 15],
+    critChance: [2.6, 2.6, 2.6, 5.0, 7.4, 9.8, 12.2, 15.9, 30, 50],
+    critDamage: [60, 60, 60, 100, 200, 300, 400, 500, 650, 850],
+    trimpAttack: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
+    voidMaps: [7, 7, 7, 11, 16, 22, 30, 38, 50, 60],
+    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 15, 0],
 
-    metalDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    foodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    woodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    gemsDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    fragmentsDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    FarmerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    LumberjackSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    DragimpSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    ExplorerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640],
-    ScientistSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640],
+    metalDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    foodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    woodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    gemsDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    fragmentsDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    FarmerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    LumberjackSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    DragimpSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    ExplorerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    ScientistSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
 
-    FluffyExp: [0, 0, 0, 0, 0, 0, 0, 0, 50],
-    MinerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640],
+    FluffyExp: [0, 0, 0, 0, 0, 0, 0, 0, 50, 100],
+    MinerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
 
     fireTrap: [25, 25, 25, 50, 100, 199, 400],
     poisonTrap: [25, 25, 25, 50, 100, 199, 400],
@@ -316,6 +325,7 @@ const hardCaps = {
     critChance: [30, 30, 30, 30, 30, 30, 30, 30, 100],
     voidMaps: [50, 50, 50, 50, 50, 50, 50, 50, 80],
     plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 75],
+    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150],
 
     condenserEffect: [0, 10, 10, 15, 25, 35, 50]
 };
