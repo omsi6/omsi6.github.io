@@ -11,6 +11,7 @@
 
 /*
 
+v1.19 plaguebringer on radiating heirlooms
 v1.18 radiating heirloom support for test version
 v1.17 next core upgrade display
 v1.16 more accurate core calculations
@@ -35,7 +36,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.18;
+const globalVersion = 1.19;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["E4", "E5", "CC", "Beta"];
@@ -90,7 +91,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
 }
 
 function updateVersion() {
-    if (inputs.version < 1.18) inputs.version = 1.18;
+    if (inputs.version < 1.19) inputs.version = 1.19;
 }
 
 updateVersion();
@@ -259,7 +260,7 @@ const stepAmounts = {
     critDamage: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20],
     trimpAttack: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
     voidMaps: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 0.25],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0],
+    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5],
 
     metalDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
     foodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
@@ -297,7 +298,7 @@ const maxAmounts = {
     critDamage: [60, 60, 60, 100, 200, 300, 400, 500, 650, 850],
     trimpAttack: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
     voidMaps: [7, 7, 7, 11, 16, 22, 30, 38, 50, 60],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 15, 0],
+    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 15, 30],
 
     metalDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
     foodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
@@ -322,9 +323,9 @@ const maxAmounts = {
 };
 
 const hardCaps = {
-    critChance: [30, 30, 30, 30, 30, 30, 30, 30, 100],
-    voidMaps: [50, 50, 50, 50, 50, 50, 50, 50, 80],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 75],
+    critChance: [30, 30, 30, 30, 30, 30, 30, 30, 100, 125],
+    voidMaps: [50, 50, 50, 50, 50, 50, 50, 50, 80, 100],
+    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100],
     prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150],
 
     condenserEffect: [0, 10, 10, 15, 25, 35, 50]
