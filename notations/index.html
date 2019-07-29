@@ -1,37 +1,26 @@
-<html>
+<html lang="en">
 <head>
-	<title>Notations</title>
-
-	<link rel="stylesheet" href="index.css" />
+  <meta charset="utf-8"/>
+  <title>Notations</title>
+  <link rel="stylesheet" href="index.css" />
+  <script src="break_infinity.min.js"></script>
+  <script src="ad-notations.min.js"></script>
 </head>
 
 <body>
-	<div id="content">
-		<p id="content-text">
-			Type a number in this box to see what it looks like in all sorts of different notations.
-		</p>
-		<div style="display: flex;">
-			<input value="1" id="valuetoformat" oninput="updateValues()" style="margin-right: 5px; margin-bottom: 15px;">
-			commas:
-			<input id="commas" onchange="updateValues()" type="checkbox" style="border:2px dotted #00f;display:block;background:#ff0000;" />
-		</div>
-		<span id="standard">Standard: ???</span>
-		<span id="cancer">Cancer: ???</span>
-		<span id="mixed scientific">Mixed scientific: ???</span>
-		<span id="mixed engineering">Mixed engineering: ???</span>
-		<span id="logarithm">Logarithm: ???</span>
-		<span id="scientific">Scientific: ???</span>
-		<span id="engineering">Engineering: ???</span>
-		<span id="letters">Letters: ???</span>
-		<span id="infinity">Infinity: ???</span>
-		<span id="brackets">Brackets: ???</span>
-	</div>
+  <p class="content-text">
+    Type a number in this box to see what it looks like in all sorts of different notations.
+  </p>
+  <div id="inputContainer" class="input-container">
+    <input id="number" class="number-input" value="1" oninput="updateValues()">
+    commas:
+    <input id="commas" type="checkbox" onchange="updateValues()" />
+  </div>
 
-	<footer id="footer">
-		<a href="https://omsi6.github.io/notations/index.js?2">Source</a>
-	</footer>
+  <footer class="footer">
+    <a class="source-link" href="https://github.com/antimatter-dimensions/notations">Source</a>
+  </footer>
 
-	<script src="breakinfinity.js"></script>
-	<script src="index.js?2"></script>
+  <script src="index.js"></script>
 </body>
 </html>
