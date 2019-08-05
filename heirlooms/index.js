@@ -11,6 +11,7 @@
 
 /*
 
+v1.21 health mod weighting for u2, prismatic value fixes, and code restructuring
 v1.20 full v5.00 heirloom system support, show inventory heirlooms on hover, equipped heirloom distinction, comprehensive reworking of upgeff/upggain displays/calculations, full support for empty/missing heirlooms, code cleanup
 v1.19 plaguebringer on radiating heirlooms
 v1.18 radiating heirloom support for test version
@@ -37,10 +38,10 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.20;
+const globalVersion = 1.21;
 document.getElementById("versionNumber").textContent = globalVersion;
 
-const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L3", "Beta"];
+const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "Beta"];
 const textboxNames = ["VMWeight", "XPWeight", "weaponLevels", "portalZone", "voidZone"];
 const inputs = {
     VMWeight: 12,
@@ -59,6 +60,7 @@ const inputs = {
     coreUnlocked: false,
     universe2Unlocked: false,
     universe2: false,
+    scruffyE0L2: false,
     scruffyE0L3: false,
     setInput(name, value) {
         if (checkboxNames.includes(name)) document.getElementById(`${name}Input`).checked = value;
@@ -100,6 +102,9 @@ function updateVersion() {
         inputs.fluffyE5L10 = savedInputs.E5;
         inputs.chargedCrits = savedInputs.CC;
         inputs.version = 1.20;
+    }
+    if (inputs.version < 1.21) {
+        inputs.version = 1.21;
     }
 }
 
@@ -159,181 +164,291 @@ Math.log = (function() {
     };
 }());
 
-const modNames = {
-    breedSpeed: "Breed Speed",
-    critChance: "Crit Chance, additive",
-    critDamage: "Crit Damage, additive",
-    plaguebringer: "Plaguebringer",
-    playerEfficiency: "Player Efficiency",
-    storageSize: "Storage Size",
-    trainerEfficiency: "Trainer Efficiency",
-    trimpAttack: "Trimp Attack",
-    trimpBlock: "Trimp Block",
-    trimpHealth: "Trimp Health",
-    voidMaps: "Void Map Drop Chance",
-    prismatic: "Prismatic Shield",
-    gammaBurst: "Gamma Burst",
+const mods = {
+    breedSpeed: {
+        name: "Breed Speed",
+        fullName: "Breed Speed",
+        type: "Shield",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 3, 3, 3, 3, 3, 5],
+        softCaps: [10, 10, 10, 20, 100, 130, 160, 190, 220, 280],
+    },
+    critChance: {
+        name: "Crit Chance",
+        fullName: "Crit Chance, additive",
+        type: "Shield",
+        weighable: () => true,
+        stepAmounts: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.5],
+        softCaps: [2.6, 2.6, 2.6, 5, 7.4, 9.8, 12.2, 15.9, 30, 50],
+        hardCaps: [30, 30, 30, 30, 30, 30, 30, 30, 100, 125],
+        heirloopy: true
+    },
+    critDamage: {
+        name: "Crit Damage",
+        fullName: "Crit Damage, additive",
+        type: "Shield",
+        weighable: () => true,
+        stepAmounts: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20],
+        softCaps: [60, 60, 60, 100, 200, 300, 400, 500, 650, 850],
+    },
+    plaguebringer: {
+        name: "Plaguebringer",
+        fullName: "Plaguebringer",
+        type: "Shield",
+        weighable: () => true,
+        stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5],
+        softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 15, 30],
+        hardCaps: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100],
+        heirloopy: true
+    }, 
+    playerEfficiency: {
+        name: "Player Efficiency",
+        fullName: "Player Efficiency",
+        type: "Shield",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 2, 4, 8, 16, 32, 64, 128],
+        softCaps: [16, 16, 16, 32, 64, 128, 256, 512, 1024, 2048],
+    },
+    storageSize: {
+        name: "Storage Size",
+        fullName: "Storage Size",
+        type: "Shield",
+        weighable: () => false,
+        stepAmounts: [4, 4, 4, 4, 8, 16, 16, 16, 16, 0],
+        softCaps: [64, 64, 64, 128, 256, 512, 768, 1024, 1280, 0],
+    },
+    trainerEfficiency: {
+        name: "Trainer Efficiency",
+        fullName: "Trainer Efficiency",
+        type: "Shield",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 2, 2, 2, 2, 2, 2, 0],
+        softCaps: [20, 20, 20, 40, 60, 80, 100, 120, 140, 0],
+    },
+    trimpAttack: {
+        name: "Trimp Attack",
+        fullName: "Trimp Attack",
+        type: "Shield",
+        weighable: () => true,
+        stepAmounts: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
+        softCaps: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
+    },
+    trimpBlock: {
+        name: "Trimp Block",
+        fullName: "Trimp Block",
+        type: "Shield",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        softCaps: [7, 7, 7, 10, 40, 60, 80, 100, 120, 0],
+    },
+    trimpHealth: {
+        name: "Trimp Health",
+        fullName: "Trimp Health",
+        type: "Shield",
+        weighable: () => inputs.universe2,
+        stepAmounts: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
+        softCaps: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
+    },
+    voidMaps: {
+        name: "Void Map Drop Chance",
+        fullName: "Void Map Drop Chance",
+        type: "Shield",
+        weighable: () => true,
+        stepAmounts: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 0.25],
+        softCaps: [7, 7, 7, 11, 16, 22, 30, 38, 50, 60],
+        hardCaps: [50, 50, 50, 50, 50, 50, 50, 50, 80, 99],
+        heirloopy: true
+    },
+    prismatic: {
+        name: "Prismatic Shield",
+        fullName: "Prismatic Shield",
+        type: "Shield",
+        weighable: () => inputs.universe2,
+        stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 50],
+        hardCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 250],
+        immutable: true,
+    },
+    gammaBurst: {
+        name: "Gamma Burst",
+        fullName: "Gamma Burst",
+        type: "Shield",
+        weighable: () => true,
+        stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
+        softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2000],
+    },
 
-    DragimpSpeed: "Dragimp Efficiency",
-    ExplorerSpeed: "Explorer Efficiency",
-    FarmerSpeed: "Farmer Efficiency",
-    FluffyExp: "Pet Exp",
-    LumberjackSpeed: "Lumberjack Efficiency",
-    MinerSpeed: "Miner Efficiency",
-    ScientistSpeed: "Scientist Efficiency",
-    foodDrop: "Food Drop Rate",
-    fragmentsDrop: "Fragment Drop Rate",
-    gemsDrop: "Gem Drop Rate",
-    metalDrop: "Metal Drop Rate",
-    woodDrop: "Wood Drop Rate",
+    DragimpSpeed: {
+        name: "Dragimp Efficiency",
+        fullName: "Dragimp Efficiency",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    ExplorerSpeed: {
+        name: "Explorer Efficiency",
+        fullName: "Explorer Efficiency",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    FarmerSpeed: {
+        name: "Farmer Efficiency",
+        fullName: "Farmer Efficiency",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    FluffyExp: {
+        name: "Pet Exp",
+        fullName: "Pet Exp",
+        type: "Staff",
+        weighable: () => true,
+        stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 50, 100],
+        heirloopy: true
+    },
+    LumberjackSpeed: {
+        name: "Lumberjack Efficiency",
+        fullName: "Lumberjack Efficiency",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    MinerSpeed: {
+        name: "Miner Efficiency",
+        fullName: "Miner Efficiency",
+        type: "Staff",
+        weighable: () => true,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    ScientistSpeed: {
+        name: "Scientist Efficiency",
+        fullName: "Scientist Efficiency",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    foodDrop: {
+        name: "Food Drop Rate",
+        fullName: "Food Drop Rate",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    fragmentsDrop: {
+        name: "Fragment Drop Rate",
+        fullName: "Fragment Drop Rate",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    gemsDrop: {
+        name: "Gem Drop Rate",
+        fullName: "Gem Drop Rate",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    metalDrop: {
+        name: "Metal Drop Rate",
+        fullName: "Metal Drop Rate",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
+    woodDrop: {
+        name: "Wood Drop Rate",
+        fullName: "Wood Drop Rate",
+        type: "Staff",
+        weighable: () => false,
+        stepAmounts: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
+        softCaps: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
+    },
 
-    fireTrap: "Fire Trap Damage",
-    poisonTrap: "Poison Trap Damage",
-    lightningTrap: "Lightning Trap Damage",
-    strengthEffect: "Strength Tower Effect",
-    condenserEffect: "Condenser Effect",
-    runestones: "Runestone Drop Rate"
-};
+    fireTrap: {
+        name: "Fire",
+        fullName: "Fire Trap Damage",
+        type: "Core",
+        weighable: () => true,
+        stepAmounts: [1, 1, 1, 1, 2, 3, 4],
+        softCaps: [25, 25, 25, 50, 100, 199, 400],
+        immutable: true,
+    },
+    poisonTrap: {
+        name: "Poison",
+        fullName: "Poison Trap Damage",
+        type: "Core",
+        weighable: () => true,
+        stepAmounts: [1, 1, 1, 1, 2, 3, 4],
+        softCaps: [25, 25, 25, 50, 100, 199, 400],
+        immutable: true,
+    },
+    lightningTrap: {
+        name: "Lightning",
+        fullName: "Lightning Trap Damage",
+        type: "Core",
+        weighable: () => true,
+        stepAmounts: [0, 0, 1, 1, 2, 2, 3],
+        softCaps: [0, 0, 10, 20, 50, 100, 199],
+        immutable: true,
+    },
+    strengthEffect: {
+        name: "Strength",
+        fullName: "Strength Tower Effect",
+        type: "Core",
+        weighable: () => true,
+        stepAmounts: [1, 1, 1, 1, 2, 2, 3],
+        softCaps: [10, 10, 10, 20, 50, 100, 199],
+        immutable: true,
+    },
+    condenserEffect: {
+        name: "Condenser",
+        fullName: "Condenser Effect",
+        type: "Core",
+        weighable: () => true,
+        stepAmounts: [0, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5],
+        softCaps: [0, 5, 5, 10, 15, 20, 30],
+        hardCaps: [0, 10, 10, 15, 25, 35, 50],
+        immutable: true,
+    },
+    runestones: {
+        name: "Runestones",
+        fullName: "Runestone Drop Rate",
+        type: "Core",
+        weighable: () => true,
+        stepAmounts: [1, 1, 1, 1, 2, 3, 4],
+        softCaps: [25, 25, 25, 50, 100, 199, 400],
+        immutable: true,
+    },
 
-const fancyModNames = {
-    breedSpeed: "Breed Speed",
-    critChance: "Crit Chance",
-    critDamage: "Crit Damage",
-    plaguebringer: "Plaguebringer",
-    playerEfficiency: "Player Efficiency",
-    storageSize: "Storage Size",
-    trainerEfficiency: "Trainer Efficiency",
-    trimpAttack: "Trimp Attack",
-    trimpBlock: "Trimp Block",
-    trimpHealth: "Trimp Health",
-    voidMaps: "Void Map Drop Chance",
-    prismatic: "Prismatic Shield",
-    gammaBurst: "Gamma Burst",
-
-    DragimpSpeed: "Dragimp Efficiency",
-    ExplorerSpeed: "Explorer Efficiency",
-    FarmerSpeed: "Farmer Efficiency",
-    FluffyExp: "Pet Exp",
-    LumberjackSpeed: "Lumberjack Efficiency",
-    MinerSpeed: "Miner Efficiency",
-    ScientistSpeed: "Scientist Efficiency",
-    foodDrop: "Food Drop Rate",
-    fragmentsDrop: "Fragment Drop Rate",
-    gemsDrop: "Gem Drop Rate",
-    metalDrop: "Metal Drop Rate",
-    woodDrop: "Wood Drop Rate",
-
-    fireTrap: "Fire",
-    poisonTrap: "Poison",
-    lightningTrap: "Lightning",
-    strengthEffect: "Strength",
-    condenserEffect: "Condenser",
-    runestones: "Runestones"
-};
-
-const modsToWeigh = ["trimpAttack", "critDamage", "critChance", "voidMaps", "plaguebringer", "gammaBurst", "FluffyExp", "MinerSpeed", "fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
-const modsToWeighShield = ["trimpAttack", "critDamage", "critChance", "voidMaps", "plaguebringer", "gammaBurst"];
-const modsToWeighStaff = ["FluffyExp", "MinerSpeed"];
-const modsToWeighCore = ["fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
-const heirloopyMods = ["FluffyExp", "plaguebringer", "voidMaps", "critChance"];
-const immutableMods = ["prismatic", "fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
-
-const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
-
-const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500, 7500];
-const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000, 20000000000];
-const priceIncreases = [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03];
-
-const stepAmounts = {
-    playerEfficiency: [1, 1, 1, 2, 4, 8, 16, 32, 64, 128],
-    trainerEfficiency: [1, 1, 1, 2, 2, 2, 2, 2, 2, 0],
-    storageSize: [4, 4, 4, 4, 8, 16, 16, 16, 16, 0],
-    breedSpeed: [1, 1, 1, 1, 3, 3, 3, 3, 3, 5],
-    trimpHealth: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
-    trimpBlock: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-
-    critChance: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.5],
-    critDamage: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20],
-    trimpAttack: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
-    voidMaps: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 0.25],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5],
-    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
-
-    metalDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    foodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    woodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    gemsDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    fragmentsDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    FarmerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    LumberjackSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    DragimpSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    ExplorerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-    ScientistSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-
-    FluffyExp: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-    MinerSpeed: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
-
-    fireTrap: [1, 1, 1, 1, 2, 3, 4],
-    poisonTrap: [1, 1, 1, 1, 2, 3, 4],
-    lightningTrap: [0, 0, 1, 1, 2, 2, 3],
-    strengthEffect: [1, 1, 1, 1, 2, 2, 3],
-    condenserEffect: [0, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5],
-    runestones: [1, 1, 1, 1, 2, 3, 4]
+    empty: {
+        name: "Empty",
+        fullName: "Empty",
+        weighable: () => false
+    }
 };
 
 function getStepAmount(type, rarity) {
-    if ((heirloopyMods.includes(type) && inputs.scruffyE0L3) || immutableMods.includes(type)) return stepAmounts[type][rarity];
-    if (inputs.universe2) return stepAmounts[type][rarity] / 10;
-    return stepAmounts[type][rarity];
+    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mods[type].stepAmounts[rarity];
+    if (inputs.universe2) return mods[type].stepAmounts[rarity] / 10;
+    return mods[type].stepAmounts[rarity];
 }
 
-const maxAmounts = {
-    playerEfficiency: [16, 16, 16, 32, 64, 128, 256, 512, 1024, 2048],
-    trainerEfficiency: [20, 20, 20, 40, 60, 80, 100, 120, 140, 0],
-    storageSize: [64, 64, 64, 128, 256, 512, 768, 1024, 1280, 0],
-    breedSpeed: [10, 10, 10, 20, 100, 130, 160, 190, 220, 280],
-    trimpHealth: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
-    trimpBlock: [7, 7, 7, 10, 40, 60, 80, 100, 120, 0],
-    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 50],
-
-    critChance: [2.6, 2.6, 2.6, 5.0, 7.4, 9.8, 12.2, 15.9, 30, 50],
-    critDamage: [60, 60, 60, 100, 200, 300, 400, 500, 650, 850],
-    trimpAttack: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
-    voidMaps: [7, 7, 7, 11, 16, 22, 30, 38, 50, 60],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 15, 30],
-    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2000],
-
-    metalDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    foodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    woodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    gemsDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    fragmentsDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    FarmerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    LumberjackSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    DragimpSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    ExplorerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-    ScientistSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-
-    FluffyExp: [0, 0, 0, 0, 0, 0, 0, 0, 50, 100],
-    MinerSpeed: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
-
-    fireTrap: [25, 25, 25, 50, 100, 199, 400],
-    poisonTrap: [25, 25, 25, 50, 100, 199, 400],
-    lightningTrap: [0, 0, 10, 20, 50, 100, 199],
-    strengthEffect: [10, 10, 10, 20, 50, 100, 199],
-    condenserEffect: [0, 5, 5, 10, 15, 20, 30],
-    runestones: [25, 25, 25, 50, 100, 199, 400]
-};
-
-const hardCaps = {
-    critChance: [30, 30, 30, 30, 30, 30, 30, 30, 100, 125],
-    voidMaps: [50, 50, 50, 50, 50, 50, 50, 50, 80, 99],
-    plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100],
-    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 250],
-
-    condenserEffect: [0, 10, 10, 15, 25, 35, 50]
-};
+const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
+const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500, 7500];
+const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000, 20000000000];
+const priceIncreases = [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03];
 
 // below code is from /u/ymhsbmbesitwf on reddit
 /**
@@ -353,7 +468,7 @@ const averageBadGuyHealthMod = (0.7 + 1.3 + 1.3 + 1 + 0.7 + 0.8 + 1.1 + 1.6 + 1.
 // trimps main.js : Fluffy
 const fluffyRewards = { voidance: 12, critChance: 14, megaCrit: 15, voidelicious: 17 };
 // trimps main.js : Scruffy
-const scruffyRewards = { heirloopy: 3 };
+const scruffyRewards = { prism: 2, heirloopy: 3 };
 // trimps config.js : goldenUpgrades
 // trimps main.js: buyGoldenUpgrade(what)
 const goldenVoid = [0.0, 0.02, 0.06, 0.12, 0.2, 0.3, 0.42, 0.56, 0.72];
@@ -564,7 +679,7 @@ function voidMapsUpToZone(zone, portal, heirloomBonus) {
 function getUpgValue(type, heirloom) {
     for (const mod of heirloom.mods) {
         if (mod[0] === type) {
-            if ((heirloopyMods.includes(type) && inputs.scruffyE0L3) || immutableMods.includes(type)) return mod[1];
+            if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mod[1];
             if (inputs.universe2) return mod[1] / 10;
             return mod[1];
         }
@@ -582,14 +697,15 @@ function getDefaultUpgValue(type, heirloom) {
 }
 
 function valueDisplay(type, value) {
-    if ((inputs.scruffyE0L3 && heirloopyMods.includes(type)) || immutableMods.includes(type)) return `${parseFloat(value.toPrecision(4))}% ${modNames[type]}`;
-    return `${parseFloat(inputs.universe2 ? (value / 10).toPrecision(4) : value.toPrecision(4))}% ${modNames[type]}`;
+    if (type === "empty") return "Empty";
+    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return `${parseFloat(value.toPrecision(4))}% ${mods[type].fullName}`;
+    return `${parseFloat(inputs.universe2 ? (value / 10).toPrecision(4) : value.toPrecision(4))}% ${mods[type].fullName}`;
 }
 
 function hasUpgradableMods(heirloom) {
     if (isEmpty(heirloom)) return false;
     for (const mod of heirloom.mods) {
-        if (modsToWeighShield.includes(mod[0]) || modsToWeighStaff.includes(mod[0]) || modsToWeighCore.includes(mod[0])) return true;
+        if (mods[mod[0]].weighable()) return true;
     }
     return false;
 }
@@ -604,12 +720,12 @@ function getUpgCost(type, heirloom) {
     } else {
         basePrice = basePrices[heirloom.rarity];
     }
-    if (value <= maxAmounts[type][rarity] || !isNumeric(value)) {
+    if (value <= mods[type].softCaps[rarity] || !isNumeric(value)) {
         return basePrice;
     }
-    const amount = (value - maxAmounts[type][rarity]) / stepAmounts[type][rarity];
-    if (hardCaps[type]) {
-        return (value >= hardCaps[type][rarity]) ? 1e20 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
+    const amount = (value - mods[type].softCaps[rarity]) / mods[type].stepAmounts[rarity];
+    if (mods[type].hardCaps) {
+        return (value >= mods[type].hardCaps[rarity]) ? 1e20 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
     }
     return Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
 }
@@ -619,6 +735,17 @@ function getUpgGain(type, heirloom) {
     const stepAmount = getStepAmount(type, heirloom.rarity);
     if (type === "trimpAttack") {
         return (value + 100 + stepAmount) / (value + 100);
+    }
+    if (type === "trimpHealth") {
+        return (value + 100 + stepAmount) / (value + 100);
+    }
+    if (type === "prismatic") {
+        // 50 base, 50 from prismatic palace
+        let shieldPercent = 100;
+        shieldPercent += save.portal.Prismal.radLevel;
+        if (inputs.scruffyE0L2) shieldPercent += 25;
+
+        return (value + shieldPercent + 100 + stepAmount) / (value + shieldPercent + 100);
     }
     if (type === "critDamage") {
         const relentlessness = save.portal.Relentlessness.level;
@@ -782,7 +909,7 @@ function getUpgGain(type, heirloom) {
     if (type === "MinerSpeed") {
         return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels;
     }
-    if (modsToWeighCore.includes(type)) {
+    if (mods[type].type === "Core") {
         loadCore(heirloom);
         const before = getMaxEnemyHP();
         const beforeRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
@@ -798,11 +925,9 @@ function getUpgGain(type, heirloom) {
 }
 
 function getUpgEff(type, heirloom) {
-    if (modsToWeighShield.includes(type) || modsToWeighStaff.includes(type)) {
+    if (mods[type].weighable()) {
+        if (heirloom.type === "Core") return ((getUpgGain(type, heirloom) - 1) / (getUpgCost(type, heirloom) / coreBasePrices[heirloom.rarity])) + 1;
         return ((getUpgGain(type, heirloom) - 1) / (getUpgCost(type, heirloom) / basePrices[heirloom.rarity])) + 1;
-    }
-    if (modsToWeighCore.includes(type)) {
-        return ((getUpgGain(type, heirloom) - 1) / (getUpgCost(type, heirloom) / coreBasePrices[heirloom.rarity])) + 1;
     }
     return false;
 }
@@ -909,12 +1034,11 @@ function updateModContainer(divName, heirloom) {
         for (let i = 0; i < 6; i++) {
             const mod = heirloom.mods[i];
             if (mod) {
-                if (mod[0] === "empty") document.getElementById(`${divName}Mod${i}`).textContent = "Empty";
-                else document.getElementById(`${divName}Mod${i}`).textContent = `${valueDisplay(mod[0], mod[1])}`;
+                document.getElementById(`${divName}Mod${i}`).textContent = `${valueDisplay(mod[0], mod[1])}`;
                 document.getElementById(`${divName}ModContainer${i}`).style.opacity = 1;
-                if (modsToWeigh.includes(mod[0])) {
+                if (mods[mod[0]].weighable()) {
                     infoText +=
-                        `${fancyModNames[mod[0]]}:
+                        `${mods[mod[0]].name}:
                             <ul>
                             <li>Cost: ${getUpgCost(mod[0], heirloom) === 1e20 ? "∞" : prettifyCommas(getUpgCost(mod[0], heirloom))}</li>
                             <li>Gain: ${humanify((getUpgGain(mod[0], heirloom) - 1) * 100, 4)}%</li>
@@ -929,7 +1053,7 @@ function updateModContainer(divName, heirloom) {
         let infoValueText = "";
         for (const mod of heirloom.mods) {
             const cost = getModCost(mod[0], heirloom);
-            if (mod[0] !== "empty" && cost > 0) infoValueText += `<li>${fancyModNames[mod[0]]}: +${prettifyCommas(cost)} (${humanify(cost / heirloomValue * 100, 2)}%)</li>`;
+            if (mod[0] !== "empty" && cost > 0) infoValueText += `<li>${mods[mod[0]].name}: +${prettifyCommas(cost)} (${humanify(cost / heirloomValue * 100, 2)}%)</li>`;
         }
         infoText +=
             `${heirloom.type === "Core" ? "Spirestone" : "Nullifium"} Value:
@@ -1009,7 +1133,7 @@ function createHeirloomPopup(num) {
         totalDiv +=
             `<div>
                 • 
-                <span class="heirloomMod">${(mod[0] === "empty") ? "Empty" : `${valueDisplay(mod[0], mod[1])}`}</span>
+                <span class="heirloomMod">${valueDisplay(mod[0], mod[1])}</span>
             </div>`;
     }
     document.getElementById("heirloomPopup").classList.value = `heirloomRare${heirloom.rarity}${save.options.menu.showHeirloomAnimations.enabled && heirloom.rarity >= 7 ? "Anim" : ""}`;
@@ -1054,7 +1178,7 @@ function getModCost(type, heirloom) {
     if (type === "empty") return cost;
     for (const mod of heirloom.mods) {
         if (mod[0] === type) {
-            const stepAmount = stepAmounts[mod[0]][heirloom.rarity];
+            const stepAmount = mods[mod[0]].stepAmounts[heirloom.rarity];
             const name = mod[0];
             const targetValue = mod[1];
             let currentValue = mod[1] - (mod[3] * stepAmount);
@@ -1102,6 +1226,7 @@ function calculate(manualInput) {
         inputs.setInput("fluffyE4L10", fluffyRewardsAvailable() >= fluffyRewards.critChance);
         inputs.setInput("fluffyE5L10", fluffyRewardsAvailable() >= fluffyRewards.megaCrit);
         inputs.setInput("chargedCrits", save.talents.crit.purchased);
+        inputs.setInput("scruffyE0L2", scruffyRewardsAvailable() >= scruffyRewards.prism);
         inputs.setInput("scruffyE0L3", scruffyRewardsAvailable() >= scruffyRewards.heirloopy);
         inputs.setInput("universe2", save.global.universe === 2);
         document.getElementById("inventoryColumn1").innerHTML = "";
@@ -1192,8 +1317,8 @@ function calculate(manualInput) {
                 }
             }
 
-            if (modsToWeighShield.includes(shieldName) && shieldNullifium >= shieldCost) {
-                newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][1] += stepAmounts[newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][0]][newShield.rarity];
+            if (mods[shieldName].weighable() && shieldNullifium >= shieldCost) {
+                newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][1] += mods[newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][0]].stepAmounts[newShield.rarity];
                 newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][3] += 1;
                 shieldAddAmounts[newShield.mods.indexOf(shieldModToUpgrade)] += 1;
                 shieldNullifium -= shieldCost;
@@ -1216,8 +1341,8 @@ function calculate(manualInput) {
                 }
             }
 
-            if (modsToWeighStaff.includes(staffName) && staffNullifium >= staffCost) {
-                newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][1] += stepAmounts[newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][0]][newStaff.rarity];
+            if (mods[staffName].weighable() && staffNullifium >= staffCost) {
+                newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][1] += mods[newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][0]].stepAmounts[newStaff.rarity];
                 newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][3] += 1;
                 staffAddAmounts[newStaff.mods.indexOf(staffModToUpgrade)] += 1;
                 staffNullifium -= staffCost;
@@ -1239,8 +1364,8 @@ function calculate(manualInput) {
                 }
             }
 
-            if (modsToWeighCore.includes(coreName) && spirestones >= coreCost) {
-                newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][1] += stepAmounts[newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][0]][newCore.rarity];
+            if (mods[coreName].weighable() && spirestones >= coreCost) {
+                newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][1] += mods[newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][0]].stepAmounts[newCore.rarity];
                 newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][3] += 1;
                 coreAddAmounts[newCore.mods.indexOf(coreModToUpgrade)] += 1;
                 spirestones -= coreCost;
@@ -1259,29 +1384,29 @@ function calculate(manualInput) {
         `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
         <br>
         Your next upgrade${isEmpty(startingCore)
-        ? `s should be ${fancyModNames[shieldName]} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${fancyModNames[staffName]} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
-        : `s should be ${fancyModNames[shieldName]} at ${prettify(shieldNextUpgradeCost)} more Nullifium, ${fancyModNames[staffName]} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${fancyModNames[coreName]} at ${prettify(coreCost)} Spirestones.`}`;
+        ? `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
+        : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     } else if (hasUpgradableMods(startingShield)) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked  ? "." : ` and ${prettify(spirestones)} Spirestones.`}
+        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
         <br>
         Your next upgrade${isEmpty(startingCore)
-        ? ` should be ${fancyModNames[shieldName]} at ${prettify(shieldNextUpgradeCost)} more Nullifium.`
-        : `s should be ${fancyModNames[shieldName]} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${fancyModNames[coreName]} at ${prettify(coreCost)} Spirestones.`}`;
+        ? ` should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium.`
+        : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     } else if (hasUpgradableMods(startingStaff)) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked  ? "." : ` and ${prettify(spirestones)} Spirestones.`}
+        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
         <br>
         Your next upgrade${isEmpty(startingCore)
-        ? ` should be ${fancyModNames[staffName]} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
-        : `s should be ${fancyModNames[staffName]} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${fancyModNames[coreName]} at ${prettify(coreCost)} Spirestones.`}`;
+        ? ` should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
+        : `s should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     } else if (!hasUpgradableMods(startingShield) && !hasUpgradableMods(startingStaff)) {
         document.getElementById("nextUpgradesContainer").innerHTML =
         `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
         <br>
         ${isEmpty(startingCore)
         ? `You have no mods to upgrade.`
-        : `Your next upgrade should be ${fancyModNames[coreName]} at ${prettify(coreCost)} Spirestones.`}`;
+        : `Your next upgrade should be ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     }
 
     // add upg amounts
