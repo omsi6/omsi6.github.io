@@ -235,7 +235,8 @@ const modsToWeigh = ["trimpAttack", "critDamage", "critChance", "voidMaps", "pla
 const modsToWeighShield = ["trimpAttack", "critDamage", "critChance", "voidMaps", "plaguebringer", "gammaBurst"];
 const modsToWeighStaff = ["FluffyExp", "MinerSpeed"];
 const modsToWeighCore = ["fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
-const heirloopyMods = ["FluffyExp", "plaguebringer", "voidMaps", "critChance"]
+const heirloopyMods = ["FluffyExp", "plaguebringer", "voidMaps", "critChance"];
+const immutableMods = ["prismatic", "fireTrap", "poisonTrap", "lightningTrap", "strengthEffect", "condenserEffect", "runestones"];
 
 const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
 
@@ -250,14 +251,14 @@ const stepAmounts = {
     breedSpeed: [1, 1, 1, 1, 3, 3, 3, 3, 3, 5],
     trimpHealth: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
     trimpBlock: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
-    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 
     critChance: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.5],
     critDamage: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20],
     trimpAttack: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
     voidMaps: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 0.25],
     plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5],
+    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
 
     metalDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
     foodDrop: [1, 1, 1, 1, 2, 4, 8, 16, 32, 64],
@@ -282,7 +283,7 @@ const stepAmounts = {
 };
 
 function getStepAmount(type, rarity) {
-    if ((heirloopyMods.includes(type) && inputs.scruffyE0L3) || modsToWeighCore.includes(type)) return stepAmounts[type][rarity];
+    if ((heirloopyMods.includes(type) && inputs.scruffyE0L3) || immutableMods.includes(type)) return stepAmounts[type][rarity];
     if (inputs.universe2) return stepAmounts[type][rarity] / 10;
     return stepAmounts[type][rarity];
 }
@@ -294,7 +295,6 @@ const maxAmounts = {
     breedSpeed: [10, 10, 10, 20, 100, 130, 160, 190, 220, 280],
     trimpHealth: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
     trimpBlock: [7, 7, 7, 10, 40, 60, 80, 100, 120, 0],
-    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2000],
     prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 50],
 
     critChance: [2.6, 2.6, 2.6, 5.0, 7.4, 9.8, 12.2, 15.9, 30, 50],
@@ -302,6 +302,7 @@ const maxAmounts = {
     trimpAttack: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
     voidMaps: [7, 7, 7, 11, 16, 22, 30, 38, 50, 60],
     plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 15, 30],
+    gammaBurst: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2000],
 
     metalDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
     foodDrop: [6, 6, 6, 12, 40, 80, 160, 320, 640, 1280],
@@ -329,7 +330,7 @@ const hardCaps = {
     critChance: [30, 30, 30, 30, 30, 30, 30, 30, 100, 125],
     voidMaps: [50, 50, 50, 50, 50, 50, 50, 50, 80, 99],
     plaguebringer: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100],
-    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150],
+    prismatic: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 250],
 
     condenserEffect: [0, 10, 10, 15, 25, 35, 50]
 };
@@ -563,7 +564,7 @@ function voidMapsUpToZone(zone, portal, heirloomBonus) {
 function getUpgValue(type, heirloom) {
     for (const mod of heirloom.mods) {
         if (mod[0] === type) {
-            if ((heirloopyMods.includes(type) && inputs.scruffyE0L3) || modsToWeighCore.includes(type)) return mod[1];
+            if ((heirloopyMods.includes(type) && inputs.scruffyE0L3) || immutableMods.includes(type)) return mod[1];
             if (inputs.universe2) return mod[1] / 10;
             return mod[1];
         }
@@ -581,7 +582,7 @@ function getDefaultUpgValue(type, heirloom) {
 }
 
 function valueDisplay(type, value) {
-    if ((inputs.scruffyE0L3 && heirloopyMods.includes(type)) || modsToWeighCore.includes(type)) return `${parseFloat(value.toPrecision(4))}% ${modNames[type]}`;
+    if ((inputs.scruffyE0L3 && heirloopyMods.includes(type)) || immutableMods.includes(type)) return `${parseFloat(value.toPrecision(4))}% ${modNames[type]}`;
     return `${parseFloat(inputs.universe2 ? (value / 10).toPrecision(4) : value.toPrecision(4))}% ${modNames[type]}`;
 }
 
