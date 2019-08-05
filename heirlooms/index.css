@@ -36,7 +36,6 @@ p {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-left: -2.24rem;
 }
 
 #saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #weaponLevelsInput, #portalZoneInput, #voidZoneInput {
@@ -89,35 +88,37 @@ p {
 	margin-left: -0.5rem;
 }
 
-#checkboxesContainer {
+.checkboxesContainer {
 	display: flex;
 	flex-direction: row;
 	height: 1.6rem;
 	margin-bottom: 0.1rem;
 	font-size: 1.15rem;
+	justify-content: center;
 }
 
 #heirloomInventory {
-	height: 17.3rem;
-	margin-bottom: -7rem;
-	margin-left: -9.2rem;
+	height: 18.5rem;
+	margin: 0;
+	margin-left: 1.9rem;
+	padding: 1rem;
 	flex-direction: row;
 }
 
 #inventoryColumn1 {
-	margin-top: -0.6rem;
 	margin-left: -0.6rem;
 	margin-right: 0.6rem;
 }
 
-#inventoryColumn2 {
-	margin-top: -0.6rem;
+.\?Container {
+	height: 0;
+	width: 0;
 }
 
 #shieldOld\?, #staffOld\?, #coreOld\?, #shieldNew\?, #staffNew\?, #coreNew\? {
 	display: none;
-	right: -33.1rem;
-	top: -5.1rem;
+	right: -32.1rem;
+    top: -8.2rem;
 }
 
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
@@ -139,6 +140,7 @@ input[type="checkbox"] {
 .checkboxContainer {
 	display: flex;
 	width: 10.4rem;
+	line-height: 1.8rem;
 }
 
 ::placeholder {
@@ -158,8 +160,8 @@ a:hover, a:active {
 
 .help {
 	position: relative;
-    top: -3rem;
-    right: -7.2rem;
+    top: -2rem;
+    right: -51.8rem;
     text-align: center;
     background-color: #333;
 	border-radius: 50%;
@@ -221,25 +223,45 @@ a:hover, a:active {
 	display: flex;
 	flex-direction: row;
     justify-content: center;
-    align-items: center;
+	align-items: center;
+	margin-bottom: 1.1rem;
 }
 
 #content-text {
-	max-width: 80%;
+	max-width: 100%;
+	height: 2rem;
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
 	text-align: center;
+}
+
+#heirloomPopup {
+	position: absolute;
+	display: none;
+	flex-direction: column;
+	height: 31rem;
+	width: 37rem;
+	font-size: 1.8rem;
+    border: 0.3rem solid #555;
+	padding: 1rem;
+	padding-left: 2rem;
+	pointer-events: none;
+	z-index: 9999;
+	background-color: #111111;
+	box-shadow: -0.1rem 0.1rem 1rem #111;
 }
 
 .heirloomContainer {
 	display: flex;
 	flex-direction: column;
-	height: 26rem;
+	height: 31rem;
 	width: 37rem;
-	font-size: 1.9rem;
+	font-size: 1.8rem;
 	margin: 1rem;
 	margin-top: 0.9rem;
     border: 0.3rem solid #555;
-    padding: 1rem;
-    text-align: left;
+	padding: 1rem;
+	padding-left: 2rem;
 	background-color: #111111;
 	box-shadow: -0.1rem 0.1rem 1rem #111;
 }
@@ -251,13 +273,30 @@ a:hover, a:active {
 }
 
 .heirloomIconContainer {
-	width: 16.66666667%;
+	width: 11%;
 	text-align: center;
+}
+
+.heirloomEquipped {
+	color: white;
+	display: none;
+}
+
+.heirloomSpentContainer {
+	display: flex;
+	flex-shrink: 0;
+    height: 2.5rem;
+}
+
+.heirloomSpent {
+	font-size: 1.4rem;
+	margin-left: 0.6rem;
+    margin-top: 0.3rem;
 }
 
 .nextUpgradesContainer {
 	width: 31.2rem;
-    height: 5.7rem;
+    height: 7rem;
     font-size: 1.2rem;
     line-height: 1.4rem;
     border: 0.3rem solid #555;
@@ -269,7 +308,7 @@ a:hover, a:active {
 	text-align: center;
 }
 
-.icon-shield3 {
+.icomoon {
 	font-size: 3.5rem;
 }
 
@@ -301,6 +340,7 @@ a:hover, a:active {
 .heirloomName {
 	font-size: 2rem;
 	line-height: 4rem;
+	margin-left: 2.5rem;
 }
 
 .heirloomMod {

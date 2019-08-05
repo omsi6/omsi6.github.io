@@ -9,29 +9,30 @@
 </head>
 
 <body>
+	<div id="heirloomPopup"></div>
+	<div id="content-text">
+		Paste your save into the box below to get recommendations for heirloom upgrades.
+		<div class="help">
+			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, and any core mods. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
+				<br><br>
+				Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones, nor saving spirestones for additional floors. But you probably shouldn't spend spirestones until you have a quite a few floors, or have a replacement core so you can recycle your current to afford the next floor.
+				<br><br>
+				To the right of the inputs, you'll see your inventory of carried heirlooms. To weigh mods using one of these heirlooms rather than your currently equipped heirloom, click on the one you'd like to weigh. To go back to your equipped heirloom, click on your currently selected heirloom to unselect it. You can also hover over the heirlooms in your inventory to view them.
+				<br><br>
+				VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights (12/11.25) are used to provide a good balance between damage and helium/exp gain.
+				<br><br>
+				Weapon levels is the number of weapon levels you have by the end of your run.
+				<br><br>
+				Portal zone is the zone you're going to portal at, and Void zone is the zone you're going to run your void maps at.
+				<br><br>
+				Weapon levels is the only bottom input that matters when not in beta mode. When in beta mode, if any of the bottom 3 inputs are blank, your recommended purchase will likely be incorrect, so you should fill them out. 
+				<br><br>
+				A toggle for beta mode can be found in the bottom right corner. This uses new VMDC/Fluffy exp calculations from ymhsbmbesitwf, and uses the Portal zone/Void zone inputs. Beta mode is not recommended, but if you're using it, VM/XP weights of 0.8/0.7 are recommended.
+			</p>
+		</div>
+	</div>
 	<div id="content">
 		<div id="inputsContainer">
-			<p id="content-text">
-				Paste your save into the box below to get recommendations for heirloom upgrades.
-				<div class="help">
-					<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Fluffy Exp, Miner Efficiency, and any core mods. If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
-						<br><br>
-						Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones, nor saving spirestones for additional floors. But you probably shouldn't spend spirestones until you have a quite a few floors, or have a replacement core so you can recycle your current to afford the next floor.
-						<br><br>
-						To the right of the inputs, you'll see your inventory of carried heirlooms. To weigh mods using one of these heirlooms rather than your currently equipped heirloom, click on the one you'd like to weigh. To go back to your equipped heirloom, click on your currently selected heirloom to unselect it.
-						<br><br>
-						VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights (12/11.25) are used to provide a good balance between damage and helium/exp gain.
-						<br><br>
-						Weapon levels is the number of weapon levels you have by the end of your run.
-						<br><br>
-						Portal zone is the zone you're going to portal at, and Void zone is the zone you're going to run your void maps at.
-						<br><br>
-						Weapon levels is the only bottom input that matters when not in beta mode. When in beta mode, if any of the bottom 3 inputs are blank, your recommended purchase will likely be incorrect, so you should fill them out. 
-						<br><br>
-						A toggle for beta mode can be found in the bottom right corner. This uses new VMDC/Fluffy exp calculations from ymhsbmbesitwf, and uses the Portal zone/Void zone inputs. Beta mode is not recommended, but if you're using it, VM/XP weights of 0.8/0.7 are recommended.
-					</p>
-				</div>
-			</p>
 			<div style="display: flex; flex-direction: column;">
 				<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()"></textarea>
 				<button id="calculateButton" onclick="calculate()">Calculate upgrades</button>
@@ -44,25 +45,35 @@
 					<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')"></input>
 					<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')"></input>
 				</div>
-				<div id="checkboxesContainer">
+				<div class="checkboxesContainer">
 					<div class="checkboxContainer">
 						Fluffy E4L10:
-						<input id="E4Input" type="checkbox" onchange="updateInput('E4')">
+						<input id="fluffyE4L10Input" type="checkbox" onchange="updateInput('fluffyE4L10')">
 					</div>
 					<div class="checkboxContainer">
 						Fluffy E5L10:
-						<input id="E5Input" type="checkbox" onchange="updateInput('E5')">
+						<input id="fluffyE5L10Input" type="checkbox" onchange="updateInput('fluffyE5L10')">
 					</div>
 					<div class="checkboxContainer">
 						Charged Crits:
-						<input id="CCInput" type="checkbox" onchange="updateInput('CC')">
+						<input id="chargedCritsInput" type="checkbox" onchange="updateInput('chargedCrits')">
+					</div>
+				</div>
+				<div id="universe2CheckboxesContainer" class="checkboxesContainer" style="display: none;">
+					<div class="checkboxContainer">
+						In Universe 2:
+						<input id="universe2Input" type="checkbox" onchange="updateInput('universe2')">
+					</div>
+					<div class="checkboxContainer">
+						Scruffy E0L3:
+						<input id="scruffyE0L3Input" type="checkbox" onchange="updateInput('scruffyE0L3')">
 					</div>
 				</div>
 			</div>
 			<div id="nextUpgradesContainer" class="nextUpgradesContainer">
 				You have ??? Nullifium.
 				<br>
-				Your next upgrade should be ??? at ??? Nullifium.
+				Your next upgrades should be ??? at ??? more Nullifium, and ??? at ??? more Nullifium.
 			</div>
 		</div>
 		<div id="heirloomInventory" class="heirloomContainer">
@@ -74,13 +85,17 @@
 		<div id="shieldOldContainer" class="heirloomContainer">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
-					<span class="icomoon icon-shield3"></span>
+					<span id="shieldOldIcon" class="icomoon icon-shield3"></span>
 				</div>
 				<div>
 					<span class="heirloomName" id="shieldOldName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 2;">
+			<div class="heirloomSpentContainer">
+				<span class="heirloomEquipped" id="shieldOldEquipped">Equipped</span>
+				<span class="heirloomSpent" id="shieldOldSpent">??? / ??? Nu Spent</span>
+			</div>
+			<div class="?Container" style="z-index: 2;">
 				<div class="help" id="shieldOld?">
 					<p id="shieldOldInfo"></p>
 				</div>
@@ -105,17 +120,25 @@
 				• 
 				<span id="shieldOldMod4" class="heirloomMod">???</span>
 			</div>
+			<div id="shieldOldModContainer5">
+				• 
+				<span id="shieldOldMod5" class="heirloomMod">???</span>
+			</div>
 		</div>
 		<div id="staffOldContainer" class="heirloomContainer">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
-					<span class="glyphicon glyphicon-grain"></span>
+					<span id="staffOldIcon" class="glyphicon glyphicon-grain"></span>
 				</div>
 				<div>
 					<span class="heirloomName" id="staffOldName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 3;">
+			<div class="heirloomSpentContainer">
+				<span class="heirloomEquipped" id="staffOldEquipped">Equipped</span>
+				<span class="heirloomSpent" id="staffOldSpent">??? / ??? Nu Spent</span>
+			</div>
+			<div class="?Container" style="z-index: 3;">
 				<div class="help" id="staffOld?">
 					<p id="staffOldInfo"></p>
 				</div>
@@ -140,17 +163,25 @@
 				• 
 				<span id="staffOldMod4" class="heirloomMod">???</span>
 			</div>
+			<div id="staffOldModContainer5">
+				• 
+				<span id="staffOldMod5" class="heirloomMod">???</span>
+			</div>
 		</div>
 		<div id="coreOldContainer" class="heirloomContainer" style="display: none">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
-					<span class="glyphicon glyphicon-adjust"></span>
+					<span id="coreOldIcon" class="glyphicon glyphicon-adjust"></span>
 				</div>
 				<div>
 					<span class="heirloomName" id="coreOldName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 2;">
+			<div class="heirloomSpentContainer">
+				<span class="heirloomEquipped" id="coreOldEquipped">Equipped</span>
+				<span class="heirloomSpent" id="coreOldSpent">??? / ??? Ss Spent</span>
+			</div>
+			<div class="?Container" style="z-index: 2;">
 				<div class="help" id="coreOld?">
 					<p id="coreOldInfo"></p>
 				</div>
@@ -175,19 +206,27 @@
 				• 
 				<span id="coreOldMod4" class="heirloomMod">???</span>
 			</div>
+			<div id="coreOldModContainer5">
+				• 
+				<span id="coreOldMod5" class="heirloomMod">???</span>
+			</div>
 		</div>
 	</div>
 	<div style="display: flex; flex-direction: row;">
 		<div id="shieldNewContainer" class="heirloomContainer" style="opacity: 0;">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
-					<span class="icomoon icon-shield3"></span>
+					<span id="shieldNewIcon" class="icomoon icon-shield3"></span>
 				</div>
 				<div>
 					<span class="heirloomName" id="shieldNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 1;">
+			<div class="heirloomSpentContainer">
+				<span class="heirloomEquipped" id="shieldNewEquipped">Equipped</span>
+				<span class="heirloomSpent" id="shieldNewSpent">??? / ??? Nu Spent</span>
+			</div>
+			<div class="?Container" style="z-index: 1;">
 				<div class="help" id="shieldNew?">
 					<p id="shieldNewInfo"></p>
 				</div>
@@ -217,17 +256,26 @@
 				<span id="shieldNewMod4" class="heirloomMod">???</span>
 				<span id="shieldNewMod4Plus">+?</span>
 			</div>
+			<div id="shieldNewModContainer5">
+				• 
+				<span id="shieldNewMod5" class="heirloomMod">???</span>
+				<span id="shieldNewMod5Plus">+?</span>
+			</div>
 		</div>
 		<div id="staffNewContainer" class="heirloomContainer" style="opacity: 0;">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
-					<span class="glyphicon glyphicon-grain"></span>
+					<span id="staffNewIcon" class="glyphicon glyphicon-grain"></span>
 				</div>
 				<div>
 					<span class="heirloomName" id="staffNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 2;">
+			<div class="heirloomSpentContainer">
+				<span class="heirloomEquipped" id="staffNewEquipped">Equipped</span>
+				<span class="heirloomSpent" id="staffNewSpent">??? / ??? Nu Spent</span>
+			</div>
+			<div class="?Container" style="z-index: 2;">
 				<div class="help" id="staffNew?">
 					<p id="staffNewInfo"></p>
 				</div>
@@ -257,17 +305,26 @@
 				<span id="staffNewMod4" class="heirloomMod">???</span>
 				<span id="staffNewMod4Plus">+?</span>
 			</div>
+			<div id="staffNewModContainer5">
+				• 
+				<span id="staffNewMod5" class="heirloomMod">???</span>
+				<span id="staffNewMod5Plus">+?</span>
+			</div>
 		</div>
 		<div id="coreNewContainer" class="heirloomContainer" style="display: none; z-index: 1;">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
-					<span class="glyphicon glyphicon-adjust"></span>
+					<span id="coreNewIcon" class="glyphicon glyphicon-adjust"></span>
 				</div>
 				<div>
 					<span class="heirloomName" id="coreNewName">???</span>
 				</div>
 			</div>
-			<div style="width: 0px; height: 0px; z-index: 1;">
+			<div class="heirloomSpentContainer">
+				<span class="heirloomEquipped" id="coreNewEquipped">Equipped</span>
+				<span class="heirloomSpent" id="coreNewSpent">??? / ??? Ss Spent</span>
+			</div>
+			<div class="?Container" style="z-index: 1;">
 				<div class="help" id="coreNew?">
 					<p id="coreNewInfo"></p>
 				</div>
@@ -296,6 +353,11 @@
 				• 
 				<span id="coreNewMod4" class="heirloomMod">???</span>
 				<span id="coreNewMod4Plus">+?</span>
+			</div>
+			<div id="coreNewModContainer5">
+				• 
+				<span id="coreNewMod5" class="heirloomMod">???</span>
+				<span id="coreNewMod5Plus">+?</span>
 			</div>
 		</div>
 	</div>
