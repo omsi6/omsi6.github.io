@@ -11,6 +11,7 @@
 
 /*
 
+v1.22 fix runestones mod weighting breaking
 v1.21 health mod weighting for u2, prismatic value fixes, and code restructuring
 v1.20 full v5.00 heirloom system support, show inventory heirlooms on hover, equipped heirloom distinction, comprehensive reworking of upgeff/upggain displays/calculations, full support for empty/missing heirlooms, code cleanup
 v1.19 plaguebringer on radiating heirlooms
@@ -38,7 +39,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.21;
+const globalVersion = 1.22;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "Beta"];
@@ -103,8 +104,8 @@ function updateVersion() {
         inputs.chargedCrits = savedInputs.CC;
         inputs.version = 1.20;
     }
-    if (inputs.version < 1.21) {
-        inputs.version = 1.21;
+    if (inputs.version < 1.22) {
+        inputs.version = 1.22;
     }
 }
 
@@ -916,9 +917,10 @@ function getUpgGain(type, heirloom) {
         loadCore(heirloom, modNamesToTraps[type], value + stepAmount);
         const after = getMaxEnemyHP();
         const afterRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
+        console.log(afterRS, beforeRS, afterRS / beforeRS)
         // 0.971 is the andrew constant, thanks andrew
         // also ghostfrog, pls pm me to tell me how I did this wrong again
-        if (type === "runestones") return (afterRS / beforeRS) * 0.971;
+        if (type === "runestones") return (afterRS / beforeRS - 1) * 0.971 + 1;
         return after / before;
     }
     return false;
