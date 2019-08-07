@@ -917,7 +917,6 @@ function getUpgGain(type, heirloom) {
         loadCore(heirloom, modNamesToTraps[type], value + stepAmount);
         const after = getMaxEnemyHP();
         const afterRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
-        console.log(afterRS, beforeRS, afterRS / beforeRS)
         // 0.971 is the andrew constant, thanks andrew
         // also ghostfrog, pls pm me to tell me how I did this wrong again
         if (type === "runestones") return (afterRS / beforeRS - 1) * 0.971 + 1;
