@@ -11,6 +11,7 @@
 
 /*
 
+v1.23 fix incorrect spirestone count visibility condition
 v1.22 fix runestones mod weighting breaking
 v1.21 health mod weighting for u2, prismatic value fixes, and code restructuring
 v1.20 full v5.00 heirloom system support, show inventory heirlooms on hover, equipped heirloom distinction, comprehensive reworking of upgeff/upggain displays/calculations, full support for empty/missing heirlooms, code cleanup
@@ -39,7 +40,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.22;
+const globalVersion = 1.23;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "Beta"];
@@ -104,8 +105,8 @@ function updateVersion() {
         inputs.chargedCrits = savedInputs.CC;
         inputs.version = 1.20;
     }
-    if (inputs.version < 1.22) {
-        inputs.version = 1.22;
+    if (inputs.version < 1.23) {
+        inputs.version = 1.23;
     }
 }
 
@@ -1382,21 +1383,21 @@ function calculate(manualInput) {
     const staffNextUpgradeCost = Math.ceil((staffCost / getHeirloomNullifiumRatio()) - (save.global.nullifium - (getHeirloomSpent(newStaff) / getHeirloomNullifiumRatio())));
     if (hasUpgradableMods(startingShield) && hasUpgradableMods(startingStaff)) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
+        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
         Your next upgrade${isEmpty(startingCore)
         ? `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
         : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     } else if (hasUpgradableMods(startingShield)) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
+        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
         Your next upgrade${isEmpty(startingCore)
         ? ` should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium.`
         : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     } else if (hasUpgradableMods(startingStaff)) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
+        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
         Your next upgrade${isEmpty(startingCore)
         ? ` should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
