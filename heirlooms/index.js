@@ -11,6 +11,7 @@
 
 /*
 
+v1.24 fix and improve crit damage/chance weightings for u2, add better display conditions for checkboxes
 v1.23 fix incorrect spirestone count visibility condition
 v1.22 fix runestones mod weighting breaking
 v1.21 health mod weighting for u2, prismatic value fixes, and code restructuring
@@ -40,10 +41,10 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.23;
+const globalVersion = 1.24;
 document.getElementById("versionNumber").textContent = globalVersion;
 
-const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "Beta"];
+const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "Beta"];
 const textboxNames = ["VMWeight", "XPWeight", "weaponLevels", "portalZone", "voidZone"];
 const inputs = {
     VMWeight: 12,
@@ -59,11 +60,14 @@ const inputs = {
     preferredShield: 0,
     preferredStaff: 0,
     preferredCore: 0,
-    coreUnlocked: false,
-    universe2Unlocked: false,
     universe2: false,
     scruffyE0L2: false,
     scruffyE0L3: false,
+    scruffyE0L7: false,
+    masteriesUnlocked: false,
+    coreUnlocked: false,
+    universe2Unlocked: false,
+    fluffyUnlocked: false,
     setInput(name, value) {
         if (checkboxNames.includes(name)) document.getElementById(`${name}Input`).checked = value;
         else if (textboxNames.includes(name)) document.getElementById(`${name}Input`).value = value;
@@ -86,10 +90,11 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
                 <br>
                 Your next upgrades should be ??? at ??? more Nullifium, ??? at ??? more Nullifium, and ??? at ??? Spirestones.`;
         } else if (input === "universe2Unlocked" && savedInputs[input]) {
-            document.getElementById("universe2CheckboxesContainer").style.display = "flex";
-            document.getElementById("heirloomInventory").style.height = "20.2rem";
-            document.getElementById("heirloomInventory").style.paddingTop = "1.9rem";
-        }
+            document.getElementById("universe2CheckboxContainer").style.display = "flex";
+            if (savedInputs.universe2 && document.getElementById("fluffyCheckboxesContainer").style.display !== "flex") document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
+        } else if (input === "fluffyUnlocked" && savedInputs[input]) {
+            if (document.getElementById("scruffyCheckboxesContainer").style.display !== "flex") document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
+        } 
         inputs.setInput(input, savedInputs[input]);
     }
 }
@@ -105,8 +110,8 @@ function updateVersion() {
         inputs.chargedCrits = savedInputs.CC;
         inputs.version = 1.20;
     }
-    if (inputs.version < 1.23) {
-        inputs.version = 1.23;
+    if (inputs.version < 1.24) {
+        inputs.version = 1.24;
     }
 }
 
@@ -145,6 +150,13 @@ function updateInput(name, value, position) {
         }
     } else if (isNumeric(inputDiv.value)) {
         inputs[name] = parseFloat(inputDiv.value);
+    }
+    if (inputs.universe2) { 
+        document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
+        document.getElementById("fluffyCheckboxesContainer").style.display = "none";
+    } else if (inputs.fluffyUnlocked) {
+        document.getElementById("scruffyCheckboxesContainer").style.display = "none";
+        document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
     }
     if (save) {
         calculate(true);
@@ -470,7 +482,7 @@ const averageBadGuyHealthMod = (0.7 + 1.3 + 1.3 + 1 + 0.7 + 0.8 + 1.1 + 1.6 + 1.
 // trimps main.js : Fluffy
 const fluffyRewards = { voidance: 12, critChance: 14, megaCrit: 15, voidelicious: 17 };
 // trimps main.js : Scruffy
-const scruffyRewards = { prism: 2, heirloopy: 3 };
+const scruffyRewards = { prism: 2, heirloopy: 3, critChance: 7 };
 // trimps config.js : goldenUpgrades
 // trimps main.js: buyGoldenUpgrade(what)
 const goldenVoid = [0.0, 0.02, 0.06, 0.12, 0.2, 0.3, 0.42, 0.56, 0.72];
@@ -750,7 +762,8 @@ function getUpgGain(type, heirloom) {
         return (value + shieldPercent + 100 + stepAmount) / (value + shieldPercent + 100);
     }
     if (type === "critDamage") {
-        const relentlessness = save.portal.Relentlessness.level;
+        const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
+        const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
         let critChance = relentlessness * 5;
         let megaCritMult = 5;
         let critDmgNormalizedBefore = 0;
@@ -759,10 +772,10 @@ function getUpgGain(type, heirloom) {
             if (inputs.chargedCrits) critChance += getUpgValue("critChance", heirloom) * 1.5;
             else critChance += getUpgValue("critChance", heirloom);
         }
-        if (inputs.fluffyE4L10) {
+        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
             critChance += 50;
         }
-        if (inputs.fluffyE5L10) {
+        if (inputs.fluffyE5L10 && !inputs.universe2) {
             megaCritMult += 2;
         }
         if (inputs.chargedCrits) {
@@ -770,7 +783,7 @@ function getUpgGain(type, heirloom) {
         }
         const megaCrits = Math.min(Math.floor(critChance / 100), 2);
         critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
-        const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max((Math.min(relentlessness, 10) - 1), 0);
+        const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
         switch (megaCrits) {
             case 2:
                 critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
@@ -797,10 +810,11 @@ function getUpgGain(type, heirloom) {
         return critDmgNormalizedAfter / critDmgNormalizedBefore;
     }
     if (type === "critChance") {
-        const relentlessness = save.portal.Relentlessness.level;
+        const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
+        const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
         let critChanceBefore = relentlessness * 5;
         let critChanceAfter = relentlessness * 5;
-        let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.min(relentlessness, 9);
+        let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
         let megaCritMult = 5;
         let critDmgNormalizedBefore = 0;
         let critDmgNormalizedAfter = 0;
@@ -809,10 +823,10 @@ function getUpgGain(type, heirloom) {
         if (isNumeric(getUpgValue("critDamage", heirloom))) {
             critDamage += getUpgValue("critDamage", heirloom);
         }
-        if (inputs.fluffyE4L10) {
+        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
             critChanceBefore += 50;
         }
-        if (inputs.fluffyE5L10) {
+        if (inputs.fluffyE5L10 && !inputs.universe2) {
             megaCritMult += 2;
         }
         if (inputs.chargedCrits) {
@@ -1227,10 +1241,19 @@ function calculate(manualInput) {
     if (!manualInput) {
         inputs.setInput("fluffyE4L10", fluffyRewardsAvailable() >= fluffyRewards.critChance);
         inputs.setInput("fluffyE5L10", fluffyRewardsAvailable() >= fluffyRewards.megaCrit);
-        inputs.setInput("chargedCrits", save.talents.crit.purchased);
         inputs.setInput("scruffyE0L2", scruffyRewardsAvailable() >= scruffyRewards.prism);
         inputs.setInput("scruffyE0L3", scruffyRewardsAvailable() >= scruffyRewards.heirloopy);
+        inputs.setInput("scruffyE0L7", scruffyRewardsAvailable() >= scruffyRewards.critChance);
+        inputs.setInput("chargedCrits", save.talents.crit.purchased);
         inputs.setInput("universe2", save.global.universe === 2);
+        if (inputs.universe2) {
+            document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
+            document.getElementById("fluffyCheckboxesContainer").style.display = "none";
+
+        } else if (inputs.fluffyUnlocked) {
+            document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
+            document.getElementById("scruffyCheckboxesContainer").style.display = "none";
+        }
         document.getElementById("inventoryColumn1").innerHTML = "";
         document.getElementById("inventoryColumn2").innerHTML = "";
         for (const i in save.global.heirloomsCarried) {
@@ -1291,8 +1314,11 @@ function calculate(manualInput) {
     let staffModToUpgrade = [];
     let coreModToUpgrade = [];
 
-    // show cores by default if you know they exist
-    // and init player spire stuff
+    if (save.global.highestLevelCleared >= 180) {
+        inputs.setInput("masteriesUnlocked", true);
+    }
+
+    // init player spire stuff
     if (save.global.spiresCompleted >= 1) {
         inputs.setInput("coreUnlocked", true);
         startTDCalc();
@@ -1301,9 +1327,13 @@ function calculate(manualInput) {
 
     if (isUniverse2Unlocked()) {
         inputs.setInput("universe2Unlocked", true);
-        document.getElementById("universe2CheckboxesContainer").style.display = "flex";
-        document.getElementById("heirloomInventory").style.height = "20.2rem";
-        document.getElementById("heirloomInventory").style.paddingTop = "1.9rem";
+        document.getElementById("universe2CheckboxContainer").style.display = "flex";
+        if (inputs.universe2 && document.getElementById("fluffyCheckboxesContainer").style.display !== "flex") document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
+    }
+
+    if (save.global.spiresCompleted >= 2) {
+        inputs.setInput("fluffyUnlocked", true);
+        if (document.getElementById("scruffyCheckboxesContainer").style.display !== "flex") document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
     }
 
     if (!isEmpty(startingShield)) {
@@ -1376,7 +1406,6 @@ function calculate(manualInput) {
             }
         }
     }
-
     
     // current nu/ss, next goal nu price, next goal name
     const shieldNextUpgradeCost = Math.ceil((shieldCost / getHeirloomNullifiumRatio()) - (save.global.nullifium - (getHeirloomSpent(newShield) / getHeirloomNullifiumRatio())));

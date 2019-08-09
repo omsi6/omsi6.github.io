@@ -46,18 +46,18 @@ p {
 
 #saveInput {
 	height: 2.6rem;
-	width: 31.3rem;
+	width: 31.2rem;
 	min-height: 2.6rem;
 	max-height: 30rem;
-	min-width: 31.3rem;
-	max-width: 31.3rem;
+	min-width: 31.2rem;
+	max-width: 31.2rem;
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
 
 #calculateButton {
 	height: 2.4rem;
-	width: 31.3rem;
+	width: 31.2rem;
 	background: white;
 }
 

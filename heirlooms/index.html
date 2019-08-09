@@ -45,7 +45,7 @@
 					<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')"></input>
 					<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')"></input>
 				</div>
-				<div class="checkboxesContainer">
+				<div id="fluffyCheckboxesContainer" class="checkboxesContainer" style="display: none;">
 					<div class="checkboxContainer">
 						Fluffy E4L10:
 						<input id="fluffyE4L10Input" type="checkbox" onchange="updateInput('fluffyE4L10')">
@@ -54,16 +54,8 @@
 						Fluffy E5L10:
 						<input id="fluffyE5L10Input" type="checkbox" onchange="updateInput('fluffyE5L10')">
 					</div>
-					<div class="checkboxContainer">
-						Charged Crits:
-						<input id="chargedCritsInput" type="checkbox" onchange="updateInput('chargedCrits')">
-					</div>
 				</div>
-				<div id="universe2CheckboxesContainer" class="checkboxesContainer" style="display: none;">
-					<div class="checkboxContainer">
-						In Universe 2:
-						<input id="universe2Input" type="checkbox" onchange="updateInput('universe2')">
-					</div>
+				<div id="scruffyCheckboxesContainer" class="checkboxesContainer" style="display: none;">
 					<div class="checkboxContainer">
 						Scruffy E0L2:
 						<input id="scruffyE0L2Input" type="checkbox" onchange="updateInput('scruffyE0L2')">
@@ -71,6 +63,20 @@
 					<div class="checkboxContainer">
 						Scruffy E0L3:
 						<input id="scruffyE0L3Input" type="checkbox" onchange="updateInput('scruffyE0L3')">
+					</div>
+					<div class="checkboxContainer">
+						Scruffy E0L7:
+						<input id="scruffyE0L7Input" type="checkbox" onchange="updateInput('scruffyE0L7')">
+					</div>
+				</div>
+				<div class="checkboxesContainer">
+					<div id="universe2CheckboxContainer" class="checkboxContainer" style="display: none;">
+						In Universe 2:
+						<input id="universe2Input" type="checkbox" onchange="updateInput('universe2')">
+					</div>
+					<div id="chargedCritsCheckboxContainer" class="checkboxContainer">
+						Charged Crits:
+						<input id="chargedCritsInput" type="checkbox" onchange="updateInput('chargedCrits')">
 					</div>
 				</div>
 			</div>
