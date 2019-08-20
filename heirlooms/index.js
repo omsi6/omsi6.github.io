@@ -11,6 +11,7 @@
 
 /*
 
+v1.26 support for v5.1.0 heirloom icons, remaining nu displays, and mod affordability displays
 v1.25 remove jquery, remove all needless code in tdcalc.js, general code cleanup
 v1.24 fix and improve crit damage/chance weightings for u2, add better display conditions for checkboxes
 v1.23 fix incorrect spirestone count visibility condition
@@ -42,7 +43,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.25;
+const globalVersion = 1.26;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
@@ -115,20 +116,15 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
+    if (inputs.version < 1.26) {
+        inputs.version = 1.26;
+    }
 }
 
 updateVersion();
 
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-function isEmpty(obj) {
-    for (const key in obj) {
-        if (obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
 }
 
 function updateInput(name, value, position) {
@@ -451,7 +447,7 @@ const mods = {
     empty: {
         name: "Empty",
         fullName: "Empty",
-        weighable: false
+        weighable: false,
     }
 };
 
@@ -461,10 +457,336 @@ function getStepAmount(type, rarity) {
     return mods[type].stepAmounts[rarity];
 }
 
+function getSoftCap(type, rarity) {
+    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mods[type].softCaps[rarity];
+    if (inputs.universe2) return mods[type].softCaps[rarity] / 10;
+    return mods[type].softCaps[rarity];
+}
+
+function getHardCap(type, rarity) {
+    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mods[type].hardCaps[rarity];
+    if (inputs.universe2) return mods[type].hardCaps[rarity] / 10;
+    return mods[type].hardCaps[rarity];
+}
+
 const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
 const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500, 7500];
 const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000, 20000000000];
 const priceIncreases = [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03];
+
+class Heirloom {
+    constructor(obj) {
+        // preserve the info of the heirloom
+        Object.assign(this, obj);
+        // then add custom info we need
+        if (!this.isEmpty()) {
+            this.isCore = this.type === "Core";
+            this.basePrice = this.isCore ? coreBasePrices[this.rarity] : basePrices[this.rarity];
+            this.priceIncrease = priceIncreases[this.rarity];
+            this.class = save.options.menu.showHeirloomAnimations.enabled && this.rarity >= 7
+                ? `heirloomRare${this.rarity}Anim`
+                : `heirloomRare${this.rarity}`;
+            this.iconClass = (this.icon.includes("*")) ? `icomoon icon-${this.icon.split("*")[1]}` : `glyphicon glyphicon-${this.icon}`;
+            this.stepAmounts = {};
+            for (const mod of this.mods) {
+                if (mod[0] === "empty") continue;
+                this.stepAmounts[mod[0]] = getStepAmount(mod[0], this.rarity);
+            }
+            this.softCaps = {};
+            for (const mod of this.mods) {
+                if (mod[0] === "empty") continue;
+                this.softCaps[mod[0]] = getSoftCap(mod[0], this.rarity);
+            }
+            this.hardCaps = {};
+            for (const mod of this.mods) {
+                if (mods[mod[0]].hardCaps !== undefined) this.hardCaps[mod[0]] = getHardCap(mod[0], this.rarity);
+            }
+        }
+    }
+
+    // custom methods for ease of use
+    isEmpty() {
+        if (this.type === undefined) return true;
+        return false;
+    }
+
+    hasUpgradableMods() {
+        if (this.isEmpty()) return false;
+        for (const mod of this.mods) {
+            if (mods[mod[0]].weighable) return true;
+        }
+        return false;
+    }
+
+    getModValue(type) {
+        for (const mod of this.mods) {
+            if (mod[0] === type) {
+                if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mod[1];
+                if (inputs.universe2) return mod[1] / 10;
+                return mod[1];
+            }
+        }
+        return false;
+    }
+
+    getModDefaultValue(type) {
+        for (const mod of this.mods) {
+            if (mod[0] === type) {
+                return mod[1];
+            }
+        }
+        return false;
+    }
+
+    getModGain(type) {
+        const value = this.getModValue(type);
+        const stepAmount = this.stepAmounts[type];
+        if (type === "trimpAttack") {
+            return (value + 100 + stepAmount) / (value + 100);
+        }
+        if (type === "trimpHealth") {
+            return (value + 100 + stepAmount) / (value + 100);
+        }
+        if (type === "prismatic") {
+            // 50 base, 50 from prismatic palace
+            let shieldPercent = 100;
+            shieldPercent += save.portal.Prismal.radLevel;
+            if (inputs.scruffyE0L2) shieldPercent += 25;
+
+            return (value + shieldPercent + 100 + stepAmount) / (value + shieldPercent + 100);
+        }
+        if (type === "critDamage") {
+            const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
+            const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
+            let critChance = relentlessness * 5;
+            let megaCritMult = 5;
+            let critDmgNormalizedBefore = 0;
+            let critDmgNormalizedAfter = 0;
+            if (isNumeric(this.getModValue("critChance"))) {
+                if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
+                else critChance += this.getModValue("critChance");
+            }
+            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
+                critChance += 50;
+            }
+            if (inputs.fluffyE5L10 && !inputs.universe2) {
+                megaCritMult += 2;
+            }
+            if (inputs.chargedCrits) {
+                megaCritMult += 1;
+            }
+            const megaCrits = Math.min(Math.floor(critChance / 100), 2);
+            critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
+            const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
+            switch (megaCrits) {
+                case 2:
+                    critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
+                    break;
+                case 1:
+                    critDmgNormalizedBefore = critDamage * ((1 - critChance) + megaCritMult * critChance);
+                    break;
+                case 0:
+                    critDmgNormalizedBefore = critDamage * critChance + ((1 - critChance) * 100);
+                    break;
+            }
+            switch (megaCrits) {
+                case 2:
+                    critDmgNormalizedAfter = (critDamage + stepAmount) * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
+                    break;
+                case 1:
+                    critDmgNormalizedAfter = (critDamage + stepAmount) * ((1 - critChance) + megaCritMult * critChance);
+                    break;
+                case 0:
+                    critDmgNormalizedAfter = (critDamage + stepAmount) * critChance + ((1 - critChance) * 100);
+                    break;
+            }
+
+            return critDmgNormalizedAfter / critDmgNormalizedBefore;
+        }
+        if (type === "critChance") {
+            const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
+            const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
+            let critChanceBefore = relentlessness * 5;
+            let critChanceAfter = relentlessness * 5;
+            let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
+            let megaCritMult = 5;
+            let critDmgNormalizedBefore = 0;
+            let critDmgNormalizedAfter = 0;
+            if (inputs.chargedCrits) critChanceBefore += value * 1.5;
+            else critChanceBefore += value;
+            if (isNumeric(this.getModValue("critDamage"))) {
+                critDamage += this.getModValue("critDamage");
+            }
+            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
+                critChanceBefore += 50;
+            }
+            if (inputs.fluffyE5L10 && !inputs.universe2) {
+                megaCritMult += 2;
+            }
+            if (inputs.chargedCrits) {
+                megaCritMult += 1;
+            }
+            const megaCritsBefore = Math.min(Math.floor(critChanceBefore / 100), 2);
+            const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) / 100), 2);
+            critChanceAfter = Math.min((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) - megaCritsAfter * 100, 100) / 100;
+            critChanceBefore = Math.min(critChanceBefore - megaCritsBefore * 100, 100) / 100;
+            switch (megaCritsBefore) {
+                case 2:
+                    critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
+                    break;
+                case 1:
+                    critDmgNormalizedBefore = critDamage * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
+                    break;
+                case 0:
+                    critDmgNormalizedBefore = critDamage * critChanceBefore + ((1 - critChanceBefore) * 100);
+                    break;
+            }
+            switch (megaCritsAfter) {
+                case 2:
+                    critDmgNormalizedAfter = critDamage * megaCritMult * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
+                    break;
+                case 1:
+                    critDmgNormalizedAfter = critDamage * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
+                    break;
+                case 0:
+                    critDmgNormalizedAfter = critDamage * critChanceAfter + ((1 - critChanceAfter) * 100);
+                    break;
+            }
+
+            return critDmgNormalizedAfter / critDmgNormalizedBefore;
+        }
+        if (type === "voidMaps") {
+            if (inputs.beta) {
+                const voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
+                const voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
+                let upgGain = voidMapsNew / voidMapsOld;
+
+                // using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
+                // It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
+                const zoneStep = (inputs.portalZone > 235) ? 30 : 10;
+                // ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
+                // Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
+                // difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
+                // Example results (formatted to display average per zone scaling)
+                //  Z20: 1.843938^10 / 9.596448^2
+                //  Z49: 1.823788^10 / 9.596448^2
+                //  Z55: 2.019369^10 / 9.596448^2
+                //  Z60: 2.003003^10 / 9.596448^2
+                // Z100: 1.997119^10 / 9.596448^2
+                // Z180: 2.048560^10 / 9.596448^2
+                // Z235: 2.017895^10 / 9.596448^2
+                // Z236: 2.027765^30 / 9.596448^6
+                // Z450: 2.006783^30 / 9.596448^6
+                // Z650: 2.006184^30 / 9.596448^6
+                // Results will be slightly different without Headstarts.
+                let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
+                attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
+                let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
+                const voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
+                heliumScaling *= voidMapsHigherZone / voidMapsOld;
+                // scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
+                upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
+
+                // adding VMWeight (default: 1) in a manner consistent with previous calculation
+                return (1 + (upgGain - 1) * inputs.VMWeight);
+            }
+            if (inputs.universe2) return (value + stepAmount * (inputs.VMWeight / 10)) / (value);
+            return (value + stepAmount * inputs.VMWeight) / (value);
+        }
+        if (type === "gammaBurst") {
+            return (((value + stepAmount) / 100 + 1) / 5) / ((value / 100 + 1) / 5);
+        }
+        if (type === "FluffyExp") {
+            if (inputs.beta) {
+                let upgGain = (value + 100 + stepAmount) / (value + 100);
+                // avoiding weird stuff with zero division.
+                // Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
+                if (inputs.portalZone >= 301) {
+                    // scaling to Attack by comparing Exp gained from additional zones
+                    const pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
+                    let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
+                    attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
+                    upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
+                }
+                // adding XPWeight (default: 1) in a manner consistent with previous calculation
+                return (1 + (upgGain - 1) * inputs.XPWeight);
+            }
+            return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100);
+        }
+        if (type === "plaguebringer") {
+            return (value + 100 + stepAmount) / (value + 100);
+        }
+        if (type === "MinerSpeed") {
+            return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels;
+        }
+        if (this.isCore) {
+            loadCore(this);
+            const before = getMaxEnemyHP();
+            const beforeRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
+            loadCore(this, modNamesToTraps[type], value + stepAmount);
+            const after = getMaxEnemyHP();
+            const afterRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
+            // 0.971 is the andrew constant, thanks andrew
+            // also ghostfrog, pls pm me to tell me how I did this wrong again
+            if (type === "runestones") return (afterRS / beforeRS - 1) * 0.971 + 1;
+            return after / before;
+        }
+        return false;
+    }
+
+    getModEfficiency(type) {
+        if (mods[type].weighable) {
+            return ((this.getModGain(type) - 1) / (this.getModCost(type) / this.basePrice)) + 1;
+        }
+        return false;
+    }
+
+    // add arrays for max normal values, if below or equal to, return normal price, else divide the amount over the normal value by the step to get amount and calculate the price with the amount
+    getModCost(type) {
+        if (type === "empty") {
+            return 1e20;
+        }
+        const value = this.getModValue(type);
+        if (value <= this.softCaps[type] || !isNumeric(value)) {
+            return this.basePrice;
+        }
+        const amount = (value - this.softCaps[type]) / this.stepAmounts[type];
+        if (this.hardCaps) {
+            return (value >= this.hardCaps[type]) ? 1e20 : Math.floor(this.basePrice * Math.pow(this.priceIncrease, amount));
+        }
+        return Math.floor(this.basePrice * Math.pow(this.priceIncrease, amount));
+    }
+
+    getModSpent(type) {
+        let cost = 0;
+        if (type === "empty") return cost;
+        const dummyHeirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
+        for (const mod of dummyHeirloom.mods) {
+            if (mod[0] === type) {
+                const stepAmount = mods[type].stepAmounts[this.rarity];
+                const name = type;
+                const targetValue = mod[1];
+                mod[1] -= (mod[3] * stepAmount);
+                while (mod[1] < targetValue) {
+                    cost += dummyHeirloom.getModCost(name);
+                    mod[1] += stepAmount;
+                }
+            }
+        }
+        return cost;
+    }
+
+    getTotalSpent() {
+        if (this.isEmpty()) return 0;
+        let cost = 0;
+        if (this.replaceSpent) cost += this.replaceSpent;
+        for (const mod of this.mods) {
+            if (mod[0] !== "empty") cost += this.getModSpent(mod[0]);
+        }
+        if (this.isCore) return cost;
+        return cost;
+    }
+}
 
 // below code is from /u/ymhsbmbesitwf on reddit
 /**
@@ -692,262 +1014,10 @@ function voidMapsUpToZone(zone, portal, heirloomBonus) {
     return voidMaps;
 }
 
-function getUpgValue(type, heirloom) {
-    for (const mod of heirloom.mods) {
-        if (mod[0] === type) {
-            if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mod[1];
-            if (inputs.universe2) return mod[1] / 10;
-            return mod[1];
-        }
-    }
-    return false;
-}
-
-function getDefaultUpgValue(type, heirloom) {
-    for (const mod of heirloom.mods) {
-        if (mod[0] === type) {
-            return mod[1];
-        }
-    }
-    return false;
-}
-
 function valueDisplay(type, value) {
     if (type === "empty") return "Empty";
     if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return `${parseFloat(value.toPrecision(4))}% ${mods[type].fullName}`;
     return `${parseFloat(inputs.universe2 ? (value / 10).toPrecision(4) : value.toPrecision(4))}% ${mods[type].fullName}`;
-}
-
-function hasUpgradableMods(heirloom) {
-    if (isEmpty(heirloom)) return false;
-    for (const mod of heirloom.mods) {
-        if (mods[mod[0]].weighable) return true;
-    }
-    return false;
-}
-
-// add arrays for max normal values, if below or equal to, return normal price, else divide the amount over the normal value by the step to get amount and calculate the price with the amount
-function getUpgCost(type, heirloom) {
-    const rarity = heirloom.rarity;
-    const value = getDefaultUpgValue(type, heirloom);
-    let basePrice;
-    if (heirloom.type === "Core") {
-        basePrice = coreBasePrices[heirloom.rarity];
-    } else {
-        basePrice = basePrices[heirloom.rarity];
-    }
-    if (value <= mods[type].softCaps[rarity] || !isNumeric(value)) {
-        return basePrice;
-    }
-    const amount = (value - mods[type].softCaps[rarity]) / mods[type].stepAmounts[rarity];
-    if (mods[type].hardCaps) {
-        return (value >= mods[type].hardCaps[rarity]) ? 1e20 : Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
-    }
-    return Math.floor(basePrice * Math.pow(priceIncreases[rarity], amount));
-}
-
-function getUpgGain(type, heirloom) {
-    const value = getUpgValue(type, heirloom);
-    const stepAmount = getStepAmount(type, heirloom.rarity);
-    if (type === "trimpAttack") {
-        return (value + 100 + stepAmount) / (value + 100);
-    }
-    if (type === "trimpHealth") {
-        return (value + 100 + stepAmount) / (value + 100);
-    }
-    if (type === "prismatic") {
-        // 50 base, 50 from prismatic palace
-        let shieldPercent = 100;
-        shieldPercent += save.portal.Prismal.radLevel;
-        if (inputs.scruffyE0L2) shieldPercent += 25;
-
-        return (value + shieldPercent + 100 + stepAmount) / (value + shieldPercent + 100);
-    }
-    if (type === "critDamage") {
-        const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-        const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-        let critChance = relentlessness * 5;
-        let megaCritMult = 5;
-        let critDmgNormalizedBefore = 0;
-        let critDmgNormalizedAfter = 0;
-        if (isNumeric(getUpgValue("critChance", heirloom))) {
-            if (inputs.chargedCrits) critChance += getUpgValue("critChance", heirloom) * 1.5;
-            else critChance += getUpgValue("critChance", heirloom);
-        }
-        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
-            critChance += 50;
-        }
-        if (inputs.fluffyE5L10 && !inputs.universe2) {
-            megaCritMult += 2;
-        }
-        if (inputs.chargedCrits) {
-            megaCritMult += 1;
-        }
-        const megaCrits = Math.min(Math.floor(critChance / 100), 2);
-        critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
-        const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
-        switch (megaCrits) {
-            case 2:
-                critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                break;
-            case 1:
-                critDmgNormalizedBefore = critDamage * ((1 - critChance) + megaCritMult * critChance);
-                break;
-            case 0:
-                critDmgNormalizedBefore = critDamage * critChance + ((1 - critChance) * 100);
-                break;
-        }
-        switch (megaCrits) {
-            case 2:
-                critDmgNormalizedAfter = (critDamage + stepAmount) * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                break;
-            case 1:
-                critDmgNormalizedAfter = (critDamage + stepAmount) * ((1 - critChance) + megaCritMult * critChance);
-                break;
-            case 0:
-                critDmgNormalizedAfter = (critDamage + stepAmount) * critChance + ((1 - critChance) * 100);
-                break;
-        }
-
-        return critDmgNormalizedAfter / critDmgNormalizedBefore;
-    }
-    if (type === "critChance") {
-        const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-        const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-        let critChanceBefore = relentlessness * 5;
-        let critChanceAfter = relentlessness * 5;
-        let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
-        let megaCritMult = 5;
-        let critDmgNormalizedBefore = 0;
-        let critDmgNormalizedAfter = 0;
-        if (inputs.chargedCrits) critChanceBefore += value * 1.5;
-        else critChanceBefore += value;
-        if (isNumeric(getUpgValue("critDamage", heirloom))) {
-            critDamage += getUpgValue("critDamage", heirloom);
-        }
-        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
-            critChanceBefore += 50;
-        }
-        if (inputs.fluffyE5L10 && !inputs.universe2) {
-            megaCritMult += 2;
-        }
-        if (inputs.chargedCrits) {
-            megaCritMult += 1;
-        }
-        const megaCritsBefore = Math.min(Math.floor(critChanceBefore / 100), 2);
-        const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) / 100), 2);
-        critChanceAfter = Math.min((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) - megaCritsAfter * 100, 100) / 100;
-        critChanceBefore = Math.min(critChanceBefore - megaCritsBefore * 100, 100) / 100;
-        switch (megaCritsBefore) {
-            case 2:
-                critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
-                break;
-            case 1:
-                critDmgNormalizedBefore = critDamage * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
-                break;
-            case 0:
-                critDmgNormalizedBefore = critDamage * critChanceBefore + ((1 - critChanceBefore) * 100);
-                break;
-        }
-        switch (megaCritsAfter) {
-            case 2:
-                critDmgNormalizedAfter = critDamage * megaCritMult * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
-                break;
-            case 1:
-                critDmgNormalizedAfter = critDamage * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
-                break;
-            case 0:
-                critDmgNormalizedAfter = critDamage * critChanceAfter + ((1 - critChanceAfter) * 100);
-                break;
-        }
-
-        return critDmgNormalizedAfter / critDmgNormalizedBefore;
-    }
-    if (type === "voidMaps") {
-        if (inputs.beta) {
-            const voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
-            const voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
-            let upgGain = voidMapsNew / voidMapsOld;
-
-            // using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
-            // It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
-            const zoneStep = (inputs.portalZone > 235) ? 30 : 10;
-            // ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
-            // Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
-            // difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
-            // Example results (formatted to display average per zone scaling)
-            //  Z20: 1.843938^10 / 9.596448^2
-            //  Z49: 1.823788^10 / 9.596448^2
-            //  Z55: 2.019369^10 / 9.596448^2
-            //  Z60: 2.003003^10 / 9.596448^2
-            // Z100: 1.997119^10 / 9.596448^2
-            // Z180: 2.048560^10 / 9.596448^2
-            // Z235: 2.017895^10 / 9.596448^2
-            // Z236: 2.027765^30 / 9.596448^6
-            // Z450: 2.006783^30 / 9.596448^6
-            // Z650: 2.006184^30 / 9.596448^6
-            // Results will be slightly different without Headstarts.
-            let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
-            attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
-            let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
-            const voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
-            heliumScaling *= voidMapsHigherZone / voidMapsOld;
-            // scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
-            upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
-
-            // adding VMWeight (default: 1) in a manner consistent with previous calculation
-            return (1 + (upgGain - 1) * inputs.VMWeight);
-        }
-        if (inputs.universe2) return (value + stepAmount * (inputs.VMWeight / 10)) / (value);
-        return (value + stepAmount * inputs.VMWeight) / (value);
-    }
-    if (type === "gammaBurst") {
-        return (((value + stepAmount) / 100 + 1) / 5) / ((value / 100 + 1) / 5);
-    }
-    if (type === "FluffyExp") {
-        if (inputs.beta) {
-            let upgGain = (value + 100 + stepAmount) / (value + 100);
-            // avoiding weird stuff with zero division.
-            // Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
-            if (inputs.portalZone >= 301) {
-                // scaling to Attack by comparing Exp gained from additional zones
-                const pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
-                let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
-                attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
-                upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
-            }
-            // adding XPWeight (default: 1) in a manner consistent with previous calculation
-            return (1 + (upgGain - 1) * inputs.XPWeight);
-        }
-        return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100);
-    }
-    if (type === "plaguebringer") {
-        return (value + 100 + stepAmount) / (value + 100);
-    }
-    if (type === "MinerSpeed") {
-        return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels;
-    }
-    if (mods[type].type === "Core") {
-        loadCore(heirloom);
-        const before = getMaxEnemyHP();
-        const beforeRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
-        loadCore(heirloom, modNamesToTraps[type], value + stepAmount);
-        const after = getMaxEnemyHP();
-        const afterRS = estimatedMaxDifficulty(getMaxEnemyHP()).runestones;
-        // 0.971 is the andrew constant, thanks andrew
-        // also ghostfrog, pls pm me to tell me how I did this wrong again
-        if (type === "runestones") return (afterRS / beforeRS - 1) * 0.971 + 1;
-        return after / before;
-    }
-    return false;
-}
-
-function getUpgEff(type, heirloom) {
-    if (mods[type].weighable) {
-        if (heirloom.type === "Core") return ((getUpgGain(type, heirloom) - 1) / (getUpgCost(type, heirloom) / coreBasePrices[heirloom.rarity])) + 1;
-        return ((getUpgGain(type, heirloom) - 1) / (getUpgCost(type, heirloom) / basePrices[heirloom.rarity])) + 1;
-    }
-    return false;
 }
 
 function prettifySub(number) {
@@ -1031,10 +1101,10 @@ function humanify(num, places) {
     return (Number(num)).toFixed(places).replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/u, "$1");
 }
 
-function updateModContainer(divName, heirloom) {
+function updateModContainer(divName, heirloom, spirestones) {
     let infoText = "Below is a list of the calulated costs, gains, and efficiency of each weighted upgrade, taken from the stats displayed on this heirloom.<br><br>";
 
-    if (isEmpty(heirloom)) {
+    if (heirloom.isEmpty()) {
         // if that heirloom is not equipped
         document.getElementById(`${divName}Container`).classList.value = `heirloomContainer`;
         document.getElementById(`${divName}Info`).innerHTML = "This is where you would normally see additional information about this heirloom's mods, but you don't have one equipped.";
@@ -1049,34 +1119,38 @@ function updateModContainer(divName, heirloom) {
     } else {
         let bestEfficiency = 1;
         for (mod of heirloom.mods) {
-            if (getUpgEff(mod[0], heirloom) > bestEfficiency) bestEfficiency = getUpgEff(mod[0], heirloom);
+            if (heirloom.getModEfficiency(mod[0]) > bestEfficiency) bestEfficiency = heirloom.getModEfficiency(mod[0]);
         }
+
+        const heirloomToSpend = heirloom.isCore ? spirestones : getEffectiveNullifium() - heirloom.getTotalSpent();
         for (let i = 0; i < 6; i++) {
             const mod = heirloom.mods[i];
             if (mod) {
                 document.getElementById(`${divName}Mod${i}`).textContent = `${valueDisplay(mod[0], mod[1])}`;
                 document.getElementById(`${divName}ModContainer${i}`).style.opacity = 1;
+                if (heirloom.getModCost(mod[0]) <= heirloomToSpend) document.getElementById(`${divName}Mod${i}Notification`).textContent = "!";
+                else document.getElementById(`${divName}Mod${i}Notification`).textContent = "•";
                 if (mods[mod[0]].weighable) {
                     infoText +=
                         `${mods[mod[0]].name}:
                             <ul>
-                            <li>Cost: ${getUpgCost(mod[0], heirloom) === 1e20 ? "∞" : prettifyCommas(getUpgCost(mod[0], heirloom))}</li>
-                            <li>Gain: ${humanify((getUpgGain(mod[0], heirloom) - 1) * 100, 4)}%</li>
-                            <li>Efficiency: ${humanify((getUpgEff(mod[0], heirloom) - 1) / (bestEfficiency - 1) * 100, 2)}%</li>
+                            <li>Cost: ${heirloom.getModCost(mod[0]) === 1e20 ? "∞" : prettifyCommas(heirloom.getModCost(mod[0]))}</li>
+                            <li>Gain: ${humanify((heirloom.getModGain(mod[0]) - 1) * 100, 4)}%</li>
+                            <li>Efficiency: ${humanify((heirloom.getModEfficiency(mod[0]) - 1) / (bestEfficiency - 1) * 100, 2)}%</li>
                         </ul>`;
                 }
             } else {
                 document.getElementById(`${divName}ModContainer${i}`).style.opacity = 0;
             }
         }
-        const heirloomValue = getHeirloomSpent(heirloom);
+        const heirloomValue = heirloom.getTotalSpent();
         let infoValueText = "";
         for (const mod of heirloom.mods) {
-            const cost = getModCost(mod[0], heirloom);
+            const cost = heirloom.getModSpent(mod[0]);
             if (mod[0] !== "empty" && cost > 0) infoValueText += `<li>${mods[mod[0]].name}: +${prettifyCommas(cost)} (${humanify(cost / heirloomValue * 100, 2)}%)</li>`;
         }
         infoText +=
-            `${heirloom.type === "Core" ? "Spirestone" : "Nullifium"} Value:
+            `${heirloom.isCore ? "Spirestone" : "Nullifium"} Value:
             <ul>
                 ${heirloom.replaceSpent ? `<li>Mod changes: ${prettifyCommas(heirloom.replaceSpent)} (${humanify(heirloom.replaceSpent / heirloomValue * 100, 2)}%)</li>` : ""}
                 ${infoValueText}
@@ -1092,37 +1166,24 @@ function updateModContainer(divName, heirloom) {
             document.getElementById(`${divName}Info`).innerHTML = infoText;
         }
         document.getElementById(`${divName}?`).style.display = "block";
-
-        if (save.options.menu.showHeirloomAnimations.enabled && heirloom.rarity >= 7) {
-            document.getElementById(`${divName}Container`).classList.value = `heirloomContainer heirloomRare${heirloom.rarity}Anim`;
-        } else {
-            document.getElementById(`${divName}Container`).classList.value = `heirloomContainer heirloomRare${heirloom.rarity}`;
-        }
-
-        let iconName;
-        if (heirloom.type === "Shield") iconName = "icomoon icon-shield3";
-        else if (heirloom.type === "Staff") iconName = "glyphicon glyphicon-grain";
-        else if (heirloom.type === "Core") iconName = "glyphicon glyphicon-adjust";
-        document.getElementById(`${divName}Icon`).classList.value = iconName;
+        document.getElementById(`${divName}Container`).classList.value = `heirloomContainer ${heirloom.class}`;
 
         if (divName.includes("Old")) document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (Old)`;
         else document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (New)`;
 
         if (inputs[`preferred${heirloom.type}`] === 0) document.getElementById(`${divName}Equipped`).style.display = "flex";
         else document.getElementById(`${divName}Equipped`).style.display = "none";
-        if (heirloom.type === "Core") document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} Ss Spent`;
-        else document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} / ${prettify(getEffectiveNullifium())} Nu Spent`;
+        if (heirloom.isCore) document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} Ss Spent`;
+        else document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} / ${prettify(getEffectiveNullifium())} Nu Spent - ${prettify(getEffectiveNullifium() - heirloomValue)} Unspent`;
+
+        document.getElementById(`${divName}Icon`).classList.value = heirloom.iconClass;
     }
 }
 
 function addHeirloomToInventory(heirloom, num) {
-    let iconName;
-    if (heirloom.type === "Shield") iconName = "icomoon icon-shield3 tinyIcon";
-    else if (heirloom.type === "Staff") iconName = "glyphicon glyphicon-grain tinyIcon";
-    else if (heirloom.type === "Core") iconName = "glyphicon glyphicon-adjust tinyIcon";
-    const totalDiv = `<div id="carriedHeirloom${num}" class="heirloomMod heirloomRare${heirloom.rarity}${save.options.menu.showHeirloomAnimations.enabled && heirloom.rarity >= 7 ? "Anim" : ""} inventoryHeirloom ${heirloom.type}" onclick="updateInput('preferred${heirloom.type}', ${heirloom.repSeed}, ${num})" onmouseenter="createHeirloomPopup(${num})" onmousemove="moveHeirloomPopup(event)" onmouseleave="deleteHeirloomPopup()">
+    const totalDiv = `<div id="carriedHeirloom${num}" class="heirloomMod ${heirloom.class} inventoryHeirloom ${heirloom.type}" onclick="updateInput('preferred${heirloom.type}', ${heirloom.repSeed}, ${num})" onmouseenter="createHeirloomPopup(${num})" onmousemove="moveHeirloomPopup(event)" onmouseleave="deleteHeirloomPopup()">
                         <div class="heirloomIconContainer inventoryHeirloomIconContainer">
-                            <span class="${iconName}"></span>
+                            <span class="${heirloom.iconClass} tinyIcon"></span>
                         </div>
                         <div class="inventoryHeirloomName">${heirloom.name}</div>
                     </div>`;
@@ -1132,31 +1193,28 @@ function addHeirloomToInventory(heirloom, num) {
 
 function createHeirloomPopup(num) {
     const heirloom = save.global.heirloomsCarried[num];
-    let iconName;
-    if (heirloom.type === "Shield") iconName = "icomoon icon-shield3";
-    else if (heirloom.type === "Staff") iconName = "glyphicon glyphicon-grain";
-    else if (heirloom.type === "Core") iconName = "glyphicon glyphicon-adjust";
-    const heirloomValue = getHeirloomSpent(heirloom);
+    const heirloomValue = heirloom.getTotalSpent();
+    const heirloomToSpend = heirloom.isCore ? save.playerSpire.main.spirestones : getEffectiveNullifium() - heirloom.getTotalSpent();
     let totalDiv =
         `<div class="heirloomContainerTopRow">
             <div class="heirloomIconContainer">
-                <span class="${iconName}"></span>
+                <span class="${heirloom.iconClass}"></span>
             </div>
             <div>
                 <span class="heirloomName" id="heirloomPopupName">${heirloom.name}</span>
             </div>
         </div>
         <div class="heirloomSpentContainer">
-            <span class="heirloomSpent" id="heirloomPopupSpent">${prettify(heirloomValue)} ${heirloom.type === "Core" ? "Ss spent" : `/ ${prettify(getEffectiveNullifium())} Nu Spent`}</span>
+            <span class="heirloomSpent" id="heirloomPopupSpent">${prettify(heirloomValue)} ${heirloom.isCore ? "Ss spent" : `/ ${prettify(getEffectiveNullifium())} Nu Spent`}</span>
         </div>`;
     for (const mod of heirloom.mods) {
         totalDiv +=
             `<div>
-                • 
+                ${heirloom.getModCost(mod[0]) <= heirloomToSpend ? "!" : "•"}
                 <span class="heirloomMod">${valueDisplay(mod[0], mod[1])}</span>
             </div>`;
     }
-    document.getElementById("heirloomPopup").classList.value = `heirloomRare${heirloom.rarity}${save.options.menu.showHeirloomAnimations.enabled && heirloom.rarity >= 7 ? "Anim" : ""}`;
+    document.getElementById("heirloomPopup").classList.value = heirloom.class;
     document.getElementById("heirloomPopup").style.display = "flex";
     document.getElementById("heirloomPopup").style.height = `${10 + heirloom.mods.length * 3.5}rem`;
     document.getElementById("heirloomPopup").innerHTML = totalDiv;
@@ -1172,58 +1230,6 @@ function deleteHeirloomPopup() {
     document.getElementById("heirloomPopup").innerHTML = "";
 }
 
-function containsDuplicate(heirlooms, name) {
-    let shieldCount = 0;
-    let staffCount = 0;
-    let coreCount = 0;
-    for (const heirloom of heirlooms) {
-        if (heirloom.name === name && heirloom.type === "Shield") {
-            if (shieldCount > 0) return true;
-            shieldCount++;
-        }
-        if (heirloom.name === name && heirloom.type === "Staff") {
-            if (staffCount > 0) return true;
-            staffCount++;
-        }
-        if (heirloom.name === name && heirloom.type === "Core") {
-            if (coreCount > 0) return true;
-            coreCount++;
-        }
-    }
-    return false;
-}
-
-function getModCost(type, heirloom) {
-    let cost = 0;
-    if (type === "empty") return cost;
-    for (const mod of heirloom.mods) {
-        if (mod[0] === type) {
-            const stepAmount = mods[mod[0]].stepAmounts[heirloom.rarity];
-            const name = mod[0];
-            const targetValue = mod[1];
-            let currentValue = mod[1] - (mod[3] * stepAmount);
-            let modCost = 0;
-            while (currentValue < targetValue) {
-                modCost += getUpgCost(name, { type: heirloom.type, mods: [[name, currentValue]], rarity: heirloom.rarity });
-                currentValue += stepAmount;
-            }
-            cost += modCost;
-        }
-    }
-    return cost;
-}
-
-function getHeirloomSpent(heirloom) {
-    if (isEmpty(heirloom)) return 0;
-    let cost = 0;
-    if (heirloom.replaceSpent) cost += heirloom.replaceSpent;
-    for (const mod of heirloom.mods) {
-        if (mod[0] !== "empty") cost += getModCost(mod[0], heirloom);
-    }
-    if (heirloom.type === "Core") return cost;
-    return cost;
-}
-
 function getHeirloomNullifiumRatio() {
     if (save.talents.heirloom2.purchased) return 0.7;
     if (save.talents.heirloom.purchased) return 0.6;
@@ -1237,9 +1243,20 @@ function getEffectiveNullifium() {
 function calculate(manualInput) {
     if (JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value)) !== null) save = JSON.parse(LZString.decompressFromBase64(document.getElementById("saveInput").value));
     if (save === undefined) return;
-    if (save.talents.heirloom === undefined) {
-        alert("You're attempting to import a save from a Trimps version before 5.0.0. Save exports from versions before v5.0.0 are no longer supported.");
+    // for even older saves
+    if (save.global.stringVersion === undefined) {
+
         return;
+    }
+    // version checking the save
+    const saveVersion = save.global.stringVersion.split(".");
+    if (parseInt(saveVersion[0], 10) < 5 || (parseInt(saveVersion[0], 10) === 5 && parseInt(saveVersion[1], 10) < 1)) {
+        alert("You're attempting to import a save from a Trimps version before 5.1.0. Save exports from versions before v5.1.0 are no longer supported.");
+        return;
+    }
+
+    for (const i in save.global.heirloomsCarried) {
+        save.global.heirloomsCarried[i] = new Heirloom(save.global.heirloomsCarried[i]);
     }
 
     if (!manualInput) {
@@ -1261,6 +1278,7 @@ function calculate(manualInput) {
         document.getElementById("inventoryColumn1").innerHTML = "";
         document.getElementById("inventoryColumn2").innerHTML = "";
         for (const i in save.global.heirloomsCarried) {
+            save.global.heirloomsCarried[i] = new Heirloom(save.global.heirloomsCarried[i]);
             addHeirloomToInventory(save.global.heirloomsCarried[i], i);
         }
         for (const input in inputs) {
@@ -1278,6 +1296,9 @@ function calculate(manualInput) {
         }
     }
 
+    save.global.ShieldEquipped = new Heirloom(save.global.ShieldEquipped);
+    save.global.StaffEquipped = new Heirloom(save.global.StaffEquipped);
+    save.global.CoreEquipped = new Heirloom(save.global.CoreEquipped);
     let startingShield = save.global.ShieldEquipped;
     let startingStaff = save.global.StaffEquipped;
     let startingCore = save.global.CoreEquipped;
@@ -1295,10 +1316,11 @@ function calculate(manualInput) {
         }
     }
 
-    const newShield = JSON.parse(JSON.stringify(startingShield));
-    const newStaff = JSON.parse(JSON.stringify(startingStaff));
-    const newCore = JSON.parse(JSON.stringify(startingCore));
+    const newShield = new Heirloom(JSON.parse(JSON.stringify(startingShield)));
+    const newStaff = new Heirloom(JSON.parse(JSON.stringify(startingStaff)));
+    const newCore = new Heirloom(JSON.parse(JSON.stringify(startingCore)));
 
+    const nullifium = save.global.nullifium;
     let spirestones = save.playerSpire.main.spirestones;
 
     const shieldAddAmounts = [0, 0, 0, 0, 0, 0];
@@ -1311,12 +1333,12 @@ function calculate(manualInput) {
     let shieldCost = 0;
     let staffCost = 0;
     let coreCost = 0;
-    let staffName = "";
-    let shieldName = "";
-    let coreName = "";
-    let shieldModToUpgrade = [];
-    let staffModToUpgrade = [];
-    let coreModToUpgrade = [];
+    let staffName = 0;
+    let shieldName = 0;
+    let coreName = 0;
+    let staffIndex = -1;
+    let shieldIndex = -1;
+    let coreIndex = -1;
 
     if (save.global.highestLevelCleared >= 180) {
         inputs.setInput("masteriesUnlocked", true);
@@ -1340,23 +1362,23 @@ function calculate(manualInput) {
         if (document.getElementById("scruffyCheckboxesContainer").style.display !== "flex") document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
     }
 
-    if (!isEmpty(startingShield)) {
-        let shieldNullifium = getEffectiveNullifium() - getHeirloomSpent(startingShield);
+    if (!startingShield.isEmpty()) {
+        let shieldNullifium = getEffectiveNullifium() - startingShield.getTotalSpent();
         while (true) {
             shieldEff = 0;
             for (const mod of newShield.mods) {
-                if (getUpgEff(mod[0], newShield) > shieldEff) {
-                    shieldEff = getUpgEff(mod[0], newShield);
-                    shieldCost = getUpgCost(mod[0], newShield);
+                if (newShield.getModEfficiency(mod[0]) > shieldEff) {
+                    shieldEff = newShield.getModEfficiency(mod[0]);
+                    shieldCost = newShield.getModCost(mod[0]);
                     shieldName = mod[0];
-                    shieldModToUpgrade = mod;
+                    shieldIndex = newShield.mods.indexOf(mod);
                 }
             }
 
             if (mods[shieldName].weighable && shieldNullifium >= shieldCost) {
-                newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][1] += mods[newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][0]].stepAmounts[newShield.rarity];
-                newShield.mods[newShield.mods.indexOf(shieldModToUpgrade)][3] += 1;
-                shieldAddAmounts[newShield.mods.indexOf(shieldModToUpgrade)] += 1;
+                newShield.mods[shieldIndex][1] += mods[shieldName].stepAmounts[newShield.rarity];
+                newShield.mods[shieldIndex][3] += 1;
+                shieldAddAmounts[shieldIndex] += 1;
                 shieldNullifium -= shieldCost;
             } else {
                 break;
@@ -1364,23 +1386,23 @@ function calculate(manualInput) {
         }
     }
 
-    if (!isEmpty(startingStaff)) {
-        let staffNullifium = getEffectiveNullifium() - getHeirloomSpent(startingStaff);
+    if (!startingStaff.isEmpty()) {
+        let staffNullifium = getEffectiveNullifium() - startingStaff.getTotalSpent();
         while (true) {
             staffEff = 0;
             for (const mod of newStaff.mods) {
-                if (getUpgEff(mod[0], newStaff) > staffEff) {
-                    staffEff = getUpgEff(mod[0], newStaff);
-                    staffCost = getUpgCost(mod[0], newStaff);
+                if (newStaff.getModEfficiency(mod[0]) > staffEff) {
+                    staffEff = newStaff.getModEfficiency(mod[0]);
+                    staffCost = newStaff.getModCost(mod[0]);
                     staffName = mod[0];
-                    staffModToUpgrade = mod;
+                    staffIndex = newStaff.mods.indexOf(mod);
                 }
             }
 
             if (mods[staffName].weighable && staffNullifium >= staffCost) {
-                newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][1] += mods[newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][0]].stepAmounts[newStaff.rarity];
-                newStaff.mods[newStaff.mods.indexOf(staffModToUpgrade)][3] += 1;
-                staffAddAmounts[newStaff.mods.indexOf(staffModToUpgrade)] += 1;
+                newStaff.mods[staffIndex][1] += mods[staffName].stepAmounts[newStaff.rarity];
+                newStaff.mods[staffIndex][3] += 1;
+                staffAddAmounts[staffIndex] += 1;
                 staffNullifium -= staffCost;
             } else {
                 break;
@@ -1388,22 +1410,22 @@ function calculate(manualInput) {
         }
     }
 
-    if (!isEmpty(startingCore)) {
+    if (!startingCore.isEmpty()) {
         while (true) {
             coreEff = 0;
             for (const mod of newCore.mods) {
-                if (getUpgEff(mod[0], newCore) > coreEff) {
-                    coreEff = getUpgEff(mod[0], newCore);
-                    coreCost = getUpgCost(mod[0], newCore);
+                if (newCore.getModEfficiency(mod[0]) > coreEff) {
+                    coreEff = newCore.getModEfficiency(mod[0]);
+                    coreCost = newCore.getModCost(mod[0]);
                     coreName = mod[0];
-                    coreModToUpgrade = mod;
+                    coreIndex = newCore.mods.indexOf(mod);
                 }
             }
 
             if (mods[coreName].weighable && spirestones >= coreCost) {
-                newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][1] += mods[newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][0]].stepAmounts[newCore.rarity];
-                newCore.mods[newCore.mods.indexOf(coreModToUpgrade)][3] += 1;
-                coreAddAmounts[newCore.mods.indexOf(coreModToUpgrade)] += 1;
+                newCore.mods[coreIndex][1] += mods[coreName].stepAmounts[newCore.rarity];
+                newCore.mods[coreIndex][3] += 1;
+                coreAddAmounts[coreIndex] += 1;
                 spirestones -= coreCost;
             } else {
                 break;
@@ -1412,34 +1434,34 @@ function calculate(manualInput) {
     }
     
     // current nu/ss, next goal nu price, next goal name
-    const shieldNextUpgradeCost = Math.ceil((shieldCost / getHeirloomNullifiumRatio()) - (save.global.nullifium - (getHeirloomSpent(newShield) / getHeirloomNullifiumRatio())));
-    const staffNextUpgradeCost = Math.ceil((staffCost / getHeirloomNullifiumRatio()) - (save.global.nullifium - (getHeirloomSpent(newStaff) / getHeirloomNullifiumRatio())));
-    if (hasUpgradableMods(startingShield) && hasUpgradableMods(startingStaff)) {
+    const shieldNextUpgradeCost = Math.ceil((shieldCost / getHeirloomNullifiumRatio()) - (nullifium - (newShield.getTotalSpent() / getHeirloomNullifiumRatio())));
+    const staffNextUpgradeCost = Math.ceil((staffCost / getHeirloomNullifiumRatio()) - (nullifium - (newStaff.getTotalSpent() / getHeirloomNullifiumRatio())));
+    if (startingShield.hasUpgradableMods() && startingStaff.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
+        `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
-        Your next upgrade${isEmpty(startingCore)
+        Your next upgrade${startingCore.isEmpty()
         ? `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
         : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
-    } else if (hasUpgradableMods(startingShield)) {
+    } else if (startingShield.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
+        `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
-        Your next upgrade${isEmpty(startingCore)
+        Your next upgrade${startingCore.isEmpty()
         ? ` should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium.`
         : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
-    } else if (hasUpgradableMods(startingStaff)) {
+    } else if (startingStaff.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
+        `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
-        Your next upgrade${isEmpty(startingCore)
+        Your next upgrade${startingCore.isEmpty()
         ? ` should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
         : `s should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
-    } else if (!hasUpgradableMods(startingShield) && !hasUpgradableMods(startingStaff)) {
+    } else if (!startingShield.hasUpgradableMods() && !startingStaff.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
-        `You have ${prettify(save.global.nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
+        `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
         <br>
-        ${isEmpty(startingCore)
+        ${startingCore.isEmpty()
         ? `You have no mods to upgrade.`
         : `Your next upgrade should be ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
     }
@@ -1469,15 +1491,15 @@ function calculate(manualInput) {
     updateModContainer("shieldNew", newShield);
     updateModContainer("staffOld", startingStaff);
     updateModContainer("staffNew", newStaff);
-    updateModContainer("coreOld", startingCore);
-    updateModContainer("coreNew", newCore);
+    updateModContainer("coreOld", startingCore, save.playerSpire.main.spirestones);
+    updateModContainer("coreNew", newCore, spirestones);
 
     // animation
     document.getElementById("shieldNewContainer").style.animation = "moveDown 1s 1 cubic-bezier(0, 0, 0, 1)";
     document.getElementById("shieldNewContainer").style.opacity = 1;
     document.getElementById("staffNewContainer").style.animation = "moveDown 1s 1 cubic-bezier(0, 0, 0, 1)";
     document.getElementById("staffNewContainer").style.opacity = 1;
-    if (isEmpty(startingCore)) {
+    if (startingCore.isEmpty()) {
         document.getElementById("coreOldContainer").style.display = "none";
         document.getElementById("coreNewContainer").style.display = "none";
     } else {

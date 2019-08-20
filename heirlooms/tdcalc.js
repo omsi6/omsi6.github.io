@@ -44,7 +44,7 @@ const modNamesToTraps = {
 };
 
 function loadCore(core, overwrite, overwriteValue) {
-    if (!isEmpty(core)) {
+    if (!core.isEmpty()) {
         // reset data
         traps.fire.coreMult = 1;
         traps.poison.coreMult = 1;

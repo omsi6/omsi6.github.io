@@ -291,7 +291,8 @@ a:hover, a:active {
 .heirloomSpent {
 	font-size: 1.4rem;
 	margin-left: 0.6rem;
-    margin-top: 0.3rem;
+	margin-top: 0.3rem;
+	white-space: nowrap;
 }
 
 .nextUpgradesContainer {
@@ -312,11 +313,7 @@ a:hover, a:active {
 	font-size: 3.5rem;
 }
 
-.glyphicon-grain {
-	font-size: 3.5rem;
-}
-
-.glyphicon-adjust {
+.glyphicon {
 	font-size: 3.5rem;
 }
 
@@ -325,7 +322,7 @@ a:hover, a:active {
 	line-height: 1rem;
 }
 
-.icon-shield3.tinyIcon {
+.icomoon.tinyIcon {
 	line-height: 1.5rem
 }
 
