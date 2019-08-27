@@ -11,6 +11,7 @@
 
 /*
 
+v1.27 fix heirlooms with all unweighable mods erroring
 v1.26 support for v5.1.0 heirloom icons, remaining nu displays, and mod affordability displays
 v1.25 remove jquery, remove all needless code in tdcalc.js, general code cleanup
 v1.24 fix and improve crit damage/chance weightings for u2, add better display conditions for checkboxes
@@ -43,7 +44,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.26;
+const globalVersion = 1.27;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
@@ -116,8 +117,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.26) {
-        inputs.version = 1.26;
+    if (inputs.version < 1.27) {
+        inputs.version = 1.27;
     }
 }
 
@@ -475,9 +476,9 @@ const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 2000000
 const priceIncreases = [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03];
 
 class Heirloom {
-    constructor(obj) {
+    constructor(heirloom) {
         // preserve the info of the heirloom
-        Object.assign(this, obj);
+        Object.assign(this, heirloom);
         // then add custom info we need
         if (!this.isEmpty()) {
             this.isCore = this.type === "Core";
@@ -1333,9 +1334,9 @@ function calculate(manualInput) {
     let shieldCost = 0;
     let staffCost = 0;
     let coreCost = 0;
-    let staffName = 0;
-    let shieldName = 0;
-    let coreName = 0;
+    let staffName = "empty";
+    let shieldName = "empty";
+    let coreName = "empty";
     let staffIndex = -1;
     let shieldIndex = -1;
     let coreIndex = -1;
