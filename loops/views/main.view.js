@@ -992,7 +992,7 @@ function View() {
         document.getElementById(`totalManaSpent${action.varName}`).textContent = `${formatNumber(spentMana[actionName])}`;
     };
 
-    this.adjustAllTotalManaSpent = function(actionName) {
+    this.adjustAllTotalManaSpent = function() {
         for (const action of view.totalActionList) {
             this.adjustTotalManaSpent(action.name);
         }
