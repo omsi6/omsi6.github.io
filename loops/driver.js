@@ -324,6 +324,7 @@ function adjustAll() {
     adjustMineSoulstones();
     adjustArtifacts();
     view.adjustManaCost("Continue On");
+    view.adjustAllTotalManaSpent();
 }
 
 function capAmount(index, townNum) {

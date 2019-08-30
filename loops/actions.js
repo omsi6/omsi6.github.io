@@ -21,6 +21,10 @@ function Actions() {
 
         curAction.ticks++;
         curAction.manaUsed++;
+        spentMana[curAction.name]++;
+
+        view.adjustTotalManaSpent(curAction.name);
+
         curAction.timeSpent += 1 / baseManaPerSecond / getActualGameSpeed();
         // only for multi-part progress bars
         if (curAction.loopStats) {

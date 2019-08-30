@@ -109,6 +109,7 @@ const storyReqs = {
     potionBrewed: false
 };
 let currentTheme = "normal";
+let spentMana = {};
 
 const curDate = new Date();
 let totalOfflineMs = 0;
@@ -375,6 +376,12 @@ function load() {
         towns[0].totalSDungeon = dungeons[0][0].completed + dungeons[0][1].completed + dungeons[0][2].completed + dungeons[0][3].completed + dungeons[0][4].completed + dungeons[0][5].completed;
     }
 
+    if (toLoad.spentMana) spentMana = toLoad.spentMana;
+
+    for (action of Object.keys(allActions))
+        if (!spentMana[action])
+            spentMana[action] = 0;
+
     adjustAll();
 
     view.updateLoadoutNames();
@@ -395,6 +402,7 @@ function save() {
     toSave.townsUnlocked = townsUnlocked;
     toSave.actionTownNum = actionTownNum;
     toSave.trainingLimits = trainingLimits;
+    toSave.spentMana = spentMana;
 
     let currentTown = towns[0];
     toSave.stats = stats;

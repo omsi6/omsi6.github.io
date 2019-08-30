@@ -935,6 +935,7 @@ function View() {
                     ${actionStats}
                     <div class='bold'>${_txt("actions>tooltip>mana_cost")}:</div> <div id='manaCost${action.varName}'>${formatNumber(action.manaCost())}</div><br>
                     <div class='bold'>${_txt("actions>tooltip>exp_multiplier")}:</div> ${action.expMult * 100}%<br>
+                    <div class='bold'>${_txt("actions>tooltip>total_mana_spent")}:</div> <div id='totalManaSpent${action.varName}'>${formatNumber(spentMana[action.name])}</div><br>
                 </div>
             </div>`;
 
@@ -984,6 +985,17 @@ function View() {
     this.adjustManaCost = function(actionName) {
         const action = translateClassNames(actionName);
         document.getElementById(`manaCost${action.varName}`).textContent = formatNumber(action.manaCost());
+    };
+
+    this.adjustTotalManaSpent = function(actionName) {
+        const action = allActions[actionName];
+        document.getElementById(`totalManaSpent${action.varName}`).textContent = `${formatNumber(spentMana[actionName])}`;
+    };
+
+    this.adjustAllTotalManaSpent = function(actionName) {
+        for (const action of view.totalActionList) {
+            this.adjustTotalManaSpent(action.name);
+        }
     };
 
     this.adjustGoldCost = function(varName, amount) {

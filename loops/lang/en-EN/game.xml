@@ -688,6 +688,7 @@
           Actions will target unchecked objects before known lootable objects.]]></desc>
             <mana_cost>Mana Cost</mana_cost>
             <exp_multiplier>Exp Multiplier</exp_multiplier>
+            <total_mana_spent>Total Mana Spent</total_mana_spent>          
             <mana_used>Mana Used</mana_used>
             <mana_used_explanation><![CDATA[
           Shows stat gain affecting speed.<br>

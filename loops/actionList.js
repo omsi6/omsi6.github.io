@@ -1,226 +1,92 @@
 "use strict";
-function translateClassNames(name) {
-    if (name === "Wander") {
-        return new Wander();
-    }
-    if (name === "Smash Pots") {
-        return new SmashPots();
-    }
-    if (name === "Pick Locks") {
-        return new PickLocks();
-    }
-    if (name === "Buy Glasses") {
-        return new BuyGlasses();
-    }
-    if (name === "Buy Mana") {
-        return new BuyMana();
-    }
-    if (name === "Meet People") {
-        return new MeetPeople();
-    }
-    if (name === "Train Strength") {
-        return new TrainStrength();
-    }
-    if (name === "Short Quest") {
-        return new ShortQuest();
-    }
-    if (name === "Investigate") {
-        return new Investigate();
-    }
-    if (name === "Long Quest") {
-        return new LongQuest();
-    }
-    if (name === "Warrior Lessons") {
-        return new WarriorLessons();
-    }
-    if (name === "Mage Lessons") {
-        return new MageLessons();
-    }
-    if (name === "Throw Party") {
-        return new ThrowParty();
-    }
-    if (name === "Heal The Sick") {
-        return new HealTheSick();
-    }
-    if (name === "Fight Monsters") {
-        return new FightMonsters();
-    }
-    if (name === "Small Dungeon") {
-        return new SmallDungeon();
-    }
-    if (name === "Buy Supplies") {
-        return new BuySupplies();
-    }
-    if (name === "Haggle") {
-        return new Haggle();
-    }
-    if (name === "Start Journey") {
-        return new StartJourney();
-    }
-    if (name === "Open Rift") {
-        return new OpenRift();
-    }
+
+const allActions = {
+    // town 1
+	"Wander" : { varName : "Wander", create : function() { return new Wander() } },
+	"Smash Pots" : { varName : "Pots", create : function() { return new SmashPots() } },
+	"Pick Locks" : { varName : "Locks", create : function() { return new PickLocks() } },
+	"Buy Glasses" : { varName : "Glasses", create : function() { return new BuyGlasses() } },
+	"Buy Mana" : { varName : "Gold", create : function() { return new BuyMana() } },
+	"Meet People" : { varName : "Met", create : function() { return new MeetPeople() } },
+	"Train Strength" : { varName : "trStr", create : function() { return new TrainStrength() } },
+	"Short Quest" : { varName : "SQuests", create : function() { return new ShortQuest() } },
+	"Investigate" : { varName : "Secrets", create : function() { return new Investigate() } },
+	"Long Quest" : { varName : "LQuests", create : function() { return new LongQuest() } },
+	"Warrior Lessons" : { varName : "trCombat", create : function() { return new WarriorLessons() } },
+	"Mage Lessons" : { varName : "trMagic", create : function() { return new MageLessons() } },
+	"Throw Party" : { varName : "Party", create : function() { return new ThrowParty() } },
+	"Heal The Sick" : { varName : "Heal", create : function() { return new HealTheSick() } },
+	"Fight Monsters" : { varName : "Fight", create : function() { return new FightMonsters() } },
+	"Small Dungeon" : { varName : "SDungeon", create : function() { return new SmallDungeon() } },
+	"Buy Supplies" : { varName : "Supplies", create : function() { return new BuySupplies() } },
+	"Haggle" : { varName : "Haggle", create : function() { return new Haggle() } },
+	"Start Journey" : { varName : "Journey", create : function() { return new StartJourney() } },
+    "Open Rift" : { varName : "OpenRift", create : function() { return new OpenRift() } },
     // town 2
-    if (name === "Explore Forest") {
-        return new ExploreForest();
-    }
-    if (name === "Wild Mana") {
-        return new WildMana();
-    }
-    if (name === "Gather Herbs") {
-        return new GatherHerbs();
-    }
-    if (name === "Hunt") {
-        return new Hunt();
-    }
-    if (name === "Sit By Waterfall") {
-        return new SitByWaterfall();
-    }
-    if (name === "Old Shortcut") {
-        return new OldShortcut();
-    }
-    if (name === "Talk To Hermit") {
-        return new TalkToHermit();
-    }
-    if (name === "Practical Magic") {
-        return new PracticalMagic();
-    }
-    if (name === "Learn Alchemy") {
-        return new LearnAlchemy();
-    }
-    if (name === "Brew Potions") {
-        return new BrewPotions();
-    }
-    if (name === "Train Dexterity") {
-        return new TrainDexterity();
-    }
-    if (name === "Train Speed") {
-        return new TrainSpeed();
-    }
-    if (name === "Follow Flowers") {
-        return new FollowFlowers();
-    }
-    if (name === "Bird Watching") {
-        return new BirdWatching();
-    }
-    if (name === "Clear Thicket") {
-        return new ClearThicket();
-    }
-    if (name === "Talk To Witch") {
-        return new TalkToWitch();
-    }
-    if (name === "Dark Magic") {
-        return new DarkMagic();
-    }
-    if (name === "Dark Ritual") {
-        return new DarkRitual();
-    }
-    if (name === "Continue On") {
-        return new ContinueOn();
-    }
-    // town 3
-    if (name === "Explore City") {
-        return new ExploreCity();
-    }
-    if (name === "Gamble") {
-        return new Gamble();
-    }
-    if (name === "Get Drunk") {
-        return new GetDrunk();
-    }
-    if (name === "Purchase Mana") {
-        return new PurchaseMana();
-    }
-    if (name === "Sell Potions") {
-        return new SellPotions();
-    }
-    if (name === "Read Books") {
-        return new ReadBooks();
-    }
-    if (name === "Adventure Guild") {
-        return new JoinAdvGuild();
-    }
-    if (name === "Gather Team") {
-        return new GatherTeam();
-    }
-    if (name === "Large Dungeon") {
-        return new LargeDungeon();
-    }
-    if (name === "Crafting Guild") {
-        return new CraftingGuild();
-    }
-    if (name === "Craft Armor") {
-        return new CraftArmor();
-    }
-    if (name === "Apprentice") {
-        return new Apprentice();
-    }
-    if (name === "Mason") {
-        return new Mason();
-    }
-    if (name === "Architect") {
-        return new Architect();
-    }
-    if (name === "Buy Pickaxe") {
-        return new BuyPickaxe();
-    }
-    if (name === "Start Trek") {
-        return new StartTrek();
-    }
-    // town 4 
-    if (name === "Climb Mountain") {
-        return new ClimbMountain();
-    }
-    if (name === "Mana Geyser") {
-        return new ManaGeyser();
-    }
-    if (name === "Decipher Runes") {
-        return new DecipherRunes();
-    }
-    if (name === "Chronomancy") {
-        return new Chronomancy();
-    }
-    if (name === "Looping Potion") {
-        return new LoopingPotion();
-    }
-    if (name === "Pyromancy") {
-        return new Pyromancy();
-    }
-    if (name === "Explore Cavern") {
-        return new ExploreCavern();
-    }
-    if (name === "Mine Soulstones") {
-        return new MineSoulstones();
-    }
-    if (name === "Hunt Trolls") {
-        return new HuntTrolls();
-    }
-    if (name === "Check Walls") {
-        return new CheckWalls();
-    }
-    if (name === "Take Artifacts") {
-        return new TakeArtifacts();
-    }
-    if (name === "Imbue Mind") {
-        return new ImbueMind();
-    }
-    if (name === "Face Judgement") {
-        return new FaceJudgement();
-    }
+	"Explore Forest" : { varName : "Forest", create : function() { return new ExploreForest() } },
+	"Wild Mana" : { varName : "WildMana", create : function() { return new WildMana() } },
+	"Gather Herbs" : { varName : "Herbs", create : function() { return new GatherHerbs() } },
+	"Hunt" : { varName : "Hunt", create : function() { return new Hunt() } },
+	"Sit By Waterfall" : { varName : "Waterfall", create : function() { return new SitByWaterfall() } },
+	"Old Shortcut" : { varName : "Shortcut", create : function() { return new OldShortcut() } },
+	"Talk To Hermit" : { varName : "Hermit", create : function() { return new TalkToHermit() } },
+	"Practical Magic" : { varName : "trPractical", create : function() { return new PracticalMagic() } },
+	"Learn Alchemy" : { varName : "learnAlchemy", create : function() { return new LearnAlchemy() } },
+	"Brew Potions" : { varName : "Potions", create : function() { return new BrewPotions() } },
+	"Train Dexterity" : { varName : "trDex", create : function() { return new TrainDexterity() } },
+	"Train Speed" : { varName : "trSpd", create : function() { return new TrainSpeed() } },
+	"Follow Flowers" : { varName : "Flowers", create : function() { return new FollowFlowers() } },
+	"Bird Watching" : { varName : "BirdWatching", create : function() { return new BirdWatching() } },
+	"Clear Thicket" : { varName : "Thicket", create : function() { return new ClearThicket() } },
+	"Talk To Witch" : { varName : "Witch", create : function() { return new TalkToWitch() } },
+	"Dark Magic" : { varName : "trDark", create : function() { return new DarkMagic() } },
+	"Dark Ritual" : { varName : "DarkRitual", create : function() { return new DarkRitual() } },
+    "Continue On" : { varName : "Continue", create : function() { return new ContinueOn() } },
+    // town 3    
+	"Explore City" : { varName : "City", create : function() { return new ExploreCity() } },
+	"Gamble" : { varName : "Gamble", create : function() { return new Gamble() } },
+	"Get Drunk" : { varName : "Drunk", create : function() { return new GetDrunk() } },
+	"Purchase Mana" : { varName : "Gold2", create : function() { return new PurchaseMana() } },
+	"Sell Potions" : { varName : "SellPotions", create : function() { return new SellPotions() } },
+	"Read Books" : { varName : "ReadBooks", create : function() { return new ReadBooks() } },
+	"Adventure Guild" : { varName : "AdvGuild", create : function() { return new JoinAdvGuild() } }, // JoinAdvGuild, not a AdventureGuild
+	"Gather Team" : { varName : "GatherTeam", create : function() { return new GatherTeam() } },
+	"Large Dungeon" : { varName : "LDungeon", create : function() { return new LargeDungeon() } },
+	"Crafting Guild" : { varName : "CraftGuild", create : function() { return new CraftingGuild() } },
+	"Craft Armor" : { varName : "CraftArmor", create : function() { return new CraftArmor() } },
+	"Apprentice" : { varName : "Apprentice", create : function() { return new Apprentice() } },
+	"Mason" : { varName : "Mason", create : function() { return new Mason() } },
+	"Architect" : { varName : "Architect", create : function() { return new Architect() } },
+	"Buy Pickaxe" : { varName : "Pickaxe", create : function() { return new BuyPickaxe() } },
+    "Start Trek" : { varName : "StartTrek", create : function() { return new StartTrek() } },
+    // town 4    
+	"Climb Mountain" : { varName : "Mountain", create : function() { return new ClimbMountain() } },
+	"Mana Geyser" : { varName : "Geysers", create : function() { return new ManaGeyser() } },
+	"Decipher Runes" : { varName : "Runes", create : function() { return new DecipherRunes() } },
+	"Chronomancy" : { varName : "trChronomancy", create : function() { return new Chronomancy() } },
+	"Looping Potion" : { varName : "LoopingPotion", create : function() { return new LoopingPotion() } },
+	"Pyromancy" : { varName : "trPyromancy", create : function() { return new Pyromancy() } },
+	"Explore Cavern" : { varName : "Cavern", create : function() { return new ExploreCavern() } },
+	"Mine Soulstones" : { varName : "MineSoulstones", create : function() { return new MineSoulstones() } },
+	"Hunt Trolls" : { varName : "HuntTrolls", create : function() { return new HuntTrolls() } },
+	"Check Walls" : { varName : "Illusions", create : function() { return new CheckWalls() } },
+	"Take Artifacts" : { varName : "Artifacts", create : function() { return new TakeArtifacts() } },
+	"Imbue Mind" : { varName : "ImbueMind", create : function() { return new ImbueMind() } },
+    "Face Judgement" : { varName : "FaceJudgement", create : function() { return new FaceJudgement() } },
     // town 5
-    if (name === "Look Around") {
-        return new LookAround();
-    }
-    if (name === "Great Feast") {
-        return new GreatFeast();
-    }
-    if (name === "Fall From Grace") {
-        return new FallFromGrace();
-    }
+    // "Look Around" : { varName : "LookAround", create : function() { return new LookAround() } },
+    "Great Feast" : { varName : "GreatFeast", create : function() { return new GreatFeast() } },
+    "Fall From Grace" : { varName : "FallFromGrace", create : function() { return new FallFromGrace() } },
     // town 6
-    if (name === "Survey Area") {
-        return new SurveyArea();
-    }
+    // "Survey Area" : { varName : "SurveyArea", create : function() { return new SurveyArea() } },
+};
+
+function translateClassNames(name) {
+    let action = allActions[name];
+
+    if (action)
+        return action.create();
+    
     console.log(`error trying to create ${name}`);
     return false;
 }
