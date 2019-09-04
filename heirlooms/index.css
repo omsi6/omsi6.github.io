@@ -38,7 +38,7 @@ p {
 	align-items: center;
 }
 
-#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #weaponLevelsInput, #portalZoneInput, #voidZoneInput {
+#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #portalZoneInput, #voidZoneInput {
 	color: black;
 	border: 0.1rem solid black;
 	margin-bottom: -0.1rem;
@@ -64,13 +64,14 @@ p {
 #VMWeightInput {
 	font-size: 1.1rem;
 	height: 2.6rem;
-	width: 15.7rem;
+	width: 10.5rem;
+	margin-bottom: -0.1rem;
 }
 
-#XPWeightInput {
+#XPWeightInput, #HPWeightInput {
 	font-size: 1.1rem;
 	height: 2.6rem;
-	width: 15.7rem;
+	width: 10.5rem;
 	margin-left: -0.5rem;
 }
 
@@ -338,6 +339,7 @@ a:hover, a:active {
 	font-size: 2rem;
 	line-height: 4rem;
 	margin-left: 2.5rem;
+	white-space: nowrap;
 }
 
 .heirloomMod {

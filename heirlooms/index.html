@@ -19,7 +19,7 @@
 				<br><br>
 				To the right of the inputs, you'll see your inventory of carried heirlooms. To weigh mods using one of these heirlooms rather than your currently equipped heirloom, click on the one you'd like to weigh. To go back to your equipped heirloom, click on your currently selected heirloom to unselect it. You can also hover over the heirlooms in your inventory to view them.
 				<br><br>
-				VM weight and XP weight are multipliers to the value of the Void Map Drop Chance and Fluffy Exp mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights (12/11.25) are used to provide a good balance between damage and helium/exp gain.
+				VM weight, XP weight, and HP weight are multipliers to the value of the Void Map Drop Chance, Fluffy Exp, and Trimp Health/Breed Speed mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights (12/11.25) are used to provide a good balance between damage and helium/exp gain.
 				<br><br>
 				Weapon levels is the number of weapon levels you have by the end of your run.
 				<br><br>
@@ -37,8 +37,9 @@
 				<textarea placeholder="Paste your save here" id="saveInput" spellcheck="false" autocomplete="off" onfocus="this.value = ''" oninput="calculate()"></textarea>
 				<button id="calculateButton" onclick="calculate()">Calculate upgrades</button>
 				<div>
-					<input placeholder="VM weight (default 12)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')"></input>
-					<input placeholder="XP weight (default 11.25)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')"></input>
+					<input placeholder="VM weight (12)" id="VMWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('VMWeight')"></input>
+					<input placeholder="XP weight (11.25)" id="XPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('XPWeight')"></input>
+					<input placeholder="HP weight (0)" id="HPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('HPWeight')"></input>
 				</div>
 				<div>
 					<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')"></input>

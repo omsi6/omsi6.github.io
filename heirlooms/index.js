@@ -11,6 +11,7 @@
 
 /*
 
+v1.28 support for breed speed, allow trimp health in u1, add hp weight input
 v1.27 fix heirlooms with all unweighable mods erroring
 v1.26 support for v5.1.0 heirloom icons, remaining nu displays, and mod affordability displays
 v1.25 remove jquery, remove all needless code in tdcalc.js, general code cleanup
@@ -44,14 +45,15 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.27;
+const globalVersion = 1.28;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
-const textboxNames = ["VMWeight", "XPWeight", "weaponLevels", "portalZone", "voidZone"];
+const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "portalZone", "voidZone"];
 const inputs = {
     VMWeight: 12,
     XPWeight: 11.25,
+    HPWeight: 0,
     weaponLevels: 90,
     portalZone: 1,
     voidZone: 1,
@@ -87,6 +89,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
     for (input in savedInputs) {
         if (input === "VMWeight" && savedInputs[input] === 12) continue;
         else if (input === "XPWeight" && savedInputs[input] === 11.25) continue;
+        else if (input === "HPWeight" && savedInputs[input] === 0) continue;
         else if (input === "coreUnlocked" && savedInputs[input]) {
             document.getElementById("coreOldContainer").style.display = "block";
             document.getElementById("nextUpgradesContainer").innerHTML =
@@ -117,8 +120,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.27) {
-        inputs.version = 1.27;
+    if (inputs.version < 1.28) {
+        inputs.version = 1.28;
     }
 }
 
@@ -135,6 +138,8 @@ function updateInput(name, value, position) {
         inputs[name] = 12;
     } else if (name === "XPWeight" && inputDiv.value === "") {
         inputs[name] = 11.25;
+    } else if (name === "HPWeight" && inputDiv.value === "") {
+        inputs[name] = 0;
     } else if (name.includes("preferred")) {
         const cachedL = document.getElementById("inventoryColumn1").children.length + document.getElementById("inventoryColumn2").children.length;
         const type = name.split("preferred")[1];
@@ -182,7 +187,7 @@ const mods = {
         name: "Breed Speed",
         fullName: "Breed Speed",
         type: "Shield",
-        weighable: false,
+        get weighable() { return !inputs.universe2; },
         stepAmounts: [1, 1, 1, 1, 3, 3, 3, 3, 3, 5],
         softCaps: [10, 10, 10, 20, 100, 130, 160, 190, 220, 280],
     },
@@ -258,7 +263,7 @@ const mods = {
         name: "Trimp Health",
         fullName: "Trimp Health",
         type: "Shield",
-        get weighable() { return inputs.universe2; },
+        weighable: true,
         stepAmounts: [2, 2, 2, 2, 5, 5, 5, 6, 8, 10],
         softCaps: [20, 20, 20, 40, 100, 150, 200, 260, 356, 460],
     },
@@ -546,7 +551,11 @@ class Heirloom {
             return (value + 100 + stepAmount) / (value + 100);
         }
         if (type === "trimpHealth") {
-            return (value + 100 + stepAmount) / (value + 100);
+            return (value + 100 + stepAmount * inputs.HPWeight) / (value + 100);
+        }
+        if (type === "breedSpeed") {
+            // magic number is log(1.01) / log(1 / 0.98)
+            return 100 * Math.pow(value + stepAmount * inputs.HPWeight, 0.492524625) / (100 * Math.pow(value, 0.492524625));
         }
         if (type === "prismatic") {
             // 50 base, 50 from prismatic palace
@@ -554,7 +563,7 @@ class Heirloom {
             shieldPercent += save.portal.Prismal.radLevel;
             if (inputs.scruffyE0L2) shieldPercent += 25;
 
-            return (value + shieldPercent + 100 + stepAmount) / (value + shieldPercent + 100);
+            return (value + shieldPercent + 100 + stepAmount * inputs.HPWeight) / (value + shieldPercent + 100);
         }
         if (type === "critDamage") {
             const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
