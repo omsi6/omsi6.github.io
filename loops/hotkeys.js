@@ -67,7 +67,7 @@ class GameKeyboard {
 GameKeyboard.spins = [];
 
 function executeHotkey(action) {
-    if (!document.getElementById("hotkeysToggle").checked || controlDown || document.activeElement.type === "text" || document.activeElement.type === "textarea") {
+    if (!options.hotkeys || controlDown || document.activeElement.type === "text" || document.activeElement.type === "textarea") {
         return;
     }
     action();

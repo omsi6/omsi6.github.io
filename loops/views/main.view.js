@@ -1,8 +1,6 @@
 "use strict";
 
 function View() {
-    this.totalActionList = [];
-
     this.initalize = function() {
         this.createStats();
         this.updateStats();
@@ -100,16 +98,16 @@ function View() {
     };
 
     // requesting an update will call that update on the next view.update tick (based off player set UPS)
-    this.requestUpdate = function(catagory, target) {
-        if (!this.requests[catagory].includes(target)) this.requests[catagory].push(target);
+    this.requestUpdate = function(category, target) {
+        if (!this.requests[category].includes(target)) this.requests[category].push(target);
     };
 
     this.handleUpdateRequests = function() {
-        for (const catagory in this.requests) {
-            for (const target of this.requests[catagory]) {
-                this[catagory](target);
+        for (const category in this.requests) {
+            for (const target of this.requests[category]) {
+                this[category](target);
             }
-            this.requests[catagory] = [];
+            this.requests[category] = [];
         }
     };
 
@@ -311,8 +309,14 @@ function View() {
             }
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
             const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5;" : "";
+            let color;
+            if (action.name === "Face Judgement") {
+                color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
+            } else {
+                color = getTravelNum(action.name) > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + getTravelNum(action.name)]} 51%)` : this.zoneTints[townNum];
+            }
             totalDivText +=
-                `<div id='nextActionContainer${i}' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(${i})' ondragenter='dragOverDecorate(${i})' ondragleave='dragExitUndecorate(${i})' draggable='true' data-index='${i}' style='background:${this.zoneTints[townNum]}; ${opacity}'>
+                `<div id='nextActionContainer${i}' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(${i})' ondragenter='dragOverDecorate(${i})' ondragleave='dragExitUndecorate(${i})' draggable='true' data-index='${i}' style='background:${color}; ${opacity}'>
                     <img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
                     <div class='bold'>${actionLoops}</div>
                     <div style='float:right; margin-top: 3px; margin-right: 3px;'>
@@ -327,7 +331,6 @@ function View() {
                     </div>
                 </div>`;
         }
-
         nextActionsDiv.innerHTML = totalDivText;
     };
 
@@ -463,7 +466,7 @@ function View() {
     };
 
     this.updateLockedHidden = function() {
-        for (const action of this.totalActionList) {
+        for (const action of totalActionList) {
             const actionDiv = document.getElementById(`container${action.varName}`);
             const infoDiv = document.getElementById(`infoContainer${action.varName}`);
             const storyDiv = document.getElementById(`storyContainer${action.varName}`);
@@ -503,7 +506,7 @@ function View() {
 
     this.updateStories = function(init) {
         // ~1.56ms cost per run. run once every 2000ms on an interval
-        for (const action of view.totalActionList) {
+        for (const action of totalActionList) {
             if (action.storyReqs !== undefined) {
                 // greatly reduces/nullifies the cost of checking actions with all stories unlocked, which is nice,
                 // since you're likely to have more stories unlocked at end game, which is when performance is worse
@@ -622,251 +625,14 @@ function View() {
     };
 
     this.createTownActions = function() {
-        while (actionOptionsTown[0].firstChild) {
-            actionOptionsTown[0].removeChild(actionOptionsTown[0].firstChild);
+        if (actionOptionsTown[0].firstChild) return;
+        for (const prop in actionList) {
+            const action = new actionList[prop]();
+            this.createTownAction(action);
+            if (action.type === "limited") this.createTownInfo(action);
+            if (action.type === "progress") this.createActionProgress(action);
+            if (action.type === "multiPart") this.createMultiPartPBar(action);
         }
-        while (actionStoriesTown[0].firstChild) {
-            actionStoriesTown[0].removeChild(actionStoriesTown[0].firstChild);
-        }
-        while (townInfos[0].firstChild) {
-            townInfos[0].removeChild(townInfos[0].firstChild);
-        }
-        let tempObj = new Wander();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-        tempObj = new SmashPots();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-        tempObj = new PickLocks();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        this.createTownAction(new BuyGlasses());
-        this.createTownAction(new BuyMana());
-
-        tempObj = new MeetPeople();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new TrainStrength());
-
-        tempObj = new ShortQuest();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new Investigate();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new LongQuest();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        this.createTownAction(new ThrowParty());
-        this.createTownAction(new WarriorLessons());
-        this.createTownAction(new MageLessons());
-
-        tempObj = new HealTheSick();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new FightMonsters();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new SmallDungeon();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new BuySupplies());
-        this.createTownAction(new Haggle());
-        this.createTownAction(new StartJourney());
-
-        while (actionOptionsTown[1].firstChild) {
-            actionOptionsTown[1].removeChild(actionOptionsTown[1].firstChild);
-        }
-        while (townInfos[1].firstChild) {
-            townInfos[1].removeChild(townInfos[1].firstChild);
-        }
-        tempObj = new ExploreForest();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new WildMana();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new GatherHerbs();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new Hunt();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        this.createTownAction(new SitByWaterfall());
-
-        tempObj = new OldShortcut();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new TalkToHermit();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new PracticalMagic());
-        this.createTownAction(new LearnAlchemy());
-        this.createTownAction(new BrewPotions());
-
-        this.createTownAction(new TrainDexterity());
-        this.createTownAction(new TrainSpeed());
-
-        tempObj = new FollowFlowers();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new BirdWatching());
-
-        tempObj = new ClearThicket();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new TalkToWitch();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new DarkMagic());
-
-        tempObj = new DarkRitual();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new ContinueOn());
-
-        while (actionOptionsTown[2].firstChild) {
-            actionOptionsTown[2].removeChild(actionOptionsTown[2].firstChild);
-        }
-        while (townInfos[2].firstChild) {
-            townInfos[2].removeChild(townInfos[2].firstChild);
-        }
-        tempObj = new ExploreCity();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new Gamble();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new GetDrunk();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new PurchaseMana());
-        this.createTownAction(new SellPotions());
-
-        tempObj = new JoinAdvGuild();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new GatherTeam());
-
-        tempObj = new LargeDungeon();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new CraftingGuild();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new CraftArmor());
-
-        tempObj = new Apprentice();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new Mason();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new Architect();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new ReadBooks());
-
-        this.createTownAction(new BuyPickaxe());
-
-        this.createTownAction(new StartTrek());
-
-        while (actionOptionsTown[3].firstChild) {
-            actionOptionsTown[3].removeChild(actionOptionsTown[3].firstChild);
-        }
-        while (townInfos[3].firstChild) {
-            townInfos[3].removeChild(townInfos[3].firstChild);
-        }
-
-        tempObj = new ClimbMountain();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new ManaGeyser();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new DecipherRunes();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new Chronomancy());
-        this.createTownAction(new LoopingPotion());
-        this.createTownAction(new Pyromancy());
-
-        tempObj = new ExploreCavern();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new MineSoulstones();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new HuntTrolls();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new CheckWalls();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new TakeArtifacts();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new ImbueMind();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new FaceJudgement());
-
-        while (actionOptionsTown[4].firstChild) {
-            actionOptionsTown[4].removeChild(actionOptionsTown[4].firstChild);
-        }
-        while (townInfos[4].firstChild) {
-            townInfos[4].removeChild(townInfos[4].firstChild);
-        }
-
-        tempObj = new GreatFeast();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new FallFromGrace());
-
-        while (actionOptionsTown[5].firstChild) {
-            actionOptionsTown[5].removeChild(actionOptionsTown[5].firstChild);
-        }
-        while (townInfos[5].firstChild) {
-            townInfos[5].removeChild(townInfos[5].firstChild);
-        }
-
     };
 
     this.createActionProgress = function(action) {
@@ -942,14 +708,13 @@ function View() {
         actionsDiv.innerHTML = totalDivText;
         if (isTravel) actionsDiv.style.width = "100%";
         actionOptionsTown[action.townNum].appendChild(actionsDiv);
-        towns[action.townNum].totalActionList.push(action);
-        this.totalActionList.push(action);
 
         if (action.storyReqs !== undefined) {
             let storyTooltipText = "";
             let lastInBranch = false;
             const storyAmt = _txt(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}`, "fallback").split("⮀").length - 1;
             for (let i = 1; i <= storyAmt; i++) {
+                if (_txt(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}>story_${i}`) === undefined) console.log(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}>story_${i}`);
                 const storyText = _txt(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}>story_${i}`, "fallback").split("⮀");
                 if (action.storyReqs(i)) {
                     storyTooltipText += storyText[0] + storyText[1];
@@ -987,7 +752,7 @@ function View() {
     };
 
     this.adjustGoldCost = function(varName, amount) {
-        document.getElementById(`goldCost${varName}`).textContent = amount;
+        document.getElementById(`goldCost${varName}`).textContent = formatNumber(amount);
     };
     this.adjustGoldCosts = function() {
         this.adjustGoldCost("Locks", goldCostLocks());
@@ -1006,7 +771,7 @@ function View() {
         }
     };
     this.adjustExpGains = function() {
-        for (const action of view.totalActionList) {
+        for (const action of totalActionList) {
             if (action.skills) this.adjustExpGain(action);
         }
     };
@@ -1070,11 +835,10 @@ function View() {
     };
 
     this.updateMultiPartActions = function() {
-        for (const action of view.totalActionList) {
-            if (action.segments) {
-                const tempObj = action;
-                this.updateMultiPart(tempObj);
-                this.updateMultiPartSegments(tempObj);
+        for (const action of totalActionList) {
+            if (action.type === "multiPart") {
+                this.updateMultiPart(action);
+                this.updateMultiPartSegments(action);
             }
         }
     };
@@ -1220,9 +984,9 @@ function View() {
     };
 
     this.changeTheme = function(init) {
-        if (init) document.getElementById("theme_menu").value = currentTheme;
-        currentTheme = document.getElementById("theme_menu").value;
-        document.getElementById("theBody").className = `t-${currentTheme}`;
+        if (init) document.getElementById("themeInput").value = options.theme;
+        options.theme = document.getElementById("themeInput").value;
+        document.getElementById("theBody").className = `t-${options.theme}`;
     };
 }
 
@@ -1307,5 +1071,6 @@ function adjustActionListSize(amt) {
 function updateBuffCaps() {
     for (const buff of buffList) {
         document.getElementById(`buff${buff}Cap`).value = Math.min(parseInt(document.getElementById(`buff${buff}Cap`).value), buffHardCaps[buff]);
+        buffCaps[buff] = parseInt(document.getElementById(`buff${buff}Cap`).value);
     }
 }

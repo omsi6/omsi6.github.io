@@ -86,3 +86,13 @@ window.Localization = {
         return vars;
     },
 };
+
+Localization.init();
+// binding the _txt function for simplier use
+window._txt = Localization.txt;
+window._txtsObj = Localization.txtsObj;
+
+let locCheck = false;
+Localization.loadLib("fallback", () => {
+    Localization.loadLib("game", () => locCheck = true);
+});

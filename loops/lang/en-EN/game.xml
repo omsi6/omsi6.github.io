@@ -6,6 +6,18 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".93"><![CDATA[
+            <b> April 29th, 2019 - The current date</b>
+            <b> v0.93 - "Diminishing returns."</b><br>
+            • Team member gold cost and cost increase from 200 > 100 per.<br>
+            • Travel actions in the next action list now have multicolored backgrounds where the top half is the zone they're in, and the bottom half is the zone they bring you to.<br>
+            • Options are now all saved.<br>
+            • Manually set buff caps are now saved.<br>
+            • Fixed Mason and Architect not updating their exp gains in their tooltips properly upon completion.<br>
+            • Fixed odd behavior on failed actions in edge cases.<br>
+            • Fixed buffs improperly visually appearing and disappearing.<br>
+            • Fixed buff hard caps not working.
+        ]]></version>
             <version verNum=".92"><![CDATA[
             <b> April 29th, 2019 - The current date</b>
             <b> v0.92 - "For your eyes."</b><br>
@@ -995,7 +1007,7 @@
             There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at a combined Combat and Magic skill of 35.<br>Requires a reputation of 2 or above.<br>Gives 1 soulstone per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
-            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
+            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last Stat</last_stat_label>
@@ -1323,7 +1335,7 @@
             With your party, you set out to accomplish great feats of dungeoneering that you couldn't have done while alone.<br>Gives (magic + team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires at least one other party member.<br>Unlocked at 20% Rumors Heard.<br>Gives 10 soulstones per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
-            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
+            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last Stat</last_stat_label>
@@ -1530,9 +1542,36 @@
             <label>Guided Tour</label>
             <label_done>Tour Routes Followed</label_done>
             <tooltip><![CDATA[
-            The city doesn't take too kindly to visitors snooping around, so you'll have to take all their tours to scope it out instead.<br>Costs 10 gold.
+            The city doesn't take too kindly to visitors snooping around, so you'll have to take all their tours to scope it out instead.<br>Costs 10 gold.<br>2x progress with glasses.
         ]]></tooltip>
+            <!--TODO: give this action story-->
         </guided_tour>
+        <canvass>
+            <label>Canvass</label>
+            <label_done>Houses Canvassed</label_done>
+            <tooltip><![CDATA[
+            The city has a local charity that's looking for volunteers to canvass around for potential benefactors. Maybe if you know the information of some of said people, it could be helpful.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </canvass>
+        <donate>
+            <label>Donate</label>
+            <tooltip><![CDATA[
+            You can donate to the charity yourself if you'd like.<br>Costs 20 gold.<br>Gives 1 reputation.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </donate>
+        <accept_donations>
+            <label>Accept Donations</label>
+            <label_done>Donations Accepted</label_done>
+            <info_text1>Meaningful donations left</info_text1>
+            <info_text2>Meaningful donations total</info_text2>
+            <info_text3>Donations to check for value</info_text3>
+            <tooltip><![CDATA[
+            After doing some canvassing for the local charity, you're now able to accept some donations on their behalf, since you know the routine.<br>Costs 1 reputation.<br>Meaningful donations are worth 20 gold each.<br>Every 5 donations is worth a meaningful amount. 
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </accept_donations>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
@@ -1566,7 +1605,7 @@
             <label>Great Feast</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            All this adventuring is making you famished, it's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
+            You realize now that you've forgotten the joy of food, after having gone for so "long" without needing to eat anything. It's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              soulstones.
@@ -1603,7 +1642,7 @@
             Standing tall in the dead center of the town is the towering spire. Surrounded by a storm, and almost emanating gloom. This is surely your greatest task yet.<br>Gives (team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Progress scaling per floor is reduced by 0.1x per pylon disabled.<br>Unlocked at 20% Rumors Heard.<br>Gives 50 soulstones per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
-            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at .00001% per mana.<br>
+            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last Stat</last_stat_label>

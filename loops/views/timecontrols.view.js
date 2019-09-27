@@ -37,8 +37,8 @@ Views.registerView("timeControls", {
                 </div>
             </div>
         </div>
-        <div class='control'><input type='checkbox' id='pauseBeforeRestart'><label for='pauseBeforeRestart'>${_txt("time_controls>pause_before_restart")}</label></div>
-        <div class='control'><input type='checkbox' id='pauseOnFailedLoop'><label for='pauseOnFailedLoop'>${_txt("time_controls>pause_on_failed_loop")}</label></div>`;
+        <div class='control'><input type='checkbox' id='pauseBeforeRestartInput' oninput='setOption("pauseBeforeRestart", this.checked)'><label for='pauseBeforeRestartInput'>${_txt("time_controls>pause_before_restart")}</label></div>
+        <div class='control'><input type='checkbox' id='pauseOnFailedLoopInput' oninput='setOption("pauseOnFailedLoop", this.checked)'><label for='pauseOnFailedLoopInput'>${_txt("time_controls>pause_on_failed_loop")}</label></div>`;
         return html;
     },
 });
