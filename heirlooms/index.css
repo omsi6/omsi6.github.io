@@ -118,7 +118,7 @@ p {
 
 #shieldOld\?, #staffOld\?, #coreOld\?, #shieldNew\?, #staffNew\?, #coreNew\? {
 	display: none;
-	right: -32.1rem;
+	right: -34.1rem;
     top: -8.2rem;
 }
 
@@ -256,7 +256,7 @@ a:hover, a:active {
 	display: flex;
 	flex-direction: column;
 	height: 31rem;
-	width: 37rem;
+	width: 39rem;
 	font-size: 1.8rem;
 	margin: 1rem;
 	margin-top: 0.9rem;
