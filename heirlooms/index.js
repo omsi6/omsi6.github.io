@@ -47,7 +47,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.29;
+const globalVersion = 1.30;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
