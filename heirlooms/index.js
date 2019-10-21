@@ -11,6 +11,7 @@
 
 /*
 
+v1.30 fix edge case for crit stat weighing
 v1.29 support for forcing crit breakpoints, code cleanup
 v1.28 support for breed speed, allow trimp health in u1, add hp weight input
 v1.27 fix heirlooms with all unweighable mods erroring
@@ -121,8 +122,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.29) {
-        inputs.version = 1.29;
+    if (inputs.version < 1.30) {
+        inputs.version = 1.30;
     }
 }
 
@@ -548,6 +549,7 @@ class Heirloom {
     getModGain(type) {
         const value = this.getModValue(type);
         const stepAmount = this.stepAmounts[type];
+        if (this.hardCaps[type] && value === this.hardCaps[type]) return 1;
         if (type === "trimpAttack") {
             return (value + 100 + stepAmount) / (value + 100);
         }
@@ -576,6 +578,7 @@ class Heirloom {
             if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
             else critChance += this.getModValue("critChance");
             if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+            if (critChance === 0) return 1;
             if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
             if (inputs.chargedCrits) megaCritMult += 1;
             const megaCrits = Math.min(Math.floor(critChance / 100), 2);
@@ -617,9 +620,12 @@ class Heirloom {
             let critDmgNormalizedAfter = 0;
             if (inputs.chargedCrits) critChanceBefore += value * 1.5;
             else critChanceBefore += value;
+            if (inputs.chargedCrits) critChanceAfter += value * 1.5;
+            else critChanceAfter += value;
             if (isNumeric(this.getModValue("critDamage"))) {
                 critDamage += this.getModValue("critDamage");
             }
+            if (critDamage === 0) return 1;
             if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
                 critChanceBefore += 50;
             }
