@@ -11,6 +11,7 @@
 
 /*
 
+v1.31 fix error with unweighable mods
 v1.30 fix edge case for crit stat weighing
 v1.29 support for forcing crit breakpoints, code cleanup
 v1.28 support for breed speed, allow trimp health in u1, add hp weight input
@@ -47,7 +48,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.30;
+const globalVersion = 1.31;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
@@ -122,8 +123,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.30) {
-        inputs.version = 1.30;
+    if (inputs.version < 1.31) {
+        inputs.version = 1.31;
     }
 }
 
@@ -863,6 +864,7 @@ class Heirloom {
                 }
             }
 
+            if (name === "") break;
             if (mods[name].weighable && currency >= cost) {
                 heirloom.mods[index][1] += mods[name].stepAmounts[heirloom.rarity];
                 heirloom.mods[index][3] += 1;
@@ -901,6 +903,7 @@ class Heirloom {
                 }
             }
 
+            if (name === "") break;
             if (mods[name].weighable && currency >= cost) {
                 heirloom.mods[index][1] += mods[name].stepAmounts[heirloom.rarity];
                 heirloom.mods[index][3] += 1;
