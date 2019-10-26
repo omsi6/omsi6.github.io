@@ -11,6 +11,7 @@
 
 /*
 
+v1.32 fix next mod upg cost display, fix upg affordability display on cores
 v1.31 fix error with unweighable mods
 v1.30 fix edge case for crit stat weighing
 v1.29 support for forcing crit breakpoints, code cleanup
@@ -48,7 +49,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.31;
+const globalVersion = 1.32;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
@@ -123,8 +124,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.31) {
-        inputs.version = 1.31;
+    if (inputs.version < 1.32) {
+        inputs.version = 1.32;
     }
 }
 
@@ -830,8 +831,9 @@ class Heirloom {
     forceCritBreakpoint() {
         if (this.isEmpty()) return new Heirloom();
         const heirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
-        let currency = (this.isCore) ? save.playerSpire.main.spirestones : getEffectiveNullifium() - this.getTotalSpent();
+        let currency = getEffectiveNullifium() - this.getTotalSpent();
         let efficiency = 0;
+        let paid = 0;
         let cost = 0;
         let name = "";
         let index = -1;
@@ -849,6 +851,7 @@ class Heirloom {
                     heirloom.mods[index][3] += 1;
                     purchases[index] += 1;
                     currency -= cost;
+                    paid += cost;
                 } else {
                     break;
                 }
@@ -870,12 +873,14 @@ class Heirloom {
                 heirloom.mods[index][3] += 1;
                 purchases[index] += 1;
                 currency -= cost;
+                paid += cost;
             } else {
                 break;
             }
         }
 
-        const nextCost = Math.ceil((cost / getHeirloomNullifiumRatio()) - (currency - (heirloom.getTotalSpent() / getHeirloomNullifiumRatio())));
+        const nextCost = Math.floor((cost - (getEffectiveNullifium() - heirloom.getTotalSpent())) / getHeirloomNullifiumRatio());
+        heirloom.paid = paid;
         heirloom.next = { name, cost: nextCost };
         heirloom.purchases = purchases;
         heirloom.successful = Math.floor((critChance + (inputs.chargedCrits) ? heirloom.getModValue("critChance") * 1.5 : heirloom.getModValue("critChance")) / 100) > megaCrits;
@@ -887,6 +892,7 @@ class Heirloom {
         const heirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
         let currency = (this.isCore) ? save.playerSpire.main.spirestones : getEffectiveNullifium() - this.getTotalSpent();
         let efficiency = 0;
+        let paid = 0;
         let cost = 0;
         let name = "";
         let index = -1;
@@ -909,6 +915,7 @@ class Heirloom {
                 heirloom.mods[index][3] += 1;
                 purchases[index] += 1;
                 currency -= cost;
+                paid += cost;
             } else {
                 break;
             }
@@ -918,7 +925,11 @@ class Heirloom {
             const forcedCritHeirloom = this.forceCritBreakpoint();
             if (forcedCritHeirloom.getDamageMult() > heirloom.getDamageMult() && forcedCritHeirloom.successful) return forcedCritHeirloom;
         }
-        const nextCost = Math.ceil((cost / getHeirloomNullifiumRatio()) - (currency - (heirloom.getTotalSpent() / getHeirloomNullifiumRatio())));
+
+        const nextCost = (heirloom.isCore)
+            ? Math.floor(cost - currency)
+            : Math.floor((cost - (getEffectiveNullifium() - heirloom.getTotalSpent())) / getHeirloomNullifiumRatio());
+        heirloom.paid = paid;
         heirloom.next = { name, cost: nextCost };
         heirloom.purchases = purchases;
         return heirloom;
@@ -1440,7 +1451,7 @@ function calculate(manualInput) {
     }
 
     const nullifium = save.global.nullifium;
-    const spirestones = save.playerSpire.main.spirestones;
+    let spirestones = save.playerSpire.main.spirestones;
 
     save.global.ShieldEquipped = new Heirloom(save.global.ShieldEquipped);
     save.global.StaffEquipped = new Heirloom(save.global.StaffEquipped);
@@ -1497,6 +1508,7 @@ function calculate(manualInput) {
 
     if (!startingCore.isEmpty()) {
         newCore = startingCore.calculatePurchases();
+        spirestones -= newCore.paid;
     }
     
     // current nu/ss, next goal nu price, next goal name
