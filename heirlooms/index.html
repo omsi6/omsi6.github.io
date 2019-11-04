@@ -21,13 +21,9 @@
 				<br><br>
 				VM weight, XP weight, and HP weight are multipliers to the value of the Void Map Drop Chance, Fluffy Exp, and Trimp Health/Breed Speed mods respectively. So if your next VMDC upgrade were to increase your value by 0.5%, the default weight of 12 will multiply it by 12 so it will be calculated as if it were to increase your value by 6%. The default weights (12/11.25) are used to provide a good balance between damage and helium/exp gain.
 				<br><br>
-				Weapon levels is the number of weapon levels you have by the end of your run.
+				Weapon levels is the average number of weapon levels (not prestiges) you have on each weapon by the end of your run.
 				<br><br>
-				Portal zone is the zone you're going to portal at, and Void zone is the zone you're going to run your void maps at.
-				<br><br>
-				Weapon levels is the only bottom input that matters when not in beta mode. When in beta mode, if any of the bottom 3 inputs are blank, your recommended purchase will likely be incorrect, so you should fill them out. 
-				<br><br>
-				A toggle for beta mode can be found in the bottom right corner. This uses new VMDC/Fluffy exp calculations from ymhsbmbesitwf, and uses the Portal zone/Void zone inputs. Beta mode is not recommended, but if you're using it, VM/XP weights of 0.8/0.7 are recommended.
+				Daily crit chance bonus is the % bonus to crit chance you'll have from your daily. Please note that unless you're making a shield for a specific daily, you should leave this at 0.
 			</p>
 		</div>
 	</div>
@@ -42,9 +38,8 @@
 					<input placeholder="HP weight (0)" id="HPWeightInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('HPWeight')"></input>
 				</div>
 				<div>
-					<input placeholder="Weapon levels" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')"></input>
-					<input placeholder="Portal zone" id="portalZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('portalZone')"></input>
-					<input placeholder="Void map zone" id="voidZoneInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('voidZone')"></input>
+					<input placeholder="Weapon levels (90)" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')"></input>
+					<input placeholder="Daily crit chance bonus (0)" id="dailyCritInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('dailyCrit')"></input>
 				</div>
 				<div id="fluffyCheckboxesContainer" class="checkboxesContainer" style="display: none;">
 					<div class="checkboxContainer">
@@ -374,10 +369,6 @@
 	</div>
 
 	<footer id="footer">
-		<div class="checkboxContainer">
-			<span style="color: #a8a7a8; font-size: 1.33rem;">Beta mode: </span>
-			<input id="betaInput" type="checkbox" onchange="updateInput('beta')">
-		</div>
 		<a href="https://omsi6.github.io/heirlooms/index.js" style="text-decoration: underline">Heirlooms v<span id="versionNumber">0.00</span></a>
 	</footer>
 

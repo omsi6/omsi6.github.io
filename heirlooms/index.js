@@ -2,7 +2,7 @@
 // lots of stuff here copied from Trimps (https://trimps.github.io/), since it is a calculator for it afterall
 // lots of the math and the idea behind this is based off of the heirloom spreadsheet (https://bit.ly/2OpQgBM) made by nsheetz from the Trimps discord
 // code for spire td damage calcutations (tdcalc.js) from swaq/bhad (http://swaqvalley.com/td_calc/) with permission
-// beta VM/XP calculations from ymhsbmbesitwf
+// beta VM/XP calculations from ymhsbmbesitwf (currently unused)
 // improved miner eff calculation from GhostFrog
 // minor help from SpectralFlame, Razenpok, and GhostFrog
 // I hope this tool is useful! :)
@@ -11,6 +11,7 @@
 
 /*
 
+v1.33 add daily crit bonus input, remove beta mode, unify handling of input defaults and displaying of them
 v1.32 fix next mod upg cost display, fix upg affordability display on cores
 v1.31 fix error with unweighable mods
 v1.30 fix edge case for crit stat weighing
@@ -49,23 +50,21 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.32;
+const globalVersion = 1.33;
 document.getElementById("versionNumber").textContent = globalVersion;
 
-const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
-const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "portalZone", "voidZone"];
+const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7"];
+const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "dailyCrit"];
 const inputs = {
     VMWeight: 12,
     XPWeight: 11.25,
     HPWeight: 0,
     weaponLevels: 90,
-    portalZone: 1,
-    voidZone: 1,
+    dailyCrit: 0,
     version: globalVersion,
     fluffyE4L10: false,
     fluffyE5L10: false,
     chargedCrits: false,
-    beta: false,
     preferredShield: 0,
     preferredStaff: 0,
     preferredCore: 0,
@@ -94,6 +93,8 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
         if (input === "VMWeight" && savedInputs[input] === 12) continue;
         else if (input === "XPWeight" && savedInputs[input] === 11.25) continue;
         else if (input === "HPWeight" && savedInputs[input] === 0) continue;
+        else if (input === "weaponLevels" && savedInputs[input] === 90) continue;
+        else if (input === "dailyCrit" && savedInputs[input] === 0) continue;
         else if (input === "coreUnlocked" && savedInputs[input]) {
             document.getElementById("coreOldContainer").style.display = "block";
             document.getElementById("nextUpgradesContainer").innerHTML =
@@ -124,8 +125,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.32) {
-        inputs.version = 1.32;
+    if (inputs.version < 1.33) {
+        inputs.version = 1.33;
     }
 }
 
@@ -143,6 +144,10 @@ function updateInput(name, value, position) {
     } else if (name === "XPWeight" && inputDiv.value === "") {
         inputs[name] = 11.25;
     } else if (name === "HPWeight" && inputDiv.value === "") {
+        inputs[name] = 0;
+    } else if (name === "weaponLevels" && inputDiv.value === "") {
+        inputs[name] = 90;
+    } else if (name === "dailyCrit" && inputDiv.value === "") {
         inputs[name] = 0;
     } else if (name.includes("preferred")) {
         const cachedL = document.getElementById("inventoryColumn1").children.length + document.getElementById("inventoryColumn2").children.length;
@@ -479,6 +484,14 @@ function getHardCap(type, rarity) {
     return mods[type].hardCaps[rarity];
 }
 
+function normalizedCrit(critChance, critDamage, megaCrits, megaCritMult) {
+    if (megaCrits === 0) {
+        return critDamage * critChance + ((1 - critChance) * 100);
+    }
+    const lowCrit = 1 - critChance;
+    return critDamage * Math.pow(megaCritMult, megaCrits - 1) * (lowCrit + critChance * megaCritMult);
+}
+
 const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
 const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500, 7500];
 const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000, 20000000000];
@@ -571,55 +584,31 @@ class Heirloom {
             return (value + shieldPercent + 100 + stepAmount * inputs.HPWeight) / (value + shieldPercent + 100);
         }
         if (type === "critDamage") {
-            const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-            const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-            let critChance = relentlessness * 5;
+            const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+            const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
+            let critChance = relentlessness * 5 + inputs.dailyCrit;
             let megaCritMult = 5;
-            let critDmgNormalizedBefore = 0;
-            let critDmgNormalizedAfter = 0;
             if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
             else critChance += this.getModValue("critChance");
             if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
             if (critChance === 0) return 1;
             if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
             if (inputs.chargedCrits) megaCritMult += 1;
-            const megaCrits = Math.min(Math.floor(critChance / 100), 2);
+            const megaCrits = Math.floor(critChance / 100);
             critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
             const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
-            switch (megaCrits) {
-                case 2:
-                    critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 1:
-                    critDmgNormalizedBefore = critDamage * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 0:
-                    critDmgNormalizedBefore = critDamage * critChance + ((1 - critChance) * 100);
-                    break;
-            }
-            switch (megaCrits) {
-                case 2:
-                    critDmgNormalizedAfter = (critDamage + stepAmount) * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 1:
-                    critDmgNormalizedAfter = (critDamage + stepAmount) * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 0:
-                    critDmgNormalizedAfter = (critDamage + stepAmount) * critChance + ((1 - critChance) * 100);
-                    break;
-            }
+            const critDmgNormalizedBefore = normalizedCrit(critChance, critDamage, megaCrits, megaCritMult);
+            const critDmgNormalizedAfter = normalizedCrit(critChance, critDamage + stepAmount, megaCrits, megaCritMult);
 
             return critDmgNormalizedAfter / critDmgNormalizedBefore;
         }
         if (type === "critChance") {
-            const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-            const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-            let critChanceBefore = relentlessness * 5;
-            let critChanceAfter = relentlessness * 5;
+            const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+            const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
+            let critChanceBefore = relentlessness * 5 + inputs.dailyCrit;
+            let critChanceAfter = relentlessness * 5 + inputs.dailyCrit;
             let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
             let megaCritMult = 5;
-            let critDmgNormalizedBefore = 0;
-            let critDmgNormalizedAfter = 0;
             if (inputs.chargedCrits) critChanceBefore += value * 1.5;
             else critChanceBefore += value;
             if (inputs.chargedCrits) critChanceAfter += value * 1.5;
@@ -637,70 +626,16 @@ class Heirloom {
             if (inputs.chargedCrits) {
                 megaCritMult += 1;
             }
-            const megaCritsBefore = Math.min(Math.floor(critChanceBefore / 100), 2);
-            const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) / 100), 2);
+            const megaCritsBefore = Math.floor(critChanceBefore / 100);
+            const megaCritsAfter = Math.floor((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) / 100);
             critChanceAfter = Math.min((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) - megaCritsAfter * 100, 100) / 100;
             critChanceBefore = Math.min(critChanceBefore - megaCritsBefore * 100, 100) / 100;
-            switch (megaCritsBefore) {
-                case 2:
-                    critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
-                    break;
-                case 1:
-                    critDmgNormalizedBefore = critDamage * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
-                    break;
-                case 0:
-                    critDmgNormalizedBefore = critDamage * critChanceBefore + ((1 - critChanceBefore) * 100);
-                    break;
-            }
-            switch (megaCritsAfter) {
-                case 2:
-                    critDmgNormalizedAfter = critDamage * megaCritMult * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
-                    break;
-                case 1:
-                    critDmgNormalizedAfter = critDamage * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
-                    break;
-                case 0:
-                    critDmgNormalizedAfter = critDamage * critChanceAfter + ((1 - critChanceAfter) * 100);
-                    break;
-            }
+            const critDmgNormalizedBefore = normalizedCrit(critChanceBefore, critDamage, megaCritsBefore, megaCritMult);
+            const critDmgNormalizedAfter = normalizedCrit(critChanceAfter, critDamage, megaCritsAfter, megaCritMult);
 
             return critDmgNormalizedAfter / critDmgNormalizedBefore;
         }
         if (type === "voidMaps") {
-            if (inputs.beta) {
-                const voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
-                const voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
-                let upgGain = voidMapsNew / voidMapsOld;
-
-                // using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
-                // It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
-                const zoneStep = (inputs.portalZone > 235) ? 30 : 10;
-                // ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
-                // Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
-                // difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
-                // Example results (formatted to display average per zone scaling)
-                //  Z20: 1.843938^10 / 9.596448^2
-                //  Z49: 1.823788^10 / 9.596448^2
-                //  Z55: 2.019369^10 / 9.596448^2
-                //  Z60: 2.003003^10 / 9.596448^2
-                // Z100: 1.997119^10 / 9.596448^2
-                // Z180: 2.048560^10 / 9.596448^2
-                // Z235: 2.017895^10 / 9.596448^2
-                // Z236: 2.027765^30 / 9.596448^6
-                // Z450: 2.006783^30 / 9.596448^6
-                // Z650: 2.006184^30 / 9.596448^6
-                // Results will be slightly different without Headstarts.
-                let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
-                attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
-                let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
-                const voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
-                heliumScaling *= voidMapsHigherZone / voidMapsOld;
-                // scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
-                upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
-
-                // adding VMWeight (default: 1) in a manner consistent with previous calculation
-                return (1 + (upgGain - 1) * inputs.VMWeight);
-            }
             if (inputs.universe2) return (value + stepAmount * (inputs.VMWeight / 10)) / (value);
             return (value + stepAmount * inputs.VMWeight) / (value);
         }
@@ -708,20 +643,6 @@ class Heirloom {
             return (((value + stepAmount) / 100 + 1) / 5) / ((value / 100 + 1) / 5);
         }
         if (type === "FluffyExp") {
-            if (inputs.beta) {
-                let upgGain = (value + 100 + stepAmount) / (value + 100);
-                // avoiding weird stuff with zero division.
-                // Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
-                if (inputs.portalZone >= 301) {
-                    // scaling to Attack by comparing Exp gained from additional zones
-                    const pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
-                    let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
-                    attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
-                    upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
-                }
-                // adding XPWeight (default: 1) in a manner consistent with previous calculation
-                return (1 + (upgGain - 1) * inputs.XPWeight);
-            }
             return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100);
         }
         if (type === "plaguebringer") {
@@ -800,30 +721,19 @@ class Heirloom {
 
     getDamageMult() {
         const trimpAttackMult = 1 + this.getModValue("trimpAttack") / 100;
-        const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-        const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-        let critChance = relentlessness * 5;
+        const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+        const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
+        let critChance = relentlessness * 5 + inputs.dailyCrit;
         let megaCritMult = 5;
-        let critDmgNormalized = 0;
         if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
         else critChance += this.getModValue("critChance");
         if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
         if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
         if (inputs.chargedCrits) megaCritMult += 1;
-        const megaCrits = Math.min(Math.floor(critChance / 100), 2);
+        const megaCrits = Math.floor(critChance / 100);
         critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
         const critDamage = this.getModValue("critDamage") + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
-        switch (megaCrits) {
-            case 2:
-                critDmgNormalized = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                break;
-            case 1:
-                critDmgNormalized = critDamage * ((1 - critChance) + megaCritMult * critChance);
-                break;
-            case 0:
-                critDmgNormalized = critDamage * critChance + ((1 - critChance) * 100);
-                break;
-        }
+        const critDmgNormalized = normalizedCrit(critChance, critDamage, megaCrits, megaCritMult);
 
         return trimpAttackMult * critDmgNormalized / 100;
     }
@@ -838,7 +748,8 @@ class Heirloom {
         let name = "";
         let index = -1;
         const purchases = [0, 0, 0, 0, 0, 0];
-        let critChance = (inputs.universe2) ? 0 : save.portal.Relentlessness.level * 5;
+        const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+        let critChance = relentlessness * 5 + inputs.dailyCrit;
         if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
         const megaCrits = Math.floor((critChance + (inputs.chargedCrits) ? heirloom.getModValue("critChance") * 1.5 : heirloom.getModValue("critChance")) / 100);
 
@@ -1434,19 +1345,6 @@ function calculate(manualInput) {
         for (const i in save.global.heirloomsCarried) {
             save.global.heirloomsCarried[i] = new Heirloom(save.global.heirloomsCarried[i]);
             addHeirloomToInventory(save.global.heirloomsCarried[i], i);
-        }
-        for (const input in inputs) {
-            if (!textboxNames.includes(input)) continue;
-            if (document.getElementById(`${input}Input`).value === "") {
-                switch (input) {
-                    case "portalZone":
-                        inputs.setInput(input, save.global.highestLevelCleared + 1);
-                        break;
-                    case "voidZone":
-                        inputs.setInput(input, save.stats.highestVoidMap.valueTotal);
-                        break;
-                }
-            }
         }
     }
 

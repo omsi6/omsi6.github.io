@@ -38,7 +38,7 @@ p {
 	align-items: center;
 }
 
-#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #portalZoneInput, #voidZoneInput {
+#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #dailyCritInput {
 	color: black;
 	border: 0.1rem solid black;
 	margin-bottom: -0.1rem;
@@ -46,18 +46,18 @@ p {
 
 #saveInput {
 	height: 2.6rem;
-	width: 31.2rem;
+	width: 31.1rem;
 	min-height: 2.6rem;
 	max-height: 30rem;
-	min-width: 31.2rem;
-	max-width: 31.2rem;
+	min-width: 31.1rem;
+	max-width: 31.1rem;
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
 
 #calculateButton {
 	height: 2.4rem;
-	width: 31.2rem;
+	width: 31.1rem;
 	background: white;
 }
 
@@ -71,21 +71,18 @@ p {
 #XPWeightInput, #HPWeightInput {
 	font-size: 1.1rem;
 	height: 2.6rem;
-	width: 10.5rem;
+	width: 10.4rem;
 	margin-left: -0.5rem;
 }
 
-#weaponLevelsInput {
+#weaponLevelsInput, #dailyCritInput {
 	font-size: 1.1rem;
 	height: 2.6rem;
-	width: 10.5rem;
+	width: 15.6rem;
 	margin-bottom: -0.1rem;
 }
 
-#portalZoneInput, #voidZoneInput {
-	font-size: 1.1rem;
-	height: 2.6rem;
-	width: 10.5rem;
+#dailyCritInput {
 	margin-left: -0.5rem;
 }
 
@@ -93,6 +90,7 @@ p {
 	display: flex;
 	flex-direction: row;
 	height: 1.6rem;
+	width: 31.1rem;
 	margin-bottom: 0.1rem;
 	font-size: 1.15rem;
 	justify-content: center;
@@ -214,7 +212,9 @@ a:hover, a:active {
 
 #footer {
 	position: absolute;
-	transform: translateY(1100%);
+	z-index: 0;
+	bottom: 1rem;
+	right: 1rem;
     display: flex;
     flex-direction: column;
     align-self: flex-end;
@@ -297,7 +297,7 @@ a:hover, a:active {
 }
 
 .nextUpgradesContainer {
-	width: 31.2rem;
+	width: 31.1rem;
     height: 7rem;
     font-size: 1.2rem;
     line-height: 1.4rem;
