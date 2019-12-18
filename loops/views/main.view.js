@@ -97,6 +97,9 @@ function View() {
         updateSkill: [],
         updateMultiPartSegments: [],
         updateMultiPart: [],
+        updateMultiPartActions: [],
+        updateNextActions: [],
+        updateTime: [],
         updateCurrentActionBar: []
     };
 

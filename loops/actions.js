@@ -196,9 +196,9 @@ function Actions() {
             pauseGame();
         }
         this.adjustTicksNeeded();
-        view.updateMultiPartActions();
-        view.updateNextActions();
-        view.updateTime();
+        view.requestUpdate("updateMultiPartActions");
+        view.requestUpdate("updateNextActions");
+        view.requestUpdate("updateTime");
     };
 
     this.adjustTicksNeeded = function() {
