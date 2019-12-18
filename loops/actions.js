@@ -35,6 +35,7 @@ function Actions() {
             // console.log("using: "+curAction.loopStats[(towns[curAction.townNum][curAction.varName + "LoopCounter"]+segment) % curAction.loopStats.length]+" to add: " + toAdd + " to segment: " + segment + " and part " +towns[curAction.townNum][curAction.varName + "LoopCounter"]+" of progress " + curProgress + " which costs: " + curAction.loopCost(segment));
             towns[curAction.townNum][curAction.varName] += toAdd;
             curProgress += toAdd;
+            let partUpdateRequired = false;
             while (curProgress >= curAction.loopCost(segment)) {
                 curProgress -= curAction.loopCost(segment);
                 // segment finished
@@ -46,9 +47,7 @@ function Actions() {
                     towns[curAction.townNum][`total${curAction.varName}`]++;
                     segment -= curAction.segments;
                     curAction.loopsFinished();
-                    if (!curAction.segmentFinished) {
-                        view.updateMultiPart(curAction);
-                    }
+                    partUpdateRequired = true;
                     if (curAction.canStart && !curAction.canStart()) {
                         this.completedTicks += curAction.ticks;
                         view.updateTotalTicks();
@@ -63,11 +62,14 @@ function Actions() {
                 }
                 if (curAction.segmentFinished) {
                     curAction.segmentFinished();
-                    view.updateMultiPart(curAction);
+                    partUpdateRequired = true;
                 }
                 segment++;
             }
             view.requestUpdate("updateMultiPartSegments", curAction);
+            if (partUpdateRequired) {
+                view.requestUpdate("updateMultiPart", curAction);
+            }
         }
         if (curAction.ticks >= curAction.adjustedTicks) {
             curAction.ticks = 0;
