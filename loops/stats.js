@@ -124,6 +124,7 @@ function handleSkillExp(list) {
 }
 
 function addBuffAmt(name, amount) {
+    if (getBuffLevel(name) === buffHardCaps[name]) return;
     buffs[name].amt += amount;
     view.updateBuff(name);
 }

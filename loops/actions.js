@@ -18,7 +18,6 @@ function Actions() {
             return;
         }
         addExpFromAction(curAction);
-
         curAction.ticks++;
         curAction.manaUsed++;
         curAction.timeSpent += 1 / baseManaPerSecond / getActualGameSpeed();
@@ -89,7 +88,7 @@ function Actions() {
         }
         view.requestUpdate("updateCurrentActionBar", this.currentPos);
         if (curAction.loopsLeft === 0) {
-            if (!this.current[this.currentPos + 1] && document.getElementById("repeatLastAction").checked &&
+            if (!this.current[this.currentPos + 1] && options.repeatLastAction &&
                 (!curAction.canStart || curAction.canStart()) && curAction.townNum === curTown) {
                 curAction.loopsLeft++;
                 curAction.loops++;
@@ -101,6 +100,8 @@ function Actions() {
 
     this.getNextValidAction = function() {
         let curAction = this.current[this.currentPos];
+        let pauseCatch = false;
+        let catchPosition = 0;
         if (!curAction) {
             return curAction;
         }
@@ -111,13 +112,22 @@ function Actions() {
             return undefined;
         }
         while ((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
+            pauseCatch = true;
+            if (!catchPosition) catchPosition = this.currentPos;
             curAction.errorMessage = this.getErrorMessage(curAction);
             curAction.loopsFailed = curAction.loopsLeft;
             curAction.loopsLeft = 0;
             view.updateCurrentActionBar(this.currentPos);
             this.currentPos++;
-            if (this.currentPos >= this.current.length) break;
+            if (this.currentPos >= this.current.length) {
+                curAction = undefined;
+                break;
+            }
             curAction = this.current[this.currentPos];
+        }
+        if (pauseCatch) {
+            view.updateCurrentActionBar(catchPosition - 1);
+            stopGame(options.pingOnPause);
         }
         return curAction;
     };
@@ -136,30 +146,20 @@ function Actions() {
         this.currentPos = 0;
         this.completedTicks = 0;
         curTown = 0;
-        towns[0].Heal = 0;
-        towns[0].HealLoopCounter = 0;
-        towns[0].Fight = 0;
-        towns[0].FightLoopCounter = 0;
-        towns[0].SDungeon = 0;
-        towns[0].SDungeonLoopCounter = 0;
         towns[0].suppliesCost = 300;
         view.updateResource("supplies");
-        towns[1].DarkRitual = 0;
-        towns[1].DarkRitualLoopCounter = 0;
-        towns[2].AdvGuild = 0;
-        towns[2].AdvGuildLoopCounter = 0;
         curAdvGuildSegment = 0;
-        towns[2].CraftGuild = 0;
-        towns[2].CraftGuildLoopCounter = 0;
         curCraftGuildSegment = 0;
-        towns[2].LDungeon = 0;
-        towns[2].LDungeonLoopCounter = 0;
-        towns[3].HuntTrolls = 0;
-        towns[3].HuntTrollsLoopCounter = 0;
-        towns[3].ImbueMind = 0;
-        towns[3].ImbueMindLoopCounter = 0;
+        for (const town of towns) {
+            for (const action of town.totalActionList) {
+                if (action.type === "multiPart") {
+                    town[action.varName] = 0;
+                    town[`${action.varName}LoopCounter`] = 0;
+                }
+            }
+        }
         guild = "";
-        if (document.getElementById("currentListActive").checked) {
+        if (options.keepCurrentList) {
             this.currentPos = 0;
             this.completedTicks = 0;
 
@@ -225,7 +225,7 @@ function Actions() {
         toAdd.loops = loops === undefined ? this.addAmount : loops;
 
         if (initialOrder === undefined) {
-            if (document.getElementById("addActionTop").checked) {
+            if (options.addActionsToTop) {
                 this.next.splice(0, 0, toAdd);
             } else {
                 this.next.push(toAdd);

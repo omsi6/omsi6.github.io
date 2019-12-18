@@ -93,11 +93,11 @@ Views.registerView("menu", {
                 ${Views.menu.htmlThemeMenu()}
                 ${Object.keys(Localization.supportedLang).length > 1 ? Views.menu.htmlLocalizationMenu() : ""}
                 ${_txt("menu>options>adblock_warning")}<br>
-                <input id='audioCueToggle' type='checkbox'/><label for='audioCueToggle'>${_txt("menu>options>pause_audio_cue")}</label>
+                <input id='pingOnPauseInput' type='checkbox' oninput='setOption("pingOnPause", this.checked)'/><label for='pingOnPauseInput'>${_txt("menu>options>pause_audio_cue")}</label>
                 <br>
-                <input id='hotkeysToggle' type='checkbox'/><label class='showthat' for='hotkeysToggle'>${_txt("menu>options>hotkeys")}<div class='showthis'>${_txt("menu>options>hotkeys_tooltip")}</div></label>
+                <input id='hotkeysInput' type='checkbox' oninput='setOption("hotkeys", this.checked)'/><label class='showthat' for='hotkeysInput'>${_txt("menu>options>hotkeys")}<div class='showthis'>${_txt("menu>options>hotkeys_tooltip")}</div></label>
                 <br>
-                ${_txt("menu>options>update_rate")}<input id='updateRate' type='number' value='50' min='1' style='width: 50px;' oninput='recalcInterval(this.value)' /></label>
+                ${_txt("menu>options>update_rate")}<input id='updateRateInput' type='number' value='50' min='1' style='width: 50px;' oninput='setOption("updateRate", parseInt(this.value))' />
                 <br>
             </div>
         </div>`;
@@ -115,7 +115,7 @@ Views.registerView("menu", {
     htmlThemeMenu() {
         const themeList = ["normal", "dark", "cubic"];
         const themes = _txtsObj("menu>options>theme");
-        let html = `${_txt("menu>options>theme_title")}: <select id='theme_menu' onchange='view.changeTheme();'>`;
+        let html = `${_txt("menu>options>theme_title")}: <select id='themeInput' onchange='view.changeTheme();'>`;
         $(themes).each((index, theme) => {
             html += `<option value='${themeList[index]}'>${$(theme).find(themeList[index]).text()}</option>`;
         });

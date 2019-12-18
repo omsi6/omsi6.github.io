@@ -442,27 +442,27 @@ function statistics() {
     let actionWithStoryCount = 0;
     let multiPartActionCount = 0;
     let PBAActionCount = 0;
+    let limitedActionCount = 0;
     let storyCount = 0;
     // let skillCount = 0;
     // let buffCount = 0;
-    for (const action of view.totalActionList) {
+    for (const action of totalActionList) {
         if (action.storyReqs !== undefined) {
             const name = action.name.toLowerCase().replace(/ /gu, "_");
             storyCount += _txt(`actions>${name}`, "fallback").split("⮀").length - 1;
             actionWithStoryCount++;
         }
-        if (action.loopStats !== undefined) multiPartActionCount++;
+        if (action.type === "progress") PBAActionCount++;
+        else if (action.type === "limited") limitedActionCount++;
+        else if (action.type === "multiPart") multiPartActionCount++;
         actionCount++;
-    }
-    for (const town of towns) {
-        PBAActionCount += town.progressVars.length;
     }
 
     const list = 
 `Actions: ${actionCount} (${actionWithStoryCount} with story)
  Multi part actions: ${multiPartActionCount}
  Progress based actions: ${PBAActionCount}
- Limited actions: ${cappedActions.length}
+ Limited actions: ${limitedActionCount}
  Training actions: ${trainingActions.length}/9
  Stories: ${storyCount} (~${(storyCount / actionCount).toFixed(2)} avg per action)
  Skills: ${skillList.length}

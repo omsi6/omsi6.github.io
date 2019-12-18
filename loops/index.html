@@ -233,12 +233,12 @@
             </div>
             <div id="actionChanges" style="text-align:left;width:100%;margin-top:5px;">
                 <div style="margin-left: -4px;">
-                    <input type="checkbox" id="currentListActive" class="checkbox">
-                    <label for="currentListActive" class="localized" data-lockey="actions>tooltip>current_list_active"></label><br>
-                    <input type="checkbox" id="repeatLastAction" class="checkbox">
-                    <label for="repeatLastAction" class="localized" data-lockey="actions>tooltip>repeat_last_action"></label><br>
-                    <input type="checkbox" id="addActionTop" class="checkbox">
-                    <label for="addActionTop" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
+                    <input type="checkbox" id="keepCurrentListInput" class="checkbox" oninput="setOption('keepCurrentList', this.checked)">
+                    <label for="keepCurrentListInput" class="localized" data-lockey="actions>tooltip>current_list_active"></label><br>
+                    <input type="checkbox" id="repeatLastActionInput" class="checkbox" oninput="setOption('repeatLastAction', this.checked)">
+                    <label for="repeatLastActionInput" class="localized" data-lockey="actions>tooltip>repeat_last_action"></label><br>
+                    <input type="checkbox" id="addActionsToTopInput" class="checkbox" oninput="setOption('addActionsToTop', this.checked)">
+                    <label for="addActionsToTopInput" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
                 <div style="float:right;text-align:right;">
                     <div class="bold localized" style="margin-top:3px;" data-lockey="actions>title_loadout"></div>
@@ -321,19 +321,19 @@
         </div>
     </div>
 
+    <script src="actionList.js?92"></script>
+    <script src="localization.js?92"></script>
     <script src="helpers.js?92"></script>
     <script src="interval.js?92"></script>
     <script src="driver.js?92"></script>
     <script src="stats.js?92"></script>
     <script src="statsgraph.js?92"></script>
-    <script src="views/main.view.js?92"></script>
     <script src="actions.js?92"></script>
-    <script src="actionList.js?92"></script>
+    <script src="views/main.view.js?92"></script>
     <script src="town.js?92"></script>
     <script src="talents.js?92"></script>
     <script src="saving.js?92"></script>
     <script src="hotkeys.js?92"></script>
-    <script src="localization.js?92"></script>
     <script src="views/views.js?92"></script>
     <script src="views/menu.view.js?92"></script>
     <script src="views/trackedresources.view.js?92"></script>
@@ -341,18 +341,20 @@
     <script src="views/buffs.view.js?92"></script>
     <script src="views/talenttree.view.js?92"></script>
     <script>
-        $(function() {
-            Localization.init();
-            window._txt = Localization.txt; // binding the _txt function for simplier use
-            window._txtsObj = Localization.txtsObj; // binding the _txt function for simplier use
-            Localization.loadLib('fallback',function() { // loading fallback library
-                Localization.loadLib('game',function() { // we load the "game.xml" library, then startup the game.
-                    Views.draw();
-                    Localization.localizePage("game");
-                    startGame();
-                });
-            });
-        })
+        let initInterval = setInterval(() => {
+            if (locCheck) {
+                clearInterval(initInterval)
+                initInterval = undefined
+                locCheck = undefined
+                for (const prop in actionList) {
+                const action = new actionList[prop]();
+                totalActionList.push(action);
+                }
+                Localization.localizePage("game");
+                Views.draw();
+                startGame();
+            }
+        }, 10);
     </script>
 </body>
 </html>

@@ -70,6 +70,12 @@ const buffHardCaps = {
     Feast: 100,
     Aspirant: 20
 };
+const buffCaps = {
+    Ritual: 666,
+    Imbuement: 490,
+    Feast: 100,
+    Aspirant: 20
+};
 const buffs = {};
 // eslint-disable-next-line prefer-const
 let townShowing = 0;
@@ -108,20 +114,39 @@ const storyReqs = {
     failedBrewPotionsNegativeRep: false,
     potionBrewed: false
 };
-let currentTheme = "normal";
 
 const curDate = new Date();
 let totalOfflineMs = 0;
 // eslint-disable-next-line prefer-const
 let bonusSpeed = 1;
 const offlineRatio = 1;
-let dungeons;
 
 // eslint-disable-next-line prefer-const
 let curAdvGuildSegment = 0;
 // eslint-disable-next-line prefer-const
 let curCraftGuildSegment = 0;
 
+const options = {
+    theme: "normal",
+    keepCurrentList: false,
+    repeatLastAction: false,
+    addActionsToTop: false,
+    pauseBeforeRestart: false,
+    pauseOnFailedLoop: false,
+    pingOnPause: false,
+    hotkeys: true,
+    updateRate: 50
+};
+
+function setOption(option, value) {
+    options[option] = value;
+    if (option === "updateRate") recalcInterval(options.updateRate);
+}
+
+function loadOption(option, value) {
+    if (option === "updateRate") document.getElementById(`${option}Input`).value = value;
+    else document.getElementById(`${option}Input`).checked = value;
+}
 
 function closeTutorial() {
     document.getElementById("tutorial").style.display = "none";
@@ -174,13 +199,17 @@ function load() {
 
     for (const property in toLoad.buffs) {
         if (toLoad.buffs.hasOwnProperty(property)) {
-            buffs[property].amt = toLoad.buffs[property].amt;
+            // need the min for people with broken buff amts from pre 0.93
+            buffs[property].amt = Math.min(toLoad.buffs[property].amt, buffHardCaps[property]);
         }
     }
 
-    for (const property in toLoad.buffs) {
-        if (toLoad.buffs.hasOwnProperty(property)) {
-            buffs[property].amt = toLoad.buffs[property].amt;
+    if (toLoad.buffCaps !== undefined) {
+        for (const property in buffCaps) {
+            if (toLoad.buffCaps.hasOwnProperty(property)) {
+                buffCaps[property] = toLoad.buffCaps[property];
+                document.getElementById(`buff${property}Cap`).value = buffCaps[property];
+            }
         }
     }
 
@@ -212,54 +241,11 @@ function load() {
     } else {
         townsUnlocked = toLoad.townsUnlocked === undefined ? [0] : toLoad.townsUnlocked;
     }
+    for (let i = 0; i < 6; i++) {
+        towns[i] = new Town(i);
+    }
     actionTownNum = toLoad.actionTownNum === undefined ? 0 : toLoad.actionTownNum;
     trainingLimits = toLoad.trainingLimits === undefined ? 10 : toLoad.trainingLimits;
-
-    const expLimit = 505000;
-    towns[0] = new Town(0);
-    let currentTown = towns[0];
-    currentTown.expWander = toLoad.expWander === undefined ? 0 : Math.min(toLoad.expWander, expLimit);
-    currentTown.expMet = toLoad.expMet === undefined ? 0 : Math.min(toLoad.expMet, expLimit);
-    currentTown.expSecrets = toLoad.expSecrets === undefined ? 0 : Math.min(toLoad.expSecrets, expLimit);
-    currentTown.totalHeal = toLoad.totalHeal === undefined ? 0 : toLoad.totalHeal;
-    currentTown.totalFight = toLoad.totalFight === undefined ? 0 : toLoad.totalFight;
-    currentTown.totalSDungeon = toLoad.totalSDungeon === undefined ? 0 : toLoad.totalSDungeon;
-
-    towns[1] = new Town(1);
-    currentTown = towns[1];
-    currentTown.expForest = toLoad.expForest === undefined ? 0 : toLoad.expForest;
-    currentTown.expShortcut = toLoad.expShortcut === undefined ? 0 : toLoad.expShortcut;
-    currentTown.expHermit = toLoad.expHermit === undefined ? 0 : toLoad.expHermit;
-    currentTown.expFlowers = toLoad.expFlowers === undefined ? 0 : toLoad.expFlowers;
-    currentTown.expThicket = toLoad.expThicket === undefined ? 0 : toLoad.expThicket;
-    currentTown.expWitch = toLoad.expWitch === undefined ? 0 : toLoad.expWitch;
-    currentTown.totalDarkRitual = toLoad.totalDarkRitual === undefined ? 0 : toLoad.totalDarkRitual;
-
-    towns[2] = new Town(2);
-    currentTown = towns[2];
-    currentTown.expCity = toLoad.expCity === undefined ? 0 : toLoad.expCity;
-    currentTown.expDrunk = toLoad.expDrunk === undefined ? 0 : toLoad.expDrunk;
-    currentTown.totalAdvGuild = toLoad.totalAdvGuild === undefined ? 0 : toLoad.totalAdvGuild;
-    currentTown.totalCraftGuild = toLoad.totalCraftGuild === undefined ? 0 : toLoad.totalCraftGuild;
-    currentTown.totalLDungeon = toLoad.totalLDungeon === undefined ? 0 : toLoad.totalLDungeon;
-    currentTown.expApprentice = toLoad.expApprentice === undefined ? 0 : toLoad.expApprentice;
-    currentTown.expMason = toLoad.expMason === undefined ? 0 : toLoad.expMason;
-    currentTown.expArchitect = toLoad.expArchitect === undefined ? 0 : toLoad.expArchitect;
-
-    towns[3] = new Town(3);
-    currentTown = towns[3];
-    currentTown.expMountain = toLoad.expMountain === undefined ? 0 : toLoad.expMountain;
-    currentTown.expRunes = toLoad.expRunes === undefined ? 0 : toLoad.expRunes;
-    currentTown.expCavern = toLoad.expCavern === undefined ? 0 : toLoad.expCavern;
-    currentTown.expIllusions = toLoad.expIllusions === undefined ? 0 : toLoad.expIllusions;
-    currentTown.totalHuntTrolls = toLoad.totalHuntTrolls === undefined ? 0 : toLoad.totalHuntTrolls;
-    currentTown.totalImbueMind = toLoad.totalImbueMind === undefined ? 0 : toLoad.totalImbueMind;
-
-    towns[4] = new Town(4);
-    currentTown = towns[4];
-
-    towns[5] = new Town(5);
-    currentTown = towns[5];
 
     actions.next = [];
     if (toLoad.nextList) {
@@ -316,10 +302,18 @@ function load() {
         removeClassFromDiv(document.getElementById(`load${curLoadout}`), "unused");
     }
 
-    dungeons = [[], []];
+    if (toLoad.dungeons) {
+        if (toLoad.dungeons.length === 2) {
+            toLoad.dungeons.push([]);
+        }
+    }
     const level = { ssChance: 1, completed: 0 };
+    let floors = 0;
     for (let i = 0; i < dungeons.length; i++) {
-        for (let j = 0; j < 6 + i * 3; j++) {
+        if (i === 0) floors = 6;
+        else if (i === 1) floors = 9;
+        else if (i === 2) floors = 20;
+        for (let j = 0; j < floors; j++) {
             if (toLoad.dungeons && toLoad.dungeons[i][j]) {
                 dungeons[i][j] = toLoad.dungeons[i][j];
             } else {
@@ -329,12 +323,26 @@ function load() {
         }
     }
 
-    currentTheme = toLoad.currentTheme === undefined ? "normal" : toLoad.currentTheme;
-    view.initalize();
+    if (toLoad.options === undefined) {
+        options.theme = toLoad.currentTheme === undefined ? "normal" : toLoad.currentTheme;
+        options.repeatLastAction = toLoad.repeatLast;
+        options.pingOnPause = toLoad.pingOnPause === undefined ? false : toLoad.pingOnPause;
+        options.hotkeys = toLoad.hotkeys === undefined ? true : toLoad.hotkeys;
+        options.updateRate = toLoad.updateRate === undefined ? 50 : toLoad.updateRate;
+    } else {
+        for (const option in toLoad.options) {
+            options[option] = toLoad.options[option];
+        }
+    }
 
+    view.initalize();
     for (const town of towns) {
         for (const action of town.totalActionList) {
-            if (town.varNames.indexOf(action.varName) !== -1) {
+            if (action.type === "progress")
+                town[`exp${action.varName}`] = toLoad[`exp${action.varName}`] === undefined ? 0 : toLoad[`exp${action.varName}`];
+            else if (action.type === "multiPart")
+                town[`total${action.varName}`] = toLoad[`total${action.varName}`] === undefined ? 0 : toLoad[`total${action.varName}`];
+            else if (action.type === "limited") {
                 const varName = action.varName;
                 if (toLoad[`total${varName}`] !== undefined)
                     town[`total${varName}`] = toLoad[`total${varName}`];
@@ -351,12 +359,11 @@ function load() {
             }
         }
     }
+    view.initalize();
 
-    document.getElementById("repeatLastAction").checked = toLoad.repeatLast;
-    document.getElementById("audioCueToggle").checked = toLoad.pingOnPause === undefined ? false : toLoad.pingOnPause;
-    document.getElementById("hotkeysToggle").checked = toLoad.hotkeys === undefined ? true : toLoad.hotkeys;
-    if (toLoad.updateRate) document.getElementById("updateRate").value = toLoad.updateRate;
-    else document.getElementById("updateRate").value = 50;
+    for (const option in options) {
+        loadOption(option, options[option]);
+    }
     storyShowing = toLoad.storyShowing === undefined ? 0 : toLoad.storyShowing;
     storyMax = toLoad.storyMax === undefined ? 0 : toLoad.storyMax;
 
@@ -383,7 +390,7 @@ function load() {
     view.updateMultiPartActions();
     view.updateStories(true);
     view.update();
-    recalcInterval(toLoad.updateRate);
+    recalcInterval(options.updateRate);
     pauseGame();
 
 }
@@ -396,53 +403,19 @@ function save() {
     toSave.actionTownNum = actionTownNum;
     toSave.trainingLimits = trainingLimits;
 
-    let currentTown = towns[0];
     toSave.stats = stats;
     toSave.totalTalent = totalTalent;
     toSave.skills = skills;
     toSave.buffs = buffs;
-    toSave.expWander = currentTown.expWander;
-    toSave.expMet = currentTown.expMet;
-    toSave.expSecrets = currentTown.expSecrets;
-    toSave.totalHeal = currentTown.totalHeal;
-    toSave.totalFight = currentTown.totalFight;
-    toSave.totalSDungeon = currentTown.totalSDungeon;
-
-    currentTown = towns[1];
-    toSave.expForest = currentTown.expForest;
-    toSave.expShortcut = currentTown.expShortcut;
-    toSave.expHermit = currentTown.expHermit;
-    toSave.expFlowers = currentTown.expFlowers;
-    toSave.expThicket = currentTown.expThicket;
-    toSave.expWitch = currentTown.expWitch;
-    toSave.totalDarkRitual = currentTown.totalDarkRitual;
-
-    currentTown = towns[2];
-    toSave.expCity = currentTown.expCity;
-    toSave.expDrunk = currentTown.expDrunk;
-    toSave.totalAdvGuild = currentTown.totalAdvGuild;
-    toSave.totalCraftGuild = currentTown.totalCraftGuild;
-    toSave.totalLDungeon = currentTown.totalLDungeon;
     toSave.version75 = true;
-    toSave.expApprentice = currentTown.expApprentice;
-    toSave.expMason = currentTown.expMason;
-    toSave.expArchitect = currentTown.expArchitect;
-
-    currentTown = towns[3];
-    toSave.expMountain = currentTown.expMountain;
-    toSave.expRunes = currentTown.expRunes;
-    toSave.expCavern = currentTown.expCavern;
-    toSave.expIllusions = currentTown.expIllusions;
-    toSave.totalHuntTrolls = currentTown.totalHuntTrolls;
-    toSave.totalImbueMind = currentTown.totalImbueMind;
-
-    currentTown = towns[4];
-
-    currentTown = towns[5];
 
     for (const town of towns) {
         for (const action of town.totalActionList) {
-            if (town.varNames.indexOf(action.varName) !== -1) {
+            if (action.type === "progress") {
+                toSave[`exp${action.varName}`] = town[`exp${action.varName}`];
+            } else if (action.type === "multiPart") {
+                toSave[`total${action.varName}`] = town[`total${action.varName}`];
+            } else if (action.type === "limited") {
                 const varName = action.varName;
                 toSave[`total${varName}`] = town[`total${varName}`];
                 toSave[`checked${varName}`] = town[`checked${varName}`];
@@ -457,15 +430,11 @@ function save() {
     toSave.nextList = actions.next;
     toSave.loadouts = loadouts;
     toSave.loadoutnames = loadoutnames;
-    toSave.repeatLast = document.getElementById("repeatLastAction").checked;
-    toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
-    toSave.hotkeys = document.getElementById("hotkeysToggle").checked;
-    if (parseFloat(document.getElementById("updateRate").value) > 0) toSave.updateRate = parseFloat(document.getElementById("updateRate").value);
-    else toSave.updateRate = 50;
+    toSave.options = options;
     toSave.storyShowing = storyShowing;
     toSave.storyMax = storyMax;
     toSave.storyReqs = storyReqs;
-    toSave.currentTheme = currentTheme;
+    toSave.buffCaps = buffCaps;
 
     toSave.date = new Date();
     toSave.totalOfflineMs = totalOfflineMs;
@@ -690,8 +659,8 @@ function exportOldSave() {
         }
     }
     toSave.loadouts = tempLoadouts;
-    toSave.repeatLast = document.getElementById("repeatLastAction").checked;
-    toSave.pingOnPause = document.getElementById("audioCueToggle").checked;
+    toSave.repeatLast = options.repeatLastAction;
+    toSave.pingOnPause = options.pingOnPause;
     toSave.storyShowing = storyShowing;
     toSave.storyMax = storyMax;
     toSave.date = new Date();
@@ -752,5 +721,3 @@ function importCurrentList() {
     }
     view.updateNextActions();
 }
-
-// setInterval(tick, 20);
