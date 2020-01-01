@@ -1,225 +1,14 @@
 "use strict";
+
+function withoutSpaces(name) {
+    return name.replace(/ /gu, '');
+}
+
 function translateClassNames(name) {
-    if (name === "Wander") {
-        return new Wander();
-    }
-    if (name === "Smash Pots") {
-        return new SmashPots();
-    }
-    if (name === "Pick Locks") {
-        return new PickLocks();
-    }
-    if (name === "Buy Glasses") {
-        return new BuyGlasses();
-    }
-    if (name === "Buy Mana") {
-        return new BuyMana();
-    }
-    if (name === "Meet People") {
-        return new MeetPeople();
-    }
-    if (name === "Train Strength") {
-        return new TrainStrength();
-    }
-    if (name === "Short Quest") {
-        return new ShortQuest();
-    }
-    if (name === "Investigate") {
-        return new Investigate();
-    }
-    if (name === "Long Quest") {
-        return new LongQuest();
-    }
-    if (name === "Warrior Lessons") {
-        return new WarriorLessons();
-    }
-    if (name === "Mage Lessons") {
-        return new MageLessons();
-    }
-    if (name === "Throw Party") {
-        return new ThrowParty();
-    }
-    if (name === "Heal The Sick") {
-        return new HealTheSick();
-    }
-    if (name === "Fight Monsters") {
-        return new FightMonsters();
-    }
-    if (name === "Small Dungeon") {
-        return new SmallDungeon();
-    }
-    if (name === "Buy Supplies") {
-        return new BuySupplies();
-    }
-    if (name === "Haggle") {
-        return new Haggle();
-    }
-    if (name === "Start Journey") {
-        return new StartJourney();
-    }
-    if (name === "Open Rift") {
-        return new OpenRift();
-    }
-    // town 2
-    if (name === "Explore Forest") {
-        return new ExploreForest();
-    }
-    if (name === "Wild Mana") {
-        return new WildMana();
-    }
-    if (name === "Gather Herbs") {
-        return new GatherHerbs();
-    }
-    if (name === "Hunt") {
-        return new Hunt();
-    }
-    if (name === "Sit By Waterfall") {
-        return new SitByWaterfall();
-    }
-    if (name === "Old Shortcut") {
-        return new OldShortcut();
-    }
-    if (name === "Talk To Hermit") {
-        return new TalkToHermit();
-    }
-    if (name === "Practical Magic") {
-        return new PracticalMagic();
-    }
-    if (name === "Learn Alchemy") {
-        return new LearnAlchemy();
-    }
-    if (name === "Brew Potions") {
-        return new BrewPotions();
-    }
-    if (name === "Train Dexterity") {
-        return new TrainDexterity();
-    }
-    if (name === "Train Speed") {
-        return new TrainSpeed();
-    }
-    if (name === "Follow Flowers") {
-        return new FollowFlowers();
-    }
-    if (name === "Bird Watching") {
-        return new BirdWatching();
-    }
-    if (name === "Clear Thicket") {
-        return new ClearThicket();
-    }
-    if (name === "Talk To Witch") {
-        return new TalkToWitch();
-    }
-    if (name === "Dark Magic") {
-        return new DarkMagic();
-    }
-    if (name === "Dark Ritual") {
-        return new DarkRitual();
-    }
-    if (name === "Continue On") {
-        return new ContinueOn();
-    }
-    // town 3
-    if (name === "Explore City") {
-        return new ExploreCity();
-    }
-    if (name === "Gamble") {
-        return new Gamble();
-    }
-    if (name === "Get Drunk") {
-        return new GetDrunk();
-    }
-    if (name === "Purchase Mana") {
-        return new PurchaseMana();
-    }
-    if (name === "Sell Potions") {
-        return new SellPotions();
-    }
-    if (name === "Read Books") {
-        return new ReadBooks();
-    }
-    if (name === "Adventure Guild") {
-        return new JoinAdvGuild();
-    }
-    if (name === "Gather Team") {
-        return new GatherTeam();
-    }
-    if (name === "Large Dungeon") {
-        return new LargeDungeon();
-    }
-    if (name === "Crafting Guild") {
-        return new CraftingGuild();
-    }
-    if (name === "Craft Armor") {
-        return new CraftArmor();
-    }
-    if (name === "Apprentice") {
-        return new Apprentice();
-    }
-    if (name === "Mason") {
-        return new Mason();
-    }
-    if (name === "Architect") {
-        return new Architect();
-    }
-    if (name === "Buy Pickaxe") {
-        return new BuyPickaxe();
-    }
-    if (name === "Start Trek") {
-        return new StartTrek();
-    }
-    // town 4 
-    if (name === "Climb Mountain") {
-        return new ClimbMountain();
-    }
-    if (name === "Mana Geyser") {
-        return new ManaGeyser();
-    }
-    if (name === "Decipher Runes") {
-        return new DecipherRunes();
-    }
-    if (name === "Chronomancy") {
-        return new Chronomancy();
-    }
-    if (name === "Looping Potion") {
-        return new LoopingPotion();
-    }
-    if (name === "Pyromancy") {
-        return new Pyromancy();
-    }
-    if (name === "Explore Cavern") {
-        return new ExploreCavern();
-    }
-    if (name === "Mine Soulstones") {
-        return new MineSoulstones();
-    }
-    if (name === "Hunt Trolls") {
-        return new HuntTrolls();
-    }
-    if (name === "Check Walls") {
-        return new CheckWalls();
-    }
-    if (name === "Take Artifacts") {
-        return new TakeArtifacts();
-    }
-    if (name === "Imbue Mind") {
-        return new ImbueMind();
-    }
-    if (name === "Face Judgement") {
-        return new FaceJudgement();
-    }
-    // town 5
-    if (name === "Look Around") {
-        return new LookAround();
-    }
-    if (name === "Great Feast") {
-        return new GreatFeast();
-    }
-    if (name === "Fall From Grace") {
-        return new FallFromGrace();
-    }
-    // town 6
-    if (name === "Survey Area") {
-        return new SurveyArea();
+    // construct a new action object with appropriate prototype
+    const nameWithoutSpaces = withoutSpaces(name);
+    if (nameWithoutSpaces in Action) {
+        return Object.create(Action[nameWithoutSpaces]);
     }
     console.log(`error trying to create ${name}`);
     return false;
@@ -275,52 +64,129 @@ const townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus",
 
 // actions are all sorted below by town in order
 
+function Action(name, extras) {
+    this.name = name;
+    // many actions have to override this (in extras) for save compatibility, because the
+    // varName is often used in parts of the game state
+    this.varName = withoutSpaces(name);
+    Object.assign(this, extras);
+}
+
+/* eslint-disable no-invalid-this */
+// not all actions have tooltip2 or labelDone, but among actions that do, the XML format is
+// always the same; these are loaded lazily once (and then they become own properties of the
+// specific Action object)
+defineLazyGetter(Action.prototype, "tooltip", function() {
+    return _txt(`actions>${getXMLName(this.name)}>tooltip`);
+});
+defineLazyGetter(Action.prototype, "tooltip2", function() {
+    return _txt(`actions>${getXMLName(this.name)}>tooltip2`);
+});
+defineLazyGetter(Action.prototype, "label", function() {
+    return _txt(`actions>${getXMLName(this.name)}>label`);
+});
+defineLazyGetter(Action.prototype, "labelDone", function() {
+    return _txt(`actions>${getXMLName(this.name)}>label_done`);
+});
+
+// all actions to date with info text have the same info text, so presently this is
+// centralized here (function will not be called by the game code if info text is not
+// applicable)
+Action.prototype.infoText = function() {
+    return `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
+            <i class='fa fa-arrow-left'></i>
+            ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
+            <i class='fa fa-arrow-left'></i>
+            ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
+            <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
+            <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
+};
+
+// same as Action, but contains shared code to load segment names for multipart actions.
+// (constructor takes number of segments as a second argument)
+function MultipartAction(name, segments, extras) {
+    Action.call(this, name, extras);
+    this.segments = segments;
+}
+MultipartAction.prototype = Object.create(Action.prototype);
+MultipartAction.prototype.constructor = MultipartAction;
+// lazily calculate segment names when explicitly requested (to give chance for localization
+// code to be loaded first)
+defineLazyGetter(MultipartAction.prototype, 'segmentNames', function() {
+    return Array.from(
+        _txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)
+    ).map(elt => elt.textContent);
+});
+MultipartAction.prototype.getSegmentName = function(segment) {
+    return this.segmentNames[segment % this.segmentNames.length];
+};
+/* eslint-enable no-invalid-this */
+
+// same as MultipartAction, but includes shared code to generate dungeon completion tooltip
+// as well as specifying 7 segments (constructor takes dungeon ID number as a second
+// argument)
+function DungeonAction(name, dungeonNum, extras) {
+    MultipartAction.call(this, name, 7, extras);
+    this.dungeonNum = dungeonNum;
+}
+DungeonAction.prototype = Object.create(MultipartAction.prototype);
+DungeonAction.prototype.constructor = DungeonAction;
+DungeonAction.prototype.completedTooltip = function() {
+    let ssDivContainer = "";
+    for (let i = 0; i < dungeons[this.dungeonNum].length; i++) {
+        ssDivContainer += `Floor ${i + 1} |
+                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>chance_label`)} </div> <div id='soulstoneChance${this.dungeonNum}_${i}'></div>% - 
+                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>last_stat_label`)} </div> <div id='soulstonePrevious${this.dungeonNum}_${i}'>NA</div> - 
+                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>label_done`)}</div> <div id='soulstoneCompleted${this.dungeonNum}_${i}'></div><br>`;
+    }
+    return _txt(`actions>${getXMLName(this.name)}>completed_tooltip`) + ssDivContainer;
+};
+DungeonAction.prototype.getPartName = function() {
+    const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + 0.0001) / this.segments + 1);
+    return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
+};
+
+
 // town 1
-function Wander() {
-    this.name = "Wander";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.Wander = new Action("Wander", {
+    expMult: 1,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].getLevel("Wander") >= 20;
+                return towns[0].getLevel(this.varName) >= 20;
             case 2:
-                return towns[0].getLevel("Wander") >= 40;
+                return towns[0].getLevel(this.varName) >= 40;
             case 3:
-                return towns[0].getLevel("Wander") >= 60;
+                return towns[0].getLevel(this.varName) >= 60;
             case 4:
-                return towns[0].getLevel("Wander") >= 80;
+                return towns[0].getLevel(this.varName) >= 80;
             case 5:
-                return towns[0].getLevel("Wander") >= 100;
+                return towns[0].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-    
-    this.varName = "Wander";
-    this.stats = {
+    },
+    stats: {
         Per: 0.2,
         Con: 0.2,
         Cha: 0.2,
         Spd: 0.3,
         Luck: 0.1
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    manaCost() {
         return 250;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[0].finishProgress(this.varName, 200 * (resources.glasses ? 4 : 1));
-    };
-}
+    }
+});
 function adjustPots() {
     towns[0].totalPots = towns[0].getLevel("Wander") * 5;
 }
@@ -328,238 +194,196 @@ function adjustLocks() {
     towns[0].totalLocks = towns[0].getLevel("Wander");
 }
 
-function SmashPots() {
-    this.varName = "Pots";
-    this.name = "Smash Pots";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.SmashPots = new Action("Smash Pots", {
+    expMult: 1,
+    townNum: 0,
+    varName: "Pots",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].goodPots >= 50;
+                return towns[0][`good${this.varName}`] >= 50;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Str: 0.2,
         Per: 0.2,
         Spd: 0.6
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(50 / (1 + getSkillLevel("Practical") / 100));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    // note this name is misleading: it is used for mana and gold gain.
+    goldCost() {
+        return Math.floor(100 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
+    },
+    finish() {
         towns[0].finishRegular(this.varName, 10, () => {
-            addMana(goldCostSmashPots());
-            return goldCostSmashPots();
+            const manaGain = this.goldCost();
+            addMana(manaGain);
+            return manaGain;
         });
-    };
-}
-function goldCostSmashPots() {
-    return Math.floor(100 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
-}
+    }
+});
 
-function PickLocks() {
-    this.varName = "Locks";
-    this.name = "Pick Locks";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.PickLocks = new Action("Pick Locks", {
+    varName: "Locks",
+    expMult: 1,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].checkedLocks >= 1;
+                return towns[0][`checked${this.varName}`] >= 1;
             case 2:
-                return towns[0].totalLocks >= 50;
+                return towns[0][`checked${this.varName}`] >= 50;
             case 3:
-                return towns[0].goodLocks >= 10;
+                return towns[0][`good${this.varName}`] >= 10;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Dex: 0.5,
         Per: 0.3,
         Spd: 0.1,
         Luck: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 400;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Wander") >= 3;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Wander") >= 20;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        let practical = getSkillLevel("Practical");
+        practical = practical <= 200 ? practical : 200;
+        return Math.floor(10 * (1 + practical / 100));
+    },
+    finish() {
         towns[0].finishRegular(this.varName, 10, () => {
-            const goldGain = goldCostLocks();
+            const goldGain = this.goldCost();
             addResource("gold", goldGain);
             return goldGain;
         });
-    };
-}
-function goldCostLocks() {
-    let practical = getSkillLevel("Practical");
-    practical = practical <= 200 ? practical : 200;
-    return Math.floor(10 * (1 + practical / 100));
-}
+    }
+});
 
-function BuyGlasses() {
-    this.name = "Buy Glasses";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.BuyGlasses = new Action("Buy Glasses", {
+    expMult: 1,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.glassesBought;
         }
         return false;
-    };
-
-    this.varName = "Glasses";
-    this.stats = {
+    },
+    stats: {
         Cha: 0.7,
         Spd: 0.3
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.gold >= 10;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("gold", -10);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 50;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Wander") >= 3;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Wander") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("glasses", true);
         unlockStory("glassesBought");
-    };
-}
+    }
+});
 
-function BuyMana() {
-    this.name = "Buy Mana";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.varName = "Gold";
-    this.stats = {
+Action.BuyMana = new Action("Buy Mana", {
+    expMult: 1,
+    townNum: 0,
+    stats: {
         Cha: 0.7,
         Int: 0.2,
         Luck: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 100;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Wander") >= 3;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Wander") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addMana(resources.gold * 50);
         resetResource("gold");
-    };
-}
+    },
+});
 
-function MeetPeople() {
-    this.name = "Meet People";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.MeetPeople = new Action("Meet People", {
+    expMult: 1,
+    townNum: 0,
+    varName: "Met",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].getLevel("Met") >= 1;
+                return towns[0].getLevel(this.varName) >= 1;
             case 2:
-                return towns[0].getLevel("Met") >= 20;
+                return towns[0].getLevel(this.varName) >= 20;
             case 3:
-                return towns[0].getLevel("Met") >= 40;
+                return towns[0].getLevel(this.varName) >= 40;
             case 4:
-                return towns[0].getLevel("Met") >= 60;
+                return towns[0].getLevel(this.varName) >= 60;
             case 5:
-                return towns[0].getLevel("Met") >= 80;
+                return towns[0].getLevel(this.varName) >= 80;
             case 6:
-                return towns[0].getLevel("Met") >= 100;
+                return towns[0].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Met";
-    this.stats = {
+    },
+    stats: {
         Int: 0.1,
         Cha: 0.8,
         Soul: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 800;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Wander") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Wander") >= 22;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[0].finishProgress(this.varName, 200);
-    };
-}
+    },
+});
 function adjustSQuests() {
     towns[0].totalSQuests = towns[0].getLevel("Met");
 }
 
-function TrainStrength() {
-    this.name = "Train Strength";
-    this.expMult = 4;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.TrainStrength = new Action("Train Strength", {
+    expMult: 4,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.strengthTrained;
@@ -569,246 +393,204 @@ function TrainStrength() {
                 return getTalent("Str") >= 1000;
         }
         return false;
-    };
-
-    this.varName = "trStr";
-    this.stats = {
+    },
+    stats: {
         Str: 0.8,
         Con: 0.2
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return trainingLimits;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Met") >= 1;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Met") >= 5;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockStory("strengthTrained");
-    };
-}
+    },
+});
 
-function ShortQuest() {
-    this.varName = "SQuests";
-    this.name = "Short Quest";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.ShortQuest = new Action("Short Quest", {
+    expMult: 1,
+    townNum: 0,
+    varName: "SQuests",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].checkedSQuests >= 1;
+                return towns[0][`checked${this.varName}`] >= 1;
             case 2:
                 // 20 small quests in a loop
                 return storyReqs.maxSQuestsInALoop;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Str: 0.2,
         Dex: 0.1,
         Cha: 0.3,
         Spd: 0.2,
         Luck: 0.1,
         Soul: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 600;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Met") >= 1;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Met") >= 5;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        let practical = Math.max(getSkillLevel("Practical") - 100, 0);
+        practical = Math.min(practical, 200);
+        return Math.floor(20 * (1 + practical / 100));
+    },
+    finish() {
         towns[0].finishRegular(this.varName, 5, () => {
-            const goldGain = goldCostSQuests();
+            const goldGain = this.goldCost();
             addResource("gold", goldGain);
             return goldGain;
         });
-        if (towns[0].goodSQuests >= 20 && towns[0].goodTempSQuests <= towns[0].goodSQuests - 20) unlockStory("maxSQuestsInALoop");
-    };
-}
-function goldCostSQuests() {
-    let practical = Math.max(getSkillLevel("Practical") - 100, 0);
-    practical = Math.min(practical, 200);
-    return Math.floor(20 * (1 + practical / 100));
-}
+        if (towns[0][`good${this.varName}`] >= 20 && towns[0][`goodTemp${this.varName}`] <= towns[0][`good${this.varName}`] - 20) unlockStory("maxSQuestsInALoop");
+    },
+});
 
-function Investigate() {
-    this.name = "Investigate";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.Investigate = new Action("Investigate", {
+    expMult: 1,
+    townNum: 0,
+    varName: "Secrets",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].getLevel("Secrets") >= 20;
+                return towns[0].getLevel(this.varName) >= 20;
             case 2:
-                return towns[0].getLevel("Secrets") >= 40;
+                return towns[0].getLevel(this.varName) >= 40;
             case 3:
-                return towns[0].getLevel("Secrets") >= 60;
+                return towns[0].getLevel(this.varName) >= 60;
             case 4:
-                return towns[0].getLevel("Secrets") >= 80;
+                return towns[0].getLevel(this.varName) >= 80;
             case 5:
-                return towns[0].getLevel("Secrets") >= 100;
+                return towns[0].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Secrets";
-    this.stats = {
+    },
+    stats: {
         Per: 0.3,
         Cha: 0.4,
         Spd: 0.2,
         Luck: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Met") >= 5;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Met") >= 25;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[0].finishProgress(this.varName, 500);
-    };
-}
+    },
+});
 function adjustLQuests() {
     towns[0].totalLQuests = Math.floor(towns[0].getLevel("Secrets") / 2);
 }
 
-function LongQuest() {
-    this.varName = "LQuests";
-    this.name = "Long Quest";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.LongQuest = new Action("Long Quest", {
+    expMult: 1,
+    townNum: 0,
+    varName: "LQuests",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[0].checkedLQuests >= 1;
+                return towns[0][`checked${this.varName}`] >= 1;
             case 2:
                 // 10 long quests in a loop
                 return storyReqs.maxLQuestsInALoop;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Str: 0.2,
         Int: 0.2,
         Con: 0.4,
         Spd: 0.2
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1500;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Secrets") >= 1;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         const toUnlock = towns[0].getLevel("Secrets") >= 10;
         if (toUnlock && !isVisible(document.getElementById("skillList"))) {
             document.getElementById("skillList").style.display = "inline-block";
         }
         return toUnlock;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        let practical = Math.max(getSkillLevel("Practical") - 200, 0);
+        practical = Math.min(practical, 200);
+        return Math.floor(30 * (1 + practical / 100));
+    },
+    finish() {
         towns[0].finishRegular(this.varName, 5, () => {
             addResource("reputation", 1);
-            const goldGain = goldCostLQuests();
+            const goldGain = this.goldCost();
             addResource("gold", goldGain);
             return goldGain;
         });
-        if (towns[0].goodLQuests >= 10 && towns[0].goodTempLQuests <= towns[0].goodLQuests - 10) unlockStory("maxLQuestsInALoop");
-    };
-}
-function goldCostLQuests() {
-    let practical = Math.max(getSkillLevel("Practical") - 200, 0);
-    practical = Math.min(practical, 200);
-    return Math.floor(30 * (1 + practical / 100));
-}
+        if (towns[0][`good${this.varName}`] >= 10 && towns[0][`goodTemp${this.varName}`] <= towns[0][`good${this.varName}`] - 10) unlockStory("maxLQuestsInALoop");
+    },
+});
 
-function ThrowParty() {
-    this.name = "Throw Party";
-    this.expMult = 2;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.ThrowParty = new Action("Throw Party", {
+    expMult: 2,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.partyThrown;
         }
         return false;
-    };
-
-    this.varName = "Party";
-    this.stats = {
+    },
+    stats: {
         Cha: 0.8,
         Soul: 0.2
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1600;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= 2;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("reputation", -2);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Secrets") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Secrets") >= 30;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[0].finishProgress("Met", 3200);
         unlockStory("partyThrown");
-    };
-}
+    },
+});
 
-function WarriorLessons() {
-    this.name = "Warrior Lessons";
-    this.expMult = 1.5;
-    this.tooltip = "Learning to fight is probably important; you have a long journey ahead of you.<br>Requires 2 reputation.<br>Unlocked at 20% Investigated.";
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.WarriorLessons = new Action("Warrior Lessons", {
+    expMult: 1.5,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return getSkillLevel("Combat") >= 1;
@@ -820,42 +602,36 @@ function WarriorLessons() {
                 return getSkillLevel("Combat") >= 250;
         }
         return false;
-    };
-
-    this.varName = "trCombat";
-    this.stats = {
+    },
+    stats: {
         Str: 0.5,
         Dex: 0.3,
         Con: 0.2
-    };
-    this.skills = {
+    },
+    skills: {
         Combat: 100
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= 2;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Secrets") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Secrets") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function MageLessons() {
-    this.name = "Mage Lessons";
-    this.expMult = 1.5;
-    this.tooltip = "The mystic got you into this mess, maybe it can help you get out of it.<br>Requires 2 reputation.<br>Unlocked at 20% Investigated.";
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.MageLessons = new Action("Mage Lessons", {
+    expMult: 1.5,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return getSkillLevel("Magic") >= 1;
@@ -873,45 +649,39 @@ function MageLessons() {
                 return getSkillLevel("Alchemy") >= 100;
         }
         return false;
-    };
-
-    this.varName = "trMagic";
-    this.stats = {
+    },
+    stats: {
         Per: 0.3,
         Int: 0.5,
         Con: 0.2
-    };
-    this.skills = {
+    },
+    skills: {
         Magic() {
             return 100 * (1 + getSkillLevel("Alchemy") / 100);
         }
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= 2;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Secrets") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[0].getLevel("Secrets") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function HealTheSick() {
-    this.varName = "Heal";
-    this.name = "Heal The Sick";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.HealTheSick = new MultipartAction("Heal The Sick", 3, {
+    expMult: 1,
+    townNum: 0,
+    varName: "Heal",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[0].totalHeal >= 1;
@@ -923,65 +693,52 @@ function HealTheSick() {
                 return storyReqs.failedHeal;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Per: 0.2,
         Int: 0.2,
         Cha: 0.2,
         Soul: 0.4
-    };
-    this.skills = {
+    },
+    skills: {
         Magic: 10
-    };
-    this.loopStats = ["Per", "Int", "Cha"];
-    this.segments = 3;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    this.manaCost = function() {
+    },
+    loopStats: ["Per", "Int", "Cha"],
+    manaCost() {
         return 2500;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= 1;
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return fibonacci(2 + Math.floor((towns[0].HealLoopCounter + segment) / this.segments + 0.0000001)) * 5000;
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         return getSkillLevel("Magic") * (1 + getLevel(this.loopStats[(towns[0].HealLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[0].totalHeal / 100);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         addResource("reputation", 3);
-    };
-    this.getPartName = function() {
+    },
+    getPartName() {
         return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${numberToWords(Math.floor((towns[0].HealLoopCounter + 0.0001) / this.segments + 1))}`;
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % 3];
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Secrets") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return getSkillLevel("Magic") >= 12;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
         if (towns[0].HealLoopCounter / 3 + 1 >= 10) unlockStory("heal10PatientsInALoop");
-    };
-}
+    },
+});
 
-function FightMonsters() {
-    this.varName = "Fight";
-    this.name = "Fight Monsters";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.FightMonsters = new MultipartAction("Fight Monsters", 3, {
+    expMult: 1,
+    townNum: 0,
+    varName: "Fight",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[0].totalFight >= 1;
@@ -999,141 +756,107 @@ function FightMonsters() {
                 return towns[0].totalFight >= 20000;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Str: 0.3,
         Spd: 0.3,
         Con: 0.3,
         Luck: 0.1
-    };
-    this.skills = {
+    },
+    skills: {
         Combat: 10
-    };
-    this.loopStats = ["Spd", "Spd", "Spd", "Str", "Str", "Str", "Con", "Con", "Con"];
-    this.segments = 3;
-    this.segmentNames = [];
-    this.altSegmentNames = [];
-    this.segmentModifiers = [];
-    $(_txtsObj("actions>fight_monsters>segment_names>name")).each((_index, monsterName) => {
-        this.segmentNames.push($(monsterName).text());
-    });
-    $(_txtsObj("actions>fight_monsters>segment_alt_names>name")).each((_index, monsterName) => {
-        this.altSegmentNames.push($(monsterName).text());
-    });
-    $(_txtsObj("actions>fight_monsters>segment_modifiers>segment_modifier")).each((_index, modName) => {
-        this.segmentModifiers.push($(modName).text());
-    });
-    this.manaCost = function() {
+    },
+    loopStats: ["Spd", "Spd", "Spd", "Str", "Str", "Str", "Con", "Con", "Con"],
+    manaCost() {
         return 2000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= 2;
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return fibonacci(Math.floor((towns[0].FightLoopCounter + segment) - towns[0].FightLoopCounter / 3 + 0.0000001)) * 10000;
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         return getSelfCombat() * (1 + getLevel(this.loopStats[(towns[0].FightLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[0].totalFight / 100);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         // empty
-    };
-    this.segmentFinished = function() {
+    },
+    segmentFinished() {
         addResource("gold", 20);
-    };
-    this.getPartName = function() {
+    },
+    getPartName() {
         const monster = Math.floor(towns[0].FightLoopCounter / 3 + 0.0000001);
         if (monster >= this.segmentNames.length) return this.altSegmentNames[monster % 3];
         return this.segmentNames[monster];
-    };
-    this.getSegmentName = function(segment) {
+    },
+    getSegmentName(segment) {
         return `${this.segmentModifiers[segment % 3]} ${this.getPartName()}`;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[0].getLevel("Secrets") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return getSkillLevel("Combat") >= 10;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-    };
-}
-// spd, defensive, aggressive
-function getMonsterName(FightLoopCounter) {
-    let name = new FightMonsters().segmentNames[Math.floor(FightLoopCounter / 3 + 0.0000001)];
-    if (!name) {
-        name = new FightMonsters().altSegmentNames[Math.floor(FightLoopCounter / 3 + 0.0000001) % 3];
-    }
-    return name;
-}
+    },
+});
+// lazily loaded to allow localization code to load first
+defineLazyGetter(Action.FightMonsters, "altSegmentNames",
+    () => Array.from(_txtsObj("actions>fight_monsters>segment_alt_names>name"))
+               .map(elt => elt.textContent));
+defineLazyGetter(Action.FightMonsters, "segmentModifiers",
+    () => Array.from(_txtsObj("actions>fight_monsters>segment_modifiers>segment_modifier"))
+               .map(elt => elt.textContent));
 
-function SmallDungeon() {
-    this.varName = "SDungeon";
-    this.name = "Small Dungeon";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.dungeonNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.SmallDungeon = new DungeonAction("Small Dungeon", 0, {
+    expMult: 1,
+    townNum: 0,
+    varName: "SDungeon",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.smallDungeonAttempted;
             case 2:
-                return towns[0].totalSDungeon >= 1000;
+                return towns[0][`total${this.varName}`] >= 1000;
             case 3:
-                return towns[0].totalSDungeon >= 5000;
+                return towns[0][`total${this.varName}`] >= 5000;
             case 4:
-                return towns[0].totalSDungeon >= 10000;
+                return towns[0][`total${this.varName}`] >= 10000;
             case 5:
                 return storyReqs.clearSDungeon;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Str: 0.1,
         Dex: 0.4,
         Con: 0.3,
         Cha: 0.1,
         Luck: 0.1
-    };
-    this.skills = {
+    },
+    skills: {
         Combat: 5,
         Magic: 5
-    };
-    this.loopStats = ["Dex", "Con", "Dex", "Cha", "Dex", "Str", "Luck"];
-    this.segments = 7;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    let ssDivContainer = "";
-    for (let i = 0; i < dungeons[this.dungeonNum].length; i++) {
-        ssDivContainer += `Floor ${i + 1} |
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>chance_label`)} </div> <div id='soulstoneChance${this.dungeonNum}_${i}'></div>% - 
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>last_stat_label`)} </div> <div id='soulstonePrevious${this.dungeonNum}_${i}'>NA</div> - 
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>label_done`)}</div> <div id='soulstoneCompleted${this.dungeonNum}_${i}'></div><br>`;
-    }
-    this.completedTooltip = _txt(`actions>${getXMLName(this.name)}>completed_tooltip`) + ssDivContainer;
-    this.manaCost = function() {
+    },
+    loopStats: ["Dex", "Con", "Dex", "Cha", "Dex", "Str", "Luck"],
+    manaCost() {
         return 2000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         const curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001);
         return resources.reputation >= 2 && curFloor < dungeons[this.dungeonNum].length;
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return precision3(Math.pow(2, Math.floor((towns[this.townNum].SDungeonLoopCounter + segment) / this.segments + 0.0000001)) * 15000);
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001);
         return (getSelfCombat() + getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001 - 1);
         const success = finishDungeon(this.dungeonNum, curFloor);
         if (success === true && storyMax <= 1) {
@@ -1141,26 +864,19 @@ function SmallDungeon() {
         } else if (success === false && storyMax <= 2) {
             unlockGlobalStory(2);
         }
-    };
-    this.getPartName = function() {
-        const floor = Math.floor((towns[0].SDungeonLoopCounter + 0.0001) / this.segments + 1);
-        return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % this.segmentNames.length];
-    };
-    this.visible = function() {
+    },
+    visible() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
         unlockStory("smallDungeonAttempted");
         if (towns[0].SDungeonLoopCounter >= 42) unlockStory("clearSDungeon");
-    };
-}
+    },
+});
 function finishDungeon(dungeonNum, floorNum) {
     const floor = dungeons[dungeonNum][floorNum];
     if (!floor) {
@@ -1179,13 +895,10 @@ function finishDungeon(dungeonNum, floorNum) {
     return false;
 }
 
-function BuySupplies() {
-    this.name = "Buy Supplies";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.BuySupplies = new Action("Buy Supplies", {
+    expMult: 1,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.suppliesBought;
@@ -1193,46 +906,41 @@ function BuySupplies() {
                 return storyReqs.suppliesBoughtWithoutHaggling;
         }
         return false;
-    };
-
-    this.varName = "Supplies";
-    this.stats = {
+    },
+    stats: {
         Cha: 0.8,
         Luck: 0.1,
         Soul: 0.1
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 200;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.gold >= towns[0].suppliesCost && !resources.supplies;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("gold", -towns[0].suppliesCost);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("supplies", true);
         if (towns[0].suppliesCost === 300) unlockStory("suppliesBoughtWithoutHaggling");
         unlockStory("suppliesBought");
-    };
-}
+    },
+});
 
-function Haggle() {
-    this.name = "Haggle";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.Haggle = new Action("Haggle", {
+    expMult: 1,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.haggle;
@@ -1242,30 +950,28 @@ function Haggle() {
                 return storyReqs.haggle16TimesInALoop;
         }
         return false;
-    };
-
-    this.varName = "Haggle";
-    this.stats = {
+    },
+    stats: {
         Cha: 0.8,
         Luck: 0.1,
         Soul: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 100;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= 1;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("reputation", -1);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
-    };
-    this.finish = function() {
+    },
+    finish() {
         if (towns[0].suppliesCost === 20) unlockStory("haggle15TimesInALoop");
         else if (towns[0].suppliesCost === 0) unlockStory("haggle16TimesInALoop");
         towns[0].suppliesCost -= 20;
@@ -1274,133 +980,118 @@ function Haggle() {
         }
         view.updateResource("supplies");
         unlockStory("haggle");
-    };
-}
+    },
+});
 
-function StartJourney() {
-    this.name = "Start Journey";
-    this.expMult = 2;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.StartJourney = new Action("Start Journey", {
+    expMult: 2,
+    townNum: 0,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[1].unlocked;
         }
         return false;
-    };
-
-    this.varName = "Journey";
-    this.stats = {
+    },
+    stats: {
         Con: 0.4,
         Per: 0.3,
         Spd: 0.3
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.supplies;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("supplies", false);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockTown(1);
-    };
-}
+    },
+});
 
-function OpenRift() {
-    this.name = "Open Rift";
-    this.expMult = 1;
-    this.townNum = 0;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.varName = "OpenRift";
-    this.stats = {
+Action.OpenRift = new Action("Open Rift", {
+    expMult: 1,
+    townNum: 0,
+    stats: {
         Int: 0.2,
         Luck: 0.1,
         Soul: 0.7
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 100000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return (getSkillLevel("Dark") >= 100 && getSkillLevel("Magic")) >= 15;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockTown(1);
-    };
-}
+    },
+});
 
 // town 2
-function ExploreForest() {
-    this.name = "Explore Forest";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.ExploreForest = new Action("Explore Forest", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Forest",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].getLevel("Forest") >= 1;
+                return towns[1].getLevel(this.varName) >= 1;
             case 2:
-                return towns[1].getLevel("Forest") >= 10;
+                return towns[1].getLevel(this.varName) >= 10;
             case 3:
-                return towns[1].getLevel("Forest") >= 20;
+                return towns[1].getLevel(this.varName) >= 20;
             case 4:
-                return towns[1].getLevel("Forest") >= 40;
+                return towns[1].getLevel(this.varName) >= 40;
             case 5:
-                return towns[1].getLevel("Forest") >= 50;
+                return towns[1].getLevel(this.varName) >= 50;
             case 6:
-                return towns[1].getLevel("Forest") >= 60;
+                return towns[1].getLevel(this.varName) >= 60;
             case 7:
-                return towns[1].getLevel("Forest") >= 80;
+                return towns[1].getLevel(this.varName) >= 80;
             case 8:
-                return towns[1].getLevel("Forest") >= 100;
+                return towns[1].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Forest";
-    this.stats = {
+    },
+    stats: {
         Per: 0.4,
         Con: 0.2,
         Spd: 0.2,
         Luck: 0.2
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    manaCost() {
         return 400;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
-    };
-}
+    },
+});
 function adjustWildMana() {
     towns[1].totalWildMana = towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Thicket") * 5;
 }
@@ -1411,332 +1102,271 @@ function adjustHerbs() {
     towns[1].totalHerbs = towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Shortcut") * 2 + towns[1].getLevel("Flowers") * 13;
 }
 
-function WildMana() {
-    this.varName = "WildMana";
-    this.name = "Wild Mana";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.WildMana = new Action("Wild Mana", {
+    expMult: 1,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].checkedWildMana >= 1;
+                return towns[1][`checked${this.varName}`] >= 1;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Con: 0.2,
         Int: 0.6,
         Soul: 0.2
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(150 / (1 + getSkillLevel("Practical") / 100));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 2;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        return Math.floor(250 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
+    },
+    finish() {
         towns[1].finishRegular(this.varName, 10, () => {
-            addMana(goldCostWildMana());
-            return goldCostWildMana();
+            const manaGain = this.goldCost();
+            addMana(manaGain);
+            return manaGain;
         });
-    };
-}
-function goldCostWildMana() {
-    return Math.floor(250 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
-}
+    }
+});
 
-function GatherHerbs() {
-    this.varName = "Herbs";
-    this.name = "Gather Herbs";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.GatherHerbs = new Action("Gather Herbs", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Herbs",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].checkedHerbs >= 1;
+                return towns[1][`checked${this.varName}`] >= 1;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Str: 0.4,
         Dex: 0.3,
         Int: 0.3
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(200 * (1 - towns[1].getLevel("Hermit") * 0.005));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Forest") >= 2;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 10;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishRegular(this.varName, 10, () => {
             addResource("herbs", 1);
             return 1;
         });
-    };
-}
+    },
+});
 
-function Hunt() {
-    this.varName = "Hunt";
-    this.name = "Hunt";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-    this.storyReqs = function(storyNum) {
+Action.Hunt = new Action("Hunt", {
+    expMult: 1,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].checkedHunt >= 1;
+                return towns[1][`checked${this.varName}`] >= 1;
             case 2:
-                return towns[1].goodHunt >= 10;
+                return towns[1][`good${this.varName}`] >= 10;
             case 3:
-                return towns[1].goodHunt >= 20;
+                return towns[1][`good${this.varName}`] >= 20;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Dex: 0.2,
         Con: 0.2,
         Per: 0.2,
         Spd: 0.4
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 800;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Forest") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 40;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishRegular(this.varName, 10, () => {
             addResource("hide", 1);
             return 1;
         });
-    };
-}
+    },
+});
 
-function SitByWaterfall() {
-    this.name = "Sit By Waterfall";
-    this.expMult = 4;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.SitByWaterfall = new Action("Sit By Waterfall", {
+    expMult: 4,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.satByWaterfall;
         }
         return false;
-    };
-
-    this.varName = "Waterfall";
-    this.stats = {
+    },
+    stats: {
         Con: 0.2,
         Soul: 0.8
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return trainingLimits;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Forest") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 70;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockStory("satByWaterfall");
-    };
-}
+    },
+});
 
-function OldShortcut() {
-    this.name = "Old Shortcut";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.OldShortcut = new Action("Old Shortcut", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Shortcut",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].getLevel("Shortcut") >= 1;
+                return towns[1].getLevel(this.varName) >= 1;
             case 2:
-                return towns[1].getLevel("Shortcut") >= 10;
+                return towns[1].getLevel(this.varName) >= 10;
             case 3:
-                return towns[1].getLevel("Shortcut") >= 20;
+                return towns[1].getLevel(this.varName) >= 20;
             case 4:
-                return towns[1].getLevel("Shortcut") >= 40;
+                return towns[1].getLevel(this.varName) >= 40;
             case 5:
-                return towns[1].getLevel("Shortcut") >= 60;
+                return towns[1].getLevel(this.varName) >= 60;
             case 6:
-                return towns[1].getLevel("Shortcut") >= 80;
+                return towns[1].getLevel(this.varName) >= 80;
             case 7:
-                return towns[1].getLevel("Shortcut") >= 100;
+                return towns[1].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Shortcut";
-    this.stats = {
+    },
+    stats: {
         Per: 0.3,
         Con: 0.4,
         Spd: 0.2,
         Luck: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 800;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishProgress(this.varName, 100);
         view.adjustManaCost("Continue On");
-    };
-}
+    },
+});
 
-function TalkToHermit() {
-    this.name = "Talk To Hermit";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.TalkToHermit = new Action("Talk To Hermit", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Hermit",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].getLevel("Hermit") >= 1;
+                return towns[1].getLevel(this.varName) >= 1;
             case 2:
-                return towns[1].getLevel("Hermit") >= 10;
+                return towns[1].getLevel(this.varName) >= 10;
             case 3:
-                return towns[1].getLevel("Hermit") >= 20;
+                return towns[1].getLevel(this.varName) >= 20;
             case 4:
-                return towns[1].getLevel("Hermit") >= 40;
+                return towns[1].getLevel(this.varName) >= 40;
             case 5:
-                return towns[1].getLevel("Hermit") >= 60;
+                return towns[1].getLevel(this.varName) >= 60;
             case 6:
-                return towns[1].getLevel("Hermit") >= 80;
+                return towns[1].getLevel(this.varName) >= 80;
             case 7:
-                return towns[1].getLevel("Hermit") >= 100;
+                return towns[1].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Hermit";
-    this.stats = {
+    },
+    stats: {
         Con: 0.5,
         Cha: 0.3,
         Soul: 0.2
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1200;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Shortcut") >= 20 && getSkillLevel("Magic") >= 40;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishProgress(this.varName, 50 * (1 + towns[1].getLevel("Shortcut") / 100));
         view.adjustManaCost("Learn Alchemy");
         view.adjustManaCost("Gather Herbs");
         view.adjustManaCost("Practical Magic");
-    };
-}
+    },
+});
 
-function PracticalMagic() {
-    this.name = "Practical Magic";
-    this.expMult = 1.5;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.PracticalMagic = new Action("Practical Magic", {
+    expMult: 1.5,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return getSkillLevel("Practical") >= 1;
         }
         return false;
-    };
-
-    this.varName = "trPractical";
-    this.stats = {
+    },
+    stats: {
         Per: 0.3,
         Con: 0.2,
         Int: 0.5
-    };
-    this.skills = {
+    },
+    skills: {
         Practical: 100
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(4000 * (1 - towns[1].getLevel("Hermit") * 0.005));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Hermit") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Hermit") >= 20 && getSkillLevel("Magic") >= 50;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
         view.adjustManaCost("Wild Mana");
         view.adjustManaCost("Smash Pots");
         view.adjustGoldCosts();
-    };
-}
+    },
+});
 
-function LearnAlchemy() {
-    this.name = "Learn Alchemy";
-    this.expMult = 1.5;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.LearnAlchemy = new Action("Learn Alchemy", {
+    expMult: 1.5,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return skills.Alchemy.exp >= 50;
@@ -1746,47 +1376,41 @@ function LearnAlchemy() {
                 return getSkillLevel("Alchemy") >= 50;
         }
         return false;
-    };
-
-    this.varName = "learnAlchemy";
-    this.stats = {
+    },
+    stats: {
         Con: 0.3,
         Per: 0.1,
         Int: 0.6
-    };
-    this.skills = {
+    },
+    skills: {
         Magic: 50,
         Alchemy: 50
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.herbs >= 10;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("herbs", -10);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(5000 * (1 - towns[1].getLevel("Hermit") * 0.005));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Hermit") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Hermit") >= 40 && getSkillLevel("Magic") >= 60;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-        view.adjustExpGain(new MageLessons());
-    };
-}
+        view.adjustExpGain(Action.MageLessons);
+    },
+});
 
-function BrewPotions() {
-    this.varName = "Potions";
-    this.name = "Brew Potions";
-    this.expMult = 1.5;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.BrewPotions = new Action("Brew Potions", {
+    expMult: 1.5,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.potionBrewed;
@@ -1796,306 +1420,272 @@ function BrewPotions() {
                 return storyReqs.failedBrewPotionsNegativeRep;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Dex: 0.3,
         Int: 0.6,
         Luck: 0.1,
-    };
-    this.skills = {
+    },
+    skills: {
         Magic: 50,
         Alchemy: 25
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.herbs >= 10 && resources.reputation >= 5;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("herbs", -10);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(4000);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return getSkillLevel("Alchemy") >= 1;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return getSkillLevel("Alchemy") >= 10;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("potions", 1);
         handleSkillExp(this.skills);
         unlockStory("potionBrewed");
-    };
-}
+    },
+});
 
-function TrainDexterity() {
-    this.name = "Train Dexterity";
-    this.expMult = 4;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.TrainDexterity = new Action("Train Dexterity", {
+    expMult: 4,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.dexterityTrained;
         }
         return false;
-    };
-
-    this.varName = "trDex";
-    this.stats = {
+    },
+    stats: {
         Dex: 0.8,
         Con: 0.2
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return trainingLimits;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Forest") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 60;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockStory("dexterityTrained");
-    };
-}
+    },
+});
 
-function TrainSpeed() {
-    this.name = "Train Speed";
-    this.expMult = 4;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.TrainSpeed = new Action("Train Speed", {
+    expMult: 4,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.speedTrained;
         }
         return false;
-    };
-
-    this.varName = "trSpd";
-    this.stats = {
+    },
+    stats: {
         Spd: 0.8,
         Con: 0.2
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return trainingLimits;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Forest") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 80;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockStory("speedTrained");
-    };
-}
+    },
+});
 
-function FollowFlowers() {
-    this.name = "Follow Flowers";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.FollowFlowers = new Action("Follow Flowers", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Flowers",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].getLevel("Flowers") >= 1;
+                return towns[1].getLevel(this.varName) >= 1;
             case 2:
-                return towns[1].getLevel("Flowers") >= 10;
+                return towns[1].getLevel(this.varName) >= 10;
             case 3:
-                return towns[1].getLevel("Flowers") >= 20;
+                return towns[1].getLevel(this.varName) >= 20;
             case 4:
-                return towns[1].getLevel("Flowers") >= 40;
+                return towns[1].getLevel(this.varName) >= 40;
             case 5:
-                return towns[1].getLevel("Flowers") >= 60;
+                return towns[1].getLevel(this.varName) >= 60;
             case 6:
-                return towns[1].getLevel("Flowers") >= 80;
+                return towns[1].getLevel(this.varName) >= 80;
             case 7:
-                return towns[1].getLevel("Flowers") >= 100;
+                return towns[1].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Flowers";
-    this.stats = {
+    },
+    stats: {
         Per: 0.7,
         Con: 0.1,
         Spd: 0.2
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    manaCost() {
         return 300;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Forest") >= 30;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Forest") >= 50;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
-    };
-}
+    },
+});
 
-function BirdWatching() {
-    this.name = "Bird Watching";
-    this.expMult = 4;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.BirdWatching = new Action("Bird Watching", {
+    expMult: 4,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.birdsWatched;
         }
         return false;
-    };
-
-    this.varName = "BirdWatching";
-    this.stats = {
+    },
+    stats: {
         Per: 0.8,
         Int: 0.2
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.allowed = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    allowed() {
         return trainingLimits;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.glasses;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Flowers") >= 30;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Flowers") >= 80;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockStory("birdsWatched");
-    };
-}
+    },
+});
 
-function ClearThicket() {
-    this.name = "Clear Thicket";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.ClearThicket = new Action("Clear Thicket", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Thicket",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].getLevel("Thicket") >= 1;
+                return towns[1].getLevel(this.varName) >= 1;
             case 2:
-                return towns[1].getLevel("Thicket") >= 10;
+                return towns[1].getLevel(this.varName) >= 10;
             case 3:
-                return towns[1].getLevel("Thicket") >= 20;
+                return towns[1].getLevel(this.varName) >= 20;
             case 4:
-                return towns[1].getLevel("Thicket") >= 40;
+                return towns[1].getLevel(this.varName) >= 40;
             case 5:
-                return towns[1].getLevel("Thicket") >= 60;
+                return towns[1].getLevel(this.varName) >= 60;
             case 6:
-                return towns[1].getLevel("Thicket") >= 80;
+                return towns[1].getLevel(this.varName) >= 80;
             case 7:
-                return towns[1].getLevel("Thicket") >= 100;
+                return towns[1].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Thicket";
-    this.stats = {
+    },
+    stats: {
         Dex: 0.1,
         Str: 0.2,
         Per: 0.3,
         Con: 0.2,
         Spd: 0.2
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 500;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Flowers") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Flowers") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishProgress(this.varName, 100);
-    };
-}
+    },
+});
 
-function TalkToWitch() {
-    this.name = "Talk To Witch";
-    this.expMult = 1;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.TalkToWitch = new Action("Talk To Witch", {
+    expMult: 1,
+    townNum: 1,
+    varName: "Witch",
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].getLevel("Witch") >= 1;
+                return towns[1].getLevel(this.varName) >= 1;
             case 2:
-                return towns[1].getLevel("Witch") >= 10;
+                return towns[1].getLevel(this.varName) >= 10;
             case 3:
-                return towns[1].getLevel("Witch") >= 20;
+                return towns[1].getLevel(this.varName) >= 20;
             case 4:
-                return towns[1].getLevel("Witch") >= 40;
+                return towns[1].getLevel(this.varName) >= 40;
             case 5:
-                return towns[1].getLevel("Witch") >= 50;
+                return towns[1].getLevel(this.varName) >= 50;
             case 6:
-                return towns[1].getLevel("Witch") >= 60;
+                return towns[1].getLevel(this.varName) >= 60;
             case 7:
-                return towns[1].getLevel("Witch") >= 80;
+                return towns[1].getLevel(this.varName) >= 80;
             case 8:
-                return towns[1].getLevel("Witch") >= 100;
+                return towns[1].getLevel(this.varName) >= 100;
         }
         return false;
-    };
-
-    this.varName = "Witch";
-    this.stats = {
+    },
+    stats: {
         Cha: 0.3,
         Int: 0.2,
         Soul: 0.5
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1500;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Thicket") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Thicket") >= 60 && getSkillLevel("Magic") >= 80;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[1].finishProgress(this.varName, 100);
         view.adjustManaCost("Dark Magic");
         view.adjustManaCost("Dark Ritual");
-    };
-}
+    },
+});
 
-function DarkMagic() {
-    this.name = "Dark Magic";
-    this.expMult = 1.5;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.DarkMagic = new Action("Dark Magic", {
+    expMult: 1.5,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return getSkillLevel("Dark") >= 1;
@@ -2105,51 +1695,43 @@ function DarkMagic() {
                 return getSkillLevel("Dark") >= 50;
         }
         return false;
-    };
-
-    this.varName = "trDark";
-    this.stats = {
+    },
+    stats: {
         Con: 0.2,
         Int: 0.5,
         Soul: 0.3
-    };
-    this.skills = {
+    },
+    skills: {
         Dark() {
             return Math.floor(100 * (1 + getBuffLevel("Ritual") / 100));
         }
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(6000 * (1 - towns[1].getLevel("Witch") * 0.005));
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation <= 0;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("reputation", -1);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Witch") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[1].getLevel("Witch") >= 20 && getSkillLevel("Magic") >= 100;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-        view.adjustGoldCost("Pots", goldCostSmashPots());
-        view.adjustGoldCost("WildMana", goldCostWildMana());
-    };
-}
+        view.adjustGoldCost("Pots", Action.SmashPots.goldCost());
+        view.adjustGoldCost("WildMana", Action.WildMana.goldCost());
+    },
+});
 
-function DarkRitual() {
-    this.varName = "DarkRitual";
-    this.name = "Dark Ritual";
-    this.expMult = 10;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.storyReqs = function(storyNum) {
+Action.DarkRitual = new MultipartAction("Dark Ritual", 3, {
+    expMult: 10,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.darkRitualThirdSegmentReached;
@@ -2157,26 +1739,20 @@ function DarkRitual() {
                 return getBuffLevel("Ritual") >= 1;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Spd: 0.1,
         Int: 0.1,
         Soul: 0.8
-    };
-    this.loopStats = ["Spd", "Int", "Soul"];
-    this.segments = 3;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    this.manaCost = function() {
+    },
+    loopStats: ["Spd", "Int", "Soul"],
+    manaCost() {
         return Math.ceil(50000 * (1 - towns[1].getLevel("Witch") * 0.005));
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         let tempCanStart = true;
         const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9);
         let name = "";
@@ -2194,14 +1770,14 @@ function DarkRitual() {
         }
         if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
         return resources.reputation <= -5 && towns[this.townNum].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return 1000000 * (segment * 2 + 1);
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter + offset) % this.loopStats.length]) / 100) / (1 - towns[1].getLevel("Witch") * 0.005);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         addBuffAmt("Ritual", 1);
         const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9);
         let name = "";
@@ -2219,298 +1795,254 @@ function DarkRitual() {
         }
         stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 50 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
-        view.adjustGoldCost("DarkRitual", goldCostDarkRitual());
-    };
-    this.getPartName = function() {
+        view.adjustGoldCost("DarkRitual", this.goldCost());
+    },
+    getPartName() {
         return "Perform Dark Ritual";
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % 3];
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Witch") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         const toUnlock = towns[1].getLevel("Witch") >= 50 && getSkillLevel("Dark") >= 50;
         if (toUnlock && !isVisible(document.getElementById("buffList"))) {
             document.getElementById("buffList").style.display = "flex";
             document.getElementById(`buffRitualContainer`).style.display = "flex";
         }
         return toUnlock;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        return 50 * (getBuffLevel("Ritual") + 1);
+    },
+    finish() {
         view.updateBuff("Ritual");
-        view.adjustExpGain(new DarkMagic());
+        view.adjustExpGain(Action.DarkMagic);
         if (towns[1].DarkRitualLoopCounter >= 2) unlockStory("darkRitualThirdSegmentReached");
-    };
-}
-function goldCostDarkRitual() {
-    return 50 * (getBuffLevel("Ritual") + 1);
-}
+    },
+});
 
-function ContinueOn() {
-    this.varName = "Continue";
-    this.name = "Continue On";
-    this.expMult = 2;
-    this.townNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.storyReqs = function(storyNum) {
+Action.ContinueOn = new Action("Continue On", {
+    expMult: 2,
+    townNum: 1,
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[2].unlocked;
         }
         return false;
-    };
-
-    this.stats = {
+    },
+    stats: {
         Con: 0.4,
         Per: 0.2,
         Spd: 0.4
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(8000 - (60 * towns[1].getLevel("Shortcut")));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockTown(2);
-    };
-}
+    },
+});
 
-function ExploreCity() {
-    this.name = "Explore City";
-    this.expMult = 1;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "City";
-    this.stats = {
+Action.ExploreCity = new Action("Explore City", {
+    expMult: 1,
+    townNum: 2,
+    varName: "City",
+    stats: {
         Con: 0.1,
         Per: 0.3,
         Cha: 0.2,
         Spd: 0.3,
         Luck: 0.1
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    manaCost() {
         return 750;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[2].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
-    };
-}
+    },
+});
 function adjustSuckers() {
     towns[2].totalGamble = towns[2].getLevel("City") * 3;
 }
 
-function Gamble() {
-    this.varName = "Gamble";
-    this.name = "Gamble";
-    this.expMult = 2;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-
-    this.stats = {
+Action.Gamble = new Action("Gamble", {
+    expMult: 2,
+    townNum: 2,
+    stats: {
         Cha: 0.2,
         Luck: 0.8
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.gold >= 20 && resources.reputation >= -5;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("gold", -20);
         addResource("reputation", -1);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("City") >= 10;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[2].finishRegular(this.varName, 10, () => {
             addResource("gold", 60);
             return 60;
         });
-    };
-}
+    },
+});
 
-function GetDrunk() {
-    this.name = "Get Drunk";
-    this.expMult = 3;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "Drunk";
-    this.stats = {
+Action.GetDrunk = new Action("Get Drunk", {
+    expMult: 3,
+    townNum: 2,
+    varName: "Drunk",
+    stats: {
         Str: 0.1,
         Cha: 0.5,
         Con: 0.2,
         Soul: 0.2
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.reputation >= -3;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("reputation", -1);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("City") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[2].finishProgress(this.varName, 100);
-    };
-}
+    },
+});
 
-function PurchaseMana() {
-    this.varName = "Gold2";
-    this.name = "Purchase Mana";
-    this.expMult = 1;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.PurchaseMana = new Action("Purchase Mana", {
+    expMult: 1,
+    townNum: 2,
+    stats: {
         Cha: 0.7,
         Int: 0.2,
         Luck: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 100;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addMana(resources.gold * 50);
         resetResource("gold");
-    };
-}
+    },
+});
 
-function SellPotions() {
-    this.varName = "SellPotions";
-    this.name = "Sell Potions";
-    this.expMult = 1;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.SellPotions = new Action("Sell Potions", {
+    expMult: 1,
+    townNum: 2,
+    stats: {
         Cha: 0.7,
         Int: 0.2,
         Luck: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("gold", resources.potions * getSkillLevel("Alchemy"));
         resetResource("potions");
-    };
-}
+    },
+});
 
-function JoinAdvGuild() {
-    this.varName = "AdvGuild";
-    this.name = "Adventure Guild";
-    this.expMult = 1;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+// the guild actions are somewhat unique in that they override the default segment naming
+// with their own segment names, and so do not use the segmentNames inherited from
+// MultipartAction
+Action.AdventureGuild = new MultipartAction("Adventure Guild", 3, {
+    expMult: 1,
+    townNum: 2,
+    varName: "AdvGuild",
+    stats: {
         Str: 0.4,
         Dex: 0.3,
         Con: 0.3
-    };
-    this.loopStats = ["Str", "Dex", "Con"];
-    this.segments = 3;
-    this.manaCost = function() {
+    },
+    loopStats: ["Str", "Dex", "Con"],
+    manaCost() {
         return 3000;
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return guild === "";
-    };
-    this.loopCost = function(segment) {
-        return precision3(Math.pow(1.2, towns[2].AdvGuildLoopCounter + segment)) * 5e6;
-    };
-    this.tickProgress = function(offset) {
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(1.2, towns[2][`${this.varName}LoopCounter`] + segment)) * 5e6;
+    },
+    tickProgress(offset) {
         return (getSkillLevel("Magic") / 2 +
                 getSelfCombat("Combat")) *
-                (1 + getLevel(this.loopStats[(towns[2].AdvGuildLoopCounter + offset) % this.loopStats.length]) / 100) *
-                Math.sqrt(1 + towns[2].totalAdvGuild / 1000);
-    };
-    this.loopsFinished = function() {
+                (1 + getLevel(this.loopStats[(towns[2][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
+                Math.sqrt(1 + towns[2][`total${this.varName}`] / 1000);
+    },
+    loopsFinished() {
         // empty
-    };
-    this.segmentFinished = function() {
+    },
+    segmentFinished() {
         curAdvGuildSegment++;
         addMana(200);
-    };
-    this.getPartName = function() {
+    },
+    getPartName() {
         return `Rank ${getAdvGuildRank().name}`;
-    };
-    this.getSegmentName = function(segment) {
+    },
+    getSegmentName(segment) {
         return `Rank ${getAdvGuildRank(segment % 3).name}`;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 5;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         guild = "Adventure";
-    };
-}
+    },
+});
 function getAdvGuildRank(offset) {
     let name = ["F", "E", "D", "C", "B", "A", "S", "SS", "SSS", "SSSS", "U", "UU", "UUU", "UUUU"][Math.floor(curAdvGuildSegment / 3 + 0.00001)];
 
@@ -2530,185 +2062,141 @@ function getAdvGuildRank(offset) {
     return { name, bonus };
 }
 
-function GatherTeam() {
-    this.varName = "GatherTeam";
-    this.name = "Gather Team";
-    this.expMult = 3;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.GatherTeam = new Action("Gather Team", {
+    expMult: 3,
+    townNum: 2,
+    stats: {
         Per: 0.2,
         Cha: 0.5,
         Int: 0.2,
         Luck: 0.1
-    };
-    this.affectedBy = ["Adventure Guild"];
-    this.allowed = function() {
+    },
+    affectedBy: ["Adventure Guild"],
+    allowed() {
         return 5;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return guild === "Adventure" && resources.gold >= (resources.teamMembers + 1) * 200;
-    };
-    this.cost = function() {
+    },
+    cost() {
         // cost comes after finish
         addResource("gold", -(resources.teamMembers) * 200);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("teamMembers", 1);
-    };
-}
+    },
+});
 
-function LargeDungeon() {
-    this.varName = "LDungeon";
-    this.name = "Large Dungeon";
-    this.expMult = 2;
-    this.townNum = 2;
-    this.dungeonNum = 1;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
+    expMult: 2,
+    townNum: 2,
+    varName: "LDungeon",
+    stats: {
         Str: 0.2,
         Dex: 0.2,
         Con: 0.2,
         Cha: 0.3,
         Luck: 0.1
-    };
-    this.skills = {
+    },
+    skills: {
         Combat: 15,
         Magic: 15
-    };
-    this.loopStats = ["Cha", "Spd", "Str", "Cha", "Dex", "Dex", "Str"];
-    this.segments = 7;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    let ssDivContainer = "";
-    for (let i = 0; i < dungeons[this.dungeonNum].length; i++) {
-        ssDivContainer += `Floor ${i + 1} |
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>chance_label`)} </div> <div id='soulstoneChance${this.dungeonNum}_${i}'></div>% - 
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>last_stat_label`)} </div> <div id='soulstonePrevious${this.dungeonNum}_${i}'>NA</div> - 
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>label_done`)}</div> <div id='soulstoneCompleted${this.dungeonNum}_${i}'></div><br>`;
-    }
-    this.completedTooltip = _txt(`actions>${getXMLName(this.name)}>completed_tooltip`) +
-        ssDivContainer;
-    this.affectedBy = ["Gather Team"];
-    this.manaCost = function() {
+    },
+    loopStats: ["Cha", "Spd", "Str", "Cha", "Dex", "Dex", "Str"],
+    affectedBy: ["Gather Team"],
+    manaCost() {
         return 6000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         const curFloor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001);
         return resources.teamMembers >= 1 && curFloor < dungeons[this.dungeonNum].length;
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return precision3(Math.pow(3, Math.floor((towns[this.townNum].LDungeonLoopCounter + segment) / this.segments + 0.0000001)) * 5e5);
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001);
         return (getTeamCombat() + getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].LDungeonLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001 - 1);
-        const success = finishDungeon(this.dungeonNum, curFloor);
-        if (success && storyMax <= 1) {
-            // unlockGlobalStory(1);
-        } else if (storyMax <= 2) {
-            // unlockGlobalStory(2);
-        }
-    };
-    this.getPartName = function() {
-        const floor = Math.floor((towns[2].LDungeonLoopCounter + 0.0001) / this.segments + 1);
-        return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % this.segmentNames.length];
-    };
-    this.visible = function() {
+        finishDungeon(this.dungeonNum, curFloor);
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 5;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function CraftingGuild() {
-    this.name = "Crafting Guild";
-    this.expMult = 1;
-    this.townNum = 2;
-
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "CraftGuild";
-    this.stats = {
+Action.CraftingGuild = new MultipartAction("Crafting Guild", 3, {
+    expMult: 1,
+    townNum: 2,
+    varName: "CraftGuild",
+    stats: {
         Dex: 0.3,
         Per: 0.3,
         Int: 0.4
-    };
-    this.skills = {
+    },
+    skills: {
         Crafting: 50
-    };
-    this.loopStats = ["Int", "Per", "Dex"];
-    this.segments = 3;
-    this.manaCost = function() {
+    },
+    loopStats: ["Int", "Per", "Dex"],
+    manaCost() {
         return 3000;
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return guild === "";
-    };
-    this.loopCost = function(segment) {
-        return precision3(Math.pow(1.2, towns[2].CraftGuildLoopCounter + segment)) * 2e6;
-    };
-    this.tickProgress = function(offset) {
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(1.2, towns[2][`${this.varName}LoopCounter`] + segment)) * 2e6;
+    },
+    tickProgress(offset) {
         return (getSkillLevel("Magic") / 2 +
                 getSkillLevel("Crafting")) *
-                (1 + getLevel(this.loopStats[(towns[2].CraftGuildLoopCounter + offset) % this.loopStats.length]) / 100) *
-                Math.sqrt(1 + towns[2].totalCraftGuild / 1000);
-    };
-    this.loopsFinished = function() {
+                (1 + getLevel(this.loopStats[(towns[2][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
+                Math.sqrt(1 + towns[2][`total${this.varName}`] / 1000);
+    },
+    loopsFinished() {
         // empty
-    };
-    this.segmentFinished = function() {
+    },
+    segmentFinished() {
         curCraftGuildSegment++;
         handleSkillExp(this.skills);
         addResource("gold", 10);
-    };
-    this.getPartName = function() {
+    },
+    getPartName() {
         return `Rank ${getCraftGuildRank().name}`;
-    };
-    this.getSegmentName = function(segment) {
+    },
+    getSegmentName(segment) {
         return `Rank ${getCraftGuildRank(segment % 3).name}`;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 5;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 30;
-    };
-    this.finish = function() {
+    },
+    finish() {
         guild = "Crafting";
-    };
-}
+    },
+});
 function getCraftGuildRank(offset) {
     let name = ["F", "E", "D", "C", "B", "A", "S", "SS", "SSS", "SSSS", "U", "UU", "UUU", "UUUU"][Math.floor(curCraftGuildSegment / 3 + 0.00001)];
 
@@ -2728,687 +2216,551 @@ function getCraftGuildRank(offset) {
     return { name, bonus };
 }
 
-function CraftArmor() {
-    this.varName = "CraftArmor";
-    this.name = "Craft Armor";
-    this.expMult = 1;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.CraftArmor = new Action("Craft Armor", {
+    expMult: 1,
+    townNum: 2,
+    stats: {
         Str: 0.1,
         Dex: 0.3,
         Con: 0.3,
         Int: 0.3
-    };
+    },
     // this.affectedBy = ["Crafting Guild"];
-    this.canStart = function() {
+    canStart() {
         return resources.hide >= 2;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("hide", -2);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 15;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 30;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("armor", 1);
-    };
-}
+    },
+});
 
-function Apprentice() {
-    this.varName = "Apprentice";
-    this.name = "Apprentice";
-    this.expMult = 1.5;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.Apprentice = new Action("Apprentice", {
+    expMult: 1.5,
+    townNum: 2,
+    stats: {
         Dex: 0.2,
         Int: 0.4,
         Cha: 0.4
-    };
-    this.skills = {
+    },
+    skills: {
         Crafting() {
             return 10 * (1 + towns[2].getLevel("Apprentice") / 100);
         }
-    };
-    this.affectedBy = ["Crafting Guild"];
-    this.canStart = function() {
+    },
+    affectedBy: ["Crafting Guild"],
+    canStart() {
         return guild === "Crafting";
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 40;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[2].finishProgress(this.varName, 30 * getCraftGuildRank().bonus);
         handleSkillExp(this.skills);
-        view.adjustExpGain(new Apprentice());
-    };
-}
+        view.adjustExpGain(Action.Apprentice);
+    },
+});
 
-function Mason() {
-    this.varName = "Mason";
-    this.name = "Mason";
-    this.expMult = 2;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.Mason = new Action("Mason", {
+    expMult: 2,
+    townNum: 2,
+    stats: {
         Dex: 0.2,
         Int: 0.5,
         Cha: 0.3
-    };
-    this.skills = {
+    },
+    skills: {
         Crafting() {
             return 20 * (1 + towns[2].getLevel("Mason") / 100);
         }
-    };
-    this.affectedBy = ["Crafting Guild"];
-    this.canStart = function() {
+    },
+    affectedBy: ["Crafting Guild"],
+    canStart() {
         return guild === "Crafting";
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 40;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 60 && towns[2].getLevel("Apprentice") >= 100;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[2].finishProgress(this.varName, 20 * getCraftGuildRank().bonus);
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function Architect() {
-    this.varName = "Architect";
-    this.name = "Architect";
-    this.expMult = 2.5;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.Architect = new Action("Architect", {
+    expMult: 2.5,
+    townNum: 2,
+    stats: {
         Dex: 0.2,
         Int: 0.6,
         Cha: 0.2
-    };
-    this.skills = {
+    },
+    skills: {
         Crafting() {
             return 40 * (1 + towns[2].getLevel("Architect") / 100);
         }
-    };
-    this.affectedBy = ["Crafting Guild"];
-    this.canStart = function() {
+    },
+    affectedBy: ["Crafting Guild"],
+    canStart() {
         return guild === "Crafting";
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("Drunk") >= 60;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("Drunk") >= 80 && towns[2].getLevel("Mason") >= 100;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[2].finishProgress(this.varName, 10 * getCraftGuildRank().bonus);
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function ReadBooks() {
-    this.varName = "ReadBooks";
-    this.name = "Read Books";
-    this.expMult = 4;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.ReadBooks = new Action("Read Books", {
+    expMult: 4,
+    townNum: 2,
+    stats: {
         Int: 0.8,
         Soul: 0.2
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.allowed = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    allowed() {
         return trainingLimits;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.glasses;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 2000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("City") >= 5;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("City") >= 50;
-    };
-    this.finish = function() {
+    },
+    finish() {
         // empty
-    };
-}
+    },
+});
 
-function BuyPickaxe() {
-    this.name = "Buy Pickaxe";
-    this.expMult = 1;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.varName = "Pickaxe";
-    this.stats = {
+Action.BuyPickaxe = new Action("Buy Pickaxe", {
+    expMult: 1,
+    townNum: 2,
+    stats: {
         Cha: 0.8,
         Int: 0.1,
         Spd: 0.1
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.gold >= 200;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("gold", -200);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 3000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("City") >= 60;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("City") >= 90;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("pickaxe", true);
-    };
-}
+    },
+});
 
-function StartTrek() {
-    this.varName = "StartTrek";
-    this.name = "Start Trek";
-    this.expMult = 2;
-    this.townNum = 2;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.StartTrek = new Action("Start Trek", {
+    expMult: 2,
+    townNum: 2,
+    stats: {
         Con: 0.7,
         Per: 0.2,
         Spd: 0.1
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(12000);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[2].getLevel("City") >= 30;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[2].getLevel("City") >= 60;
-    };
-    this.finish = function() {
+    },
+    finish() {
         unlockTown(3);
-    };
-}
+    },
+});
 
-function ClimbMountain() {
-    this.name = "Climb Mountain";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "Mountain";
-    this.stats = {
+Action.ClimbMountain = new Action("Climb Mountain", {
+    expMult: 1,
+    townNum: 3,
+    varName: "Mountain",
+    stats: {
         Dex: 0.1,
         Str: 0.2,
         Con: 0.4,
         Per: 0.2,
         Spd: 0.1
-    };
-    this.affectedBy = ["Buy Pickaxe"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Pickaxe"],
+    manaCost() {
         return 800;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishProgress(this.varName, 100 * (resources.pickaxe ? 2 : 1));
-    };
-}
+    },
+});
 
-function ManaGeyser() {
-    this.varName = "Geysers";
-    this.name = "Mana Geyser";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-
-    this.stats = {
+Action.ManaGeyser = new Action("Mana Geyser", {
+    expMult: 1,
+    townNum: 3,
+    varName: "Geysers",
+    stats: {
         Str: 0.6,
         Per: 0.3,
         Int: 0.1,
-    };
-    this.affectedBy = ["Buy Pickaxe"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Pickaxe"],
+    manaCost() {
         return 2000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.pickaxe;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Mountain") >= 2;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishRegular(this.varName, 100, () => {
             addMana(5000);
             return 5000;
         });
-    };
-}
+    },
+});
 function adjustGeysers() {
     towns[3].totalGeysers = towns[3].getLevel("Mountain") * 10;
 }
 
-function DecipherRunes() {
-    this.name = "Decipher Runes";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "Runes";
-    this.stats = {
+Action.DecipherRunes = new Action("Decipher Runes", {
+    expMult: 1,
+    townNum: 3,
+    varName: "Runes",
+    stats: {
         Per: 0.3,
         Int: 0.7
-    };
-    this.affectedBy = ["Buy Glasses"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Glasses"],
+    manaCost() {
         return 1200;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Mountain") >= 2;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Mountain") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
         view.adjustManaCost("Chronomancy");
         view.adjustManaCost("Pyromancy");
-    };
-}
+    },
+});
 
-function Chronomancy() {
-    this.name = "Chronomancy";
-    this.expMult = 2;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.varName = "trChronomancy";
-    this.stats = {
+Action.Chronomancy = new Action("Chronomancy", {
+    expMult: 2,
+    townNum: 3,
+    stats: {
         Soul: 0.1,
         Spd: 0.3,
         Int: 0.6
-    };
-    this.skills = {
+    },
+    skills: {
         Chronomancy: 100
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(10000 * (1 - towns[3].getLevel("Runes") * 0.005));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Runes") >= 8;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Runes") >= 30 && getSkillLevel("Magic") >= 150;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function LoopingPotion() {
-    this.varName = "LoopingPotion";
-    this.name = "Looping Potion";
-    this.expMult = 2;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.LoopingPotion = new Action("Looping Potion", {
+    expMult: 2,
+    townNum: 3,
+    stats: {
         Dex: 0.2,
         Int: 0.7,
         Soul: 0.1,
-    };
-    this.skills = {
+    },
+    skills: {
         Alchemy: 100
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.herbs >= 200;
-    };
-    this.cost = function() {
+    },
+    cost() {
         addResource("herbs", -200);
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(30000);
-    };
-    this.visible = function() {
+    },
+    visible() {
         return getSkillLevel("Alchemy") >= 10 && getSkillLevel("Chronomancy") >= 20;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return getSkillLevel("Alchemy") >= 60 && getSkillLevel("Chronomancy") >= 100;
-    };
-    this.finish = function() {
+    },
+    finish() {
         addResource("loopingPotion", true);
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function Pyromancy() {
-    this.name = "Pyromancy";
-    this.expMult = 2;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.varName = "trPyromancy";
-    this.stats = {
+Action.Pyromancy = new Action("Pyromancy", {
+    expMult: 2,
+    townNum: 3,
+    stats: {
         Per: 0.2,
         Int: 0.7,
         Soul: 0.1
-    };
-    this.skills = {
+    },
+    skills: {
         Pyromancy: 100
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return Math.ceil(14000 * (1 - towns[3].getLevel("Runes") * 0.005));
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Runes") >= 16;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Runes") >= 60 && getSkillLevel("Magic") >= 200;
-    };
-    this.finish = function() {
+    },
+    finish() {
         handleSkillExp(this.skills);
-    };
-}
+    },
+});
 
-function ExploreCavern() {
-    this.name = "Explore Cavern";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "Cavern";
-    this.stats = {
+Action.ExploreCavern = new Action("Explore Cavern", {
+    expMult: 1,
+    townNum: 3,
+    varName: "Cavern",
+    stats: {
         Dex: 0.1,
         Str: 0.3,
         Con: 0.2,
         Per: 0.3,
         Spd: 0.1
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1500;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Mountain") >= 10;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Mountain") >= 40;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishProgress(this.varName, 100);
-    };
-}
+    },
+});
 
-function MineSoulstones() {
-    this.varName = "MineSoulstones";
-    this.name = "Mine Soulstones";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-
-    this.stats = {
+Action.MineSoulstones = new Action("Mine Soulstones", {
+    expMult: 1,
+    townNum: 3,
+    stats: {
         Str: 0.6,
         Dex: 0.1,
         Con: 0.3,
-    };
-    this.affectedBy = ["Buy Pickaxe"];
-    this.manaCost = function() {
+    },
+    affectedBy: ["Buy Pickaxe"],
+    manaCost() {
         return 5000;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         return resources.pickaxe;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Cavern") >= 2;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Cavern") >= 20;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishRegular(this.varName, 10, () => {
             const statToAdd = statList[Math.floor(Math.random() * statList.length)];
             stats[statToAdd].soulstone += 1;
             view.updateSoulstones();
         });
-    };
-}
+    },
+});
 
 function adjustMineSoulstones() {
     towns[3].totalMineSoulstones = towns[3].getLevel("Cavern") * 3;
 }
 
-function HuntTrolls() {
-    this.varName = "HuntTrolls";
-    this.name = "Hunt Trolls";
-    this.expMult = 1.5;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.HuntTrolls = new MultipartAction("Hunt Trolls", 5, {
+    expMult: 1.5,
+    townNum: 3,
+    stats: {
         Str: 0.3,
         Dex: 0.3,
         Con: 0.2,
         Per: 0.1,
         Int: 0.1
-    };
-    this.skills = {
+    },
+    skills: {
         Combat: 1000
-    };
-    this.loopStats = ["Per", "Con", "Dex", "Str", "Int"];
-    this.segments = 5;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    this.manaCost = function() {
+    },
+    loopStats: ["Per", "Con", "Dex", "Str", "Int"],
+    manaCost() {
         return 8000;
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return precision3(Math.pow(2, Math.floor((towns[this.townNum].HuntTrollsLoopCounter + segment) / this.segments + 0.0000001)) * 1e6);
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         return (getSelfCombat() * (1 + getLevel(this.loopStats[(towns[3].HuntTrollsLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[3].totalHuntTrolls / 100));
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         handleSkillExp(this.skills);
         addResource("blood", 1);
-    };
-    this.getPartName = function() {
+    },
+    getPartName() {
         return "Hunt Troll";
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % 5];
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Cavern") >= 5;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Cavern") >= 50;
-    };
-    this.finish = function() {
+    },
+    finish() {
         // nothing
-    };
-}
+    },
+});
 
-function CheckWalls() {
-    this.name = "Check Walls";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.varName = "Illusions";
-    this.stats = {
+Action.CheckWalls = new Action("Check Walls", {
+    expMult: 1,
+    townNum: 3,
+    varName: "Illusions",
+    stats: {
         Spd: 0.1,
         Dex: 0.1,
         Per: 0.4,
         Int: 0.4
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 3000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Cavern") >= 40;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Cavern") >= 80;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishProgress(this.varName, 100);
-    };
-}
+    },
+});
 
-function TakeArtifacts() {
-    this.varName = "Artifacts";
-    this.name = "Take Artifacts";
-    this.expMult = 1;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-    this.infoText = `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text2`)}
-                    <i class='fa fa-arrow-left'></i>
-                    ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
-                    <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-
-    this.stats = {
+Action.TakeArtifacts = new Action("Take Artifacts", {
+    expMult: 1,
+    townNum: 3,
+    varName: "Artifacts",
+    stats: {
         Spd: 0.2,
         Per: 0.6,
         Int: 0.2,
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 1500;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Illusions") >= 1;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Illusions") >= 5;
-    };
-    this.finish = function() {
+    },
+    finish() {
         towns[3].finishRegular(this.varName, 25, () => {
             addResource("artifacts", 1);
         });
-    };
-}
+    },
+});
 function adjustArtifacts() {
     towns[3].totalArtifacts = towns[3].getLevel("Illusions") * 5;
 }
 
-function ImbueMind() {
-    this.varName = "ImbueMind";
-    this.name = "Imbue Mind";
-    this.expMult = 5;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.ImbueMind = new MultipartAction("Imbue Mind", 3, {
+    expMult: 5,
+    townNum: 3,
+    stats: {
         Spd: 0.1,
         Per: 0.1,
         Int: 0.8
-    };
-    this.loopStats = ["Spd", "Per", "Int"];
-    this.segments = 3;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    this.manaCost = function() {
+    },
+    loopStats: ["Spd", "Per", "Int"],
+    manaCost() {
         return 500000;
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         let tempCanStart = true;
         const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 20 / 9);
         let name = "";
@@ -3426,14 +2778,14 @@ function ImbueMind() {
         }
         if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
         return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return 100000000 * (segment * 5 + 1);
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         return getSkillLevel("Magic") * (1 + getLevel(this.loopStats[(towns[3].ImbueMindLoopCounter + offset) % this.loopStats.length]) / 100);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         trainingLimits++;
         addBuffAmt("Imbuement", 1);
         const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 20 / 9);
@@ -3452,126 +2804,101 @@ function ImbueMind() {
         }
         stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 20 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
-        view.adjustGoldCost("ImbueMind", goldCostImbueMind());
-    };
-    this.getPartName = function() {
+        view.adjustGoldCost("ImbueMind", this.goldCost());
+    },
+    getPartName() {
         return "Imbue Mind";
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % 3];
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Illusions") >= 50;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         const toUnlock = towns[3].getLevel("Illusions") >= 70 && getSkillLevel("Magic") >= 300;
         if (toUnlock && !isVisible(document.getElementById("buffList"))) {
             document.getElementById("buffList").style.display = "flex";
             document.getElementById(`buffImbuementContainer`).style.display = "flex";
         }
         return toUnlock;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        return 20 * (getBuffLevel("Imbuement") + 1);
+    },
+    finish() {
         view.updateBuff("Imbuement");
-    };
-}
-function goldCostImbueMind() {
-    return 20 * (getBuffLevel("Imbuement") + 1);
-}
+    },
+});
 
-function FaceJudgement() {
-    this.varName = "FaceJudgement";
-    this.name = "Face Judgement";
-    this.expMult = 2;
-    this.townNum = 3;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.FaceJudgement = new Action("Face Judgement", {
+    expMult: 2,
+    townNum: 3,
+    stats: {
         Cha: 0.3,
         Luck: 0.2,
         Soul: 0.5,
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 30000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[3].getLevel("Mountain") >= 40;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return towns[3].getLevel("Mountain") >= 100;
-    };
-    this.finish = function() {
+    },
+    finish() {
         // todo: allow you to unlock the new zones
         // if (resources.reputation >= 50) unlockTown(4);
         // else if (resources.reputation <= 50) unlockTown(5);
-    };
-}
+    },
+});
 
-function FallFromGrace() {
-    this.varName = "FallFromGrace";
-    this.name = "Fall From Grace";
-    this.expMult = 2;
-    this.townNum = 4;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-
-    this.stats = {
+Action.FallFromGrace = new Action("Fall From Grace", {
+    expMult: 2,
+    townNum: 4,
+    stats: {
         Dex: 0.4,
         Luck: 0.3,
         Spd: 0.2,
         Int: 0.1,
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.manaCost = function() {
+    },
+    manaCost() {
         return 30000;
-    };
-    this.visible = function() {
+    },
+    visible() {
         return true;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         return true;
-    };
-    this.finish = function() {
+    },
+    finish() {
         // todo: allow you to unlock new zone
         // unlockTown(5);
-    };
-}
+    },
+});
 
 // todo: make this correct
-function GreatFeast() {
-    this.varName = "GreatFeast";
-    this.name = "Great Feast";
-    this.expMult = 5;
-    this.townNum = 4;
-    this.tooltip = _txt(`actions>${getXMLName(this.name)}>tooltip`);
-    this.tooltip2 = _txt(`actions>${getXMLName(this.name)}>tooltip2`);
-    this.label = _txt(`actions>${getXMLName(this.name)}>label`);
-    this.labelDone = _txt(`actions>${getXMLName(this.name)}>label_done`);
-
-    this.stats = {
+Action.GreatFeast = new MultipartAction("Great Feast", 3, {
+    expMult: 5,
+    townNum: 4,
+    stats: {
         Spd: 0.1,
         Int: 0.1,
         Soul: 0.8
-    };
-    this.loopStats = ["Spd", "Int", "Soul"];
-    this.segments = 3;
-    this.segmentNames = [];
-    $(_txtsObj(`actions>${getXMLName(this.name)}>segment_names>name`)).each((_index, segmentName) => {
-        this.segmentNames.push($(segmentName).text());
-    });
-    this.manaCost = function() {
+    },
+    loopStats: ["Spd", "Int", "Soul"],
+    manaCost() {
         return Math.ceil(50000 * (1 - towns[1].getLevel("Witch") * 0.005));
-    };
-    this.allowed = function() {
+    },
+    allowed() {
         return 1;
-    };
-    this.canStart = function() {
+    },
+    canStart() {
         let tempCanStart = true;
         const tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
         let name = "";
@@ -3589,14 +2916,14 @@ function GreatFeast() {
         }
         if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
         return resources.reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
-    };
-    this.loopCost = function(segment) {
+    },
+    loopCost(segment) {
         return 1000000 * (segment * 2 + 1);
-    };
-    this.tickProgress = function(offset) {
+    },
+    tickProgress(offset) {
         return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter + offset) % this.loopStats.length]) / 100) / (1 - towns[1].getLevel("Witch") * 0.005);
-    };
-    this.loopsFinished = function() {
+    },
+    loopsFinished() {
         addBuffAmt("Feast", 1);
         const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 5000 / 9);
         let name = "";
@@ -3614,29 +2941,30 @@ function GreatFeast() {
         }
         stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 5000 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
-        view.adjustGoldCost("GreatFeast", goldCostGreatFeast());
-    };
-    this.getPartName = function() {
+        view.adjustGoldCost("GreatFeast", this.goldCost());
+    },
+    getPartName() {
         return "Host Great Feast";
-    };
-    this.getSegmentName = function(segment) {
-        return this.segmentNames[segment % 3];
-    };
-    this.visible = function() {
+    },
+    visible() {
         return towns[1].getLevel("Thicket") >= 50;
-    };
-    this.unlocked = function() {
+    },
+    unlocked() {
         const toUnlock = false;
         if (toUnlock && !isVisible(document.getElementById("buffList"))) {
             document.getElementById("buffList").style.display = "flex";
             document.getElementById(`buffFeastContainer`).style.display = "flex";
         }
         return toUnlock;
-    };
-    this.finish = function() {
+    },
+    goldCost() {
+        return 5000 * (getBuffLevel("Feast") + 1);
+    },
+    finish() {
         view.updateBuff("Feast");
-    };
-}
-function goldCostGreatFeast() {
-    return 5000 * (getBuffLevel("Feast") + 1);
-}
+    },
+});
+
+const actionsWithGoldCost = Object.values(Action).filter(
+    action => action.goldCost !== undefined
+);

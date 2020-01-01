@@ -481,3 +481,24 @@ function benchmark(code, iterations) {
     const after = Date.now();
     return `Total cost: ${after - before - baseCost}ms\n Cost per iteration: ~${(after - before - baseCost) / iterations}ms`;
 }
+
+// make a lazy getter for an object (most useful for prototypes), which executes the
+// provided function once upon first attempting to get the property, and in the future has
+// the computed result as an own property of the instance
+// usage: defineLazyGetter(A.prototype, 'prop', function() { return ...; })
+function defineLazyGetter(object, name, getter) {
+    Object.defineProperty(object, name, {
+        get() {
+            if (Object.prototype.hasOwnProperty.call(this, name)) {
+                // only used if this getter itself is own
+                // otherwise, shadowing the property is enough
+                delete this[name];
+            }
+            Object.defineProperty(this, name, {
+                value: getter.call(this)
+            });
+            return this[name];
+        },
+        configurable: true,
+    });
+}

@@ -635,56 +635,46 @@ function View() {
         while (townInfos[0].firstChild) {
             townInfos[0].removeChild(townInfos[0].firstChild);
         }
-        let tempObj = new Wander();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-        tempObj = new SmashPots();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-        tempObj = new PickLocks();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.Wander);
+        this.createActionProgress(Action.Wander);
+        this.createTownAction(Action.SmashPots);
+        this.createTownInfo(Action.SmashPots);
+        this.createTownAction(Action.PickLocks);
+        this.createTownInfo(Action.PickLocks);
 
-        this.createTownAction(new BuyGlasses());
-        this.createTownAction(new BuyMana());
+        this.createTownAction(Action.BuyGlasses);
+        this.createTownAction(Action.BuyMana);
 
-        tempObj = new MeetPeople();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.MeetPeople);
+        this.createActionProgress(Action.MeetPeople);
 
-        this.createTownAction(new TrainStrength());
+        this.createTownAction(Action.TrainStrength);
 
-        tempObj = new ShortQuest();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.ShortQuest);
+        this.createTownInfo(Action.ShortQuest);
 
-        tempObj = new Investigate();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.Investigate);
+        this.createActionProgress(Action.Investigate);
 
-        tempObj = new LongQuest();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.LongQuest);
+        this.createTownInfo(Action.LongQuest);
 
-        this.createTownAction(new ThrowParty());
-        this.createTownAction(new WarriorLessons());
-        this.createTownAction(new MageLessons());
+        this.createTownAction(Action.ThrowParty);
+        this.createTownAction(Action.WarriorLessons);
+        this.createTownAction(Action.MageLessons);
 
-        tempObj = new HealTheSick();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.HealTheSick);
+        this.createMultiPartPBar(Action.HealTheSick);
 
-        tempObj = new FightMonsters();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.FightMonsters);
+        this.createMultiPartPBar(Action.FightMonsters);
 
-        tempObj = new SmallDungeon();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.SmallDungeon);
+        this.createMultiPartPBar(Action.SmallDungeon);
 
-        this.createTownAction(new BuySupplies());
-        this.createTownAction(new Haggle());
-        this.createTownAction(new StartJourney());
+        this.createTownAction(Action.BuySupplies);
+        this.createTownAction(Action.Haggle);
+        this.createTownAction(Action.StartJourney);
 
         while (actionOptionsTown[1].firstChild) {
             actionOptionsTown[1].removeChild(actionOptionsTown[1].firstChild);
@@ -692,60 +682,50 @@ function View() {
         while (townInfos[1].firstChild) {
             townInfos[1].removeChild(townInfos[1].firstChild);
         }
-        tempObj = new ExploreForest();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.ExploreForest);
+        this.createActionProgress(Action.ExploreForest);
 
-        tempObj = new WildMana();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.WildMana);
+        this.createTownInfo(Action.WildMana);
 
-        tempObj = new GatherHerbs();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.GatherHerbs);
+        this.createTownInfo(Action.GatherHerbs);
 
-        tempObj = new Hunt();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.Hunt);
+        this.createTownInfo(Action.Hunt);
 
-        this.createTownAction(new SitByWaterfall());
+        this.createTownAction(Action.SitByWaterfall);
 
-        tempObj = new OldShortcut();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.OldShortcut);
+        this.createActionProgress(Action.OldShortcut);
 
-        tempObj = new TalkToHermit();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.TalkToHermit);
+        this.createActionProgress(Action.TalkToHermit);
 
-        this.createTownAction(new PracticalMagic());
-        this.createTownAction(new LearnAlchemy());
-        this.createTownAction(new BrewPotions());
+        this.createTownAction(Action.PracticalMagic);
+        this.createTownAction(Action.LearnAlchemy);
+        this.createTownAction(Action.BrewPotions);
 
-        this.createTownAction(new TrainDexterity());
-        this.createTownAction(new TrainSpeed());
+        this.createTownAction(Action.TrainDexterity);
+        this.createTownAction(Action.TrainSpeed);
 
-        tempObj = new FollowFlowers();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.FollowFlowers);
+        this.createActionProgress(Action.FollowFlowers);
 
-        this.createTownAction(new BirdWatching());
+        this.createTownAction(Action.BirdWatching);
 
-        tempObj = new ClearThicket();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.ClearThicket);
+        this.createActionProgress(Action.ClearThicket);
 
-        tempObj = new TalkToWitch();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.TalkToWitch);
+        this.createActionProgress(Action.TalkToWitch);
 
-        this.createTownAction(new DarkMagic());
+        this.createTownAction(Action.DarkMagic);
 
-        tempObj = new DarkRitual();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.DarkRitual);
+        this.createMultiPartPBar(Action.DarkRitual);
 
-        this.createTownAction(new ContinueOn());
+        this.createTownAction(Action.ContinueOn);
 
         while (actionOptionsTown[2].firstChild) {
             actionOptionsTown[2].removeChild(actionOptionsTown[2].firstChild);
@@ -753,54 +733,45 @@ function View() {
         while (townInfos[2].firstChild) {
             townInfos[2].removeChild(townInfos[2].firstChild);
         }
-        tempObj = new ExploreCity();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.ExploreCity);
+        this.createActionProgress(Action.ExploreCity);
 
-        tempObj = new Gamble();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.Gamble);
+        this.createTownInfo(Action.Gamble);
 
-        tempObj = new GetDrunk();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.GetDrunk);
+        this.createActionProgress(Action.GetDrunk);
 
-        this.createTownAction(new PurchaseMana());
-        this.createTownAction(new SellPotions());
+        this.createTownAction(Action.PurchaseMana);
+        this.createTownAction(Action.SellPotions);
 
-        tempObj = new JoinAdvGuild();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.AdventureGuild);
+        this.createMultiPartPBar(Action.AdventureGuild);
 
-        this.createTownAction(new GatherTeam());
+        this.createTownAction(Action.GatherTeam);
 
-        tempObj = new LargeDungeon();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.LargeDungeon);
+        this.createMultiPartPBar(Action.LargeDungeon);
 
-        tempObj = new CraftingGuild();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.CraftingGuild);
+        this.createMultiPartPBar(Action.CraftingGuild);
 
-        this.createTownAction(new CraftArmor());
+        this.createTownAction(Action.CraftArmor);
 
-        tempObj = new Apprentice();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.Apprentice);
+        this.createActionProgress(Action.Apprentice);
 
-        tempObj = new Mason();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.Mason);
+        this.createActionProgress(Action.Mason);
 
-        tempObj = new Architect();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.Architect);
+        this.createActionProgress(Action.Architect);
 
-        this.createTownAction(new ReadBooks());
+        this.createTownAction(Action.ReadBooks);
 
-        this.createTownAction(new BuyPickaxe());
+        this.createTownAction(Action.BuyPickaxe);
 
-        this.createTownAction(new StartTrek());
+        this.createTownAction(Action.StartTrek);
 
         while (actionOptionsTown[3].firstChild) {
             actionOptionsTown[3].removeChild(actionOptionsTown[3].firstChild);
@@ -809,47 +780,38 @@ function View() {
             townInfos[3].removeChild(townInfos[3].firstChild);
         }
 
-        tempObj = new ClimbMountain();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.ClimbMountain);
+        this.createActionProgress(Action.ClimbMountain);
 
-        tempObj = new ManaGeyser();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.ManaGeyser);
+        this.createTownInfo(Action.ManaGeyser);
 
-        tempObj = new DecipherRunes();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.DecipherRunes);
+        this.createActionProgress(Action.DecipherRunes);
 
-        this.createTownAction(new Chronomancy());
-        this.createTownAction(new LoopingPotion());
-        this.createTownAction(new Pyromancy());
+        this.createTownAction(Action.Chronomancy);
+        this.createTownAction(Action.LoopingPotion);
+        this.createTownAction(Action.Pyromancy);
 
-        tempObj = new ExploreCavern();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.ExploreCavern);
+        this.createActionProgress(Action.ExploreCavern);
 
-        tempObj = new MineSoulstones();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.MineSoulstones);
+        this.createTownInfo(Action.MineSoulstones);
 
-        tempObj = new HuntTrolls();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.HuntTrolls);
+        this.createMultiPartPBar(Action.HuntTrolls);
 
-        tempObj = new CheckWalls();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
+        this.createTownAction(Action.CheckWalls);
+        this.createActionProgress(Action.CheckWalls);
 
-        tempObj = new TakeArtifacts();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
+        this.createTownAction(Action.TakeArtifacts);
+        this.createTownInfo(Action.TakeArtifacts);
 
-        tempObj = new ImbueMind();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.ImbueMind);
+        this.createMultiPartPBar(Action.ImbueMind);
 
-        this.createTownAction(new FaceJudgement());
+        this.createTownAction(Action.FaceJudgement);
 
         while (actionOptionsTown[4].firstChild) {
             actionOptionsTown[4].removeChild(actionOptionsTown[4].firstChild);
@@ -858,11 +820,10 @@ function View() {
             townInfos[4].removeChild(townInfos[4].firstChild);
         }
 
-        tempObj = new GreatFeast();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
+        this.createTownAction(Action.GreatFeast);
+        this.createMultiPartPBar(Action.GreatFeast);
 
-        this.createTownAction(new FallFromGrace());
+        this.createTownAction(Action.FallFromGrace);
 
         while (actionOptionsTown[5].firstChild) {
             actionOptionsTown[5].removeChild(actionOptionsTown[5].firstChild);
@@ -933,7 +894,7 @@ function View() {
                 </div>
                 <div class='showthis' draggable='false'>
                     ${action.tooltip}<span id='goldCost${action.varName}'></span>
-                    ${(typeof(action.tooltip2) === "string") ? action.tooltip2 : ""}
+                    ${(action.goldCost === undefined) ? "" : action.tooltip2}
                     <br>
                     ${actionSkills}
                     ${actionStats}
@@ -994,14 +955,9 @@ function View() {
         document.getElementById(`goldCost${varName}`).textContent = amount;
     };
     this.adjustGoldCosts = function() {
-        this.adjustGoldCost("Locks", goldCostLocks());
-        this.adjustGoldCost("SQuests", goldCostSQuests());
-        this.adjustGoldCost("LQuests", goldCostLQuests());
-        this.adjustGoldCost("Pots", goldCostSmashPots());
-        this.adjustGoldCost("WildMana", goldCostWildMana());
-        this.adjustGoldCost("DarkRitual", goldCostDarkRitual());
-        this.adjustGoldCost("ImbueMind", goldCostImbueMind());
-        this.adjustGoldCost("GreatFeast", goldCostGreatFeast());
+        for (const action of actionsWithGoldCost) {
+            this.adjustGoldCost(action.varName, action.goldCost());
+        }
     };
     this.adjustExpGain = function(action) {
         for (const skill in action.skills) {
@@ -1024,7 +980,7 @@ function View() {
                 <div id='unchecked${action.varName}'>0</div>
                 <input type='checkbox' id='searchToggler${action.varName}' style='margin-left:10px;'>
                 <label for='searchToggler${action.varName}'> Lootable first</label>
-                <div class='showthis'>${action.infoText}</div>
+                <div class='showthis'>${action.infoText()}</div>
             </div><br>`;
 
         const infoDiv = document.createElement("div");
@@ -1048,7 +1004,7 @@ function View() {
                         </div>
                     </div>`;
         }
-        const completedTooltip = action.completedTooltip ? action.completedTooltip : "";
+        const completedTooltip = action.completedTooltip ? action.completedTooltip() : "";
         let mouseOver = "";
         if (varName === "SDungeon") mouseOver = "onmouseover='view.showDungeon(0)' onmouseout='view.showDungeon(undefined)'";
         else if (varName === "LDungeon") mouseOver = "onmouseover='view.showDungeon(1)' onmouseout='view.showDungeon(undefined)'";
