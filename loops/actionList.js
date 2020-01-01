@@ -1992,9 +1992,9 @@ Action.SellPotions = new Action("Sell Potions", {
     },
 });
 
-// Note: The guild actions are somewhat unique in that they override the default segment
-// naming with their own segment names, and so do not use the segmentNames inherited from
-// MultipartAction.
+// the guild actions are somewhat unique in that they override the default segment naming
+// with their own segment names, and so do not use the segmentNames inherited from
+// MultipartAction
 Action.AdventureGuild = new MultipartAction("Adventure Guild", 3, {
     expMult: 1,
     townNum: 2,
@@ -2132,6 +2132,7 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001 - 1);
+        const success = finishDungeon(this.dungeonNum, curFloor);
     },
     visible() {
         return towns[2].getLevel("Drunk") >= 5;

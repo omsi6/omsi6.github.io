@@ -894,7 +894,7 @@ function View() {
                 </div>
                 <div class='showthis' draggable='false'>
                     ${action.tooltip}<span id='goldCost${action.varName}'></span>
-                    ${(action.goldCost !== undefined) ? action.tooltip2 : ""}
+                    ${(action.goldCost === undefined) ? "" : action.tooltip2}
                     <br>
                     ${actionSkills}
                     ${actionStats}
