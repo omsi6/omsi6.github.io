@@ -1,18 +1,17 @@
 "use strict";
 
 function withoutSpaces(name) {
-    return name.replace(/ /g, '');
+    return name.replace(/ /gu, '');
 }
 
 function translateClassNames(name) {
-    // Construct a new action object with appropriate prototype
-    let nameWithoutSpaces = withoutSpaces(name);
+    // construct a new action object with appropriate prototype
+    const nameWithoutSpaces = withoutSpaces(name);
     if (nameWithoutSpaces in Action) {
         return Object.create(Action[nameWithoutSpaces]);
-    } else {
-        console.log(`error trying to create ${name}`);
-        return false;
     }
+    console.log(`error trying to create ${name}`);
+    return false;
 }
 
 const cappedActions = [
@@ -67,16 +66,15 @@ const townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus",
 
 function Action(name, extras) {
     this.name = name;
-    // This is the default varName. Many actions have to override it (in extras) for save
-    // compatibility, because the varName is often used in parts of the game state. Actions
-    // that are not associated with game state do not need to override the varName.
+    // many actions have to override this (in extras) for save compatibility, because the
+    // varName is often used in parts of the game state
     this.varName = withoutSpaces(name);
     Object.assign(this, extras);
 }
 
-// Note that not all actions have tooltip2 or labelDone, but among actions that do, the XML
-// format is always the same. These are loaded lazily once (and then they become own
-// properties of the specific Action object).
+// not all actions have tooltip2 or labelDone, but among actions that do, the XML format is
+// always the same; these are loaded lazily once (and then they become own properties of the
+// specific Action object)
 defineLazyGetter(Action.prototype, "tooltip", function() {
     return _txt(`actions>${getXMLName(this.name)}>tooltip`);
 });
@@ -90,10 +88,9 @@ defineLazyGetter(Action.prototype, "labelDone", function() {
     return _txt(`actions>${getXMLName(this.name)}>label_done`);
 });
 
-// All actions to date with info text have the same info text, so presently this is
-// centralized here. This function will not be called by the game code if info text is not
-// applicable. More subtypes of Action might be introduced in the future if different info
-// text is needed.
+// all actions to date with info text have the same info text, so presently this is
+// centralized here (function will not be called by the game code if info text is not
+// applicable)
 Action.prototype.infoText = function() {
     return `${_txt(`actions>${getXMLName(this.name)}>info_text1`)}
             <i class='fa fa-arrow-left'></i>
@@ -102,17 +99,17 @@ Action.prototype.infoText = function() {
             ${_txt(`actions>${getXMLName(this.name)}>info_text3`)}
             <br><span class='bold'>${`${_txt("actions>tooltip>total_found")}: `}</span><div id='total${this.varName}'></div>
             <br><span class='bold'>${`${_txt("actions>tooltip>total_checked")}: `}</span><div id='checked${this.varName}'></div>`;
-}
+};
 
-// Same as Action, but contains shared code to load segment names for multipart actions.
-// The constructor takes number of segments as a second argument.
+// same as Action, but contains shared code to load segment names for multipart actions.
+// (constructor takes number of segments as a second argument)
 function MultipartAction(name, segments, extras) {
     Action.call(this, name, extras);
     this.segments = segments;
 }
 MultipartAction.prototype = Object.create(Action.prototype);
 MultipartAction.prototype.constructor = MultipartAction;
-// Lazily calculate segment names when explicitly requested (to give chance for localization
+// lazily calculate segment names when explicitly requested (to give chance for localization
 // code to be loaded first)
 defineLazyGetter(MultipartAction.prototype, 'segmentNames', function() {
     return Array.from(
@@ -123,9 +120,9 @@ MultipartAction.prototype.getSegmentName = function(segment) {
     return this.segmentNames[segment % this.segmentNames.length];
 };
 
-// Same as MultipartAction, but includes shared code to generate dungeon completion tooltip
-// as well as specifying 7 segments. The constructor takes dungeon ID number as a second
-// argument.
+// same as MultipartAction, but includes shared code to generate dungeon completion tooltip
+// as well as specifying 7 segments (constructor takes dungeon ID number as a second
+// argument)
 function DungeonAction(name, dungeonNum, extras) {
     MultipartAction.call(this, name, 7, extras);
     this.dungeonNum = dungeonNum;
@@ -149,7 +146,7 @@ DungeonAction.prototype.getPartName = function() {
 
 
 // town 1
-Action["Wander"] = new Action("Wander", {
+Action.Wander = new Action("Wander", {
     expMult: 1,
     townNum: 0,
     storyReqs(storyNum) {
@@ -220,7 +217,7 @@ Action.SmashPots = new Action("Smash Pots", {
     unlocked() {
         return true;
     },
-    // Note this name is misleading: it is used for mana and gold gain.
+    // note this name is misleading: it is used for mana and gold gain.
     goldCost() {
         return Math.floor(100 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
     },
@@ -531,7 +528,6 @@ Action.LongQuest = new Action("Long Quest", {
         return towns[0].getLevel("Secrets") >= 1;
     },
     unlocked() {
-        // TODO(totalverb): why unlock skill list with long quests?
         const toUnlock = towns[0].getLevel("Secrets") >= 10;
         if (toUnlock && !isVisible(document.getElementById("skillList"))) {
             document.getElementById("skillList").style.display = "inline-block";
