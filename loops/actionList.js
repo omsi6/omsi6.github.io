@@ -72,6 +72,7 @@ function Action(name, extras) {
     Object.assign(this, extras);
 }
 
+/* eslint-disable no-invalid-this */
 // not all actions have tooltip2 or labelDone, but among actions that do, the XML format is
 // always the same; these are loaded lazily once (and then they become own properties of the
 // specific Action object)
@@ -119,6 +120,7 @@ defineLazyGetter(MultipartAction.prototype, 'segmentNames', function() {
 MultipartAction.prototype.getSegmentName = function(segment) {
     return this.segmentNames[segment % this.segmentNames.length];
 };
+/* eslint-enable no-invalid-this */
 
 // same as MultipartAction, but includes shared code to generate dungeon completion tooltip
 // as well as specifying 7 segments (constructor takes dungeon ID number as a second
@@ -802,17 +804,12 @@ Action.FightMonsters = new MultipartAction("Fight Monsters", 3, {
     },
 });
 // lazily loaded to allow localization code to load first
-defineLazyGetter(Action.FightMonsters, "altSegmentNames", function() {
-    return Array.from(
-        _txtsObj("actions>fight_monsters>segment_alt_names>name")
-    ).map(elt => elt.textContent);
-});
-defineLazyGetter(Action.FightMonsters, "segmentModifiers", function() {
-    return Array.from(
-        _txtsObj("actions>fight_monsters>segment_modifiers>segment_modifier")
-    ).map(elt => elt.textContent);
-});
-
+defineLazyGetter(Action.FightMonsters, "altSegmentNames",
+    () => Array.from(_txtsObj("actions>fight_monsters>segment_alt_names>name"))
+               .map(elt => elt.textContent));
+defineLazyGetter(Action.FightMonsters, "segmentModifiers",
+    () => Array.from(_txtsObj("actions>fight_monsters>segment_modifiers>segment_modifier"))
+               .map(elt => elt.textContent));
 
 Action.SmallDungeon = new DungeonAction("Small Dungeon", 0, {
     expMult: 1,
