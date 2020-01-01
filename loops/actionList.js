@@ -2132,7 +2132,7 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001 - 1);
-        const success = finishDungeon(this.dungeonNum, curFloor);
+        finishDungeon(this.dungeonNum, curFloor);
     },
     visible() {
         return towns[2].getLevel("Drunk") >= 5;

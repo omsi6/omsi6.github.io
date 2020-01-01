@@ -489,7 +489,7 @@ function benchmark(code, iterations) {
 function defineLazyGetter(object, name, getter) {
     Object.defineProperty(object, name, {
         get() {
-            if (this.hasOwnProperty(name)) {
+            if (Object.prototype.hasOwnProperty.call(this, name)) {
                 // only used if this getter itself is own
                 // otherwise, shadowing the property is enough
                 delete this[name];
