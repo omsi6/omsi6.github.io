@@ -630,8 +630,8 @@ function View() {
 
     this.createTownActions = function() {
         if (actionOptionsTown[0].firstChild) return;
-        for (const prop in actionList) {
-            const action = new actionList[prop]();
+        for (const prop in Action) {
+            const action = Action[prop];
             this.createTownAction(action);
             if (action.type === "limited") this.createTownInfo(action);
             if (action.type === "progress") this.createActionProgress(action);
@@ -699,7 +699,7 @@ function View() {
                 </div>
                 <div class='showthis' draggable='false'>
                     ${action.tooltip}<span id='goldCost${action.varName}'></span>
-                    ${(typeof(action.tooltip2) === "string") ? action.tooltip2 : ""}
+                    ${(action.goldCost === undefined) ? "" : action.tooltip2}
                     <br>
                     ${actionSkills}
                     ${actionStats}
@@ -759,14 +759,9 @@ function View() {
         document.getElementById(`goldCost${varName}`).textContent = formatNumber(amount);
     };
     this.adjustGoldCosts = function() {
-        this.adjustGoldCost("Locks", goldCostLocks());
-        this.adjustGoldCost("SQuests", goldCostSQuests());
-        this.adjustGoldCost("LQuests", goldCostLQuests());
-        this.adjustGoldCost("Pots", goldCostSmashPots());
-        this.adjustGoldCost("WildMana", goldCostWildMana());
-        this.adjustGoldCost("DarkRitual", goldCostDarkRitual());
-        this.adjustGoldCost("ImbueMind", goldCostImbueMind());
-        this.adjustGoldCost("GreatFeast", goldCostGreatFeast());
+        for (const action of actionsWithGoldCost) {
+            this.adjustGoldCost(action.varName, action.goldCost());
+        }
     };
     this.adjustExpGain = function(action) {
         for (const skill in action.skills) {
@@ -789,7 +784,7 @@ function View() {
                 <div id='unchecked${action.varName}'>0</div>
                 <input type='checkbox' id='searchToggler${action.varName}' style='margin-left:10px;'>
                 <label for='searchToggler${action.varName}'> Lootable first</label>
-                <div class='showthis'>${action.infoText}</div>
+                <div class='showthis'>${action.infoText()}</div>
             </div><br>`;
 
         const infoDiv = document.createElement("div");
@@ -813,7 +808,7 @@ function View() {
                         </div>
                     </div>`;
         }
-        const completedTooltip = action.completedTooltip ? action.completedTooltip : "";
+        const completedTooltip = action.completedTooltip ? action.completedTooltip() : "";
         let mouseOver = "";
         if (varName === "SDungeon") mouseOver = "onmouseover='view.showDungeon(0)' onmouseout='view.showDungeon(undefined)'";
         else if (varName === "LDungeon") mouseOver = "onmouseover='view.showDungeon(1)' onmouseout='view.showDungeon(undefined)'";
