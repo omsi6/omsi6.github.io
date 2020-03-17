@@ -98,16 +98,12 @@ function recalcInterval(fps) {
     doWork.postMessage({ start: true, ms: (1000 / fps) });
 }
 
-function stopGame(ping) {
+function stopGame() {
     stop = true;
     view.updateTime();
     view.updateCurrentActionBar(actions.currentPos);
     document.title = "*PAUSED* Idle Loops";
     document.getElementById("pausePlay").textContent = _txt("time_controls>play_button");
-    if (ping) {
-        beep(250);
-        setTimeout(() => beep(250), 500);
-    }
 }
 
 function pauseGame(ping) {

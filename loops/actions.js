@@ -127,7 +127,7 @@ function Actions() {
         }
         if (pauseCatch) {
             view.updateCurrentActionBar(catchPosition - 1);
-            stopGame(options.pingOnPause);
+            prepareRestart();
         }
         return curAction;
     };
