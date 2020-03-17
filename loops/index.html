@@ -321,9 +321,9 @@
         </div>
     </div>
 
+    <script src="helpers.js?92"></script>
     <script src="actionList.js?92"></script>
     <script src="localization.js?92"></script>
-    <script src="helpers.js?92"></script>
     <script src="interval.js?92"></script>
     <script src="driver.js?92"></script>
     <script src="stats.js?92"></script>
@@ -341,14 +341,16 @@
     <script src="views/buffs.view.js?92"></script>
     <script src="views/talenttree.view.js?92"></script>
     <script>
+        let totalActionList = [];
+        let dungeons = [];
         let initInterval = setInterval(() => {
             if (locCheck) {
-                clearInterval(initInterval)
-                initInterval = undefined
-                locCheck = undefined
-                for (const prop in actionList) {
-                const action = new actionList[prop]();
-                totalActionList.push(action);
+                clearInterval(initInterval);
+                initInterval = undefined;
+                locCheck = undefined;
+                for (const prop in Action) {
+                    const action = Action[prop];
+                    totalActionList.push(action);
                 }
                 Localization.localizePage("game");
                 Views.draw();

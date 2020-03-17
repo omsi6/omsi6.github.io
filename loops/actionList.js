@@ -14,7 +14,7 @@ function translateClassNames(name) {
     return false;
 }
 
-const cappedActions = [
+const limitedActions = [
     "Smash Pots",
     "Pick Locks",
     "Short Quest",
@@ -24,7 +24,8 @@ const cappedActions = [
     "Hunt",
     "Gamble",
     "Mana Geyser",
-    "Mine Soulstones"
+    "Mine Soulstones",
+    "Accept Donations"
 ];
 const trainingActions = [
     "Train Speed",
@@ -34,8 +35,8 @@ const trainingActions = [
     "Read Books",
     "Bird Watching"
 ];
-function hasCap(name) {
-    return cappedActions.includes(name);
+function hasLimit(name) {
+    return limitedActions.includes(name);
 }
 function getTravelNum(name) {
     if (name === "Face Judgement" && resources.reputation <= 50) return 2;
@@ -55,9 +56,13 @@ const townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus",
 
 
 // there are 4 types of actions
-// 1: progress actions. progress actions have a progress bar and use 100,200,300,etc. leveling system (wander, meet people)
-// 2: basic actions. basic actions have no additional UI (haggle, train strength)
-// 3: multipart actions. multipart actions have multiple distinct parts to get through before repeating. they also get a bonus depending on how often you complete them
+// 1: normal actions. normal actions have no additional UI (haggle, train strength)
+// 2: progress actions. progress actions have a progress bar and use 100, 200, 300, etc. leveling system (wander, meet people)
+// 3: limited actions. limited actions have town info for their limit, and a set of town vars for their "data"
+// 4: multipart actions. multipart actions have multiple distinct parts to get through before repeating. they also get a bonus depending on how often you complete them
+
+// type names are "normal", "progress", "limited", and "multiPart".
+// define one of these in the action, and they will create any additional UI elements that are needed
 
 // exp mults are default 100%, 150% for skill training actions, 200% for actions that cost a resource, 300% for actions that cost 2 resources, and 500% for actions that cost soulstones
 // todo: ^^ currently some actions are too high, but I am saving these balance changes for the z5/z6 update
@@ -149,6 +154,7 @@ DungeonAction.prototype.getPartName = function() {
 
 // town 1
 Action.Wander = new Action("Wander", {
+    type: "progress",
     expMult: 1,
     townNum: 0,
     storyReqs(storyNum) {
@@ -195,6 +201,7 @@ function adjustLocks() {
 }
 
 Action.SmashPots = new Action("Smash Pots", {
+    type: "limited",
     expMult: 1,
     townNum: 0,
     varName: "Pots",
@@ -233,6 +240,7 @@ Action.SmashPots = new Action("Smash Pots", {
 });
 
 Action.PickLocks = new Action("Pick Locks", {
+    type: "limited",
     varName: "Locks",
     expMult: 1,
     townNum: 0,
@@ -277,6 +285,7 @@ Action.PickLocks = new Action("Pick Locks", {
 });
 
 Action.BuyGlasses = new Action("Buy Glasses", {
+    type: "normal",
     expMult: 1,
     townNum: 0,
     storyReqs(storyNum) {
@@ -315,6 +324,7 @@ Action.BuyGlasses = new Action("Buy Glasses", {
 });
 
 Action.BuyMana = new Action("Buy Mana", {
+    type: "normal",
     expMult: 1,
     townNum: 0,
     stats: {
@@ -338,6 +348,7 @@ Action.BuyMana = new Action("Buy Mana", {
 });
 
 Action.MeetPeople = new Action("Meet People", {
+    type: "progress",
     expMult: 1,
     townNum: 0,
     varName: "Met",
@@ -381,6 +392,7 @@ function adjustSQuests() {
 }
 
 Action.TrainStrength = new Action("Train Strength", {
+    type: "normal",
     expMult: 4,
     townNum: 0,
     storyReqs(storyNum) {
@@ -416,6 +428,7 @@ Action.TrainStrength = new Action("Train Strength", {
 });
 
 Action.ShortQuest = new Action("Short Quest", {
+    type: "limited",
     expMult: 1,
     townNum: 0,
     varName: "SQuests",
@@ -462,6 +475,7 @@ Action.ShortQuest = new Action("Short Quest", {
 });
 
 Action.Investigate = new Action("Investigate", {
+    type: "progress",
     expMult: 1,
     townNum: 0,
     varName: "Secrets",
@@ -504,6 +518,7 @@ function adjustLQuests() {
 }
 
 Action.LongQuest = new Action("Long Quest", {
+    type: "limited",
     expMult: 1,
     townNum: 0,
     varName: "LQuests",
@@ -553,6 +568,7 @@ Action.LongQuest = new Action("Long Quest", {
 });
 
 Action.ThrowParty = new Action("Throw Party", {
+    type: "normal",
     expMult: 2,
     townNum: 0,
     storyReqs(storyNum) {
@@ -588,6 +604,7 @@ Action.ThrowParty = new Action("Throw Party", {
 });
 
 Action.WarriorLessons = new Action("Warrior Lessons", {
+    type: "normal",
     expMult: 1.5,
     townNum: 0,
     storyReqs(storyNum) {
@@ -629,6 +646,7 @@ Action.WarriorLessons = new Action("Warrior Lessons", {
 });
 
 Action.MageLessons = new Action("Mage Lessons", {
+    type: "normal",
     expMult: 1.5,
     townNum: 0,
     storyReqs(storyNum) {
@@ -678,6 +696,7 @@ Action.MageLessons = new Action("Mage Lessons", {
 });
 
 Action.HealTheSick = new MultipartAction("Heal The Sick", 3, {
+    type: "multipart",
     expMult: 1,
     townNum: 0,
     varName: "Heal",
@@ -735,6 +754,7 @@ Action.HealTheSick = new MultipartAction("Heal The Sick", 3, {
 });
 
 Action.FightMonsters = new MultipartAction("Fight Monsters", 3, {
+    type: "multipart",
     expMult: 1,
     townNum: 0,
     varName: "Fight",
@@ -812,6 +832,7 @@ defineLazyGetter(Action.FightMonsters, "segmentModifiers",
 );
 
 Action.SmallDungeon = new DungeonAction("Small Dungeon", 0, {
+    type: "multipart",
     expMult: 1,
     townNum: 0,
     varName: "SDungeon",
@@ -896,6 +917,7 @@ function finishDungeon(dungeonNum, floorNum) {
 }
 
 Action.BuySupplies = new Action("Buy Supplies", {
+    type: "normal",
     expMult: 1,
     townNum: 0,
     storyReqs(storyNum) {
@@ -938,6 +960,7 @@ Action.BuySupplies = new Action("Buy Supplies", {
 });
 
 Action.Haggle = new Action("Haggle", {
+    type: "normal",
     expMult: 1,
     townNum: 0,
     storyReqs(storyNum) {
@@ -984,6 +1007,7 @@ Action.Haggle = new Action("Haggle", {
 });
 
 Action.StartJourney = new Action("Start Journey", {
+    type: "normal",
     expMult: 2,
     townNum: 0,
     storyReqs(storyNum) {
@@ -1022,6 +1046,7 @@ Action.StartJourney = new Action("Start Journey", {
 });
 
 Action.OpenRift = new Action("Open Rift", {
+    type: "normal",
     expMult: 1,
     townNum: 0,
     stats: {
@@ -2849,11 +2874,12 @@ Action.FaceJudgement = new Action("Face Judgement", {
         return towns[3].getLevel("Mountain") >= 100;
     },
     finish() {
-        // todo: allow you to unlock the new zones
-        // if (resources.reputation >= 50) unlockTown(4);
-        // else if (resources.reputation <= 50) unlockTown(5);
+        if (resources.reputation >= 50) unlockTown(4);
+        else if (resources.reputation <= 50) unlockTown(5);
     },
 });
+
+// z5
 
 Action.FallFromGrace = new Action("Fall From Grace", {
     expMult: 2,
@@ -2877,8 +2903,33 @@ Action.FallFromGrace = new Action("Fall From Grace", {
         return true;
     },
     finish() {
-        // todo: allow you to unlock new zone
-        // unlockTown(5);
+        unlockTown(5);
+    },
+});
+
+Action.GuidedTour = new Action("Guided Tour", {
+    type: "progress",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Per: 0.3,
+        Con: 0.2,
+        Cha: 0.3,
+        Int: 0.1,
+        Luck: 0.1
+    },
+    manaCost() {
+        return 2500;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    finish() {
+        towns[4].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
+        addResource("gold", -10);
     },
 });
 
@@ -2964,6 +3015,10 @@ Action.GreatFeast = new MultipartAction("Great Feast", 3, {
         view.updateBuff("Feast");
     },
 });
+
+function adjustDonations() {
+    towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
+}
 
 const actionsWithGoldCost = Object.values(Action).filter(
     action => action.goldCost !== undefined

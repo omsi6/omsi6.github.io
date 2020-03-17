@@ -300,7 +300,7 @@ function View() {
             const action = actions.next[i];
             let capButton = "";
             const townNum = translateClassNames(action.name).townNum;
-            if (hasCap(action.name)) {
+            if (hasLimit(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capAmount(${i}, ${townNum})' class='actionIcon far fa-circle'></i>`;
             } else if (isTraining(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capTraining(${i})' class='actionIcon far fa-circle'></i>`;
