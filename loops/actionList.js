@@ -111,7 +111,7 @@ Action.prototype.infoText = function() {
 // (constructor takes number of segments as a second argument)
 function MultipartAction(name, extras) {
     Action.call(this, name, extras);
-    this.segments = extras.loopStats.length;
+    this.segments = (extras.varName === "Fight") ? 3 : extras.loopStats.length;
 }
 MultipartAction.prototype = Object.create(Action.prototype);
 MultipartAction.prototype.constructor = MultipartAction;
