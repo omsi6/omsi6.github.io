@@ -1073,7 +1073,7 @@ Action.StartJourney = new Action("Start Journey", {
 // town 2
 
 Action.ExploreForest = new Action("Explore Forest", {
-    type: "normal",
+    type: "progress",
     expMult: 1,
     townNum: 1,
     varName: "Forest",
