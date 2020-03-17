@@ -152,7 +152,7 @@ function Actions() {
         curCraftGuildSegment = 0;
         for (const town of towns) {
             for (const action of town.totalActionList) {
-                if (action.type === "multiPart") {
+                if (action.type === "multipart") {
                     town[action.varName] = 0;
                     town[`${action.varName}LoopCounter`] = 0;
                 }

@@ -118,7 +118,7 @@ function Town(index) {
             this.totalActionList.push(action);
             if (action.type === "limited") this.createVars(action.varName);
             if (action.type === "progress") this.createProgressVars(action.varName);
-            if (action.type === "multiPart") {
+            if (action.type === "multipart") {
                 this[action.varName] = 0;
                 this[`${action.varName}LoopCounter`] = 0;
             }

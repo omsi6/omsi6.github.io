@@ -187,7 +187,7 @@ function addActionToList(name, townNum, isTravelAction, insertAtIndex) {
                     actions.addAction(name, 1, insertAtIndex);
                 } else {
                     actions.addAction(name, addAmount, insertAtIndex);
-                    if (shiftDown && hasCap(name)) {
+                    if (shiftDown && hasLimit(name)) {
                         capAmount((insertAtIndex) ? insertAtIndex : actions.next.length - 1, townNum);
                     } else if (shiftDown && isTraining(name)) {
                         capTraining((insertAtIndex) ? insertAtIndex : actions.next.length - 1, townNum);

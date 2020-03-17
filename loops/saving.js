@@ -340,7 +340,7 @@ function load() {
         for (const action of town.totalActionList) {
             if (action.type === "progress")
                 town[`exp${action.varName}`] = toLoad[`exp${action.varName}`] === undefined ? 0 : toLoad[`exp${action.varName}`];
-            else if (action.type === "multiPart")
+            else if (action.type === "multipart")
                 town[`total${action.varName}`] = toLoad[`total${action.varName}`] === undefined ? 0 : toLoad[`total${action.varName}`];
             else if (action.type === "limited") {
                 const varName = action.varName;
@@ -413,7 +413,7 @@ function save() {
         for (const action of town.totalActionList) {
             if (action.type === "progress") {
                 toSave[`exp${action.varName}`] = town[`exp${action.varName}`];
-            } else if (action.type === "multiPart") {
+            } else if (action.type === "multipart") {
                 toSave[`total${action.varName}`] = town[`total${action.varName}`];
             } else if (action.type === "limited") {
                 const varName = action.varName;

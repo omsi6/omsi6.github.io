@@ -321,34 +321,36 @@
         </div>
     </div>
 
-    <script src="actionList.js?92"></script>
-    <script src="localization.js?92"></script>
-    <script src="helpers.js?92"></script>
-    <script src="interval.js?92"></script>
-    <script src="driver.js?92"></script>
-    <script src="stats.js?92"></script>
-    <script src="statsgraph.js?92"></script>
-    <script src="actions.js?92"></script>
-    <script src="views/main.view.js?92"></script>
-    <script src="town.js?92"></script>
-    <script src="talents.js?92"></script>
-    <script src="saving.js?92"></script>
-    <script src="hotkeys.js?92"></script>
-    <script src="views/views.js?92"></script>
-    <script src="views/menu.view.js?92"></script>
-    <script src="views/trackedresources.view.js?92"></script>
-    <script src="views/timecontrols.view.js?92"></script>
-    <script src="views/buffs.view.js?92"></script>
-    <script src="views/talenttree.view.js?92"></script>
+    <script src="helpers.js"></script>
+    <script src="actionList.js"></script>
+    <script src="localization.js"></script>
+    <script src="interval.js"></script>
+    <script src="driver.js"></script>
+    <script src="stats.js"></script>
+    <script src="statsgraph.js"></script>
+    <script src="actions.js"></script>
+    <script src="views/main.view.js"></script>
+    <script src="town.js"></script>
+    <script src="talents.js"></script>
+    <script src="saving.js"></script>
+    <script src="hotkeys.js"></script>
+    <script src="views/views.js"></script>
+    <script src="views/menu.view.js"></script>
+    <script src="views/trackedresources.view.js"></script>
+    <script src="views/timecontrols.view.js"></script>
+    <script src="views/buffs.view.js"></script>
+    <script src="views/talenttree.view.js"></script>
     <script>
+        let totalActionList = [];
+        let dungeons = [[], [], []];
         let initInterval = setInterval(() => {
             if (locCheck) {
-                clearInterval(initInterval)
-                initInterval = undefined
-                locCheck = undefined
-                for (const prop in actionList) {
-                const action = new actionList[prop]();
-                totalActionList.push(action);
+                clearInterval(initInterval);
+                initInterval = undefined;
+                locCheck = undefined;
+                for (const prop in Action) {
+                    const action = Action[prop];
+                    totalActionList.push(action);
                 }
                 Localization.localizePage("game");
                 Views.draw();
