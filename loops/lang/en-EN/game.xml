@@ -7,7 +7,7 @@
                 <version_prefix>Version</version_prefix>
             </meta>
             <version verNum=".93"><![CDATA[
-            <b> April 29th, 2019 - The current date</b>
+            <b> March 16th, 2020 - The current date</b>
             <b> v0.93 - "Diminishing returns."</b><br>
             • Team member gold cost and cost increase from 200 > 100 per.<br>
             • Travel actions in the next action list now have multicolored backgrounds where the top half is the zone they're in, and the bottom half is the zone they bring you to.<br>
@@ -19,7 +19,7 @@
             • Fixed buff hard caps not working.
         ]]></version>
             <version verNum=".92"><![CDATA[
-            <b> April 29th, 2019 - The current date</b>
+            <b> April 29th, 2019 - March 16th, 2020</b>
             <b> v0.92 - "For your eyes."</b><br>
             • Added Themes. You can find these under a dropdown in the options menu. Currently there are 3 themes: Normal, Dark, and Cubic.<br>
             • Actions in the next action list now have backgrounds depending on the zone the action is from.<br>
