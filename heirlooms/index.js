@@ -11,6 +11,7 @@
 
 /*
 
+v1.34 fix edge case where equipped display wouldn't appear
 v1.33 add daily crit bonus input, remove beta mode, unify handling of input defaults and displaying of them
 v1.32 fix next mod upg cost display, fix upg affordability display on cores
 v1.31 fix error with unweighable mods
@@ -50,7 +51,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.33;
+const globalVersion = 1.34;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7"];
@@ -125,8 +126,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.33) {
-        inputs.version = 1.33;
+    if (inputs.version < 1.34) {
+        inputs.version = 1.34;
     }
 }
 
@@ -1230,7 +1231,7 @@ function updateModContainer(divName, heirloom, spirestones) {
         if (divName.includes("Old")) document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (Old)`;
         else document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (New)`;
 
-        if (inputs[`preferred${heirloom.type}`] === 0) document.getElementById(`${divName}Equipped`).style.display = "flex";
+        if (!save.global.heirloomsCarried.filter(loom => loom.repSeed === inputs[`preferred${heirloom.type}`]).length > 0) document.getElementById(`${divName}Equipped`).style.display = "flex";
         else document.getElementById(`${divName}Equipped`).style.display = "none";
         if (heirloom.isCore) document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} Ss Spent`;
         else document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} / ${prettify(getEffectiveNullifium())} Nu Spent - ${prettify(getEffectiveNullifium() - heirloomValue)} Unspent`;
