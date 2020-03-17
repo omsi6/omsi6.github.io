@@ -151,7 +151,6 @@ DungeonAction.prototype.getPartName = function() {
     return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
 };
 
-
 // town 1
 Action.Wander = new Action("Wander", {
     type: "progress",
