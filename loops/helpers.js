@@ -454,7 +454,7 @@ function statistics() {
         }
         if (action.type === "progress") PBAActionCount++;
         else if (action.type === "limited") limitedActionCount++;
-        else if (action.type === "multiPart") multiPartActionCount++;
+        else if (action.type === "multipart") multiPartActionCount++;
         actionCount++;
     }
 

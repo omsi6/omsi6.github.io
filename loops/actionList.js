@@ -61,7 +61,7 @@ const townNames = ["Beginnersville", "Forest Path", "Merchanton", "Mt. Olympus",
 // 3: limited actions. limited actions have town info for their limit, and a set of town vars for their "data"
 // 4: multipart actions. multipart actions have multiple distinct parts to get through before repeating. they also get a bonus depending on how often you complete them
 
-// type names are "normal", "progress", "limited", and "multiPart".
+// type names are "normal", "progress", "limited", and "multipart".
 // define one of these in the action, and they will create any additional UI elements that are needed
 
 // exp mults are default 100%, 150% for skill training actions, 200% for actions that cost a resource, 300% for actions that cost 2 resources, and 500% for actions that cost soulstones
@@ -109,9 +109,9 @@ Action.prototype.infoText = function() {
 
 // same as Action, but contains shared code to load segment names for multipart actions.
 // (constructor takes number of segments as a second argument)
-function MultipartAction(name, segments, extras) {
+function MultipartAction(name, extras) {
     Action.call(this, name, extras);
-    this.segments = segments;
+    this.segments = extras.loopStats.length;
 }
 MultipartAction.prototype = Object.create(Action.prototype);
 MultipartAction.prototype.constructor = MultipartAction;
@@ -131,7 +131,7 @@ MultipartAction.prototype.getSegmentName = function(segment) {
 // as well as specifying 7 segments (constructor takes dungeon ID number as a second
 // argument)
 function DungeonAction(name, dungeonNum, extras) {
-    MultipartAction.call(this, name, 7, extras);
+    MultipartAction.call(this, name, extras);
     this.dungeonNum = dungeonNum;
 }
 DungeonAction.prototype = Object.create(MultipartAction.prototype);
@@ -695,7 +695,7 @@ Action.MageLessons = new Action("Mage Lessons", {
     },
 });
 
-Action.HealTheSick = new MultipartAction("Heal The Sick", 3, {
+Action.HealTheSick = new MultipartAction("Heal The Sick", {
     type: "multipart",
     expMult: 1,
     townNum: 0,
@@ -753,7 +753,7 @@ Action.HealTheSick = new MultipartAction("Heal The Sick", 3, {
     },
 });
 
-Action.FightMonsters = new MultipartAction("Fight Monsters", 3, {
+Action.FightMonsters = new MultipartAction("Fight Monsters", {
     type: "multipart",
     expMult: 1,
     townNum: 0,
@@ -1045,7 +1045,7 @@ Action.StartJourney = new Action("Start Journey", {
     },
 });
 
-Action.OpenRift = new Action("Open Rift", {
+/* Action.OpenRift = new Action("Open Rift", {
     type: "normal",
     expMult: 1,
     townNum: 0,
@@ -1069,10 +1069,12 @@ Action.OpenRift = new Action("Open Rift", {
     finish() {
         unlockTown(1);
     },
-});
+}); */
 
 // town 2
+
 Action.ExploreForest = new Action("Explore Forest", {
+    type: "normal",
     expMult: 1,
     townNum: 1,
     varName: "Forest",
@@ -1128,6 +1130,7 @@ function adjustHerbs() {
 }
 
 Action.WildMana = new Action("Wild Mana", {
+    type: "limited",
     expMult: 1,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1164,6 +1167,7 @@ Action.WildMana = new Action("Wild Mana", {
 });
 
 Action.GatherHerbs = new Action("Gather Herbs", {
+    type: "limited",
     expMult: 1,
     townNum: 1,
     varName: "Herbs",
@@ -1197,6 +1201,7 @@ Action.GatherHerbs = new Action("Gather Herbs", {
 });
 
 Action.Hunt = new Action("Hunt", {
+    type: "limited",
     expMult: 1,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1234,6 +1239,7 @@ Action.Hunt = new Action("Hunt", {
 });
 
 Action.SitByWaterfall = new Action("Sit By Waterfall", {
+    type: "normal",
     expMult: 4,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1265,6 +1271,7 @@ Action.SitByWaterfall = new Action("Sit By Waterfall", {
 });
 
 Action.OldShortcut = new Action("Old Shortcut", {
+    type: "progress",
     expMult: 1,
     townNum: 1,
     varName: "Shortcut",
@@ -1309,6 +1316,7 @@ Action.OldShortcut = new Action("Old Shortcut", {
 });
 
 Action.TalkToHermit = new Action("Talk To Hermit", {
+    type: "progress",
     expMult: 1,
     townNum: 1,
     varName: "Hermit",
@@ -1354,6 +1362,7 @@ Action.TalkToHermit = new Action("Talk To Hermit", {
 });
 
 Action.PracticalMagic = new Action("Practical Magic", {
+    type: "normal",
     expMult: 1.5,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1389,6 +1398,7 @@ Action.PracticalMagic = new Action("Practical Magic", {
 });
 
 Action.LearnAlchemy = new Action("Learn Alchemy", {
+    type: "normal",
     expMult: 1.5,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1433,6 +1443,7 @@ Action.LearnAlchemy = new Action("Learn Alchemy", {
 });
 
 Action.BrewPotions = new Action("Brew Potions", {
+    type: "normal",
     expMult: 1.5,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1478,6 +1489,7 @@ Action.BrewPotions = new Action("Brew Potions", {
 });
 
 Action.TrainDexterity = new Action("Train Dexterity", {
+    type: "normal",
     expMult: 4,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1509,6 +1521,7 @@ Action.TrainDexterity = new Action("Train Dexterity", {
 });
 
 Action.TrainSpeed = new Action("Train Speed", {
+    type: "normal",
     expMult: 4,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1540,6 +1553,7 @@ Action.TrainSpeed = new Action("Train Speed", {
 });
 
 Action.FollowFlowers = new Action("Follow Flowers", {
+    type: "progress",
     expMult: 1,
     townNum: 1,
     varName: "Flowers",
@@ -1583,6 +1597,7 @@ Action.FollowFlowers = new Action("Follow Flowers", {
 });
 
 Action.BirdWatching = new Action("Bird Watching", {
+    type: "normal",
     expMult: 4,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1618,6 +1633,7 @@ Action.BirdWatching = new Action("Bird Watching", {
 });
 
 Action.ClearThicket = new Action("Clear Thicket", {
+    type: "progress",
     expMult: 1,
     townNum: 1,
     varName: "Thicket",
@@ -1662,6 +1678,7 @@ Action.ClearThicket = new Action("Clear Thicket", {
 });
 
 Action.TalkToWitch = new Action("Talk To Witch", {
+    type: "progress",
     expMult: 1,
     townNum: 1,
     varName: "Witch",
@@ -1708,6 +1725,7 @@ Action.TalkToWitch = new Action("Talk To Witch", {
 });
 
 Action.DarkMagic = new Action("Dark Magic", {
+    type: "normal",
     expMult: 1.5,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1753,7 +1771,8 @@ Action.DarkMagic = new Action("Dark Magic", {
     },
 });
 
-Action.DarkRitual = new MultipartAction("Dark Ritual", 3, {
+Action.DarkRitual = new MultipartAction("Dark Ritual", {
+    type: "multipart",
     expMult: 10,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1847,6 +1866,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", 3, {
 });
 
 Action.ContinueOn = new Action("Continue On", {
+    type: "normal",
     expMult: 2,
     townNum: 1,
     storyReqs(storyNum) {
@@ -1878,7 +1898,10 @@ Action.ContinueOn = new Action("Continue On", {
     },
 });
 
+// town 3
+
 Action.ExploreCity = new Action("Explore City", {
+    type: "progress",
     expMult: 1,
     townNum: 2,
     varName: "City",
@@ -1908,6 +1931,7 @@ function adjustSuckers() {
 }
 
 Action.Gamble = new Action("Gamble", {
+    type: "limited",
     expMult: 2,
     townNum: 2,
     stats: {
@@ -1939,6 +1963,7 @@ Action.Gamble = new Action("Gamble", {
 });
 
 Action.GetDrunk = new Action("Get Drunk", {
+    type: "progress",
     expMult: 3,
     townNum: 2,
     varName: "Drunk",
@@ -1969,6 +1994,7 @@ Action.GetDrunk = new Action("Get Drunk", {
 });
 
 Action.PurchaseMana = new Action("Purchase Mana", {
+    type: "normal",
     expMult: 1,
     townNum: 2,
     stats: {
@@ -1992,6 +2018,7 @@ Action.PurchaseMana = new Action("Purchase Mana", {
 });
 
 Action.SellPotions = new Action("Sell Potions", {
+    type: "normal",
     expMult: 1,
     townNum: 2,
     stats: {
@@ -2017,7 +2044,8 @@ Action.SellPotions = new Action("Sell Potions", {
 // the guild actions are somewhat unique in that they override the default segment naming
 // with their own segment names, and so do not use the segmentNames inherited from
 // MultipartAction
-Action.AdventureGuild = new MultipartAction("Adventure Guild", 3, {
+Action.AdventureGuild = new MultipartAction("Adventure Guild", {
+    type: "multipart",
     expMult: 1,
     townNum: 2,
     varName: "AdvGuild",
@@ -2088,6 +2116,7 @@ function getAdvGuildRank(offset) {
 }
 
 Action.GatherTeam = new Action("Gather Team", {
+    type: "normal",
     expMult: 3,
     townNum: 2,
     stats: {
@@ -2122,6 +2151,7 @@ Action.GatherTeam = new Action("Gather Team", {
 });
 
 Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
+    type: "multipart",
     expMult: 2,
     townNum: 2,
     varName: "LDungeon",
@@ -2167,7 +2197,8 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     },
 });
 
-Action.CraftingGuild = new MultipartAction("Crafting Guild", 3, {
+Action.CraftingGuild = new MultipartAction("Crafting Guild", {
+    type: "multipart",
     expMult: 1,
     townNum: 2,
     varName: "CraftGuild",
@@ -2242,6 +2273,7 @@ function getCraftGuildRank(offset) {
 }
 
 Action.CraftArmor = new Action("Craft Armor", {
+    type: "normal",
     expMult: 1,
     townNum: 2,
     stats: {
@@ -2272,6 +2304,7 @@ Action.CraftArmor = new Action("Craft Armor", {
 });
 
 Action.Apprentice = new Action("Apprentice", {
+    type: "progress",
     expMult: 1.5,
     townNum: 2,
     stats: {
@@ -2305,6 +2338,7 @@ Action.Apprentice = new Action("Apprentice", {
 });
 
 Action.Mason = new Action("Mason", {
+    type: "progress",
     expMult: 2,
     townNum: 2,
     stats: {
@@ -2337,6 +2371,7 @@ Action.Mason = new Action("Mason", {
 });
 
 Action.Architect = new Action("Architect", {
+    type: "progress",
     expMult: 2.5,
     townNum: 2,
     stats: {
@@ -2369,6 +2404,7 @@ Action.Architect = new Action("Architect", {
 });
 
 Action.ReadBooks = new Action("Read Books", {
+    type: "normal",
     expMult: 4,
     townNum: 2,
     stats: {
@@ -2397,6 +2433,7 @@ Action.ReadBooks = new Action("Read Books", {
 });
 
 Action.BuyPickaxe = new Action("Buy Pickaxe", {
+    type: "normal",
     expMult: 1,
     townNum: 2,
     stats: {
@@ -2427,7 +2464,10 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     },
 });
 
+// town 4
+
 Action.StartTrek = new Action("Start Trek", {
+    type: "normal",
     expMult: 2,
     townNum: 2,
     stats: {
@@ -2453,6 +2493,7 @@ Action.StartTrek = new Action("Start Trek", {
 });
 
 Action.ClimbMountain = new Action("Climb Mountain", {
+    type: "progress",
     expMult: 1,
     townNum: 3,
     varName: "Mountain",
@@ -2479,6 +2520,7 @@ Action.ClimbMountain = new Action("Climb Mountain", {
 });
 
 Action.ManaGeyser = new Action("Mana Geyser", {
+    type: "limited",
     expMult: 1,
     townNum: 3,
     varName: "Geysers",
@@ -2512,6 +2554,7 @@ function adjustGeysers() {
 }
 
 Action.DecipherRunes = new Action("Decipher Runes", {
+    type: "progress",
     expMult: 1,
     townNum: 3,
     varName: "Runes",
@@ -2537,6 +2580,7 @@ Action.DecipherRunes = new Action("Decipher Runes", {
 });
 
 Action.Chronomancy = new Action("Chronomancy", {
+    type: "normal",
     expMult: 2,
     townNum: 3,
     stats: {
@@ -2562,6 +2606,7 @@ Action.Chronomancy = new Action("Chronomancy", {
 });
 
 Action.LoopingPotion = new Action("Looping Potion", {
+    type: "normal",
     expMult: 2,
     townNum: 3,
     stats: {
@@ -2594,6 +2639,7 @@ Action.LoopingPotion = new Action("Looping Potion", {
 });
 
 Action.Pyromancy = new Action("Pyromancy", {
+    type: "normal",
     expMult: 2,
     townNum: 3,
     stats: {
@@ -2619,6 +2665,7 @@ Action.Pyromancy = new Action("Pyromancy", {
 });
 
 Action.ExploreCavern = new Action("Explore Cavern", {
+    type: "progress",
     expMult: 1,
     townNum: 3,
     varName: "Cavern",
@@ -2644,6 +2691,7 @@ Action.ExploreCavern = new Action("Explore Cavern", {
 });
 
 Action.MineSoulstones = new Action("Mine Soulstones", {
+    type: "limited",
     expMult: 1,
     townNum: 3,
     stats: {
@@ -2677,7 +2725,8 @@ function adjustMineSoulstones() {
     towns[3].totalMineSoulstones = towns[3].getLevel("Cavern") * 3;
 }
 
-Action.HuntTrolls = new MultipartAction("Hunt Trolls", 5, {
+Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
+    type: "multipart",
     expMult: 1.5,
     townNum: 3,
     stats: {
@@ -2719,6 +2768,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", 5, {
 });
 
 Action.CheckWalls = new Action("Check Walls", {
+    type: "progress",
     expMult: 1,
     townNum: 3,
     varName: "Illusions",
@@ -2743,6 +2793,7 @@ Action.CheckWalls = new Action("Check Walls", {
 });
 
 Action.TakeArtifacts = new Action("Take Artifacts", {
+    type: "limited",
     expMult: 1,
     townNum: 3,
     varName: "Artifacts",
@@ -2770,7 +2821,8 @@ function adjustArtifacts() {
     towns[3].totalArtifacts = towns[3].getLevel("Illusions") * 5;
 }
 
-Action.ImbueMind = new MultipartAction("Imbue Mind", 3, {
+Action.ImbueMind = new MultipartAction("Imbue Mind", {
+    type: "multipart",
     expMult: 5,
     townNum: 3,
     stats: {
@@ -2854,6 +2906,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", 3, {
 });
 
 Action.FaceJudgement = new Action("Face Judgement", {
+    type: "normal",
     expMult: 2,
     townNum: 3,
     stats: {
@@ -2874,38 +2927,12 @@ Action.FaceJudgement = new Action("Face Judgement", {
         return towns[3].getLevel("Mountain") >= 100;
     },
     finish() {
-        if (resources.reputation >= 50) unlockTown(4);
-        else if (resources.reputation <= 50) unlockTown(5);
+        // if (resources.reputation >= 50) unlockTown(4);
+        // else if (resources.reputation <= 50) unlockTown(5);
     },
 });
 
-// z5
-
-Action.FallFromGrace = new Action("Fall From Grace", {
-    expMult: 2,
-    townNum: 4,
-    stats: {
-        Dex: 0.4,
-        Luck: 0.3,
-        Spd: 0.2,
-        Int: 0.1,
-    },
-    allowed() {
-        return 1;
-    },
-    manaCost() {
-        return 30000;
-    },
-    visible() {
-        return true;
-    },
-    unlocked() {
-        return true;
-    },
-    finish() {
-        unlockTown(5);
-    },
-});
+// town 5
 
 Action.GuidedTour = new Action("Guided Tour", {
     type: "progress",
@@ -2933,8 +2960,88 @@ Action.GuidedTour = new Action("Guided Tour", {
     },
 });
 
+Action.Canvass = new Action("Canvass", {
+    type: "progress",
+    expMult: 1,
+    townNum: 4,
+    varName: "Canvassed",
+    stats: {
+        Con: 0.1,
+        Cha: 0.5,
+        Spd: 0.2,
+        Luck: 0.2
+    },
+    manaCost() {
+        return 4000;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    finish() {
+        towns[4].finishProgress(this.varName, 50);
+    },
+});
+
+Action.Donate = new Action("Donate", {
+    type: "normal",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Per: 0.2,
+        Cha: 0.2,
+        Spd: 0.2,
+        Int: 0.4,
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return towns[4].getLevel("Canvassed") >= 5;
+    },
+    finish() {
+        addResource("gold", -20);
+        addResource("reputation", 1);
+    },
+});
+
+Action.AcceptDonations = new Action("Accept Donations", {
+    type: "limited",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Con: 0.1,
+        Cha: 0.2,
+        Spd: 0.3,
+        Luck: 0.4
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return towns[4].getLevel("Canvassed") >= 5;
+    },
+    finish() {
+        addResource("gold", 20);
+        addResource("reputation", -1);
+    },
+});
+
+function adjustDonations() {
+    towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
+}
+
 // todo: make this correct
-Action.GreatFeast = new MultipartAction("Great Feast", 3, {
+Action.GreatFeast = new MultipartAction("Great Feast", {
+    type: "multipart",
     expMult: 5,
     townNum: 4,
     stats: {
@@ -3016,9 +3123,88 @@ Action.GreatFeast = new MultipartAction("Great Feast", 3, {
     },
 });
 
-function adjustDonations() {
-    towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
-}
+Action.FallFromGrace = new Action("Fall From Grace", {
+    type: "normal",
+    expMult: 2,
+    townNum: 4,
+    stats: {
+        Dex: 0.4,
+        Luck: 0.3,
+        Spd: 0.2,
+        Int: 0.1,
+    },
+    allowed() {
+        return 1;
+    },
+    manaCost() {
+        return 30000;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    finish() {
+        unlockTown(5);
+    },
+});
+
+// town 6
+
+Action.TheSpire = new DungeonAction("The Spire", 2, {
+    type: "multipart",
+    expMult: 1,
+    townNum: 5,
+    stats: {
+        Str: 0.1,
+        Dex: 0.1,
+        Spd: 0.1,
+        Con: 0.1,
+        Per: 0.2,
+        Int: 0.2,
+        Soul: 0.2
+    },
+    skills: {
+        Combat: 5,
+        Magic: 5
+    },
+    loopStats: ["Per", "Int", "Con", "Spd", "Dex", "Per", "Int", "Str", "Soul"],
+    manaCost() {
+        return 2000;
+    },
+    canStart() {
+        const curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001);
+        return resources.reputation >= 2 && curFloor < dungeons[this.dungeonNum].length;
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(2, Math.floor((towns[this.townNum].SDungeonLoopCounter + segment) / this.segments + 0.0000001)) * 15000);
+    },
+    tickProgress(offset) {
+        const floor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001);
+        return (getSelfCombat() + getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
+    },
+    loopsFinished() {
+        const curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001 - 1);
+        const success = finishDungeon(this.dungeonNum, curFloor);
+        if (success === true && storyMax <= 1) {
+            unlockGlobalStory(1);
+        } else if (success === false && storyMax <= 2) {
+            unlockGlobalStory(2);
+        }
+    },
+    visible() {
+        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
+    },
+    unlocked() {
+        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
+    },
+    finish() {
+        handleSkillExp(this.skills);
+        unlockStory("smallDungeonAttempted");
+        if (towns[0].SDungeonLoopCounter >= 42) unlockStory("clearSDungeon");
+    },
+});
 
 const actionsWithGoldCost = Object.values(Action).filter(
     action => action.goldCost !== undefined

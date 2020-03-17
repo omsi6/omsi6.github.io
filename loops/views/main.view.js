@@ -635,7 +635,7 @@ function View() {
             this.createTownAction(action);
             if (action.type === "limited") this.createTownInfo(action);
             if (action.type === "progress") this.createActionProgress(action);
-            if (action.type === "multiPart") this.createMultiPartPBar(action);
+            if (action.type === "multipart") this.createMultiPartPBar(action);
         }
     };
 
@@ -835,7 +835,7 @@ function View() {
 
     this.updateMultiPartActions = function() {
         for (const action of totalActionList) {
-            if (action.type === "multiPart") {
+            if (action.type === "multipart") {
                 this.updateMultiPart(action);
                 this.updateMultiPartSegments(action);
             }
