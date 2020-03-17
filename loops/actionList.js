@@ -2129,11 +2129,11 @@ Action.GatherTeam = new Action("Gather Team", {
         return 5;
     },
     canStart() {
-        return guild === "Adventure" && resources.gold >= (resources.teamMembers + 1) * 200;
+        return guild === "Adventure" && resources.gold >= (resources.teamMembers + 1) * 100;
     },
     cost() {
         // cost comes after finish
-        addResource("gold", -(resources.teamMembers) * 200);
+        addResource("gold", -(resources.teamMembers) * 100);
     },
     manaCost() {
         return 2000;
