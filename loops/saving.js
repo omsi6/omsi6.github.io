@@ -335,7 +335,6 @@ function load() {
         }
     }
 
-    view.initalize();
     for (const town of towns) {
         for (const action of town.totalActionList) {
             if (action.type === "progress")
@@ -352,6 +351,16 @@ function load() {
                     town[`good${varName}`] = toLoad[`good${varName}`];
                 if (toLoad[`good${varName}`] !== undefined)
                     town[`goodTemp${varName}`] = toLoad[`good${varName}`];
+            }
+        }
+    }
+    
+    view.initalize();
+
+    for (const town of towns) {
+        for (const action of town.totalActionList) {
+            if (action.type === "limited") {
+                const varName = action.varName;
                 if (toLoad[`searchToggler${varName}`] !== undefined) {
                     document.getElementById(`searchToggler${varName}`).checked = toLoad[`searchToggler${varName}`];
                 }
@@ -359,7 +368,6 @@ function load() {
             }
         }
     }
-    view.initalize();
 
     for (const option in options) {
         loadOption(option, options[option]);
