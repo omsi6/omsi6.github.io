@@ -93,9 +93,9 @@ Views.registerView("menu", {
                 ${Views.menu.htmlThemeMenu()}
                 ${Object.keys(Localization.supportedLang).length > 1 ? Views.menu.htmlLocalizationMenu() : ""}
                 ${_txt("menu>options>adblock_warning")}<br>
-                <input id='pingOnPauseInput' type='checkbox' oninput='setOption("pingOnPause", this.checked)'/><label for='pingOnPauseInput'>${_txt("menu>options>pause_audio_cue")}</label>
+                <input id='pingOnPauseInput' type='checkbox' onchange='setOption("pingOnPause", this.checked)'/><label for='pingOnPauseInput'>${_txt("menu>options>pause_audio_cue")}</label>
                 <br>
-                <input id='hotkeysInput' type='checkbox' oninput='setOption("hotkeys", this.checked)'/><label class='showthat' for='hotkeysInput'>${_txt("menu>options>hotkeys")}<div class='showthis'>${_txt("menu>options>hotkeys_tooltip")}</div></label>
+                <input id='hotkeysInput' type='checkbox' onchange='setOption("hotkeys", this.checked)'/><label class='showthat' for='hotkeysInput'>${_txt("menu>options>hotkeys")}<div class='showthis'>${_txt("menu>options>hotkeys_tooltip")}</div></label>
                 <br>
                 ${_txt("menu>options>update_rate")}<input id='updateRateInput' type='number' value='50' min='1' style='width: 50px;' oninput='setOption("updateRate", parseInt(this.value))' />
                 <br>

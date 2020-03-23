@@ -233,11 +233,11 @@
             </div>
             <div id="actionChanges" style="text-align:left;width:100%;margin-top:5px;">
                 <div style="margin-left: -4px;">
-                    <input type="checkbox" id="keepCurrentListInput" class="checkbox" oninput="setOption('keepCurrentList', this.checked)">
+                    <input type="checkbox" id="keepCurrentListInput" class="checkbox" onchange="setOption('keepCurrentList', this.checked)">
                     <label for="keepCurrentListInput" class="localized" data-lockey="actions>tooltip>current_list_active"></label><br>
-                    <input type="checkbox" id="repeatLastActionInput" class="checkbox" oninput="setOption('repeatLastAction', this.checked)">
+                    <input type="checkbox" id="repeatLastActionInput" class="checkbox" onchange="setOption('repeatLastAction', this.checked)">
                     <label for="repeatLastActionInput" class="localized" data-lockey="actions>tooltip>repeat_last_action"></label><br>
-                    <input type="checkbox" id="addActionsToTopInput" class="checkbox" oninput="setOption('addActionsToTop', this.checked)">
+                    <input type="checkbox" id="addActionsToTopInput" class="checkbox" onchange="setOption('addActionsToTop', this.checked)">
                     <label for="addActionsToTopInput" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
                 <div style="float:right;text-align:right;">
