@@ -321,8 +321,8 @@ function View() {
             }
             totalDivText +=
                 `<div id='nextActionContainer${i}' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(${i})' ondragenter='dragOverDecorate(${i})' ondragleave='dragExitUndecorate(${i})' draggable='true' data-index='${i}' style='background:${color}; ${opacity}'>
-                    <img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
-                    <div class='bold'>${actionLoops}</div>
+                    <div><img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
+                    <div class='bold'>${actionLoops}</div></div>
                     <div style='float:right; margin-top: 3px; margin-right: 3px;'>
                         ${capButton}
                         ${isSingular ? "" : `<i id='plusButton${i}' onclick='addLoop(${i})' class='actionIcon fas fa-plus'></i>`}
@@ -351,7 +351,8 @@ function View() {
                     <div class='curActionBar' id='action${i}Bar'></div>
                     <div class='actionSelectedIndicator' id='action${i}Selected'></div>
                     <img src='img/${camelize(action.name)}.svg' class='smallIcon'>
-                    x<div id='action${i}LoopsLeft' style='margin-left:3px'>${actionLoops}</div>(<div id='action${i}Loops'>${actionLoopsLeft}</div>)
+                    <div id='action${i}LoopsDone' style='margin-left:3px; border-left: 1px solid #b9b9b9;padding-left: 3px;'>${actionLoops - actionLoopsLeft}</div>
+                    <div style='margin-left: 1px'>/</div><div id='action${i}Loops'>${actionLoops}</div>
                 </div>`;
         }
 
@@ -445,10 +446,8 @@ function View() {
 
     this.updateCurrentActionLoops = function(index) {
         const action = actions.current[index];
-        document.getElementById(`action${index}Loops`).textContent = action.loopsLeft > 99999 ? toSuffix(action.loopsLeft) : formatNumber(action.loopsLeft);
-        if (index === (actions.current.length - 1)) {
-            document.getElementById(`action${index}LoopsLeft`).textContent = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-        }
+        document.getElementById(`action${index}LoopsDone`).textContent = action.loops > 99999 ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
+        document.getElementById(`action${index}Loops`).textContent = action.loopsLeft > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
     };
 
     this.updateProgressAction = function(varName, town) {

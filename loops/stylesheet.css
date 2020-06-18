@@ -410,7 +410,7 @@ input[type="number"] {
 }
 
 #curActionsListContainer {
-    width: 34.9%;
+    width: 35%;
     height: 100%;
     background-color: #c2e6cc;
     position: relative;
@@ -426,18 +426,22 @@ input[type="number"] {
 }
 
 .nextActionContainer, .curActionContainer {
+    display: flex;
+    align-items: center;
     margin-left:3px;
-    display:block;
     padding-top:1px;
     padding-bottom:1px;
     border-bottom:1px solid #b9b9b9;
     position:relative;
 }
 .nextActionContainer {
-    width:205px;
+    justify-content: space-between;
+    width: 205px;
+    height: 20px;
 }
 .curActionContainer {
-    width:102px;
+    width: 102px;
+    height: 20px;
 }
 
 #curActionsList, #nextActionsList {

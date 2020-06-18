@@ -100,8 +100,6 @@ function Actions() {
 
     this.getNextValidAction = function() {
         let curAction = this.current[this.currentPos];
-        let pauseCatch = false;
-        let catchPosition = 0;
         if (!curAction) {
             return curAction;
         }
@@ -112,8 +110,6 @@ function Actions() {
             return undefined;
         }
         while ((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
-            pauseCatch = true;
-            if (!catchPosition) catchPosition = this.currentPos;
             curAction.errorMessage = this.getErrorMessage(curAction);
             curAction.loopsFailed = curAction.loopsLeft;
             curAction.loopsLeft = 0;
@@ -124,10 +120,6 @@ function Actions() {
                 break;
             }
             curAction = this.current[this.currentPos];
-        }
-        if (pauseCatch) {
-            view.updateCurrentActionBar(catchPosition - 1);
-            prepareRestart();
         }
         return curAction;
     };

@@ -16,7 +16,11 @@
             • Fixed Mason and Architect not updating their exp gains in their tooltips properly upon completion.<br>
             • Fixed odd behavior on failed actions in edge cases.<br>
             • Fixed buffs improperly visually appearing and disappearing.<br>
-            • Fixed buff hard caps not working.
+            • Fixed buff hard caps not working.<br>
+            <br><b> v0.93b - June 17th, 2020</b><br>
+            • Fixed pause on failed loop acting the same as pause before restart.<br>
+            • Slightly improved the visuals and centering on the current and next action bars.<br>
+            • The current action list now displays action loops in the form of "done/total", instead of "total(remaining)".
         ]]></version>
             <version verNum=".92"><![CDATA[
             <b> April 29th, 2019 - March 16th, 2020</b>

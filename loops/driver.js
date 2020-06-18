@@ -122,7 +122,8 @@ function pauseGame(ping) {
 
 function prepareRestart() {
     const curAction = actions.getNextValidAction();
-    if (options.pauseBeforeRestart) {
+    if (options.pauseBeforeRestart ||
+        (options.pauseOnFailedLoop && actions.current.filter(action => action.loopsLeft > 0).length > 0)) {
         if (options.pingOnPause) {
             beep(250);
             setTimeout(() => beep(250), 500);
@@ -131,17 +132,8 @@ function prepareRestart() {
             actions.completedTicks += actions.getNextValidAction().ticks;
             view.updateTotalTicks();
         }
-        view.updateCurrentActionBar(actions.current.length - 1);
-        stopGame();
-    } else if (options.pauseOnFailedLoop) {
-        if (curAction) {
-            actions.completedTicks += actions.getNextValidAction().ticks;
-            view.updateTotalTicks();
-        }
-        stopGame();
-        if (options.pingOnPause) {
-            beep(250);
-            setTimeout(() => beep(250), 500);
+        for (let i = 0; i < actions.current.length; i++) {
+            view.updateCurrentActionBar(i);
         }
         stopGame();
     } else {
