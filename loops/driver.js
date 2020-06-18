@@ -273,7 +273,7 @@ function saveList() {
     setTimeout(() => {
         document.getElementById("amountCustom").value = globalCustomInput;
     }, 1000);
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < loadouts.length - 1; i++) {
         document.getElementById(`load${i + 1}name`).textContent = loadoutnames[i];
     }
 }
@@ -293,6 +293,16 @@ function loadList() {
 
 function clearList() {
     actions.next = [];
+    view.updateNextActions();
+}
+
+function loadActive() {
+    actions.nextLast = copyArray(next);
+    const newNext = [];
+    for (let i = 0; i < actions.current.length; i++) {
+        newNext.push({ name: actions.current[i].name, disabled: false, loops: actions.current[i].loops });
+    }
+    actions.next = newNext;
     view.updateNextActions();
 }
 

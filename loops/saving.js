@@ -60,7 +60,7 @@ let guild = "";
 
 let curLoadout = 0;
 let loadouts = [];
-let loadoutnames = ["1", "2", "3", "4", "5"];
+let loadoutnames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Feast", "Aspirant"];
@@ -266,7 +266,7 @@ function load() {
         }
     }
     actions.nextLast = copyObject(actions.next);
-    loadouts = [[], [], [], [], [], []];
+    loadouts = [[], [], [], [], [], [], [], [], [], [], []];
     if (toLoad.loadouts) {
         for (let i = 0; i < toLoad.loadouts.length; i++) {
             if (!toLoad.loadouts[i]) {
@@ -290,11 +290,11 @@ function load() {
         }
     }
     if (toLoad.loadoutnames) {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < loadouts.length - 1; i++) {
             loadoutnames[i] = toLoad.loadoutnames[i];
         }
     } else {
-        loadoutnames = ["1", "2", "3", "4", "5"];
+        loadoutnames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
     }
     curLoadout = toLoad.curLoadout;
     const elem = document.getElementById(`load${curLoadout}`);

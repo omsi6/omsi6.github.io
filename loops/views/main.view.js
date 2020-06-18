@@ -609,7 +609,7 @@ function View() {
     };
 
     this.updateLoadout = function(num) {
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < loadouts.length; i++) {
             const elem = document.getElementById(`load${i}`);
             if (elem) {
                 addClassToDiv(elem, "unused");
@@ -622,7 +622,7 @@ function View() {
     };
 
     this.updateLoadoutNames = function() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < loadouts.length - 1; i++) {
             document.getElementById(`load${i + 1}name`).textContent = loadoutnames[i];
         }
     };

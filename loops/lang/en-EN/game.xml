@@ -694,6 +694,8 @@
         <title>Action Options</title>
         <title_stories>Action Stories</title_stories>
         <title_list>Action List</title_list>
+        <active_title>Active</active_title>
+        <next_title>Next</next_title>
         <title_loadout>Loadouts</title_loadout>
         <tooltip>
             <desc><![CDATA[
@@ -716,6 +718,7 @@
             <save_loadout>Save List</save_loadout>
             <load_loadout>Load Selected List</load_loadout>
             <clear_list>Clear List</clear_list>
+            <load_active>Load Active List</load_active>
             <higher_done_percent_benefic>You can find more stuff with higher %.</higher_done_percent_benefic>
             <progress_label>Progress</progress_label>
             <total_found>Total Found</total_found>
