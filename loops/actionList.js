@@ -1012,7 +1012,7 @@ Action.StartJourney = new Action("Start Journey", {
     storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[1].unlocked;
+                return storyReqs.traveledToSecondZone;
         }
         return false;
     },
@@ -1041,6 +1041,7 @@ Action.StartJourney = new Action("Start Journey", {
     },
     finish() {
         unlockTown(1);
+		unlockStory("traveledToSecondZone");
     },
 });
 
@@ -1860,7 +1861,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
     finish() {
         view.updateBuff("Ritual");
         view.adjustExpGain(Action.DarkMagic);
-        if (towns[1].DarkRitualLoopCounter >= 2) unlockStory("darkRitualThirdSegmentReached");
+        if (towns[1].DarkRitualLoopCounter >= 0) unlockStory("darkRitualThirdSegmentReached");
     },
 });
 
@@ -1871,7 +1872,7 @@ Action.ContinueOn = new Action("Continue On", {
     storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return towns[2].unlocked;
+                return storyReqs.traveledToThirdZone;
         }
         return false;
     },
@@ -1894,6 +1895,7 @@ Action.ContinueOn = new Action("Continue On", {
     },
     finish() {
         unlockTown(2);
+		unlockStory("traveledToThirdZone");
     },
 });
 
@@ -1904,6 +1906,29 @@ Action.ExploreCity = new Action("Explore City", {
     expMult: 1,
     townNum: 2,
     varName: "City",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[2].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[2].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[2].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[2].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[2].getLevel(this.varName) >= 50;
+            case 6:
+                return towns[2].getLevel(this.varName) >= 60;
+            case 7:
+                return towns[2].getLevel(this.varName) >= 80;
+            case 8:
+                return towns[2].getLevel(this.varName) >= 90;
+            case 9:
+                return towns[2].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Con: 0.1,
         Per: 0.3,
@@ -1933,6 +1958,21 @@ Action.Gamble = new Action("Gamble", {
     type: "limited",
     expMult: 2,
     townNum: 2,
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[2][`checked${this.varName}`] >= 1;
+            case 2:
+                return towns[2][`good${this.varName}`] >= 1;
+            case 3:
+                return towns[2][`good${this.varName}`] >= 30;
+			case 4:
+				return storyReqs.failedGamble;
+			case 5:
+				return storyReqs.failedGambleLowMoney;
+        }
+        return false;
+    },
     stats: {
         Cha: 0.2,
         Luck: 0.8
@@ -1966,6 +2006,27 @@ Action.GetDrunk = new Action("Get Drunk", {
     expMult: 3,
     townNum: 2,
     varName: "Drunk",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[2].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[2].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[2].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[2].getLevel(this.varName) >= 30;
+            case 5:
+                return towns[2].getLevel(this.varName) >= 40;
+            case 6:
+                return towns[2].getLevel(this.varName) >= 60;
+            case 7:
+                return towns[2].getLevel(this.varName) >= 80;
+            case 8:
+                return towns[2].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Str: 0.1,
         Cha: 0.5,
@@ -2020,6 +2081,17 @@ Action.SellPotions = new Action("Sell Potions", {
     type: "normal",
     expMult: 1,
     townNum: 2,
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.potionSold;
+            case 2:
+                return storyReqs.sell20PotionsInALoop;
+            case 3:
+                return storyReqs.sellPotionFor100Gold;
+        }
+        return false;
+    },
     stats: {
         Cha: 0.7,
         Int: 0.2,
@@ -2035,8 +2107,11 @@ Action.SellPotions = new Action("Sell Potions", {
         return true;
     },
     finish() {
+		if (resources.potions >= 20) unlockStory("sell20PotionsInALoop");
         addResource("gold", resources.potions * getSkillLevel("Alchemy"));
         resetResource("potions");
+		unlockStory("potionSold");
+		if (getSkillLevel("Alchemy") >= 100) unlockStory("sellPotionFor100Gold");
     },
 });
 
@@ -2048,6 +2123,29 @@ Action.AdventureGuild = new MultipartAction("Adventure Guild", {
     expMult: 1,
     townNum: 2,
     varName: "AdvGuild",
+	storyReqs(storyNum) {
+		switch(storyNum) {
+			case 1:
+				return storyReqs.advGuildTestsTaken;
+			case 2:
+				return storyReqs.advGuildRankEReached;
+			case 3:
+				return storyReqs.advGuildRankDReached;
+			case 4:
+				return storyReqs.advGuildRankCReached;
+			case 5:
+				return storyReqs.advGuildRankBReached;
+			case 6:
+				return storyReqs.advGuildRankAReached;
+			case 7:
+				return storyReqs.advGuildRankSReached;
+			case 8:
+				return storyReqs.advGuildRankUReached;
+			case 9:
+				return storyReqs.advGuildRankGodlikeReached;
+		}
+		return false;
+	},
     stats: {
         Str: 0.4,
         Dex: 0.3,
@@ -2073,7 +2171,14 @@ Action.AdventureGuild = new MultipartAction("Adventure Guild", {
                 Math.sqrt(1 + towns[2][`total${this.varName}`] / 1000);
     },
     loopsFinished() {
-        // empty
+		if(curAdvGuildSegment >= 0) unlockStory("advGuildRankEReached");
+		if(curAdvGuildSegment >= 3) unlockStory("advGuildRankDReached");
+		if(curAdvGuildSegment >= 6) unlockStory("advGuildRankCReached");
+		if(curAdvGuildSegment >= 9) unlockStory("advGuildRankBReached");
+		if(curAdvGuildSegment >= 12) unlockStory("advGuildRankAReached");
+		if(curAdvGuildSegment >= 15) unlockStory("advGuildRankSReached");
+		if(curAdvGuildSegment >= 27) unlockStory("advGuildRankUReached");
+		if(curAdvGuildSegment >= 39) unlockStory("advGuildRankGodlikeReached");
     },
     segmentFinished() {
         curAdvGuildSegment++;
@@ -2093,6 +2198,7 @@ Action.AdventureGuild = new MultipartAction("Adventure Guild", {
     },
     finish() {
         guild = "Adventure";
+		unlockStory("advGuildTestsTaken");
     },
 });
 function getAdvGuildRank(offset) {
@@ -2118,6 +2224,17 @@ Action.GatherTeam = new Action("Gather Team", {
     type: "normal",
     expMult: 3,
     townNum: 2,
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.teammateGathered;
+            case 2:
+                return storyReqs.fullParty;
+            case 3:
+                return storyReqs.failedGatherTeam;
+        }
+        return false;
+    },
     stats: {
         Per: 0.2,
         Cha: 0.5,
@@ -2146,6 +2263,8 @@ Action.GatherTeam = new Action("Gather Team", {
     },
     finish() {
         addResource("teamMembers", 1);
+		unlockStory("teammateGathered");
+		if(resources.teamMembers >= 5) unlockStory("fullParty");
     },
 });
 
@@ -2154,6 +2273,21 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     expMult: 2,
     townNum: 2,
     varName: "LDungeon",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.largeDungeonAttempted;
+            case 2:
+                return towns[2][`total${this.varName}`] >= 2000;
+            case 3:
+                return towns[2][`total${this.varName}`] >= 10000;
+            case 4:
+                return towns[2][`total${this.varName}`] >= 20000;
+            case 5:
+                return storyReqs.clearLDungeon;
+        }
+        return false;
+    },
     stats: {
         Str: 0.2,
         Dex: 0.2,
@@ -2193,6 +2327,8 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     },
     finish() {
         handleSkillExp(this.skills);
+		unlockStory("largeDungeonAttempted");
+		if (towns[2].LDungeonLoopCounter >= 63) unlockStory("clearLDungeon");
     },
 });
 
@@ -2201,6 +2337,29 @@ Action.CraftingGuild = new MultipartAction("Crafting Guild", {
     expMult: 1,
     townNum: 2,
     varName: "CraftGuild",
+	storyReqs(storyNum) {
+		switch(storyNum) {
+			case 1:
+				return storyReqs.craftGuildTestsTaken;
+			case 2:
+				return storyReqs.craftGuildRankEReached;
+			case 3:
+				return storyReqs.craftGuildRankDReached;
+			case 4:
+				return storyReqs.craftGuildRankCReached;
+			case 5:
+				return storyReqs.craftGuildRankBReached;
+			case 6:
+				return storyReqs.craftGuildRankAReached;
+			case 7:
+				return storyReqs.craftGuildRankSReached;
+			case 8:
+				return storyReqs.craftGuildRankUReached;
+			case 9:
+				return storyReqs.craftGuildRankGodlikeReached;
+		}
+		return false;
+	},
     stats: {
         Dex: 0.3,
         Per: 0.3,
@@ -2229,7 +2388,14 @@ Action.CraftingGuild = new MultipartAction("Crafting Guild", {
                 Math.sqrt(1 + towns[2][`total${this.varName}`] / 1000);
     },
     loopsFinished() {
-        // empty
+		if(curCraftGuildSegment >= 0) unlockStory("craftGuildRankEReached");
+		if(curCraftGuildSegment >= 3) unlockStory("craftGuildRankDReached");
+		if(curCraftGuildSegment >= 6) unlockStory("craftGuildRankCReached");
+		if(curCraftGuildSegment >= 9) unlockStory("craftGuildRankBReached");
+		if(curCraftGuildSegment >= 12) unlockStory("craftGuildRankAReached");
+		if(curCraftGuildSegment >= 15) unlockStory("craftGuildRankSReached");
+		if(curCraftGuildSegment >= 27) unlockStory("craftGuildRankUReached");
+		if(curCraftGuildSegment >= 39) unlockStory("craftGuildRankGodlikeReached");
     },
     segmentFinished() {
         curCraftGuildSegment++;
@@ -2250,6 +2416,7 @@ Action.CraftingGuild = new MultipartAction("Crafting Guild", {
     },
     finish() {
         guild = "Crafting";
+		unlockStory("craftGuildTestsTaken");
     },
 });
 function getCraftGuildRank(offset) {
@@ -2275,6 +2442,17 @@ Action.CraftArmor = new Action("Craft Armor", {
     type: "normal",
     expMult: 1,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.armorCrafted;
+            case 2:
+                return storyReqs.craft10Armor;
+            case 3:
+                return storyReqs.failedCraftArmor;
+        }
+        return false;
+    },
     stats: {
         Str: 0.1,
         Dex: 0.3,
@@ -2299,6 +2477,8 @@ Action.CraftArmor = new Action("Craft Armor", {
     },
     finish() {
         addResource("armor", 1);
+		unlockStory("armorCrafted");
+		if(resources.armor >= 10) unlockStory("craft10Armor");
     },
 });
 
@@ -2306,6 +2486,25 @@ Action.Apprentice = new Action("Apprentice", {
     type: "progress",
     expMult: 1.5,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[2].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[2].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[2].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[2].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[2].getLevel(this.varName) >= 60;
+            case 6:
+                return towns[2].getLevel(this.varName) >= 80;
+            case 7:
+                return towns[2].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.2,
         Int: 0.4,
@@ -2340,6 +2539,25 @@ Action.Mason = new Action("Mason", {
     type: "progress",
     expMult: 2,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[2].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[2].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[2].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[2].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[2].getLevel(this.varName) >= 60;
+            case 6:
+                return towns[2].getLevel(this.varName) >= 80;
+            case 7:
+                return towns[2].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.2,
         Int: 0.5,
@@ -2373,6 +2591,25 @@ Action.Architect = new Action("Architect", {
     type: "progress",
     expMult: 2.5,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[2].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[2].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[2].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[2].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[2].getLevel(this.varName) >= 60;
+            case 6:
+                return towns[2].getLevel(this.varName) >= 80;
+            case 7:
+                return towns[2].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.2,
         Int: 0.6,
@@ -2406,6 +2643,13 @@ Action.ReadBooks = new Action("Read Books", {
     type: "normal",
     expMult: 4,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.booksRead;
+        }
+        return false;
+    },
     stats: {
         Int: 0.8,
         Soul: 0.2
@@ -2427,7 +2671,7 @@ Action.ReadBooks = new Action("Read Books", {
         return towns[2].getLevel("City") >= 50;
     },
     finish() {
-        // empty
+		unlockStory("booksRead");
     },
 });
 
@@ -2435,6 +2679,13 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     type: "normal",
     expMult: 1,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.pickaxeBought;
+        }
+        return false;
+    },
     stats: {
         Cha: 0.8,
         Int: 0.1,
@@ -2460,6 +2711,7 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     },
     finish() {
         addResource("pickaxe", true);
+		unlockStory("pickaxeBought");
     },
 });
 
@@ -2469,6 +2721,13 @@ Action.StartTrek = new Action("Start Trek", {
     type: "normal",
     expMult: 2,
     townNum: 2,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.traveledToFourthZone;
+        }
+        return false;
+    },
     stats: {
         Con: 0.7,
         Per: 0.2,
@@ -2488,6 +2747,7 @@ Action.StartTrek = new Action("Start Trek", {
     },
     finish() {
         unlockTown(3);
+		unlockStory("traveledToFourthZone");
     },
 });
 
@@ -2496,6 +2756,25 @@ Action.ClimbMountain = new Action("Climb Mountain", {
     expMult: 1,
     townNum: 3,
     varName: "Mountain",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[3].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[3].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[3].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[3].getLevel(this.varName) >= 60;
+            case 6:
+                return towns[3].getLevel(this.varName) >= 80;
+            case 7:
+                return towns[3].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.1,
         Str: 0.2,
@@ -2523,6 +2802,15 @@ Action.ManaGeyser = new Action("Mana Geyser", {
     expMult: 1,
     townNum: 3,
     varName: "Geysers",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3][`good${this.varName}`] >= 1;
+            case 2:
+                return towns[3][`good${this.varName}`] >= 10;
+        }
+        return false;
+    },
     stats: {
         Str: 0.6,
         Per: 0.3,
@@ -2557,6 +2845,27 @@ Action.DecipherRunes = new Action("Decipher Runes", {
     expMult: 1,
     townNum: 3,
     varName: "Runes",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[3].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[3].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[3].getLevel(this.varName) >= 30;
+            case 5:
+                return towns[3].getLevel(this.varName) >= 40;
+            case 6:
+                return towns[3].getLevel(this.varName) >= 60;
+            case 7:
+                return towns[3].getLevel(this.varName) >= 80;
+            case 8:
+                return towns[3].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Per: 0.3,
         Int: 0.7
@@ -2582,6 +2891,17 @@ Action.Chronomancy = new Action("Chronomancy", {
     type: "normal",
     expMult: 2,
     townNum: 3,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return getSkillLevel("Chronomancy") >= 1;
+            case 2:
+                return getSkillLevel("Chronomancy") >= 50;
+            case 3:
+                return getSkillLevel("Chronomancy") >= 100;
+        }
+        return false;
+    },
     stats: {
         Soul: 0.1,
         Spd: 0.3,
@@ -2608,6 +2928,13 @@ Action.LoopingPotion = new Action("Looping Potion", {
     type: "normal",
     expMult: 2,
     townNum: 3,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.loopingPotionMade;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.2,
         Int: 0.7,
@@ -2634,6 +2961,7 @@ Action.LoopingPotion = new Action("Looping Potion", {
     finish() {
         addResource("loopingPotion", true);
         handleSkillExp(this.skills);
+		unlockStory("loopingPotionMade");
     },
 });
 
@@ -2641,6 +2969,17 @@ Action.Pyromancy = new Action("Pyromancy", {
     type: "normal",
     expMult: 2,
     townNum: 3,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return getSkillLevel("Pyromancy") >= 1;
+            case 2:
+                return getSkillLevel("Pyromancy") >= 50;
+            case 3:
+                return getSkillLevel("Pyromancy") >= 100;
+        }
+        return false;
+    },
     stats: {
         Per: 0.2,
         Int: 0.7,
@@ -2668,6 +3007,27 @@ Action.ExploreCavern = new Action("Explore Cavern", {
     expMult: 1,
     townNum: 3,
     varName: "Cavern",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[3].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[3].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[3].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[3].getLevel(this.varName) >= 50;
+            case 6:
+                return towns[3].getLevel(this.varName) >= 60;
+            case 7:
+                return towns[3].getLevel(this.varName) >= 80;
+            case 8:
+                return towns[3].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.1,
         Str: 0.3,
@@ -2693,6 +3053,17 @@ Action.MineSoulstones = new Action("Mine Soulstones", {
     type: "limited",
     expMult: 1,
     townNum: 3,
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3][`checked${this.varName}`] >= 1;
+            case 2:
+                return towns[3][`good${this.varName}`] >= 1;
+            case 3:
+                return towns[3][`good${this.varName}`] >= 30;
+        }
+        return false;
+    },
     stats: {
         Str: 0.6,
         Dex: 0.1,
@@ -2728,6 +3099,15 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
     type: "multipart",
     expMult: 1.5,
     townNum: 3,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3].totalHuntTrolls >= 1;
+            case 2:
+                return storyReqs.slay10TrollsInALoop;
+        }
+        return false;
+    },
     stats: {
         Str: 0.3,
         Dex: 0.3,
@@ -2751,6 +3131,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
     loopsFinished() {
         handleSkillExp(this.skills);
         addResource("blood", 1);
+		if (resources.blood >= 10) unlockStory("slay10TrollsInALoop");
     },
     getPartName() {
         return "Hunt Troll";
@@ -2762,7 +3143,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
         return towns[3].getLevel("Cavern") >= 50;
     },
     finish() {
-        // nothing
+		// nothing
     },
 });
 
@@ -2771,6 +3152,27 @@ Action.CheckWalls = new Action("Check Walls", {
     expMult: 1,
     townNum: 3,
     varName: "Illusions",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3].getLevel(this.varName) >= 1;
+            case 2:
+                return towns[3].getLevel(this.varName) >= 10;
+            case 3:
+                return towns[3].getLevel(this.varName) >= 20;
+            case 4:
+                return towns[3].getLevel(this.varName) >= 40;
+            case 5:
+                return towns[3].getLevel(this.varName) >= 60;
+            case 6:
+                return towns[3].getLevel(this.varName) >= 70;
+            case 7:
+                return towns[3].getLevel(this.varName) >= 80;
+            case 8:
+                return towns[3].getLevel(this.varName) >= 100;
+        }
+        return false;
+    },
     stats: {
         Spd: 0.1,
         Dex: 0.1,
@@ -2796,6 +3198,15 @@ Action.TakeArtifacts = new Action("Take Artifacts", {
     expMult: 1,
     townNum: 3,
     varName: "Artifacts",
+	storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return towns[3][`good${this.varName}`] >= 1;
+            case 2:
+                return towns[3][`good${this.varName}`] >= 20;
+        }
+        return false;
+    },
     stats: {
         Spd: 0.2,
         Per: 0.6,
@@ -2824,6 +3235,15 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     type: "multipart",
     expMult: 5,
     townNum: 3,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.imbueMindThirdSegmentReached;
+            case 2:
+                return getBuffLevel("Imbuement") >= 1;
+        }
+        return false;
+    },
     stats: {
         Spd: 0.1,
         Per: 0.1,
@@ -2901,6 +3321,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     },
     finish() {
         view.updateBuff("Imbuement");
+		if (towns[3].ImbueMindLoopCounter >= 0) unlockStory("imbueMindThirdSegmentReached");
     },
 });
 
@@ -2908,6 +3329,17 @@ Action.FaceJudgement = new Action("Face Judgement", {
     type: "normal",
     expMult: 2,
     townNum: 3,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.judgementFaced;
+            case 2:
+                return storyReqs.acceptedIntoValhalla;
+            case 3:
+                return storyReqs.castIntoShadowRealm;
+        }
+        return false;
+    },
     stats: {
         Cha: 0.3,
         Luck: 0.2,
@@ -2926,6 +3358,9 @@ Action.FaceJudgement = new Action("Face Judgement", {
         return towns[3].getLevel("Mountain") >= 100;
     },
     finish() {
+		unlockStory("judgementFaced");
+		if (resources.reputation >= 50) unlockStory("acceptedIntoValhalla");
+		else if (resources.reputation <= -50) unlockStory("castIntoShadowRealm");
         // if (resources.reputation >= 50) unlockTown(4);
         // else if (resources.reputation <= 50) unlockTown(5);
     },
