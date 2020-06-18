@@ -401,6 +401,10 @@ function View() {
             if (action.name === "Heal The Sick") unlockStory("failedHeal");
             if (action.name === "Brew Potions") unlockStory("failedBrewPotions");
             if (action.name === "Brew Potions" && resources.reputation < 0) unlockStory("failedBrewPotionsNegativeRep");
+			if (action.name === "Gamble" && resources.reputation < -5) unlockStory("failedGamble");
+			if (action.name === "Gamble" && resources.gold < 20) unlockStory("failedGambleLowMoney");
+			if (action.name === "Gather Team") unlockStory("failedGatherTeam");
+			if (action.name === "Craft Armor") unlockStory("failedCraftArmor");
         } else if (action.loopsLeft === 0) {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
