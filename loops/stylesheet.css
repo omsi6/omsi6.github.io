@@ -73,7 +73,6 @@ body {
 
 #changelog .showthis2 {
     top: 19px;
-    margin-left: 75px;
 }
 
 .showthisname {
@@ -442,7 +441,7 @@ input[type="number"] {
     border-top-right-radius: 6px;
 }
 
-.t-cubic #curActionsListContainer, 
+.t-cubic #curActionsListContainer,
 .t-cubic #nextActionsListContainer {
     border-radius: 0;
 }
