@@ -41,6 +41,7 @@ function Actions() {
                 if (segment === curAction.segments - 1) {
                     // part finished
                     if (curAction.name === "Dark Ritual" && towns[curAction.townNum][curAction.varName] >= 4000000) unlockStory("darkRitualThirdSegmentReached");
+                    if (curAction.name === "Imbue Mind" && towns[curAction.townNum][curAction.varName] >= 700000000) unlockStory("imbueMindThirdSegmentReached");
                     towns[curAction.townNum][curAction.varName] = 0;
                     towns[curAction.townNum][`${curAction.varName}LoopCounter`] += curAction.segments;
                     towns[curAction.townNum][`total${curAction.varName}`]++;
@@ -92,6 +93,7 @@ function Actions() {
                 (!curAction.canStart || curAction.canStart()) && curAction.townNum === curTown) {
                 curAction.loopsLeft++;
                 curAction.loops++;
+                curAction.extraLoops++;
             } else {
                 this.currentPos++;
             }
@@ -111,8 +113,6 @@ function Actions() {
         }
         while ((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
             curAction.errorMessage = this.getErrorMessage(curAction);
-            curAction.loopsFailed = curAction.loopsLeft;
-            curAction.loopsLeft = 0;
             view.updateCurrentActionBar(this.currentPos);
             this.currentPos++;
             if (this.currentPos >= this.current.length) {
@@ -156,7 +156,9 @@ function Actions() {
             this.completedTicks = 0;
 
             for (const action of this.current) {
+                action.loops -= action.extraLoops;
                 action.loopsLeft = action.loops;
+                action.extraLoops = 0;
                 action.ticks = 0;
                 action.manaUsed = 0;
                 action.manaRemaining = 0;
@@ -175,6 +177,7 @@ function Actions() {
 
                 toAdd.loops = action.loops;
                 toAdd.loopsLeft = action.loops;
+                toAdd.extraLoops = 0;
                 toAdd.ticks = 0;
                 toAdd.manaUsed = 0;
                 toAdd.manaRemaining = 0;

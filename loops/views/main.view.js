@@ -68,13 +68,19 @@ function View() {
                     <br>
                     <div class='medium bold'>${_txt("stats>tooltip>level")}:</div> <div id='stat${stat}Level2'></div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>level_exp")}:</div> <div id='stat${stat}LevelExp'></div>/<div id='stat${stat}LevelExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat${stat}LevelProgress'></div>%)</div>
+                    <div class='medium bold'>${_txt("stats>tooltip>level_exp")}:</div>
+                    <div id='stat${stat}LevelExp'></div>/<div id='stat${stat}LevelExpNeeded'></div>
+                    <div class='statTooltipPerc'>(<div id='stat${stat}LevelProgress'></div>%)</div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent")}:</div> <div id='stat${stat}Talent2'></div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent")}:</div>
+                    <div id='stat${stat}Talent2'></div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent_exp")}:</div> <div id='stat${stat}TalentExp'></div>/<div id='stat${stat}TalentExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat${stat}TalentProgress'></div>%)</div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent_exp")}:</div>
+                    <div id='stat${stat}TalentExp'></div>/<div id='stat${stat}TalentExpNeeded'></div>
+                    <div class='statTooltipPerc'>(<div id='stat${stat}TalentProgress'></div>%)</div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent_multiplier")}:</div> x<div id='stat${stat}TalentMult'></div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent_multiplier")}:</div>
+                    x<div id='stat${stat}TalentMult'></div>
                     <br>
                     <div id='ss${stat}Container' class='ssContainer'>
                         <div class='bold'>${_txt("stats>tooltip>soulstone")}:</div> <div id='ss${stat}'></div><br>
@@ -320,10 +326,21 @@ function View() {
                 color = getTravelNum(action.name) > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + getTravelNum(action.name)]} 51%)` : this.zoneTints[townNum];
             }
             totalDivText +=
-                `<div id='nextActionContainer${i}' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(${i})' ondragenter='dragOverDecorate(${i})' ondragleave='dragExitUndecorate(${i})' draggable='true' data-index='${i}' style='background:${color}; ${opacity}'>
+                `<div
+                    id='nextActionContainer${i}'
+                    class='nextActionContainer small'
+                    ondragover='handleDragOver(event)'
+                    ondrop='handleDragDrop(event)'
+                    ondragstart='handleDragStart(event)'
+                    ondragend='draggedUndecorate(${i})'
+                    ondragenter='dragOverDecorate(${i})'
+                    ondragleave='dragExitUndecorate(${i})'
+                    draggable='true' data-index='${i}'
+                    style='background:${color}; ${opacity}'
+                >
                     <div><img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
                     <div class='bold'>${actionLoops}</div></div>
-                    <div style='float:right; margin-top: 3px; margin-right: 3px;'>
+                    <div style='float:right; margin-top: 1px; margin-right: 3px;'>
                         ${capButton}
                         ${isSingular ? "" : `<i id='plusButton${i}' onclick='addLoop(${i})' class='actionIcon fas fa-plus'></i>`}
                         ${isSingular ? "" : `<i id='minusButton${i}' onclick='removeLoop(${i})' class='actionIcon fas fa-minus'></i>`}
@@ -345,14 +362,14 @@ function View() {
         for (let i = 0; i < actions.current.length; i++) {
             const action = actions.current[i];
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-            const actionLoopsLeft = action.loopsLeft > 99999 ? toSuffix(action.loopsLeft) : formatNumber(action.loopsLeft);
+            const actionLoopsDone = (action.loops - action.loopsLeft) > 99999 ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
             totalDivText +=
                 `<div class='curActionContainer small' onmouseover='view.mouseoverAction(${i}, true)' onmouseleave='view.mouseoverAction(${i}, false)'>
                     <div class='curActionBar' id='action${i}Bar'></div>
                     <div class='actionSelectedIndicator' id='action${i}Selected'></div>
                     <img src='img/${camelize(action.name)}.svg' class='smallIcon'>
-                    <div id='action${i}LoopsDone' style='margin-left:3px; border-left: 1px solid #b9b9b9;padding-left: 3px;'>${actionLoops - actionLoopsLeft}</div>
-                    <div style='margin-left: 1px'>/</div><div id='action${i}Loops'>${actionLoops}</div>
+                    <div id='action${i}LoopsDone' style='margin-left:3px; border-left: 1px solid #b9b9b9;padding-left: 3px;'>${actionLoopsDone}</div>
+                    /<div id='action${i}Loops'>${actionLoops}</div>
                 </div>`;
         }
 
@@ -365,15 +382,15 @@ function View() {
             totalDivText +=
                 `<div id='actionTooltip${i}' style='display:none;padding-left:10px;width:90%'>` +
                     `<div style='text-align:center;width:100%'>${action.label}</div><br><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_original")}</div> <div id='action${i}ManaOrig'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_used")}</div> <div id='action${i}ManaUsed'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_remaining")}</div> <div id='action${i}Remaining'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>gold_remaining")}</div> <div id='action${i}GoldRemaining'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>time_spent")}</div> <div id='action${i}TimeSpent'></div><br><br>` +
+                    `<b>${_txt("actions>current_action>mana_original")}</b> <div id='action${i}ManaOrig'></div><br>` +
+                    `<b>${_txt("actions>current_action>mana_used")}</b> <div id='action${i}ManaUsed'></div><br>` +
+                    `<b>${_txt("actions>current_action>mana_remaining")}</b> <div id='action${i}Remaining'></div><br>` +
+                    `<b>${_txt("actions>current_action>gold_remaining")}</b> <div id='action${i}GoldRemaining'></div><br>` +
+                    `<b>${_txt("actions>current_action>time_spent")}</b> <div id='action${i}TimeSpent'></div><br><br>` +
                     `<div id='action${i}ExpGain'></div>` +
                     `<div id='action${i}HasFailed' style='display:none'>` +
-                        `<div class='bold'>${_txt("actions>current_action>failed_attempts")}</div> <div id='action${i}Failed'></div><br>` +
-                        `<div class='bold'>${_txt("actions>current_action>error")}</div> <div id='action${i}Error'></div>` +
+                        `<b>${_txt("actions>current_action>failed_attempts")}</b> <div id='action${i}Failed'></div><br>` +
+                        `<b>${_txt("actions>current_action>error")}</b> <div id='action${i}Error'></div>` +
                     `</div>` +
                 `</div>`;
         }
@@ -391,8 +408,8 @@ function View() {
         if (!action) {
             return;
         }
-        if (action.loopsFailed) {
-            document.getElementById(`action${index}Failed`).textContent = action.loopsFailed;
+        if (action.errorMessage) {
+            document.getElementById(`action${index}Failed`).textContent = action.loopsLeft;
             document.getElementById(`action${index}Error`).textContent = action.errorMessage;
             document.getElementById(`action${index}HasFailed`).style.display = "block";
             div.style.width = "100%";
@@ -402,6 +419,10 @@ function View() {
             if (action.name === "Heal The Sick") unlockStory("failedHeal");
             if (action.name === "Brew Potions") unlockStory("failedBrewPotions");
             if (action.name === "Brew Potions" && resources.reputation < 0) unlockStory("failedBrewPotionsNegativeRep");
+            if (action.name === "Gamble" && resources.reputation < -5) unlockStory("failedGamble");
+            if (action.name === "Gamble" && resources.gold < 20) unlockStory("failedGambleLowMoney");
+            if (action.name === "Gather Team") unlockStory("failedGatherTeam");
+            if (action.name === "Craft Armor") unlockStory("failedCraftArmor");
         } else if (action.loopsLeft === 0) {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
@@ -446,8 +467,9 @@ function View() {
 
     this.updateCurrentActionLoops = function(index) {
         const action = actions.current[index];
-        document.getElementById(`action${index}LoopsDone`).textContent = action.loops > 99999 ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
-        document.getElementById(`action${index}Loops`).textContent = action.loopsLeft > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
+        document.getElementById(`action${index}LoopsDone`).textContent = (action.loops - action.loopsLeft) > 99999 
+            ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
+        document.getElementById(`action${index}Loops`).textContent = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
     };
 
     this.updateProgressAction = function(varName, town) {
@@ -504,6 +526,16 @@ function View() {
                     addClassToDiv(storyDiv, "hidden");
                 }
             }
+        }
+        if (totalActionList.filter(action => action.finish.toString().includes("updateBuff")).filter(action => action.unlocked()).length > 0) {
+            document.getElementById("skillList").style.display = "inline-block";
+        } else {
+            document.getElementById("skillList").style.display = "none";
+        }
+        if (totalActionList.filter(action => action.finish.toString().includes("handleSkillExp")).filter(action => action.unlocked()).length > 0) {
+            document.getElementById("buffList").style.display = "flex";
+        } else {
+            document.getElementById("buffList").style.display = "none";
         }
     };
 
@@ -691,7 +723,15 @@ function View() {
         const isTravel = getTravelNum(action.name) > 0;
         const divClass = isTravel ? "travelContainer showthat" : "actionContainer showthat";
         const totalDivText =
-            `<div id='container${action.varName}' class='${divClass}' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)' ondragend='handleDirectActionDragEnd("${action.varName}")' onclick='addActionToList("${action.name}", ${action.townNum})'>
+            `<div
+                id='container${action.varName}'
+                class='${divClass}'
+                draggable='true'
+                ondragover='handleDragOver(event)'
+                ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)'
+                ondragend='handleDirectActionDragEnd("${action.varName}")'
+                onclick='addActionToList("${action.name}", ${action.townNum})'
+            >
                 ${action.label}<br>
                 <div style='position:relative'>
                     <img src='img/${camelize(action.name)}.svg' class='superLargeIcon' draggable='false'>${extraImage}
