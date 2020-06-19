@@ -105,7 +105,6 @@ const storyReqs = {
     suppliesBought: false,
     suppliesBoughtWithoutHaggling: false,
     smallDungeonAttempted: false,
-    traveledToSecondZone: false,
     satByWaterfall: false,
     dexterityTrained: false,
     speedTrained: false,
@@ -114,7 +113,6 @@ const storyReqs = {
     failedBrewPotions: false,
     failedBrewPotionsNegativeRep: false,
     potionBrewed: false,
-    traveledToThirdZone: false,
     failedGamble: false,
     failedGambleLowMoney: false,
     potionSold: false,
@@ -148,7 +146,6 @@ const storyReqs = {
     failedCraftArmor: false,
     booksRead: false,
     pickaxeBought: false,
-    traveledToFourthZone: false,
     loopingPotionMade: false,
     slay10TrollsInALoop: false,
     imbueMindThirdSegmentReached: false,
@@ -744,7 +741,7 @@ function importSave() {
         window.localStorage[saveName] = LZString.decompressFromBase64(saveData.substr(6));
     } else {
         // handling for old saves from stopsign or patches prior to v0.94
-        window.localStorage[saveName] = LZString.decompress(saveData);
+        window.localStorage[saveName] = decode(saveData);
     }
     actions.next = [];
     actions.current = [];

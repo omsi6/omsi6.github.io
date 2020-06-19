@@ -1010,7 +1010,7 @@ Action.StartJourney = new Action("Start Journey", {
     storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return storyReqs.traveledToSecondZone;
+                return townsUnlocked.includes(1);
         }
         return false;
     },
@@ -1039,7 +1039,6 @@ Action.StartJourney = new Action("Start Journey", {
     },
     finish() {
         unlockTown(1);
-        unlockStory("traveledToSecondZone");
     },
 });
 
@@ -1865,7 +1864,7 @@ Action.ContinueOn = new Action("Continue On", {
     storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return storyReqs.traveledToThirdZone;
+                return townsUnlocked.includes(2);
         }
         return false;
     },
@@ -1888,7 +1887,6 @@ Action.ContinueOn = new Action("Continue On", {
     },
     finish() {
         unlockTown(2);
-        unlockStory("traveledToThirdZone");
     },
 });
 
@@ -2719,7 +2717,7 @@ Action.StartTrek = new Action("Start Trek", {
     storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return storyReqs.traveledToFourthZone;
+                return townsUnlocked.includes(3);
         }
         return false;
     },
@@ -2742,7 +2740,6 @@ Action.StartTrek = new Action("Start Trek", {
     },
     finish() {
         unlockTown(3);
-        unlockStory("traveledToFourthZone");
     },
 });
 

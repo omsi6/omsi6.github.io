@@ -8,11 +8,12 @@
             </meta>
             <version verNum=".94"><![CDATA[
             <b> June 18th, 2020 - The current date</b>
-            <b> v0.94 - "This one's for the history books."</b><br>
+            <b> v0.94 - "One for the history books."</b><br>
             • Added a new set of action stories for Merchanton and Mt. Olympus. These were written by InfernoVulpix from the Discord.<br>
             • Improved centering and alignment of various visual elements.<br>
             • Rounded the corners of the action list.<br>
             • Improved the save exporting system, reducing savefile export character lengths by up to 35%.<br>
+            • The changelog notes are now fixed to the top of the tooltip no matter the position of the version, and the versions now a hover effect.<br>
             • Fixed various issues relating to element visibility when hard resetting your savefile through import.
         ]]></version>
             <version verNum=".93"><![CDATA[
