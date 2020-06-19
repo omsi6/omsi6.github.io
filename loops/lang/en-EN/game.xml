@@ -14,7 +14,9 @@
             • Rounded the corners of the action list.<br>
             • Improved the save exporting system, reducing savefile export character lengths by up to 35%.<br>
             • The changelog notes are now fixed to the top of the tooltip no matter the position of the version, and the versions now a hover effect.<br>
-            • Fixed various issues relating to element visibility when hard resetting your savefile through import.
+            • Fixed various issues relating to element visibility when hard resetting your savefile through import.<br>
+            <br><b> v0.94b - June 18th, 2020</b><br>
+            • Fixed a bug where the skill list and buff list visibility checks were mixed up.
         ]]></version>
             <version verNum=".93"><![CDATA[
             <b> March 16th, 2020 - June 18th, 2020</b>

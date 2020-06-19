@@ -527,12 +527,12 @@ function View() {
                 }
             }
         }
-        if (totalActionList.filter(action => action.finish.toString().includes("updateBuff")).filter(action => action.unlocked()).length > 0) {
+        if (totalActionList.filter(action => action.finish.toString().includes("handleSkillExp")).filter(action => action.unlocked()).length > 0) {
             document.getElementById("skillList").style.display = "inline-block";
         } else {
             document.getElementById("skillList").style.display = "none";
         }
-        if (totalActionList.filter(action => action.finish.toString().includes("handleSkillExp")).filter(action => action.unlocked()).length > 0) {
+        if (totalActionList.filter(action => action.finish.toString().includes("updateBuff")).filter(action => action.unlocked()).length > 0) {
             document.getElementById("buffList").style.display = "flex";
         } else {
             document.getElementById("buffList").style.display = "none";
