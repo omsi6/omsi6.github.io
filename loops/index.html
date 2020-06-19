@@ -16,6 +16,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     
     <script src='lib/jquery.min.js'></script>
+    <script src='lib/lz-string.min.js'></script>
     <script src='lib/chart.min.js'></script>
     <script src='lib/mousetrap.min.js'></script>
 
@@ -231,8 +232,8 @@
                     </div>
                 </div>
             </div>
-            <div id="actionChanges" style="text-align:left;width:100%;margin-top:5px;">
-                <div style="margin-left: -4px;">
+            <div id="actionChanges" style="display:flex;text-align:left;width:100%;margin-top:5px;">
+                <div style="width:50%;">
                     <input type="checkbox" id="keepCurrentListInput" class="checkbox" onchange="setOption('keepCurrentList', this.checked)">
                     <label for="keepCurrentListInput" class="localized" data-lockey="actions>tooltip>current_list_active"></label><br>
                     <input type="checkbox" id="repeatLastActionInput" class="checkbox" onchange="setOption('repeatLastAction', this.checked)">
@@ -240,7 +241,7 @@
                     <input type="checkbox" id="addActionsToTopInput" class="checkbox" onchange="setOption('addActionsToTop', this.checked)">
                     <label for="addActionsToTopInput" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
-                <div style="float:right;text-align:right;">
+                <div style="margin-left:-4px;text-align:right;width:50%;">
                     <div class="bold localized" style="margin-top:3px;" data-lockey="actions>title_loadout"></div>
                     <div class="button unused showthat" id="load1" onclick="selectLoadout(1)">1
                         <div id="load1name" class='showthisname'></div>
@@ -258,9 +259,9 @@
                         <div id="load5name" class='showthisname'></div>
                     </div>
                     <br>
-                    <div class="button localized" style="margin-bottom:5px;margin-top:3px;" onclick="saveList()" data-lockey="actions>tooltip>save_loadout"></div><br>
-                    <div class="button localized" style="margin-bottom:5px;" onclick="loadList()" data-lockey="actions>tooltip>load_loadout"></div><br>
-                    <div class="button localized" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
+                    <div class="button localized" style="margin-bottom:5px;margin-top:3px;margin-right:-4px;" onclick="saveList()" data-lockey="actions>tooltip>save_loadout"></div><br>
+                    <div class="button localized" style="margin-bottom:5px;margin-right:-4px;" onclick="loadList()" data-lockey="actions>tooltip>load_loadout"></div><br>
+                    <div class="button localized" style="margin-right:-4px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
                 </div>
             </div>
         </div>

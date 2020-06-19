@@ -113,8 +113,6 @@ function Actions() {
         }
         while ((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
             curAction.errorMessage = this.getErrorMessage(curAction);
-            curAction.loopsFailed = curAction.loopsLeft;
-            curAction.loopsLeft = 0;
             view.updateCurrentActionBar(this.currentPos);
             this.currentPos++;
             if (this.currentPos >= this.current.length) {

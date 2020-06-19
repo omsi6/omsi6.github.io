@@ -544,11 +544,7 @@ Action.LongQuest = new Action("Long Quest", {
         return towns[0].getLevel("Secrets") >= 1;
     },
     unlocked() {
-        const toUnlock = towns[0].getLevel("Secrets") >= 10;
-        if (toUnlock && !isVisible(document.getElementById("skillList"))) {
-            document.getElementById("skillList").style.display = "inline-block";
-        }
-        return toUnlock;
+        return towns[0].getLevel("Secrets") >= 10;
     },
     goldCost() {
         let practical = Math.max(getSkillLevel("Practical") - 200, 0);
@@ -874,7 +870,9 @@ Action.SmallDungeon = new DungeonAction("Small Dungeon", 0, {
     },
     tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001);
-        return (getSelfCombat() + getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
+        return (getSelfCombat() + getSkillLevel("Magic")) *
+            (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter + offset) % this.loopStats.length]) / 100) *
+            Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001 - 1);
@@ -1041,7 +1039,7 @@ Action.StartJourney = new Action("Start Journey", {
     },
     finish() {
         unlockTown(1);
-		unlockStory("traveledToSecondZone");
+        unlockStory("traveledToSecondZone");
     },
 });
 
@@ -1848,12 +1846,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         return towns[1].getLevel("Witch") >= 20;
     },
     unlocked() {
-        const toUnlock = towns[1].getLevel("Witch") >= 50 && getSkillLevel("Dark") >= 50;
-        if (toUnlock && !isVisible(document.getElementById("buffList"))) {
-            document.getElementById("buffList").style.display = "flex";
-            document.getElementById(`buffRitualContainer`).style.display = "flex";
-        }
-        return toUnlock;
+        return towns[1].getLevel("Witch") >= 50 && getSkillLevel("Dark") >= 50;
     },
     goldCost() {
         return 50 * (getBuffLevel("Ritual") + 1);
@@ -1895,7 +1888,7 @@ Action.ContinueOn = new Action("Continue On", {
     },
     finish() {
         unlockTown(2);
-		unlockStory("traveledToThirdZone");
+        unlockStory("traveledToThirdZone");
     },
 });
 
@@ -1906,7 +1899,7 @@ Action.ExploreCity = new Action("Explore City", {
     expMult: 1,
     townNum: 2,
     varName: "City",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[2].getLevel(this.varName) >= 1;
@@ -1958,7 +1951,7 @@ Action.Gamble = new Action("Gamble", {
     type: "limited",
     expMult: 2,
     townNum: 2,
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[2][`checked${this.varName}`] >= 1;
@@ -1966,10 +1959,10 @@ Action.Gamble = new Action("Gamble", {
                 return towns[2][`good${this.varName}`] >= 1;
             case 3:
                 return towns[2][`good${this.varName}`] >= 30;
-			case 4:
-				return storyReqs.failedGamble;
-			case 5:
-				return storyReqs.failedGambleLowMoney;
+            case 4:
+                return storyReqs.failedGamble;
+            case 5:
+                return storyReqs.failedGambleLowMoney;
         }
         return false;
     },
@@ -2006,7 +1999,7 @@ Action.GetDrunk = new Action("Get Drunk", {
     expMult: 3,
     townNum: 2,
     varName: "Drunk",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[2].getLevel(this.varName) >= 1;
@@ -2081,7 +2074,7 @@ Action.SellPotions = new Action("Sell Potions", {
     type: "normal",
     expMult: 1,
     townNum: 2,
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.potionSold;
@@ -2107,11 +2100,11 @@ Action.SellPotions = new Action("Sell Potions", {
         return true;
     },
     finish() {
-		if (resources.potions >= 20) unlockStory("sell20PotionsInALoop");
+        if (resources.potions >= 20) unlockStory("sell20PotionsInALoop");
         addResource("gold", resources.potions * getSkillLevel("Alchemy"));
         resetResource("potions");
-		unlockStory("potionSold");
-		if (getSkillLevel("Alchemy") >= 100) unlockStory("sellPotionFor100Gold");
+        unlockStory("potionSold");
+        if (getSkillLevel("Alchemy") >= 100) unlockStory("sellPotionFor100Gold");
     },
 });
 
@@ -2123,29 +2116,29 @@ Action.AdventureGuild = new MultipartAction("Adventure Guild", {
     expMult: 1,
     townNum: 2,
     varName: "AdvGuild",
-	storyReqs(storyNum) {
-		switch(storyNum) {
-			case 1:
-				return storyReqs.advGuildTestsTaken;
-			case 2:
-				return storyReqs.advGuildRankEReached;
-			case 3:
-				return storyReqs.advGuildRankDReached;
-			case 4:
-				return storyReqs.advGuildRankCReached;
-			case 5:
-				return storyReqs.advGuildRankBReached;
-			case 6:
-				return storyReqs.advGuildRankAReached;
-			case 7:
-				return storyReqs.advGuildRankSReached;
-			case 8:
-				return storyReqs.advGuildRankUReached;
-			case 9:
-				return storyReqs.advGuildRankGodlikeReached;
-		}
-		return false;
-	},
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.advGuildTestsTaken;
+            case 2:
+                return storyReqs.advGuildRankEReached;
+            case 3:
+                return storyReqs.advGuildRankDReached;
+            case 4:
+                return storyReqs.advGuildRankCReached;
+            case 5:
+                return storyReqs.advGuildRankBReached;
+            case 6:
+                return storyReqs.advGuildRankAReached;
+            case 7:
+                return storyReqs.advGuildRankSReached;
+            case 8:
+                return storyReqs.advGuildRankUReached;
+            case 9:
+                return storyReqs.advGuildRankGodlikeReached;
+        }
+        return false;
+    },
     stats: {
         Str: 0.4,
         Dex: 0.3,
@@ -2171,14 +2164,14 @@ Action.AdventureGuild = new MultipartAction("Adventure Guild", {
                 Math.sqrt(1 + towns[2][`total${this.varName}`] / 1000);
     },
     loopsFinished() {
-		if(curAdvGuildSegment >= 0) unlockStory("advGuildRankEReached");
-		if(curAdvGuildSegment >= 3) unlockStory("advGuildRankDReached");
-		if(curAdvGuildSegment >= 6) unlockStory("advGuildRankCReached");
-		if(curAdvGuildSegment >= 9) unlockStory("advGuildRankBReached");
-		if(curAdvGuildSegment >= 12) unlockStory("advGuildRankAReached");
-		if(curAdvGuildSegment >= 15) unlockStory("advGuildRankSReached");
-		if(curAdvGuildSegment >= 27) unlockStory("advGuildRankUReached");
-		if(curAdvGuildSegment >= 39) unlockStory("advGuildRankGodlikeReached");
+        if (curAdvGuildSegment >= 0) unlockStory("advGuildRankEReached");
+        if (curAdvGuildSegment >= 3) unlockStory("advGuildRankDReached");
+        if (curAdvGuildSegment >= 6) unlockStory("advGuildRankCReached");
+        if (curAdvGuildSegment >= 9) unlockStory("advGuildRankBReached");
+        if (curAdvGuildSegment >= 12) unlockStory("advGuildRankAReached");
+        if (curAdvGuildSegment >= 15) unlockStory("advGuildRankSReached");
+        if (curAdvGuildSegment >= 27) unlockStory("advGuildRankUReached");
+        if (curAdvGuildSegment >= 39) unlockStory("advGuildRankGodlikeReached");
     },
     segmentFinished() {
         curAdvGuildSegment++;
@@ -2198,7 +2191,7 @@ Action.AdventureGuild = new MultipartAction("Adventure Guild", {
     },
     finish() {
         guild = "Adventure";
-		unlockStory("advGuildTestsTaken");
+        unlockStory("advGuildTestsTaken");
     },
 });
 function getAdvGuildRank(offset) {
@@ -2224,7 +2217,7 @@ Action.GatherTeam = new Action("Gather Team", {
     type: "normal",
     expMult: 3,
     townNum: 2,
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.teammateGathered;
@@ -2263,8 +2256,8 @@ Action.GatherTeam = new Action("Gather Team", {
     },
     finish() {
         addResource("teamMembers", 1);
-		unlockStory("teammateGathered");
-		if(resources.teamMembers >= 5) unlockStory("fullParty");
+        unlockStory("teammateGathered");
+        if (resources.teamMembers >= 5) unlockStory("fullParty");
     },
 });
 
@@ -2273,7 +2266,7 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     expMult: 2,
     townNum: 2,
     varName: "LDungeon",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return storyReqs.largeDungeonAttempted;
@@ -2313,7 +2306,9 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     },
     tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001);
-        return (getTeamCombat() + getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].LDungeonLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
+        return (getTeamCombat() + getSkillLevel("Magic")) *
+            (1 + getLevel(this.loopStats[(towns[this.townNum].LDungeonLoopCounter + offset) % this.loopStats.length]) / 100) *
+            Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].LDungeonLoopCounter) / this.segments + 0.0000001 - 1);
@@ -2327,8 +2322,8 @@ Action.LargeDungeon = new DungeonAction("Large Dungeon", 1, {
     },
     finish() {
         handleSkillExp(this.skills);
-		unlockStory("largeDungeonAttempted");
-		if (towns[2].LDungeonLoopCounter >= 63) unlockStory("clearLDungeon");
+        unlockStory("largeDungeonAttempted");
+        if (towns[2].LDungeonLoopCounter >= 63) unlockStory("clearLDungeon");
     },
 });
 
@@ -2337,29 +2332,29 @@ Action.CraftingGuild = new MultipartAction("Crafting Guild", {
     expMult: 1,
     townNum: 2,
     varName: "CraftGuild",
-	storyReqs(storyNum) {
-		switch(storyNum) {
-			case 1:
-				return storyReqs.craftGuildTestsTaken;
-			case 2:
-				return storyReqs.craftGuildRankEReached;
-			case 3:
-				return storyReqs.craftGuildRankDReached;
-			case 4:
-				return storyReqs.craftGuildRankCReached;
-			case 5:
-				return storyReqs.craftGuildRankBReached;
-			case 6:
-				return storyReqs.craftGuildRankAReached;
-			case 7:
-				return storyReqs.craftGuildRankSReached;
-			case 8:
-				return storyReqs.craftGuildRankUReached;
-			case 9:
-				return storyReqs.craftGuildRankGodlikeReached;
-		}
-		return false;
-	},
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return storyReqs.craftGuildTestsTaken;
+            case 2:
+                return storyReqs.craftGuildRankEReached;
+            case 3:
+                return storyReqs.craftGuildRankDReached;
+            case 4:
+                return storyReqs.craftGuildRankCReached;
+            case 5:
+                return storyReqs.craftGuildRankBReached;
+            case 6:
+                return storyReqs.craftGuildRankAReached;
+            case 7:
+                return storyReqs.craftGuildRankSReached;
+            case 8:
+                return storyReqs.craftGuildRankUReached;
+            case 9:
+                return storyReqs.craftGuildRankGodlikeReached;
+        }
+        return false;
+    },
     stats: {
         Dex: 0.3,
         Per: 0.3,
@@ -2388,14 +2383,14 @@ Action.CraftingGuild = new MultipartAction("Crafting Guild", {
                 Math.sqrt(1 + towns[2][`total${this.varName}`] / 1000);
     },
     loopsFinished() {
-		if(curCraftGuildSegment >= 0) unlockStory("craftGuildRankEReached");
-		if(curCraftGuildSegment >= 3) unlockStory("craftGuildRankDReached");
-		if(curCraftGuildSegment >= 6) unlockStory("craftGuildRankCReached");
-		if(curCraftGuildSegment >= 9) unlockStory("craftGuildRankBReached");
-		if(curCraftGuildSegment >= 12) unlockStory("craftGuildRankAReached");
-		if(curCraftGuildSegment >= 15) unlockStory("craftGuildRankSReached");
-		if(curCraftGuildSegment >= 27) unlockStory("craftGuildRankUReached");
-		if(curCraftGuildSegment >= 39) unlockStory("craftGuildRankGodlikeReached");
+        if (curCraftGuildSegment >= 0) unlockStory("craftGuildRankEReached");
+        if (curCraftGuildSegment >= 3) unlockStory("craftGuildRankDReached");
+        if (curCraftGuildSegment >= 6) unlockStory("craftGuildRankCReached");
+        if (curCraftGuildSegment >= 9) unlockStory("craftGuildRankBReached");
+        if (curCraftGuildSegment >= 12) unlockStory("craftGuildRankAReached");
+        if (curCraftGuildSegment >= 15) unlockStory("craftGuildRankSReached");
+        if (curCraftGuildSegment >= 27) unlockStory("craftGuildRankUReached");
+        if (curCraftGuildSegment >= 39) unlockStory("craftGuildRankGodlikeReached");
     },
     segmentFinished() {
         curCraftGuildSegment++;
@@ -2416,7 +2411,7 @@ Action.CraftingGuild = new MultipartAction("Crafting Guild", {
     },
     finish() {
         guild = "Crafting";
-		unlockStory("craftGuildTestsTaken");
+        unlockStory("craftGuildTestsTaken");
     },
 });
 function getCraftGuildRank(offset) {
@@ -2477,8 +2472,8 @@ Action.CraftArmor = new Action("Craft Armor", {
     },
     finish() {
         addResource("armor", 1);
-		unlockStory("armorCrafted");
-		if(resources.armor >= 10) unlockStory("craft10Armor");
+        unlockStory("armorCrafted");
+        if (resources.armor >= 10) unlockStory("craft10Armor");
     },
 });
 
@@ -2671,7 +2666,7 @@ Action.ReadBooks = new Action("Read Books", {
         return towns[2].getLevel("City") >= 50;
     },
     finish() {
-		unlockStory("booksRead");
+        unlockStory("booksRead");
     },
 });
 
@@ -2711,7 +2706,7 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     },
     finish() {
         addResource("pickaxe", true);
-		unlockStory("pickaxeBought");
+        unlockStory("pickaxeBought");
     },
 });
 
@@ -2747,7 +2742,7 @@ Action.StartTrek = new Action("Start Trek", {
     },
     finish() {
         unlockTown(3);
-		unlockStory("traveledToFourthZone");
+        unlockStory("traveledToFourthZone");
     },
 });
 
@@ -2756,7 +2751,7 @@ Action.ClimbMountain = new Action("Climb Mountain", {
     expMult: 1,
     townNum: 3,
     varName: "Mountain",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3].getLevel(this.varName) >= 1;
@@ -2802,7 +2797,7 @@ Action.ManaGeyser = new Action("Mana Geyser", {
     expMult: 1,
     townNum: 3,
     varName: "Geysers",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3][`good${this.varName}`] >= 1;
@@ -2845,7 +2840,7 @@ Action.DecipherRunes = new Action("Decipher Runes", {
     expMult: 1,
     townNum: 3,
     varName: "Runes",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3].getLevel(this.varName) >= 1;
@@ -2961,7 +2956,7 @@ Action.LoopingPotion = new Action("Looping Potion", {
     finish() {
         addResource("loopingPotion", true);
         handleSkillExp(this.skills);
-		unlockStory("loopingPotionMade");
+        unlockStory("loopingPotionMade");
     },
 });
 
@@ -3007,7 +3002,7 @@ Action.ExploreCavern = new Action("Explore Cavern", {
     expMult: 1,
     townNum: 3,
     varName: "Cavern",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3].getLevel(this.varName) >= 1;
@@ -3053,7 +3048,7 @@ Action.MineSoulstones = new Action("Mine Soulstones", {
     type: "limited",
     expMult: 1,
     townNum: 3,
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3][`checked${this.varName}`] >= 1;
@@ -3131,7 +3126,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
     loopsFinished() {
         handleSkillExp(this.skills);
         addResource("blood", 1);
-		if (resources.blood >= 10) unlockStory("slay10TrollsInALoop");
+        if (resources.blood >= 10) unlockStory("slay10TrollsInALoop");
     },
     getPartName() {
         return "Hunt Troll";
@@ -3143,7 +3138,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
         return towns[3].getLevel("Cavern") >= 50;
     },
     finish() {
-		// nothing
+        // nothing
     },
 });
 
@@ -3152,7 +3147,7 @@ Action.CheckWalls = new Action("Check Walls", {
     expMult: 1,
     townNum: 3,
     varName: "Illusions",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3].getLevel(this.varName) >= 1;
@@ -3198,7 +3193,7 @@ Action.TakeArtifacts = new Action("Take Artifacts", {
     expMult: 1,
     townNum: 3,
     varName: "Artifacts",
-	storyReqs(storyNum) {
+    storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
                 return towns[3][`good${this.varName}`] >= 1;
@@ -3309,19 +3304,14 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
         return towns[3].getLevel("Illusions") >= 50;
     },
     unlocked() {
-        const toUnlock = towns[3].getLevel("Illusions") >= 70 && getSkillLevel("Magic") >= 300;
-        if (toUnlock && !isVisible(document.getElementById("buffList"))) {
-            document.getElementById("buffList").style.display = "flex";
-            document.getElementById(`buffImbuementContainer`).style.display = "flex";
-        }
-        return toUnlock;
+        return towns[3].getLevel("Illusions") >= 70 && getSkillLevel("Magic") >= 300;
     },
     goldCost() {
         return 20 * (getBuffLevel("Imbuement") + 1);
     },
     finish() {
         view.updateBuff("Imbuement");
-		if (towns[3].ImbueMindLoopCounter >= 0) unlockStory("imbueMindThirdSegmentReached");
+        if (towns[3].ImbueMindLoopCounter >= 0) unlockStory("imbueMindThirdSegmentReached");
     },
 });
 
@@ -3358,9 +3348,9 @@ Action.FaceJudgement = new Action("Face Judgement", {
         return towns[3].getLevel("Mountain") >= 100;
     },
     finish() {
-		unlockStory("judgementFaced");
-		if (resources.reputation >= 50) unlockStory("acceptedIntoValhalla");
-		else if (resources.reputation <= -50) unlockStory("castIntoShadowRealm");
+        unlockStory("judgementFaced");
+        if (resources.reputation >= 50) unlockStory("acceptedIntoValhalla");
+        else if (resources.reputation <= -50) unlockStory("castIntoShadowRealm");
         // if (resources.reputation >= 50) unlockTown(4);
         // else if (resources.reputation <= 50) unlockTown(5);
     },
@@ -3542,12 +3532,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return towns[1].getLevel("Thicket") >= 50;
     },
     unlocked() {
-        const toUnlock = false;
-        if (toUnlock && !isVisible(document.getElementById("buffList"))) {
-            document.getElementById("buffList").style.display = "flex";
-            document.getElementById(`buffFeastContainer`).style.display = "flex";
-        }
-        return toUnlock;
+        return false;
     },
     goldCost() {
         return 5000 * (getBuffLevel("Feast") + 1);
@@ -3616,7 +3601,9 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     },
     tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001);
-        return (getSelfCombat() + getSkillLevel("Magic")) * (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
+        return (getSelfCombat() + getSkillLevel("Magic")) *
+        (1 + getLevel(this.loopStats[(towns[this.townNum].SDungeonLoopCounter + offset) % this.loopStats.length]) / 100) *
+        Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].SDungeonLoopCounter) / this.segments + 0.0000001 - 1);

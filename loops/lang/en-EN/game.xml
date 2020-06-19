@@ -6,8 +6,17 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".94"><![CDATA[
+            <b> June 18th, 2020 - The current date</b>
+            <b> v0.94 - "This one's for the history books."</b><br>
+            • Added a new set of action stories for Merchanton and Mt. Olympus. These were written by InfernoVulpix from the Discord.<br>
+            • Improved centering and alignment of various visual elements.<br>
+            • Rounded the corners of the action list.<br>
+            • Improved the save exporting system, reducing savefile export character lengths by up to 35%.<br>
+            • Fixed various issues relating to element visibility when hard resetting your savefile through import.
+        ]]></version>
             <version verNum=".93"><![CDATA[
-            <b> March 16th, 2020 - The current date</b>
+            <b> March 16th, 2020 - June 18th, 2020</b>
             <b> v0.93 - "Diminishing returns."</b><br>
             • Team member gold cost and cost increase from 200 > 100 per.<br>
             • Travel actions in the next action list now have multicolored backgrounds where the top half is the zone they're in, and the bottom half is the zone they bring you to.<br>

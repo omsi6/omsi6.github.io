@@ -17,7 +17,7 @@ let mainTickLoop;
 const saveName = "idleLoops1";
 
 // this is to hide the cheat button if you aren't supposed to cheat
-if (window.location.href === "http://10.0.0.3:8080/loops/") document.getElementById("cheat").style.display = "inline-block";
+if (window.location.href.includes("http://10.0.0.3:8080/loops/")) document.getElementById("cheat").style.display = "inline-block";
 
 const timeNeededInitial = 5 * 50;
 // eslint-disable-next-line prefer-const
@@ -105,7 +105,7 @@ const storyReqs = {
     suppliesBought: false,
     suppliesBoughtWithoutHaggling: false,
     smallDungeonAttempted: false,
-	traveledToSecondZone: false,
+    traveledToSecondZone: false,
     satByWaterfall: false,
     dexterityTrained: false,
     speedTrained: false,
@@ -114,47 +114,47 @@ const storyReqs = {
     failedBrewPotions: false,
     failedBrewPotionsNegativeRep: false,
     potionBrewed: false,
-	traveledToThirdZone: false,
-	failedGamble: false,
-	failedGambleLowMoney: false,
-	potionSold: false,
-	sell20PotionsInALoop: false,
-	sellPotionFor100Gold: false,
-	advGuildTestsTaken: false,
-	advGuildRankEReached: false,
-	advGuildRankDReached: false,
-	advGuildRankCReached: false,
-	advGuildRankBReached: false,
-	advGuildRankAReached: false,
-	advGuildRankSReached: false,
-	advGuildRankUReached: false,
-	advGuildRankGodlikeReached: false,
-	teammateGathered: false,
-	fullParty: false,
-	failedGatherTeam: false,
-	largeDungeonAttempted: false,
-	clearLDungeon: false,
-	craftGuildTestsTaken: false,
-	craftGuildRankEReached: false,
-	craftGuildRankDReached: false,
-	craftGuildRankCReached: false,
-	craftGuildRankBReached: false,
-	craftGuildRankAReached: false,
-	craftGuildRankSReached: false,
-	craftGuildRankUReached: false,
-	craftGuildRankGodlikeReached: false,
-	armorCrafted: false,
-	craft10Armor: false,
-	failedCraftArmor: false,
-	booksRead: false,
-	pickaxeBought: false,
-	traveledToFourthZone: false,
-	loopingPotionMade: false,
-	slay10TrollsInALoop: false,
-	imbueMindThirdSegmentReached: false,
-	judgementFaced: false,
-	acceptedIntoValhalla: false,
-	castIntoShadowRealm: false
+    traveledToThirdZone: false,
+    failedGamble: false,
+    failedGambleLowMoney: false,
+    potionSold: false,
+    sell20PotionsInALoop: false,
+    sellPotionFor100Gold: false,
+    advGuildTestsTaken: false,
+    advGuildRankEReached: false,
+    advGuildRankDReached: false,
+    advGuildRankCReached: false,
+    advGuildRankBReached: false,
+    advGuildRankAReached: false,
+    advGuildRankSReached: false,
+    advGuildRankUReached: false,
+    advGuildRankGodlikeReached: false,
+    teammateGathered: false,
+    fullParty: false,
+    failedGatherTeam: false,
+    largeDungeonAttempted: false,
+    clearLDungeon: false,
+    craftGuildTestsTaken: false,
+    craftGuildRankEReached: false,
+    craftGuildRankDReached: false,
+    craftGuildRankCReached: false,
+    craftGuildRankBReached: false,
+    craftGuildRankAReached: false,
+    craftGuildRankSReached: false,
+    craftGuildRankUReached: false,
+    craftGuildRankGodlikeReached: false,
+    armorCrafted: false,
+    craft10Armor: false,
+    failedCraftArmor: false,
+    booksRead: false,
+    pickaxeBought: false,
+    traveledToFourthZone: false,
+    loopingPotionMade: false,
+    slay10TrollsInALoop: false,
+    imbueMindThirdSegmentReached: false,
+    judgementFaced: false,
+    acceptedIntoValhalla: false,
+    castIntoShadowRealm: false
 };
 
 const curDate = new Date();
@@ -196,7 +196,6 @@ function closeTutorial() {
 
 function clearSave() {
     window.localStorage[saveName] = "";
-    load();
 }
 
 function loadDefaults() {
@@ -222,7 +221,7 @@ function load() {
 
     let toLoad = {};
     // has a save file
-    if (window.localStorage[saveName]) {
+    if (window.localStorage[saveName] && window.localStorage[saveName] !== "null") {
         closeTutorial();
         toLoad = JSON.parse(window.localStorage[saveName]);
     }
@@ -725,18 +724,28 @@ function exportOldSave() {
 
 function exportSave() {
     save();
-    document.getElementById("exportImport").value = encode(window.localStorage[saveName]);
+    // idle loops save version 01. patch v0.94, moved from old save system to lzstring base 64
+    document.getElementById("exportImport").value = `ILSV01${LZString.compressToBase64(window.localStorage[saveName])}`;
     document.getElementById("exportImport").select();
     document.execCommand("copy");
 }
 
 function importSave() {
-    if (document.getElementById("exportImport").value === "") {
-        if (!confirm("Importing nothing will delete your save. Are you sure you want to delete your save?")) {
+    const saveData = document.getElementById("exportImport").value;
+    if (saveData === "") {
+        if (confirm("Importing nothing will delete your save. Are you sure you want to delete your save?")) {
+            clearSave();
+        } else {
             return;
         }
     }
-    window.localStorage[saveName] = decode(document.getElementById("exportImport").value);
+    // idle loops save version 01. patch v0.94, moved from old save system to lzstring base 64
+    if (saveData.substr(0, 6) === "ILSV01") {
+        window.localStorage[saveName] = LZString.decompressFromBase64(saveData.substr(6));
+    } else {
+        // handling for old saves from stopsign or patches prior to v0.94
+        window.localStorage[saveName] = LZString.decompress(saveData);
+    }
     actions.next = [];
     actions.current = [];
     load();
