@@ -3230,7 +3230,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     storyReqs(storyNum) {
         switch (storyNum) {
             case 1:
-                return storyReqs.imbueMindThirdSegmentReached;
+                return storyReqs.imbueMindThirdSegmentReached || getBuffLevel("Imbuement") >= 1;
             case 2:
                 return getBuffLevel("Imbuement") >= 1;
         }

@@ -382,6 +382,17 @@ function split(index) {
     view.updateNextActions();
 }
 
+function collapse(index) {
+    actions.nextLast = copyObject(actions.next);
+    const action = actions.next[index];
+    if (action.collapsed) {
+        action.collapsed = false;
+    } else {
+        action.collapsed = true;
+    }
+    view.updateNextActions();
+}
+
 function showNotification(name) {
     document.getElementById(`${name}Notification`).style.display = "block";
 }

@@ -16,7 +16,11 @@
             • The changelog notes are now fixed to the top of the tooltip no matter the position of the version, and the versions now a hover effect.<br>
             • Fixed various issues relating to element visibility when hard resetting your savefile through import.<br>
             <br><b> v0.94b - June 18th, 2020</b><br>
-            • Fixed a bug where the skill list and buff list visibility checks were mixed up.
+            • Fixed a bug where the skill list and buff list visibility checks were mixed up.<br>
+            <br><b> v0.94c - June 20th, 2020</b><br>
+            • Added a button on travel actions to collapse their respective zone.<br>
+            • Improved grammar on the first Adventure Guild action story.<br>
+            • Fixed the first Imbue Mind action story being unobtainable if you had capped it before the update.
         ]]></version>
             <version verNum=".93"><![CDATA[
             <b> March 16th, 2020 - June 18th, 2020</b>
@@ -1353,7 +1357,7 @@
             <tooltip><![CDATA[
             The one stop shop for all your adventuring needs.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 200 mana per rank.<br>Gives ((magic skill)/2 + (self combat)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 20% Rumors Heard.
         ]]></tooltip>
-			<story_1><![CDATA[<b>Tests taken:</b>⮀ You've gone through the standardized tests of the guild, and you're a little surprised at how low you placed. It seems that what you've considered impressive up until now is just the bare minimum among here.]]></story_1>
+			<story_1><![CDATA[<b>Tests taken:</b>⮀ You've gone through the standardized tests of the guild, and you're a little surprised at how low you placed. It seems that what you've considered impressive up until now is just the bare minimum around here.]]></story_1>
 			<story_2><![CDATA[<b>E Rank achieved:</b>⮀ You've clawed your way out of the ranks of the common riffraff. You still don't stand out at all, but it feels good to not be on the bottom rung anymore.]]></story_2>
 			<story_3><![CDATA[<b>D Rank achieved:</b>⮀ They say you're good for a new recruit, but it's still with a bored tone and an apathetic face. It seems even though you're getting much better scores nobody actually cares yet. Well, at least you're better off than the people stuck in F-rank.]]></story_3>
 			<story_4><![CDATA[<b>C Rank achieved:</b>⮀ People seem to actually respect you now, all of a sudden. Apparently it's pretty common for people to fail to make it higher than E or D and quit, but those who make it to C-rank are in for the long haul. You're being treated like a comrade in arms now, and it feels good.]]></story_4>

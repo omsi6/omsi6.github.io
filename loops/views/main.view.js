@@ -304,26 +304,33 @@ function View() {
 
         for (let i = 0; i < actions.next.length; i++) {
             const action = actions.next[i];
+            const translatedAction = translateClassNames(action.name);
             let capButton = "";
-            const townNum = translateClassNames(action.name).townNum;
+            const townNum = translatedAction.townNum;
+            const travelNum = getTravelNum(action.name);
+            const zonesCollapsed = [];
+            for (const entry of Object.entries(actions.next.filter(a => a.collapsed))) {
+                zonesCollapsed.push(translateClassNames(entry[1].name).townNum);
+            }
             if (hasLimit(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capAmount(${i}, ${townNum})' class='actionIcon far fa-circle'></i>`;
             } else if (isTraining(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capTraining(${i})' class='actionIcon far fa-circle'></i>`;
             }
             let isSingular;
-            if (translateClassNames(action.name).allowed === undefined) {
+            if (translatedAction.allowed === undefined) {
                 isSingular = false;
             } else {
-                isSingular = translateClassNames(action.name).allowed() === 1;
+                isSingular = translatedAction.allowed() === 1;
             }
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-            const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5;" : "";
+            const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5" : "";
+            const display = zonesCollapsed.includes(townNum) && !travelNum ? "display: none" : "display: flex";
             let color;
             if (action.name === "Face Judgement") {
                 color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
             } else {
-                color = getTravelNum(action.name) > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + getTravelNum(action.name)]} 51%)` : this.zoneTints[townNum];
+                color = travelNum > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
             }
             totalDivText +=
                 `<div
@@ -336,7 +343,7 @@ function View() {
                     ondragenter='dragOverDecorate(${i})'
                     ondragleave='dragExitUndecorate(${i})'
                     draggable='true' data-index='${i}'
-                    style='background:${color}; ${opacity}'
+                    style='background: ${color}; ${opacity}; ${display};'
                 >
                     <div><img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
                     <div class='bold'>${actionLoops}</div></div>
@@ -345,6 +352,7 @@ function View() {
                         ${isSingular ? "" : `<i id='plusButton${i}' onclick='addLoop(${i})' class='actionIcon fas fa-plus'></i>`}
                         ${isSingular ? "" : `<i id='minusButton${i}' onclick='removeLoop(${i})' class='actionIcon fas fa-minus'></i>`}
                         ${isSingular ? "" : `<i id='splitButton${i}' onclick='split(${i})' class='actionIcon fas fa-arrows-alt-h'></i>`}
+                        ${travelNum ? `<i id='collapseButton${i}' onclick='collapse(${i})' class='actionIcon fas fa-${action.collapsed ? "expand" : "compress"}-alt'></i>` : ""}
                         <i id='upButton${i}' onclick='moveUp(${i})' class='actionIcon fas fa-sort-up'></i>
                         <i id='downButton${i}' onclick='moveDown(${i})' class='actionIcon fas fa-sort-down'></i>
                         <i id='skipButton${i}' onclick='disableAction(${i})' class='actionIcon far fa-${action.disabled ? "check" : "times"}-circle'></i>
