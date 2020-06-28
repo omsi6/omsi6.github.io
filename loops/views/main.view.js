@@ -434,7 +434,7 @@ function View() {
             div.style.height = "30%";
             div.style.marginTop = "5px";
             if (action.name === "Heal The Sick") unlockStory("failedHeal");
-            if (action.name === "Brew Potions" && resources.reputation > 0 && resources.herbs >= 10) unlockStory("failedBrewPotions");
+            if (action.name === "Brew Potions" && resources.reputation >= 0 && resources.herbs >= 10) unlockStory("failedBrewPotions");
             if (action.name === "Brew Potions" && resources.reputation < 0 && resources.herbs >= 10) unlockStory("failedBrewPotionsNegativeRep");
             if (action.name === "Gamble" && resources.reputation < -5) unlockStory("failedGamble");
             if (action.name === "Gamble" && resources.gold < 20 && resources.reputation > -6) unlockStory("failedGambleLowMoney");
