@@ -94,13 +94,17 @@ body {
     display:none;
     position:absolute;
     color: black;
-    background: url(img/misc/texture.png);
+    background: url(img/misc/textureDesaturated.png);
     border:1px solid #b89651;
     padding:3px 5px;
     margin-top:-2px;
     margin-left:-1px;
     z-index: 999999;
     text-align:left;
+}
+
+.storyContainerCompleted .showthisstory {
+    background: url(img/misc/texture.png);
 }
 
 .thickProgressBar .showthis {
@@ -185,7 +189,7 @@ input {
 
 .buffmaxinput {
     top: 0px;
-    left: -3px;
+    left: -5px;
     width: 24px;
     height: 12px;
     border: none;
@@ -399,9 +403,9 @@ input[type="number"] {
     height: 50px;
     vertical-align: top;
     font-size: 13px;
-    color: #b89651;
     border: 1px solid #b89651;
-    background: url(img/misc/texture.png);
+    color: #b5a585;
+    background: url(img/misc/textureDesaturated.png);
     box-shadow: -2px 2px 1px #bbb;
     border-radius: 5px;
     margin: 3px;
@@ -410,6 +414,10 @@ input[type="number"] {
 .storyContainer:hover {
     border-radius: 0px;
     box-shadow: none;
+}
+.storyContainerCompleted {
+    color: #b89651;
+    background: url(img/misc/texture.png);
 }
 
 .travelContainer {

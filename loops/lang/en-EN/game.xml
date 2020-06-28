@@ -20,7 +20,14 @@
             <br><b> v0.94c - June 20th, 2020</b><br>
             • Added a button on travel actions to collapse their respective zone.<br>
             • Improved grammar on the first Adventure Guild action story.<br>
-            • Fixed the first Imbue Mind action story being unobtainable if you had capped it before the update.
+            • Fixed the first Imbue Mind action story being unobtainable if you had capped it before the update.<br>
+            <br><b> v0.94d - June 27th, 2020</b><br>
+            • Action stories are now colored differently when you have unlocked all the stories for an action versus when you haven't.<br>
+            • Collapsing travel actions now only hides actions in the same zone that are before the travel action in your list.<br>
+            • Editable buff caps are now explained in the "Buffs" section's hover text.<br>
+            • Fixed the horizontal spacing on buff caps.<br>
+            • Fixed the negative and low reputation failed action stories for Brew Potions being obtainable from failing the action by having less than 10 herbs.<br>
+            • Fixed improper hiding of action stories when importing a new save file.
         ]]></version>
             <version verNum=".93"><![CDATA[
             <b> March 16th, 2020 - June 18th, 2020</b>
@@ -659,7 +666,7 @@
         </the_spire>
         <tooltip>
             <level>Level</level>
-            <no_reset_on_restart>Buffs last through resets.</no_reset_on_restart>
+            <no_reset_on_restart><![CDATA[Buffs last through resets.<br>You can click on the right hand number to edit it and adjust the cap for that buff. (buff actions will automatically fail and not spend soulstones past your set cap)]]></no_reset_on_restart>
         </tooltip>
     </buffs>
     <towns>

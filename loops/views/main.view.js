@@ -308,10 +308,16 @@ function View() {
             let capButton = "";
             const townNum = translatedAction.townNum;
             const travelNum = getTravelNum(action.name);
-            const zonesCollapsed = [];
-            for (const entry of Object.entries(actions.next.filter(a => a.collapsed))) {
-                zonesCollapsed.push(translateClassNames(entry[1].name).townNum);
-            }
+            const collapses = [];
+            // eslint-disable-next-line no-loop-func
+            actions.next.forEach((a, index) => {
+                if (a.collapsed) {
+                    const collapse = {};
+                    collapse.zone = translateClassNames(a.name).townNum;
+                    collapse.index = index;
+                    collapses.push(collapse);
+                }
+            });
             if (hasLimit(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capAmount(${i}, ${townNum})' class='actionIcon far fa-circle'></i>`;
             } else if (isTraining(action.name)) {
@@ -325,7 +331,10 @@ function View() {
             }
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
             const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5" : "";
-            const display = zonesCollapsed.includes(townNum) && !travelNum ? "display: none" : "display: flex";
+            let display = "display: flex";
+            for (const collapse of collapses) {
+                if (townNum === collapse.zone && i < collapse.index) display =  "display: none"
+            }
             let color;
             if (action.name === "Face Judgement") {
                 color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
@@ -425,10 +434,10 @@ function View() {
             div.style.height = "30%";
             div.style.marginTop = "5px";
             if (action.name === "Heal The Sick") unlockStory("failedHeal");
-            if (action.name === "Brew Potions") unlockStory("failedBrewPotions");
-            if (action.name === "Brew Potions" && resources.reputation < 0) unlockStory("failedBrewPotionsNegativeRep");
+            if (action.name === "Brew Potions" && resources.reputation > 0 && resources.herbs >= 10) unlockStory("failedBrewPotions");
+            if (action.name === "Brew Potions" && resources.reputation < 0 && resources.herbs >= 10) unlockStory("failedBrewPotionsNegativeRep");
             if (action.name === "Gamble" && resources.reputation < -5) unlockStory("failedGamble");
-            if (action.name === "Gamble" && resources.gold < 20) unlockStory("failedGambleLowMoney");
+            if (action.name === "Gamble" && resources.gold < 20 && resources.reputation > -6) unlockStory("failedGambleLowMoney");
             if (action.name === "Gather Team") unlockStory("failedGatherTeam");
             if (action.name === "Craft Armor") unlockStory("failedCraftArmor");
         } else if (action.loopsLeft === 0) {
@@ -554,16 +563,18 @@ function View() {
                 // greatly reduces/nullifies the cost of checking actions with all stories unlocked, which is nice,
                 // since you're likely to have more stories unlocked at end game, which is when performance is worse
                 const divName = `storyContainer${action.varName}`;
-                if (document.getElementById(divName).innerHTML.includes("???")) {
+                if (init || document.getElementById(divName).innerHTML.includes("???")) {
                     let storyTooltipText = "";
                     let lastInBranch = false;
                     const name = action.name.toLowerCase().replace(/ /gu, "_");
                     const storyAmt = _txt(`actions>${name}`, "fallback").split("⮀").length - 1;
+                    let storiesUnlocked = 0;
                     for (let i = 1; i <= storyAmt; i++) {
                         const storyText = _txt(`actions>${name}>story_${i}`, "fallback").split("⮀");
                         if (action.storyReqs(i)) {
                             storyTooltipText += storyText[0] + storyText[1];
                             lastInBranch = false;
+                            storiesUnlocked++;
                         } else if (lastInBranch) {
                             storyTooltipText += "<b>???:</b> ???";
                         } else {
@@ -575,6 +586,11 @@ function View() {
                     if (document.getElementById(divName).children[2].innerHTML !== storyTooltipText) {
                         document.getElementById(divName).children[2].innerHTML = storyTooltipText;
                         if (!init) showNotification(divName);
+                        if (storiesUnlocked === storyAmt) {
+                            document.getElementById(divName).classList.add("storyContainerCompleted");
+                        } else {
+                            document.getElementById(divName).classList.remove("storyContainerCompleted");
+                        }
                     }
                 }
             }

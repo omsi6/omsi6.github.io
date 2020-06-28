@@ -18,7 +18,7 @@ Views.registerView("menu", {
                             ${$(version).text()}
                         </div>
                     </div>
-                    <br>`;
+                    `;
         });
         return html;
     },
