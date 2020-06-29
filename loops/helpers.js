@@ -30,6 +30,10 @@ function round(num) {
     return formatNumber(num);
 }
 
+function formatPercents(num) {
+    return parseFloat(num * 100).toFixed(1) + "%";
+}
+
 function formatNumber(num) {
     return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/gu, ",");
 }

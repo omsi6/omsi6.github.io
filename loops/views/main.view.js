@@ -401,6 +401,7 @@ function View() {
                     `<div style='text-align:center;width:100%'>${action.label}</div><br><br>` +
                     `<b>${_txt("actions>current_action>mana_original")}</b> <div id='action${i}ManaOrig'></div><br>` +
                     `<b>${_txt("actions>current_action>mana_used")}</b> <div id='action${i}ManaUsed'></div><br>` +
+                    `<b>${_txt("actions>current_action>cost_ratio")}</b> <div id='action${i}CostRatio'></div><br>` +
                     `<b>${_txt("actions>current_action>mana_remaining")}</b> <div id='action${i}Remaining'></div><br>` +
                     `<b>${_txt("actions>current_action>gold_remaining")}</b> <div id='action${i}GoldRemaining'></div><br>` +
                     `<b>${_txt("actions>current_action>time_spent")}</b> <div id='action${i}TimeSpent'></div><br><br>` +
@@ -451,6 +452,7 @@ function View() {
         if (curActionShowing === index) {
             document.getElementById(`action${index}ManaOrig`).textContent = formatNumber(action.manaCost() * action.loops);
             document.getElementById(`action${index}ManaUsed`).textContent = formatNumber(action.manaUsed);
+            document.getElementById(`action${index}CostRatio`).textContent = formatPercents(action.costRatio);
             document.getElementById(`action${index}Remaining`).textContent = formatNumber(action.manaRemaining);
             document.getElementById(`action${index}GoldRemaining`).textContent = formatNumber(action.goldRemaining);
             document.getElementById(`action${index}TimeSpent`).textContent = formatTime(action.timeSpent);

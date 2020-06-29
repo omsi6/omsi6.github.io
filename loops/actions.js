@@ -161,6 +161,7 @@ function Actions() {
                 action.extraLoops = 0;
                 action.ticks = 0;
                 action.manaUsed = 0;
+                action.costRatio = 0;
                 action.manaRemaining = 0;
                 action.goldRemaining = 0;
                 action.timeSpent = 0;
@@ -180,6 +181,7 @@ function Actions() {
                 toAdd.extraLoops = 0;
                 toAdd.ticks = 0;
                 toAdd.manaUsed = 0;
+                toAdd.costRatio = 0;
                 toAdd.manaRemaining = 0;
                 toAdd.goldRemaining = 0;
                 toAdd.timeSpent = 0;
@@ -240,6 +242,7 @@ function setAdjustedTicks(action) {
             newCost += action.stats[statName] / (1 + getLevel(statName) / 100);
         }
     }
+    action.costRatio = newCost;
     action.adjustedTicks = Math.ceil(action.manaCost() * newCost - 0.000001);
 }
 
