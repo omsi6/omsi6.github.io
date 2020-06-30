@@ -3565,6 +3565,80 @@ Action.EnchantGear = new Action("Enchant Gear", {
 	},
 });
 
+Action.WizardCollege = new MultipartAction("Wizard College", {
+	type: "multipart",
+	expMult: 1,
+	townNum: 4,
+	varName: "wizCollege",
+	stats: {
+		Int: 1.0 // Temp
+	},
+	loopStats: ["Int", "Int", "Int"], // Temp
+	manaCost() {
+		return 10000;
+	},
+	allowed() {
+		return 1;
+	},
+	canStart() {
+		return resources.gold >= 500 && resources.favors >= 10;
+	},
+	cost() {
+		addResource("gold", -500);
+		addResource("favors", -10);
+	},
+	loopCost(segment) {
+		return precision3(Math.pow(1.2, towns[4][`${this.varName}LoopCounter`] + segment)) * 5e6; // Temp
+	},
+	tickProgress (offset) {
+		return (getSkillLevel("Magic") + getSkillLevel("Practical") + getSkillLevel("Dark") + getSkillLevel("Chronomancy") + getSkillLevel("Pyromancy") + getSkillLevel("Restoration") + getSkillLevel("Spatiomancy")) * 
+				(1 + getLevel(this.loopStats[(towns[4][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) * 
+				Math.sqrt(1 + towns[4][`total${this.varName}`] / 1000);
+	},
+	loopsFinished() {
+		// empty.
+	},
+	segmentFinished() {
+		curWizCollegeSegment++;
+		view.adjustManaCost("Restoration");
+		view.adjustManaCost("Spatiomancy");
+		// Additional thing?
+	}, 
+	getPartName() {
+		return `${getWizCollegeRank().name}`;
+	},
+	getSegmentName(segment) {
+		return `${getWizCollegeRank(segment % 3).name}`;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 60;
+	},
+	finish() {
+		// guild = "Wizard";
+	},
+});
+function getWizCollegeRank(offset) {
+	let name = ["Initiate", "Student", "Apprentice", "Disciple", "Spellcaster", "Magician", "Wizard", "Great Wizard", "Grand Wizard", "Archwizard", "Sage", "Great Sage", "Grand Sage", "Archsage"][Math.floor(curWizCollegeSegment / 3 + 0.00001)];
+	
+	const segment = (offset === undefined ? 0 : offset - (curWizCollegeSegment % 3)) + curWizCollegeSegment;
+	let bonus = precision3(1 + segment / 20 + Math.pow(segment, 2) / 300);
+	if (name) {
+		if (offset === undefined) {
+			name += ["-", "", "+"][curWizCollegeSegment % 3];
+		} else {
+			name += ["-", "", "+"][offset % 3];
+		}
+	} else {
+		name = "Merlin";
+		bonus = 10;
+	}
+	name += `, Mult x${bonus}`;
+	return { name, bonus };
+}
+
 Action.WingedSteed = new Action("Winged Steed", {
 	tytpe: "normal",
 	expMult: 1,

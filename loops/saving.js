@@ -167,6 +167,8 @@ const offlineRatio = 1;
 let curAdvGuildSegment = 0;
 // eslint-disable-next-line prefer-const
 let curCraftGuildSegment = 0;
+// eslint-disable-next-line prefer-const
+let curWizCollegeSegment = 0;
 
 const options = {
     theme: "normal",

@@ -1755,7 +1755,7 @@
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
             <tooltip><![CDATA[
-            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at ???
+            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at ???
         ]]></tooltip>
             <!--TODO: give this action story-->
         </wizard_college>
