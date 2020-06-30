@@ -3541,6 +3541,31 @@ Action.GiftArtifacts = new Action("Gift Artifacts", {
 	},
 });
 
+Action.CharmSchool = new Action("Charm School", {
+    type: "normal",
+    expMult: 4,
+    townNum: 4,
+    stats: {
+        Cha: 0.8,
+        Int: 0.2
+    },
+    allowed() {
+        return trainingLimits;
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 20;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 30;
+    },
+    finish() {
+		// empty
+    },
+});
+
 Action.EnchantGear = new Action("Enchant Gear", {
 	tytpe: "normal",
 	expMult: 1,

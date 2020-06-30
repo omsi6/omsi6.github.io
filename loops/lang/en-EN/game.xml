@@ -1744,6 +1744,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </mercantilism>
+        <charm_school>
+            <label>Charm School</label>
+            <tooltip><![CDATA[
+            (Incomplete)
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </charm_school>
 		<enchant_gear>
 			<label>Enchant Gear</label>
 			<tooltip><![CDATA[
