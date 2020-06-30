@@ -1708,6 +1708,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</get_mana>
+		<sell_artifacts>
+			<label>Sell Artifacts</label>
+			<tooltip><![CDATA[
+			Sell the artifacts you found on Mt. Olympus as priceless ancient heirlooms.<br>Costs one artifact.<br>Gives 50 gold.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</sell_artifacts>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
