@@ -439,6 +439,11 @@
             <id>loopingPotion</id>
             <desc>It's a potion made with the very same formula that got you into this mess. Why exactly did you make this?</desc>
         </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/wingedSteed.svg" class="smallIcon">]]></title>
+            <id>steed</id>
+            <desc>A horse with great angelic wings.  It can run across clouds as easily as on dirt.</desc>
+        </resource>
     </tracked_resources>
     <time_controls>
         <play_button>Play</play_button>
@@ -1768,6 +1773,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </spatiomancy>
+		<winged_steed>
+			<label>Winged Steed</label>
+			<tooltip><![CDATA[
+			Swift on land and sky, it takes more than just gold to own a creature like this.<br>(Effect)(Incomplete)<br>Costs 100 gold and 10 favors.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</winged_steed>
         <great_feast>
             <label>Great Feast</label>
             <label_done>Completed</label_done>

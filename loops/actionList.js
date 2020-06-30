@@ -3565,6 +3565,36 @@ Action.EnchantGear = new Action("Enchant Gear", {
 	},
 });
 
+Action.WingedSteed = new Action("Winged Steed", {
+	tytpe: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	allowed() {
+		return 1;
+	},
+	manaCost() {
+		return 1000; // Temp
+	},
+	canStart() {
+		return resources.gold >= 100 && resources.favors >= 10;
+	},
+	cost() {
+		addResource("favors", -10);
+		addResource("gold", -100);
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 70;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 90;
+	},
+	finish() {
+		addResource("steed", true);
+	},
+});
 
 // todo: make this correct
 Action.GreatFeast = new MultipartAction("Great Feast", {
