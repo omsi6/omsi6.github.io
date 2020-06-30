@@ -3547,6 +3547,32 @@ Action.GiftArtifacts = new Action("Gift Artifacts", {
 	},
 });
 
+Action.Mercantilism = new Action("Mercantilism", {
+    type: "normal",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Per: 0.2, // Temp
+        Int: 0.7,
+        Soul: 0.1
+    },
+    skills: {
+        //Mercantilism: 100
+    },
+    manaCost() {
+        return 10000; // Temp
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 20;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 30;
+    },
+    finish() {
+        //handleSkillExp(this.skills);
+    },
+});
+
 Action.CharmSchool = new Action("Charm School", {
     type: "normal",
     expMult: 4,
