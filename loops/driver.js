@@ -10,8 +10,7 @@ let refund = false;
 let radarUpdateTime = 0;
 let timeCounter = 0;
 
-function getSpeedMult(zone) {
-    if (isNaN(zone)) zone = curTown;
+function getSpeedMult(zone = curTown) {
     let speedMult = 1;
 
     // dark ritual
@@ -57,12 +56,8 @@ function tick() {
         actions.tick();
         for (const dungeon of dungeons) {
             for (const level of dungeon) {
-                if (level.ssChance < 1) {
-                    level.ssChance += 0.0000001;
-                    if (level.ssChance > 1) {
-                        level.ssChance = 1;
-                    }
-                }
+                const chance = level.ssChance;
+                if (chance < 1) level.ssChance = Math.min(chance + 0.0000001, 1);
             }
         }
 
@@ -103,7 +98,15 @@ function recalcInterval(fps) {
     doWork.postMessage({ start: true, ms: (1000 / fps) });
 }
 
-function pauseGame() {
+function stopGame() {
+    stop = true;
+    view.updateTime();
+    view.updateCurrentActionBar(actions.currentPos);
+    document.title = "*PAUSED* Idle Loops";
+    document.getElementById("pausePlay").textContent = _txt("time_controls>play_button");
+}
+
+function pauseGame(ping) {
     stop = !stop;
     view.updateTime();
     view.updateCurrentActionBar(actions.currentPos);
@@ -111,13 +114,18 @@ function pauseGame() {
     document.getElementById("pausePlay").textContent = _txt(`time_controls>${stop ? "play_button" : "pause_button"}`);
     if (!stop && (shouldRestart || timer >= timeNeeded)) {
         restart();
+    } else if (ping) {
+        beep(250);
+        setTimeout(() => beep(250), 500);
     }
 }
 
 function prepareRestart() {
     const curAction = actions.getNextValidAction();
-    if (document.getElementById("pauseBeforeRestart").checked) {
-        if (document.getElementById("audioCueToggle").checked) {
+    if (options.pauseBeforeRestart ||
+        (options.pauseOnFailedLoop && 
+         (actions.current.filter(action => action.loopsLeft - action.extraLoops > 0).length > 0))) {
+        if (options.pingOnPause) {
             beep(250);
             setTimeout(() => beep(250), 500);
         }
@@ -125,22 +133,10 @@ function prepareRestart() {
             actions.completedTicks += actions.getNextValidAction().ticks;
             view.updateTotalTicks();
         }
-        view.updateCurrentActionBar(actions.current.length - 1);
-        pauseGame();
-    } else if (document.getElementById("pauseOnFailedLoop").checked) {
-        if (actions.currentPos < actions.next.length - 1) {
-            if (curAction) {
-                actions.completedTicks += actions.getNextValidAction().ticks;
-                view.updateTotalTicks();
-            }
-            pauseGame();
-            if (document.getElementById("audioCueToggle").checked) {
-                beep(250);
-                setTimeout(() => beep(250), 500);
-            }
-        } else {
-            restart();
+        for (let i = 0; i < actions.current.length; i++) {
+            view.updateCurrentActionBar(i);
         }
+        stopGame();
     } else {
         restart();
     }
@@ -180,7 +176,7 @@ function addActionToList(name, townNum, isTravelAction, insertAtIndex) {
                     actions.addAction(name, 1, insertAtIndex);
                 } else {
                     actions.addAction(name, addAmount, insertAtIndex);
-                    if (shiftDown && hasCap(name)) {
+                    if (shiftDown && hasLimit(name)) {
                         capAmount((insertAtIndex) ? insertAtIndex : actions.next.length - 1, townNum);
                     } else if (shiftDown && isTraining(name)) {
                         capTraining((insertAtIndex) ? insertAtIndex : actions.next.length - 1, townNum);
@@ -323,6 +319,7 @@ function adjustAll() {
     adjustGeysers();
     adjustMineSoulstones();
     adjustArtifacts();
+    adjustDonations();
     view.adjustManaCost("Continue On");
 }
 
@@ -382,6 +379,17 @@ function split(index) {
     const isDisabled = toSplit.disabled;
     actions.addAction(toSplit.name, Math.ceil(toSplit.loops / 2), index, isDisabled);
     toSplit.loops = Math.floor(toSplit.loops / 2);
+    view.updateNextActions();
+}
+
+function collapse(index) {
+    actions.nextLast = copyObject(actions.next);
+    const action = actions.next[index];
+    if (action.collapsed) {
+        action.collapsed = false;
+    } else {
+        action.collapsed = true;
+    }
     view.updateNextActions();
 }
 

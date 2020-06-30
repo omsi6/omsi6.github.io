@@ -442,27 +442,27 @@ function statistics() {
     let actionWithStoryCount = 0;
     let multiPartActionCount = 0;
     let PBAActionCount = 0;
+    let limitedActionCount = 0;
     let storyCount = 0;
     // let skillCount = 0;
     // let buffCount = 0;
-    for (const action of view.totalActionList) {
+    for (const action of totalActionList) {
         if (action.storyReqs !== undefined) {
             const name = action.name.toLowerCase().replace(/ /gu, "_");
             storyCount += _txt(`actions>${name}`, "fallback").split("⮀").length - 1;
             actionWithStoryCount++;
         }
-        if (action.loopStats !== undefined) multiPartActionCount++;
+        if (action.type === "progress") PBAActionCount++;
+        else if (action.type === "limited") limitedActionCount++;
+        else if (action.type === "multipart") multiPartActionCount++;
         actionCount++;
-    }
-    for (const town of towns) {
-        PBAActionCount += town.progressVars.length;
     }
 
     const list = 
 `Actions: ${actionCount} (${actionWithStoryCount} with story)
  Multi part actions: ${multiPartActionCount}
  Progress based actions: ${PBAActionCount}
- Limited actions: ${cappedActions.length}
+ Limited actions: ${limitedActionCount}
  Training actions: ${trainingActions.length}/9
  Stories: ${storyCount} (~${(storyCount / actionCount).toFixed(2)} avg per action)
  Skills: ${skillList.length}
@@ -480,4 +480,25 @@ function benchmark(code, iterations) {
     }
     const after = Date.now();
     return `Total cost: ${after - before - baseCost}ms\n Cost per iteration: ~${(after - before - baseCost) / iterations}ms`;
+}
+
+// make a lazy getter for an object (most useful for prototypes), which executes the
+// provided function once upon first attempting to get the property, and in the future has
+// the computed result as an own property of the instance
+// usage: defineLazyGetter(A.prototype, 'prop', function() { return ...; })
+function defineLazyGetter(object, name, getter) {
+    Object.defineProperty(object, name, {
+        get() {
+            if (Object.prototype.hasOwnProperty.call(this, name)) {
+                // only used if this getter itself is own
+                // otherwise, shadowing the property is enough
+                delete this[name];
+            }
+            Object.defineProperty(this, name, {
+                value: getter.call(this)
+            });
+            return this[name];
+        },
+        configurable: true,
+    });
 }

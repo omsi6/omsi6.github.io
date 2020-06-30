@@ -1,8 +1,6 @@
 "use strict";
 
 function View() {
-    this.totalActionList = [];
-
     this.initalize = function() {
         this.createStats();
         this.updateStats();
@@ -70,13 +68,19 @@ function View() {
                     <br>
                     <div class='medium bold'>${_txt("stats>tooltip>level")}:</div> <div id='stat${stat}Level2'></div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>level_exp")}:</div> <div id='stat${stat}LevelExp'></div>/<div id='stat${stat}LevelExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat${stat}LevelProgress'></div>%)</div>
+                    <div class='medium bold'>${_txt("stats>tooltip>level_exp")}:</div>
+                    <div id='stat${stat}LevelExp'></div>/<div id='stat${stat}LevelExpNeeded'></div>
+                    <div class='statTooltipPerc'>(<div id='stat${stat}LevelProgress'></div>%)</div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent")}:</div> <div id='stat${stat}Talent2'></div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent")}:</div>
+                    <div id='stat${stat}Talent2'></div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent_exp")}:</div> <div id='stat${stat}TalentExp'></div>/<div id='stat${stat}TalentExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat${stat}TalentProgress'></div>%)</div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent_exp")}:</div>
+                    <div id='stat${stat}TalentExp'></div>/<div id='stat${stat}TalentExpNeeded'></div>
+                    <div class='statTooltipPerc'>(<div id='stat${stat}TalentProgress'></div>%)</div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent_multiplier")}:</div> x<div id='stat${stat}TalentMult'></div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent_multiplier")}:</div>
+                    x<div id='stat${stat}TalentMult'></div>
                     <br>
                     <div id='ss${stat}Container' class='ssContainer'>
                         <div class='bold'>${_txt("stats>tooltip>soulstone")}:</div> <div id='ss${stat}'></div><br>
@@ -96,20 +100,24 @@ function View() {
         updateStat: [],
         updateSkill: [],
         updateMultiPartSegments: [],
+        updateMultiPart: [],
+        updateMultiPartActions: [],
+        updateNextActions: [],
+        updateTime: [],
         updateCurrentActionBar: []
     };
 
     // requesting an update will call that update on the next view.update tick (based off player set UPS)
-    this.requestUpdate = function(catagory, target) {
-        if (!this.requests[catagory].includes(target)) this.requests[catagory].push(target);
+    this.requestUpdate = function(category, target) {
+        if (!this.requests[category].includes(target)) this.requests[category].push(target);
     };
 
     this.handleUpdateRequests = function() {
-        for (const catagory in this.requests) {
-            for (const target of this.requests[catagory]) {
-                this[catagory](target);
+        for (const category in this.requests) {
+            for (const target of this.requests[category]) {
+                this[category](target);
             }
-            this.requests[catagory] = [];
+            this.requests[category] = [];
         }
     };
 
@@ -232,7 +240,7 @@ function View() {
         if (resource !== "gold") document.getElementById(`${resource}Div`).style.display = resources[resource] ? "inline-block" : "none";
 
         if (resource === "supplies") document.getElementById("suppliesCost").textContent = towns[0].suppliesCost;
-        if (resource === "teamMembers") document.getElementById("teamCost").textContent = (resources.teamMembers + 1) * 200;
+        if (resource === "teamMembers") document.getElementById("teamCost").textContent = (resources.teamMembers + 1) * 100;
 
         if (Number.isFinite(resources[resource])) document.getElementById(resource).textContent = resources[resource];
     };
@@ -296,30 +304,64 @@ function View() {
 
         for (let i = 0; i < actions.next.length; i++) {
             const action = actions.next[i];
+            const translatedAction = translateClassNames(action.name);
             let capButton = "";
-            const townNum = translateClassNames(action.name).townNum;
-            if (hasCap(action.name)) {
+            const townNum = translatedAction.townNum;
+            const travelNum = getTravelNum(action.name);
+            const collapses = [];
+            // eslint-disable-next-line no-loop-func
+            actions.next.forEach((a, index) => {
+                if (a.collapsed) {
+                    const collapse = {};
+                    collapse.zone = translateClassNames(a.name).townNum;
+                    collapse.index = index;
+                    collapses.push(collapse);
+                }
+            });
+            if (hasLimit(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capAmount(${i}, ${townNum})' class='actionIcon far fa-circle'></i>`;
             } else if (isTraining(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capTraining(${i})' class='actionIcon far fa-circle'></i>`;
             }
             let isSingular;
-            if (translateClassNames(action.name).allowed === undefined) {
+            if (translatedAction.allowed === undefined) {
                 isSingular = false;
             } else {
-                isSingular = translateClassNames(action.name).allowed() === 1;
+                isSingular = translatedAction.allowed() === 1;
             }
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-            const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5;" : "";
+            const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5" : "";
+            let display = "display: flex";
+            for (const collapse of collapses) {
+                if (townNum === collapse.zone && i < collapse.index) display =  "display: none"
+            }
+            let color;
+            if (action.name === "Face Judgement") {
+                color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
+            } else {
+                color = travelNum > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
+            }
             totalDivText +=
-                `<div id='nextActionContainer${i}' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(${i})' ondragenter='dragOverDecorate(${i})' ondragleave='dragExitUndecorate(${i})' draggable='true' data-index='${i}' style='background:${this.zoneTints[townNum]}; ${opacity}'>
-                    <img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
-                    <div class='bold'>${actionLoops}</div>
-                    <div style='float:right; margin-top: 3px; margin-right: 3px;'>
+                `<div
+                    id='nextActionContainer${i}'
+                    class='nextActionContainer small'
+                    ondragover='handleDragOver(event)'
+                    ondrop='handleDragDrop(event)'
+                    ondragstart='handleDragStart(event)'
+                    ondragend='draggedUndecorate(${i})'
+                    ondragenter='dragOverDecorate(${i})'
+                    ondragleave='dragExitUndecorate(${i})'
+                    draggable='true' data-index='${i}'
+                    style='background: ${color}; ${opacity}; ${display};'
+                >
+                    <div><img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
+                    <div class='bold'>${actionLoops}</div></div>
+                    <div style='float:right; margin-top: 1px; margin-right: 3px;'>
                         ${capButton}
                         ${isSingular ? "" : `<i id='plusButton${i}' onclick='addLoop(${i})' class='actionIcon fas fa-plus'></i>`}
                         ${isSingular ? "" : `<i id='minusButton${i}' onclick='removeLoop(${i})' class='actionIcon fas fa-minus'></i>`}
                         ${isSingular ? "" : `<i id='splitButton${i}' onclick='split(${i})' class='actionIcon fas fa-arrows-alt-h'></i>`}
+                        ${travelNum ? `<i id='collapseButton${i}' onclick='collapse(${i})' class='actionIcon fas fa-${action.collapsed ? "expand" : "compress"}-alt'></i>` : ""}
                         <i id='upButton${i}' onclick='moveUp(${i})' class='actionIcon fas fa-sort-up'></i>
                         <i id='downButton${i}' onclick='moveDown(${i})' class='actionIcon fas fa-sort-down'></i>
                         <i id='skipButton${i}' onclick='disableAction(${i})' class='actionIcon far fa-${action.disabled ? "check" : "times"}-circle'></i>
@@ -327,7 +369,6 @@ function View() {
                     </div>
                 </div>`;
         }
-
         nextActionsDiv.innerHTML = totalDivText;
     };
 
@@ -338,13 +379,14 @@ function View() {
         for (let i = 0; i < actions.current.length; i++) {
             const action = actions.current[i];
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-            const actionLoopsLeft = action.loopsLeft > 99999 ? toSuffix(action.loopsLeft) : formatNumber(action.loopsLeft);
+            const actionLoopsDone = (action.loops - action.loopsLeft) > 99999 ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
             totalDivText +=
                 `<div class='curActionContainer small' onmouseover='view.mouseoverAction(${i}, true)' onmouseleave='view.mouseoverAction(${i}, false)'>
                     <div class='curActionBar' id='action${i}Bar'></div>
                     <div class='actionSelectedIndicator' id='action${i}Selected'></div>
                     <img src='img/${camelize(action.name)}.svg' class='smallIcon'>
-                    x<div id='action${i}LoopsLeft' style='margin-left:3px'>${actionLoops}</div>(<div id='action${i}Loops'>${actionLoopsLeft}</div>)
+                    <div id='action${i}LoopsDone' style='margin-left:3px; border-left: 1px solid #b9b9b9;padding-left: 3px;'>${actionLoopsDone}</div>
+                    /<div id='action${i}Loops'>${actionLoops}</div>
                 </div>`;
         }
 
@@ -357,16 +399,16 @@ function View() {
             totalDivText +=
                 `<div id='actionTooltip${i}' style='display:none;padding-left:10px;width:90%'>` +
                     `<div style='text-align:center;width:100%'>${action.label}</div><br><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_original")}</div> <div id='action${i}ManaOrig'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_used")}</div> <div id='action${i}ManaUsed'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>last_mana")}</div> <div id='action${i}LastMana'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_remaining")}</div> <div id='action${i}Remaining'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>gold_remaining")}</div> <div id='action${i}GoldRemaining'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>time_spent")}</div> <div id='action${i}TimeSpent'></div><br><br>` +
+                    `<b>${_txt("actions>current_action>mana_original")}</b> <div id='action${i}ManaOrig'></div><br>` +
+                    `<b>${_txt("actions>current_action>mana_used")}</b> <div id='action${i}ManaUsed'></div><br>` +
+                    `<b>${_txt("actions>current_action>last_mana")}</b> <div id='action${i}LastMana'></div><br>` +
+                    `<b>${_txt("actions>current_action>mana_remaining")}</b> <div id='action${i}Remaining'></div><br>` +
+                    `<b>${_txt("actions>current_action>gold_remaining")}</b> <div id='action${i}GoldRemaining'></div><br>` +
+                    `<b>${_txt("actions>current_action>time_spent")}</b> <div id='action${i}TimeSpent'></div><br><br>` +
                     `<div id='action${i}ExpGain'></div>` +
                     `<div id='action${i}HasFailed' style='display:none'>` +
-                        `<div class='bold'>${_txt("actions>current_action>failed_attempts")}</div> <div id='action${i}Failed'></div><br>` +
-                        `<div class='bold'>${_txt("actions>current_action>error")}</div> <div id='action${i}Error'></div>` +
+                        `<b>${_txt("actions>current_action>failed_attempts")}</b> <div id='action${i}Failed'></div><br>` +
+                        `<b>${_txt("actions>current_action>error")}</b> <div id='action${i}Error'></div>` +
                     `</div>` +
                 `</div>`;
         }
@@ -384,8 +426,8 @@ function View() {
         if (!action) {
             return;
         }
-        if (action.loopsFailed) {
-            document.getElementById(`action${index}Failed`).textContent = action.loopsFailed;
+        if (action.errorMessage) {
+            document.getElementById(`action${index}Failed`).textContent = action.loopsLeft;
             document.getElementById(`action${index}Error`).textContent = action.errorMessage;
             document.getElementById(`action${index}HasFailed`).style.display = "block";
             div.style.width = "100%";
@@ -393,8 +435,12 @@ function View() {
             div.style.height = "30%";
             div.style.marginTop = "5px";
             if (action.name === "Heal The Sick") unlockStory("failedHeal");
-            if (action.name === "Brew Potions") unlockStory("failedBrewPotions");
-            if (action.name === "Brew Potions" && resources.reputation < 0) unlockStory("failedBrewPotionsNegativeRep");
+            if (action.name === "Brew Potions" && resources.reputation >= 0 && resources.herbs >= 10) unlockStory("failedBrewPotions");
+            if (action.name === "Brew Potions" && resources.reputation < 0 && resources.herbs >= 10) unlockStory("failedBrewPotionsNegativeRep");
+            if (action.name === "Gamble" && resources.reputation < -5) unlockStory("failedGamble");
+            if (action.name === "Gamble" && resources.gold < 20 && resources.reputation > -6) unlockStory("failedGambleLowMoney");
+            if (action.name === "Gather Team") unlockStory("failedGatherTeam");
+            if (action.name === "Craft Armor") unlockStory("failedCraftArmor");
         } else if (action.loopsLeft === 0) {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
@@ -440,10 +486,9 @@ function View() {
 
     this.updateCurrentActionLoops = function(index) {
         const action = actions.current[index];
-        document.getElementById(`action${index}Loops`).textContent = action.loopsLeft > 99999 ? toSuffix(action.loopsLeft) : formatNumber(action.loopsLeft);
-        if (index === (actions.current.length - 1)) {
-            document.getElementById(`action${index}LoopsLeft`).textContent = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-        }
+        document.getElementById(`action${index}LoopsDone`).textContent = (action.loops - action.loopsLeft) > 99999 
+            ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
+        document.getElementById(`action${index}Loops`).textContent = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
     };
 
     this.updateProgressAction = function(varName, town) {
@@ -465,7 +510,7 @@ function View() {
     };
 
     this.updateLockedHidden = function() {
-        for (const action of this.totalActionList) {
+        for (const action of totalActionList) {
             const actionDiv = document.getElementById(`container${action.varName}`);
             const infoDiv = document.getElementById(`infoContainer${action.varName}`);
             const storyDiv = document.getElementById(`storyContainer${action.varName}`);
@@ -501,25 +546,37 @@ function View() {
                 }
             }
         }
+        if (totalActionList.filter(action => action.finish.toString().includes("handleSkillExp")).filter(action => action.unlocked()).length > 0) {
+            document.getElementById("skillList").style.display = "inline-block";
+        } else {
+            document.getElementById("skillList").style.display = "none";
+        }
+        if (totalActionList.filter(action => action.finish.toString().includes("updateBuff")).filter(action => action.unlocked()).length > 0) {
+            document.getElementById("buffList").style.display = "flex";
+        } else {
+            document.getElementById("buffList").style.display = "none";
+        }
     };
 
     this.updateStories = function(init) {
         // ~1.56ms cost per run. run once every 2000ms on an interval
-        for (const action of view.totalActionList) {
+        for (const action of totalActionList) {
             if (action.storyReqs !== undefined) {
                 // greatly reduces/nullifies the cost of checking actions with all stories unlocked, which is nice,
                 // since you're likely to have more stories unlocked at end game, which is when performance is worse
                 const divName = `storyContainer${action.varName}`;
-                if (document.getElementById(divName).innerHTML.includes("???")) {
+                if (init || document.getElementById(divName).innerHTML.includes("???")) {
                     let storyTooltipText = "";
                     let lastInBranch = false;
                     const name = action.name.toLowerCase().replace(/ /gu, "_");
                     const storyAmt = _txt(`actions>${name}`, "fallback").split("⮀").length - 1;
+                    let storiesUnlocked = 0;
                     for (let i = 1; i <= storyAmt; i++) {
                         const storyText = _txt(`actions>${name}>story_${i}`, "fallback").split("⮀");
                         if (action.storyReqs(i)) {
                             storyTooltipText += storyText[0] + storyText[1];
                             lastInBranch = false;
+                            storiesUnlocked++;
                         } else if (lastInBranch) {
                             storyTooltipText += "<b>???:</b> ???";
                         } else {
@@ -531,6 +588,11 @@ function View() {
                     if (document.getElementById(divName).children[2].innerHTML !== storyTooltipText) {
                         document.getElementById(divName).children[2].innerHTML = storyTooltipText;
                         if (!init) showNotification(divName);
+                        if (storiesUnlocked === storyAmt) {
+                            document.getElementById(divName).classList.add("storyContainerCompleted");
+                        } else {
+                            document.getElementById(divName).classList.remove("storyContainerCompleted");
+                        }
                     }
                 }
             }
@@ -624,251 +686,14 @@ function View() {
     };
 
     this.createTownActions = function() {
-        while (actionOptionsTown[0].firstChild) {
-            actionOptionsTown[0].removeChild(actionOptionsTown[0].firstChild);
+        if (actionOptionsTown[0].firstChild) return;
+        for (const prop in Action) {
+            const action = Action[prop];
+            this.createTownAction(action);
+            if (action.type === "limited") this.createTownInfo(action);
+            if (action.type === "progress") this.createActionProgress(action);
+            if (action.type === "multipart") this.createMultiPartPBar(action);
         }
-        while (actionStoriesTown[0].firstChild) {
-            actionStoriesTown[0].removeChild(actionStoriesTown[0].firstChild);
-        }
-        while (townInfos[0].firstChild) {
-            townInfos[0].removeChild(townInfos[0].firstChild);
-        }
-        let tempObj = new Wander();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-        tempObj = new SmashPots();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-        tempObj = new PickLocks();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        this.createTownAction(new BuyGlasses());
-        this.createTownAction(new BuyMana());
-
-        tempObj = new MeetPeople();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new TrainStrength());
-
-        tempObj = new ShortQuest();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new Investigate();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new LongQuest();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        this.createTownAction(new ThrowParty());
-        this.createTownAction(new WarriorLessons());
-        this.createTownAction(new MageLessons());
-
-        tempObj = new HealTheSick();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new FightMonsters();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new SmallDungeon();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new BuySupplies());
-        this.createTownAction(new Haggle());
-        this.createTownAction(new StartJourney());
-
-        while (actionOptionsTown[1].firstChild) {
-            actionOptionsTown[1].removeChild(actionOptionsTown[1].firstChild);
-        }
-        while (townInfos[1].firstChild) {
-            townInfos[1].removeChild(townInfos[1].firstChild);
-        }
-        tempObj = new ExploreForest();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new WildMana();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new GatherHerbs();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new Hunt();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        this.createTownAction(new SitByWaterfall());
-
-        tempObj = new OldShortcut();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new TalkToHermit();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new PracticalMagic());
-        this.createTownAction(new LearnAlchemy());
-        this.createTownAction(new BrewPotions());
-
-        this.createTownAction(new TrainDexterity());
-        this.createTownAction(new TrainSpeed());
-
-        tempObj = new FollowFlowers();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new BirdWatching());
-
-        tempObj = new ClearThicket();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new TalkToWitch();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new DarkMagic());
-
-        tempObj = new DarkRitual();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new ContinueOn());
-
-        while (actionOptionsTown[2].firstChild) {
-            actionOptionsTown[2].removeChild(actionOptionsTown[2].firstChild);
-        }
-        while (townInfos[2].firstChild) {
-            townInfos[2].removeChild(townInfos[2].firstChild);
-        }
-        tempObj = new ExploreCity();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new Gamble();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new GetDrunk();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new PurchaseMana());
-        this.createTownAction(new SellPotions());
-
-        tempObj = new JoinAdvGuild();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new GatherTeam());
-
-        tempObj = new LargeDungeon();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new CraftingGuild();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new CraftArmor());
-
-        tempObj = new Apprentice();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new Mason();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new Architect();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new ReadBooks());
-
-        this.createTownAction(new BuyPickaxe());
-
-        this.createTownAction(new StartTrek());
-
-        while (actionOptionsTown[3].firstChild) {
-            actionOptionsTown[3].removeChild(actionOptionsTown[3].firstChild);
-        }
-        while (townInfos[3].firstChild) {
-            townInfos[3].removeChild(townInfos[3].firstChild);
-        }
-
-        tempObj = new ClimbMountain();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new ManaGeyser();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new DecipherRunes();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        this.createTownAction(new Chronomancy());
-        this.createTownAction(new LoopingPotion());
-        this.createTownAction(new Pyromancy());
-
-        tempObj = new ExploreCavern();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new MineSoulstones();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new HuntTrolls();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        tempObj = new CheckWalls();
-        this.createTownAction(tempObj);
-        this.createActionProgress(tempObj);
-
-        tempObj = new TakeArtifacts();
-        this.createTownAction(tempObj);
-        this.createTownInfo(tempObj);
-
-        tempObj = new ImbueMind();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new FaceJudgement());
-
-        while (actionOptionsTown[4].firstChild) {
-            actionOptionsTown[4].removeChild(actionOptionsTown[4].firstChild);
-        }
-        while (townInfos[4].firstChild) {
-            townInfos[4].removeChild(townInfos[4].firstChild);
-        }
-
-        tempObj = new GreatFeast();
-        this.createTownAction(tempObj);
-        this.createMultiPartPBar(tempObj);
-
-        this.createTownAction(new FallFromGrace());
-
-        while (actionOptionsTown[5].firstChild) {
-            actionOptionsTown[5].removeChild(actionOptionsTown[5].firstChild);
-        }
-        while (townInfos[5].firstChild) {
-            townInfos[5].removeChild(townInfos[5].firstChild);
-        }
-
     };
 
     this.createActionProgress = function(action) {
@@ -924,14 +749,22 @@ function View() {
         const isTravel = getTravelNum(action.name) > 0;
         const divClass = isTravel ? "travelContainer showthat" : "actionContainer showthat";
         const totalDivText =
-            `<div id='container${action.varName}' class='${divClass}' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)' ondragend='handleDirectActionDragEnd("${action.varName}")' onclick='addActionToList("${action.name}", ${action.townNum})'>
+            `<div
+                id='container${action.varName}'
+                class='${divClass}'
+                draggable='true'
+                ondragover='handleDragOver(event)'
+                ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)'
+                ondragend='handleDirectActionDragEnd("${action.varName}")'
+                onclick='addActionToList("${action.name}", ${action.townNum})'
+            >
                 ${action.label}<br>
                 <div style='position:relative'>
                     <img src='img/${camelize(action.name)}.svg' class='superLargeIcon' draggable='false'>${extraImage}
                 </div>
                 <div class='showthis' draggable='false'>
                     ${action.tooltip}<span id='goldCost${action.varName}'></span>
-                    ${(typeof(action.tooltip2) === "string") ? action.tooltip2 : ""}
+                    ${(action.goldCost === undefined) ? "" : action.tooltip2}
                     <br>
                     ${actionSkills}
                     ${actionStats}
@@ -944,14 +777,13 @@ function View() {
         actionsDiv.innerHTML = totalDivText;
         if (isTravel) actionsDiv.style.width = "100%";
         actionOptionsTown[action.townNum].appendChild(actionsDiv);
-        towns[action.townNum].totalActionList.push(action);
-        this.totalActionList.push(action);
 
         if (action.storyReqs !== undefined) {
             let storyTooltipText = "";
             let lastInBranch = false;
             const storyAmt = _txt(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}`, "fallback").split("⮀").length - 1;
             for (let i = 1; i <= storyAmt; i++) {
+                if (_txt(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}>story_${i}`) === undefined) console.log(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}>story_${i}`);
                 const storyText = _txt(`actions>${action.name.toLowerCase().replace(/ /gu, "_")}>story_${i}`, "fallback").split("⮀");
                 if (action.storyReqs(i)) {
                     storyTooltipText += storyText[0] + storyText[1];
@@ -989,17 +821,12 @@ function View() {
     };
 
     this.adjustGoldCost = function(varName, amount) {
-        document.getElementById(`goldCost${varName}`).textContent = amount;
+        document.getElementById(`goldCost${varName}`).textContent = formatNumber(amount);
     };
     this.adjustGoldCosts = function() {
-        this.adjustGoldCost("Locks", goldCostLocks());
-        this.adjustGoldCost("SQuests", goldCostSQuests());
-        this.adjustGoldCost("LQuests", goldCostLQuests());
-        this.adjustGoldCost("Pots", goldCostSmashPots());
-        this.adjustGoldCost("WildMana", goldCostWildMana());
-        this.adjustGoldCost("DarkRitual", goldCostDarkRitual());
-        this.adjustGoldCost("ImbueMind", goldCostImbueMind());
-        this.adjustGoldCost("GreatFeast", goldCostGreatFeast());
+        for (const action of actionsWithGoldCost) {
+            this.adjustGoldCost(action.varName, action.goldCost());
+        }
     };
     this.adjustExpGain = function(action) {
         for (const skill in action.skills) {
@@ -1008,7 +835,7 @@ function View() {
         }
     };
     this.adjustExpGains = function() {
-        for (const action of view.totalActionList) {
+        for (const action of totalActionList) {
             if (action.skills) this.adjustExpGain(action);
         }
     };
@@ -1022,7 +849,7 @@ function View() {
                 <div id='unchecked${action.varName}'>0</div>
                 <input type='checkbox' id='searchToggler${action.varName}' style='margin-left:10px;'>
                 <label for='searchToggler${action.varName}'> Lootable first</label>
-                <div class='showthis'>${action.infoText}</div>
+                <div class='showthis'>${action.infoText()}</div>
             </div><br>`;
 
         const infoDiv = document.createElement("div");
@@ -1046,7 +873,7 @@ function View() {
                         </div>
                     </div>`;
         }
-        const completedTooltip = action.completedTooltip ? action.completedTooltip : "";
+        const completedTooltip = action.completedTooltip ? action.completedTooltip() : "";
         let mouseOver = "";
         if (varName === "SDungeon") mouseOver = "onmouseover='view.showDungeon(0)' onmouseout='view.showDungeon(undefined)'";
         else if (varName === "LDungeon") mouseOver = "onmouseover='view.showDungeon(1)' onmouseout='view.showDungeon(undefined)'";
@@ -1072,11 +899,10 @@ function View() {
     };
 
     this.updateMultiPartActions = function() {
-        for (const action of view.totalActionList) {
-            if (action.segments) {
-                const tempObj = action;
-                this.updateMultiPart(tempObj);
-                this.updateMultiPartSegments(tempObj);
+        for (const action of totalActionList) {
+            if (action.type === "multipart") {
+                this.updateMultiPart(action);
+                this.updateMultiPartSegments(action);
             }
         }
     };
@@ -1222,9 +1048,9 @@ function View() {
     };
 
     this.changeTheme = function(init) {
-        if (init) document.getElementById("theme_menu").value = currentTheme;
-        currentTheme = document.getElementById("theme_menu").value;
-        document.getElementById("theBody").className = `t-${currentTheme}`;
+        if (init) document.getElementById("themeInput").value = options.theme;
+        options.theme = document.getElementById("themeInput").value;
+        document.getElementById("theBody").className = `t-${options.theme}`;
     };
 }
 
@@ -1309,5 +1135,6 @@ function adjustActionListSize(amt) {
 function updateBuffCaps() {
     for (const buff of buffList) {
         document.getElementById(`buff${buff}Cap`).value = Math.min(parseInt(document.getElementById(`buff${buff}Cap`).value), buffHardCaps[buff]);
+        buffCaps[buff] = parseInt(document.getElementById(`buff${buff}Cap`).value);
     }
 }

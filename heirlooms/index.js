@@ -2,7 +2,7 @@
 // lots of stuff here copied from Trimps (https://trimps.github.io/), since it is a calculator for it afterall
 // lots of the math and the idea behind this is based off of the heirloom spreadsheet (https://bit.ly/2OpQgBM) made by nsheetz from the Trimps discord
 // code for spire td damage calcutations (tdcalc.js) from swaq/bhad (http://swaqvalley.com/td_calc/) with permission
-// beta VM/XP calculations from ymhsbmbesitwf
+// beta VM/XP calculations from ymhsbmbesitwf (currently unused)
 // improved miner eff calculation from GhostFrog
 // minor help from SpectralFlame, Razenpok, and GhostFrog
 // I hope this tool is useful! :)
@@ -11,6 +11,12 @@
 
 /*
 
+v1.34 fix edge case where equipped display wouldn't appear
+v1.33 add daily crit bonus input, remove beta mode, unify handling of input defaults and displaying of them
+v1.32 fix next mod upg cost display, fix upg affordability display on cores
+v1.31 fix error with unweighable mods
+v1.30 fix edge case for crit stat weighing
+v1.29 support for forcing crit breakpoints, code cleanup
 v1.28 support for breed speed, allow trimp health in u1, add hp weight input
 v1.27 fix heirlooms with all unweighable mods erroring
 v1.26 support for v5.1.0 heirloom icons, remaining nu displays, and mod affordability displays
@@ -45,23 +51,21 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.28;
+const globalVersion = 1.34;
 document.getElementById("versionNumber").textContent = globalVersion;
 
-const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7", "beta"];
-const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "portalZone", "voidZone"];
+const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7"];
+const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "dailyCrit"];
 const inputs = {
     VMWeight: 12,
     XPWeight: 11.25,
     HPWeight: 0,
     weaponLevels: 90,
-    portalZone: 1,
-    voidZone: 1,
+    dailyCrit: 0,
     version: globalVersion,
     fluffyE4L10: false,
     fluffyE5L10: false,
     chargedCrits: false,
-    beta: false,
     preferredShield: 0,
     preferredStaff: 0,
     preferredCore: 0,
@@ -90,6 +94,8 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
         if (input === "VMWeight" && savedInputs[input] === 12) continue;
         else if (input === "XPWeight" && savedInputs[input] === 11.25) continue;
         else if (input === "HPWeight" && savedInputs[input] === 0) continue;
+        else if (input === "weaponLevels" && savedInputs[input] === 90) continue;
+        else if (input === "dailyCrit" && savedInputs[input] === 0) continue;
         else if (input === "coreUnlocked" && savedInputs[input]) {
             document.getElementById("coreOldContainer").style.display = "block";
             document.getElementById("nextUpgradesContainer").innerHTML =
@@ -120,8 +126,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.28) {
-        inputs.version = 1.28;
+    if (inputs.version < 1.34) {
+        inputs.version = 1.34;
     }
 }
 
@@ -139,6 +145,10 @@ function updateInput(name, value, position) {
     } else if (name === "XPWeight" && inputDiv.value === "") {
         inputs[name] = 11.25;
     } else if (name === "HPWeight" && inputDiv.value === "") {
+        inputs[name] = 0;
+    } else if (name === "weaponLevels" && inputDiv.value === "") {
+        inputs[name] = 90;
+    } else if (name === "dailyCrit" && inputDiv.value === "") {
         inputs[name] = 0;
     } else if (name.includes("preferred")) {
         const cachedL = document.getElementById("inventoryColumn1").children.length + document.getElementById("inventoryColumn2").children.length;
@@ -475,6 +485,14 @@ function getHardCap(type, rarity) {
     return mods[type].hardCaps[rarity];
 }
 
+function normalizedCrit(critChance, critDamage, megaCrits, megaCritMult) {
+    if (megaCrits === 0) {
+        return critDamage * critChance + ((1 - critChance) * 100);
+    }
+    const lowCrit = 1 - critChance;
+    return critDamage * Math.pow(megaCritMult, megaCrits - 1) * (lowCrit + critChance * megaCritMult);
+}
+
 const rarityNames = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Magnificent", "Ethereal", "Magmatic", "Plagued", "Radiating"];
 const basePrices = [5, 10, 15, 25, 75, 150, 400, 1000, 2500, 7500];
 const coreBasePrices = [20, 200, 2000, 20000, 200000, 2000000, 20000000, 200000000, 2000000000, 20000000000];
@@ -532,7 +550,7 @@ class Heirloom {
                 return mod[1];
             }
         }
-        return false;
+        return 0;
     }
 
     getModDefaultValue(type) {
@@ -541,12 +559,13 @@ class Heirloom {
                 return mod[1];
             }
         }
-        return false;
+        return 0;
     }
 
     getModGain(type) {
         const value = this.getModValue(type);
         const stepAmount = this.stepAmounts[type];
+        if (this.hardCaps[type] && value === this.hardCaps[type]) return 1;
         if (type === "trimpAttack") {
             return (value + 100 + stepAmount) / (value + 100);
         }
@@ -566,67 +585,39 @@ class Heirloom {
             return (value + shieldPercent + 100 + stepAmount * inputs.HPWeight) / (value + shieldPercent + 100);
         }
         if (type === "critDamage") {
-            const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-            const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-            let critChance = relentlessness * 5;
+            const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+            const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
+            let critChance = relentlessness * 5 + inputs.dailyCrit;
             let megaCritMult = 5;
-            let critDmgNormalizedBefore = 0;
-            let critDmgNormalizedAfter = 0;
-            if (isNumeric(this.getModValue("critChance"))) {
-                if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
-                else critChance += this.getModValue("critChance");
-            }
-            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
-                critChance += 50;
-            }
-            if (inputs.fluffyE5L10 && !inputs.universe2) {
-                megaCritMult += 2;
-            }
-            if (inputs.chargedCrits) {
-                megaCritMult += 1;
-            }
-            const megaCrits = Math.min(Math.floor(critChance / 100), 2);
+            if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
+            else critChance += this.getModValue("critChance");
+            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+            if (critChance === 0) return 1;
+            if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
+            if (inputs.chargedCrits) megaCritMult += 1;
+            const megaCrits = Math.floor(critChance / 100);
             critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
             const critDamage = value + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
-            switch (megaCrits) {
-                case 2:
-                    critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 1:
-                    critDmgNormalizedBefore = critDamage * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 0:
-                    critDmgNormalizedBefore = critDamage * critChance + ((1 - critChance) * 100);
-                    break;
-            }
-            switch (megaCrits) {
-                case 2:
-                    critDmgNormalizedAfter = (critDamage + stepAmount) * megaCritMult * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 1:
-                    critDmgNormalizedAfter = (critDamage + stepAmount) * ((1 - critChance) + megaCritMult * critChance);
-                    break;
-                case 0:
-                    critDmgNormalizedAfter = (critDamage + stepAmount) * critChance + ((1 - critChance) * 100);
-                    break;
-            }
+            const critDmgNormalizedBefore = normalizedCrit(critChance, critDamage, megaCrits, megaCritMult);
+            const critDmgNormalizedAfter = normalizedCrit(critChance, critDamage + stepAmount, megaCrits, megaCritMult);
 
             return critDmgNormalizedAfter / critDmgNormalizedBefore;
         }
         if (type === "critChance") {
-            const relentlessness = inputs.universe2 ? 0 : save.portal.Relentlessness.level;
-            const criticality = inputs.universe2 ? save.portal.Criticality.radLevel : 0;
-            let critChanceBefore = relentlessness * 5;
-            let critChanceAfter = relentlessness * 5;
+            const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+            const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
+            let critChanceBefore = relentlessness * 5 + inputs.dailyCrit;
+            let critChanceAfter = relentlessness * 5 + inputs.dailyCrit;
             let critDamage = 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
             let megaCritMult = 5;
-            let critDmgNormalizedBefore = 0;
-            let critDmgNormalizedAfter = 0;
             if (inputs.chargedCrits) critChanceBefore += value * 1.5;
             else critChanceBefore += value;
+            if (inputs.chargedCrits) critChanceAfter += value * 1.5;
+            else critChanceAfter += value;
             if (isNumeric(this.getModValue("critDamage"))) {
                 critDamage += this.getModValue("critDamage");
             }
+            if (critDamage === 0) return 1;
             if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
                 critChanceBefore += 50;
             }
@@ -636,70 +627,16 @@ class Heirloom {
             if (inputs.chargedCrits) {
                 megaCritMult += 1;
             }
-            const megaCritsBefore = Math.min(Math.floor(critChanceBefore / 100), 2);
-            const megaCritsAfter = Math.min(Math.floor((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) / 100), 2);
+            const megaCritsBefore = Math.floor(critChanceBefore / 100);
+            const megaCritsAfter = Math.floor((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) / 100);
             critChanceAfter = Math.min((critChanceBefore + ((inputs.chargedCrits) ? stepAmount * 1.5 : stepAmount)) - megaCritsAfter * 100, 100) / 100;
             critChanceBefore = Math.min(critChanceBefore - megaCritsBefore * 100, 100) / 100;
-            switch (megaCritsBefore) {
-                case 2:
-                    critDmgNormalizedBefore = critDamage * megaCritMult * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
-                    break;
-                case 1:
-                    critDmgNormalizedBefore = critDamage * ((1 - critChanceBefore) + megaCritMult * critChanceBefore);
-                    break;
-                case 0:
-                    critDmgNormalizedBefore = critDamage * critChanceBefore + ((1 - critChanceBefore) * 100);
-                    break;
-            }
-            switch (megaCritsAfter) {
-                case 2:
-                    critDmgNormalizedAfter = critDamage * megaCritMult * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
-                    break;
-                case 1:
-                    critDmgNormalizedAfter = critDamage * ((1 - critChanceAfter) + megaCritMult * critChanceAfter);
-                    break;
-                case 0:
-                    critDmgNormalizedAfter = critDamage * critChanceAfter + ((1 - critChanceAfter) * 100);
-                    break;
-            }
+            const critDmgNormalizedBefore = normalizedCrit(critChanceBefore, critDamage, megaCritsBefore, megaCritMult);
+            const critDmgNormalizedAfter = normalizedCrit(critChanceAfter, critDamage, megaCritsAfter, megaCritMult);
 
             return critDmgNormalizedAfter / critDmgNormalizedBefore;
         }
         if (type === "voidMaps") {
-            if (inputs.beta) {
-                const voidMapsOld = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value);
-                const voidMapsNew = voidMapsUpToZone(inputs.voidZone, inputs.portalZone, value + stepAmount);
-                let upgGain = voidMapsNew / voidMapsOld;
-
-                // using step 10 for Prestige reasons, 30 in Magma is the lowest common denominator with Nature.
-                // It's prefered to using 1 or 5 zones, because Corrupted/Healthy stats jump a bit every 6 zones.
-                const zoneStep = (inputs.portalZone > 235) ? 30 : 10;
-                // ignoring cost scaling. Has little effect in late, but might lie a bit in early game.
-                // Buying multiple levels of last few Prestiges (or even Prestiges themselves) used to be
-                // difficult before unlocking Jestimp and Motivation II, not sure how it is now with Caches.
-                // Example results (formatted to display average per zone scaling)
-                //  Z20: 1.843938^10 / 9.596448^2
-                //  Z49: 1.823788^10 / 9.596448^2
-                //  Z55: 2.019369^10 / 9.596448^2
-                //  Z60: 2.003003^10 / 9.596448^2
-                // Z100: 1.997119^10 / 9.596448^2
-                // Z180: 2.048560^10 / 9.596448^2
-                // Z235: 2.017895^10 / 9.596448^2
-                // Z236: 2.027765^30 / 9.596448^6
-                // Z450: 2.006783^30 / 9.596448^6
-                // Z650: 2.006184^30 / 9.596448^6
-                // Results will be slightly different without Headstarts.
-                let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + zoneStep) / totalEnemyHealthInZone(inputs.portalZone);
-                attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, zoneStep / 5);
-                let heliumScaling = voidHeliumInZone(inputs.voidZone + zoneStep) / voidHeliumInZone(inputs.voidZone);
-                const voidMapsHigherZone = voidMapsUpToZone(inputs.voidZone + zoneStep, inputs.portalZone + zoneStep, value);
-                heliumScaling *= voidMapsHigherZone / voidMapsOld;
-                // scaling upgGain to Trimp Attack by comparing Helium gained (VM only)
-                upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(heliumScaling));
-
-                // adding VMWeight (default: 1) in a manner consistent with previous calculation
-                return (1 + (upgGain - 1) * inputs.VMWeight);
-            }
             if (inputs.universe2) return (value + stepAmount * (inputs.VMWeight / 10)) / (value);
             return (value + stepAmount * inputs.VMWeight) / (value);
         }
@@ -707,20 +644,6 @@ class Heirloom {
             return (((value + stepAmount) / 100 + 1) / 5) / ((value / 100 + 1) / 5);
         }
         if (type === "FluffyExp") {
-            if (inputs.beta) {
-                let upgGain = (value + 100 + stepAmount) / (value + 100);
-                // avoiding weird stuff with zero division.
-                // Results in very low Fluffy priority if portalZone is <301 for some reason. Shouldn't be a problem.
-                if (inputs.portalZone >= 301) {
-                    // scaling to Attack by comparing Exp gained from additional zones
-                    const pushGain = totalFluffyExpModifierUpToZone(inputs.portalZone + 30) / totalFluffyExpModifierUpToZone(inputs.portalZone);
-                    let attackScalingNeeded = totalEnemyHealthInZone(inputs.portalZone + 30) / totalEnemyHealthInZone(inputs.portalZone);
-                    attackScalingNeeded /= Math.pow(attackPrestigeMultiplier, 30 / 5);
-                    upgGain = Math.pow(upgGain, Math.log(attackScalingNeeded) / Math.log(pushGain));
-                }
-                // adding XPWeight (default: 1) in a manner consistent with previous calculation
-                return (1 + (upgGain - 1) * inputs.XPWeight);
-            }
             return (value + 100 + stepAmount * inputs.XPWeight) / (value + 100);
         }
         if (type === "plaguebringer") {
@@ -741,14 +664,14 @@ class Heirloom {
             if (type === "runestones") return (afterRS / beforeRS - 1) * 0.971 + 1;
             return after / before;
         }
-        return false;
+        return 0;
     }
 
     getModEfficiency(type) {
         if (mods[type].weighable) {
             return ((this.getModGain(type) - 1) / (this.getModCost(type) / this.basePrice)) + 1;
         }
-        return false;
+        return 0;
     }
 
     // add arrays for max normal values, if below or equal to, return normal price, else divide the amount over the normal value by the step to get amount and calculate the price with the amount
@@ -795,6 +718,133 @@ class Heirloom {
         }
         if (this.isCore) return cost;
         return cost;
+    }
+
+    getDamageMult() {
+        const trimpAttackMult = 1 + this.getModValue("trimpAttack") / 100;
+        const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+        const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
+        let critChance = relentlessness * 5 + inputs.dailyCrit;
+        let megaCritMult = 5;
+        if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
+        else critChance += this.getModValue("critChance");
+        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+        if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
+        if (inputs.chargedCrits) megaCritMult += 1;
+        const megaCrits = Math.floor(critChance / 100);
+        critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
+        const critDamage = this.getModValue("critDamage") + 230 * Math.min(relentlessness, 1) + 30 * Math.max(Math.min(relentlessness, 10) - 1, 0) + criticality * 10;
+        const critDmgNormalized = normalizedCrit(critChance, critDamage, megaCrits, megaCritMult);
+
+        return trimpAttackMult * critDmgNormalized / 100;
+    }
+
+    forceCritBreakpoint() {
+        if (this.isEmpty()) return new Heirloom();
+        const heirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
+        let currency = getEffectiveNullifium() - this.getTotalSpent();
+        let efficiency = 0;
+        let paid = 0;
+        let cost = 0;
+        let name = "";
+        let index = -1;
+        const purchases = [0, 0, 0, 0, 0, 0];
+        const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
+        let critChance = relentlessness * 5 + inputs.dailyCrit;
+        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+        const megaCrits = Math.floor((critChance + (inputs.chargedCrits) ? heirloom.getModValue("critChance") * 1.5 : heirloom.getModValue("critChance")) / 100);
+
+        while (true) {
+            while (Math.floor((critChance + (inputs.chargedCrits) ? heirloom.getModValue("critChance") * 1.5 : heirloom.getModValue("critChance")) / 100) === megaCrits) {
+                cost = heirloom.getModCost("critChance");
+                index = heirloom.mods.indexOf(heirloom.mods.filter(mod => mod[0] === "critChance")[0]);
+                if (currency >= cost) {
+                    heirloom.mods[index][1] += mods.critChance.stepAmounts[heirloom.rarity];
+                    heirloom.mods[index][3] += 1;
+                    purchases[index] += 1;
+                    currency -= cost;
+                    paid += cost;
+                } else {
+                    break;
+                }
+            }
+
+            efficiency = 0;
+            for (const mod of heirloom.mods) {
+                if (heirloom.getModEfficiency(mod[0]) > efficiency) {
+                    efficiency = heirloom.getModEfficiency(mod[0]);
+                    cost = heirloom.getModCost(mod[0]);
+                    name = mod[0];
+                    index = heirloom.mods.indexOf(mod);
+                }
+            }
+
+            if (name === "") break;
+            if (mods[name].weighable && currency >= cost) {
+                heirloom.mods[index][1] += mods[name].stepAmounts[heirloom.rarity];
+                heirloom.mods[index][3] += 1;
+                purchases[index] += 1;
+                currency -= cost;
+                paid += cost;
+            } else {
+                break;
+            }
+        }
+
+        const nextCost = Math.floor((cost - (getEffectiveNullifium() - heirloom.getTotalSpent())) / getHeirloomNullifiumRatio());
+        heirloom.paid = paid;
+        heirloom.next = { name, cost: nextCost };
+        heirloom.purchases = purchases;
+        heirloom.successful = Math.floor((critChance + (inputs.chargedCrits) ? heirloom.getModValue("critChance") * 1.5 : heirloom.getModValue("critChance")) / 100) > megaCrits;
+        return heirloom;
+    }
+
+    calculatePurchases() {
+        if (this.isEmpty()) return new Heirloom();
+        const heirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
+        let currency = (this.isCore) ? save.playerSpire.main.spirestones : getEffectiveNullifium() - this.getTotalSpent();
+        let efficiency = 0;
+        let paid = 0;
+        let cost = 0;
+        let name = "";
+        let index = -1;
+        const purchases = [0, 0, 0, 0, 0, 0];
+
+        while (true) {
+            efficiency = 0;
+            for (const mod of heirloom.mods) {
+                if (heirloom.getModEfficiency(mod[0]) > efficiency) {
+                    efficiency = heirloom.getModEfficiency(mod[0]);
+                    cost = heirloom.getModCost(mod[0]);
+                    name = mod[0];
+                    index = heirloom.mods.indexOf(mod);
+                }
+            }
+
+            if (name === "") break;
+            if (mods[name].weighable && currency >= cost) {
+                heirloom.mods[index][1] += mods[name].stepAmounts[heirloom.rarity];
+                heirloom.mods[index][3] += 1;
+                purchases[index] += 1;
+                currency -= cost;
+                paid += cost;
+            } else {
+                break;
+            }
+        }
+
+        if (heirloom.type === "Shield") {
+            const forcedCritHeirloom = this.forceCritBreakpoint();
+            if (forcedCritHeirloom.getDamageMult() > heirloom.getDamageMult() && forcedCritHeirloom.successful) return forcedCritHeirloom;
+        }
+
+        const nextCost = (heirloom.isCore)
+            ? Math.floor(cost - currency)
+            : Math.floor((cost - (getEffectiveNullifium() - heirloom.getTotalSpent())) / getHeirloomNullifiumRatio());
+        heirloom.paid = paid;
+        heirloom.next = { name, cost: nextCost };
+        heirloom.purchases = purchases;
+        return heirloom;
     }
 }
 
@@ -1181,10 +1231,16 @@ function updateModContainer(divName, heirloom, spirestones) {
         if (divName.includes("Old")) document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (Old)`;
         else document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (New)`;
 
-        if (inputs[`preferred${heirloom.type}`] === 0) document.getElementById(`${divName}Equipped`).style.display = "flex";
+        if (!save.global.heirloomsCarried.filter(loom => loom.repSeed === inputs[`preferred${heirloom.type}`]).length > 0) document.getElementById(`${divName}Equipped`).style.display = "flex";
         else document.getElementById(`${divName}Equipped`).style.display = "none";
         if (heirloom.isCore) document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} Ss Spent`;
         else document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} / ${prettify(getEffectiveNullifium())} Nu Spent - ${prettify(getEffectiveNullifium() - heirloomValue)} Unspent`;
+
+        if (heirloom.purchases) {
+            for (let i = 0; i < 6; i++) {
+                document.getElementById(`${divName}Mod${i}Plus`).textContent = (heirloom.purchases[i] === 0) ? "" : `+${heirloom.purchases[i]}`;
+            }
+        }
 
         document.getElementById(`${divName}Icon`).classList.value = heirloom.iconClass;
     }
@@ -1291,20 +1347,10 @@ function calculate(manualInput) {
             save.global.heirloomsCarried[i] = new Heirloom(save.global.heirloomsCarried[i]);
             addHeirloomToInventory(save.global.heirloomsCarried[i], i);
         }
-        for (const input in inputs) {
-            if (!textboxNames.includes(input)) continue;
-            if (document.getElementById(`${input}Input`).value === "") {
-                switch (input) {
-                    case "portalZone":
-                        inputs.setInput(input, save.global.highestLevelCleared + 1);
-                        break;
-                    case "voidZone":
-                        inputs.setInput(input, save.stats.highestVoidMap.valueTotal);
-                        break;
-                }
-            }
-        }
     }
+
+    const nullifium = save.global.nullifium;
+    let spirestones = save.playerSpire.main.spirestones;
 
     save.global.ShieldEquipped = new Heirloom(save.global.ShieldEquipped);
     save.global.StaffEquipped = new Heirloom(save.global.StaffEquipped);
@@ -1325,30 +1371,6 @@ function calculate(manualInput) {
             document.getElementById(`carriedHeirloom${i}`).classList.add("selected");
         }
     }
-
-    const newShield = new Heirloom(JSON.parse(JSON.stringify(startingShield)));
-    const newStaff = new Heirloom(JSON.parse(JSON.stringify(startingStaff)));
-    const newCore = new Heirloom(JSON.parse(JSON.stringify(startingCore)));
-
-    const nullifium = save.global.nullifium;
-    let spirestones = save.playerSpire.main.spirestones;
-
-    const shieldAddAmounts = [0, 0, 0, 0, 0, 0];
-    const staffAddAmounts = [0, 0, 0, 0, 0, 0];
-    const coreAddAmounts = [0, 0, 0, 0, 0, 0];
-
-    let shieldEff = 0;
-    let staffEff = 0;
-    let coreEff = 0;
-    let shieldCost = 0;
-    let staffCost = 0;
-    let coreCost = 0;
-    let staffName = "empty";
-    let shieldName = "empty";
-    let coreName = "empty";
-    let staffIndex = -1;
-    let shieldIndex = -1;
-    let coreIndex = -1;
 
     if (save.global.highestLevelCleared >= 180) {
         inputs.setInput("masteriesUnlocked", true);
@@ -1372,129 +1394,51 @@ function calculate(manualInput) {
         if (document.getElementById("scruffyCheckboxesContainer").style.display !== "flex") document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
     }
 
+    let newShield = new Heirloom();
+    let newStaff = new Heirloom();
+    let newCore = new Heirloom();
     if (!startingShield.isEmpty()) {
-        let shieldNullifium = getEffectiveNullifium() - startingShield.getTotalSpent();
-        while (true) {
-            shieldEff = 0;
-            for (const mod of newShield.mods) {
-                if (newShield.getModEfficiency(mod[0]) > shieldEff) {
-                    shieldEff = newShield.getModEfficiency(mod[0]);
-                    shieldCost = newShield.getModCost(mod[0]);
-                    shieldName = mod[0];
-                    shieldIndex = newShield.mods.indexOf(mod);
-                }
-            }
-
-            if (mods[shieldName].weighable && shieldNullifium >= shieldCost) {
-                newShield.mods[shieldIndex][1] += mods[shieldName].stepAmounts[newShield.rarity];
-                newShield.mods[shieldIndex][3] += 1;
-                shieldAddAmounts[shieldIndex] += 1;
-                shieldNullifium -= shieldCost;
-            } else {
-                break;
-            }
-        }
+        newShield = startingShield.calculatePurchases();
     }
 
     if (!startingStaff.isEmpty()) {
-        let staffNullifium = getEffectiveNullifium() - startingStaff.getTotalSpent();
-        while (true) {
-            staffEff = 0;
-            for (const mod of newStaff.mods) {
-                if (newStaff.getModEfficiency(mod[0]) > staffEff) {
-                    staffEff = newStaff.getModEfficiency(mod[0]);
-                    staffCost = newStaff.getModCost(mod[0]);
-                    staffName = mod[0];
-                    staffIndex = newStaff.mods.indexOf(mod);
-                }
-            }
-
-            if (mods[staffName].weighable && staffNullifium >= staffCost) {
-                newStaff.mods[staffIndex][1] += mods[staffName].stepAmounts[newStaff.rarity];
-                newStaff.mods[staffIndex][3] += 1;
-                staffAddAmounts[staffIndex] += 1;
-                staffNullifium -= staffCost;
-            } else {
-                break;
-            }
-        }
+        newStaff = startingStaff.calculatePurchases();
     }
 
     if (!startingCore.isEmpty()) {
-        while (true) {
-            coreEff = 0;
-            for (const mod of newCore.mods) {
-                if (newCore.getModEfficiency(mod[0]) > coreEff) {
-                    coreEff = newCore.getModEfficiency(mod[0]);
-                    coreCost = newCore.getModCost(mod[0]);
-                    coreName = mod[0];
-                    coreIndex = newCore.mods.indexOf(mod);
-                }
-            }
-
-            if (mods[coreName].weighable && spirestones >= coreCost) {
-                newCore.mods[coreIndex][1] += mods[coreName].stepAmounts[newCore.rarity];
-                newCore.mods[coreIndex][3] += 1;
-                coreAddAmounts[coreIndex] += 1;
-                spirestones -= coreCost;
-            } else {
-                break;
-            }
-        }
+        newCore = startingCore.calculatePurchases();
+        spirestones -= newCore.paid;
     }
     
     // current nu/ss, next goal nu price, next goal name
-    const shieldNextUpgradeCost = Math.ceil((shieldCost / getHeirloomNullifiumRatio()) - (nullifium - (newShield.getTotalSpent() / getHeirloomNullifiumRatio())));
-    const staffNextUpgradeCost = Math.ceil((staffCost / getHeirloomNullifiumRatio()) - (nullifium - (newStaff.getTotalSpent() / getHeirloomNullifiumRatio())));
     if (startingShield.hasUpgradableMods() && startingStaff.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
         `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
         Your next upgrade${startingCore.isEmpty()
-        ? `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
-        : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
+        ? `s should be ${mods[newShield.next.name].name} at ${prettify(newShield.next.cost)} more Nullifium, and ${mods[newStaff.next.name].name} at ${prettify(newStaff.next.cost)} more Nullifium.`
+        : `s should be ${mods[newShield.next.name].name} at ${prettify(newShield.next.cost)} more Nullifium, ${mods[newStaff.next.name].name} at ${prettify(newStaff.next.cost)} more Nullifium, and ${mods[newCore.next.name].name} at ${prettify(newCore.next.cost)} Spirestones.`}`;
     } else if (startingShield.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
         `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
         Your next upgrade${startingCore.isEmpty()
-        ? ` should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium.`
-        : `s should be ${mods[shieldName].name} at ${prettify(shieldNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
+        ? ` should be ${mods[newShield.next.name].name} at ${prettify(newShield.next.cost)} more Nullifium.`
+        : `s should be ${mods[newShield.next.name].name} at ${prettify(newShield.next.cost)} more Nullifium, and ${mods[newCore.next.name].name} at ${prettify(newCore.next.cost)} Spirestones.`}`;
     } else if (startingStaff.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
         `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? ` and ${prettify(spirestones)} Spirestones.` : "."}
         <br>
         Your next upgrade${startingCore.isEmpty()
-        ? ` should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium.`
-        : `s should be ${mods[staffName].name} at ${prettify(staffNextUpgradeCost)} more Nullifium, and ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
+        ? ` should be ${mods[newStaff.next.name].name} at ${prettify(newStaff.next.cost)} more Nullifium.`
+        : `s should be ${mods[newStaff.next.name].name} at ${prettify(newStaff.next.cost)} more Nullifium, and ${mods[newCore.next.name].name} at ${prettify(newCore.next.cost)} Spirestones.`}`;
     } else if (!startingShield.hasUpgradableMods() && !startingStaff.hasUpgradableMods()) {
         document.getElementById("nextUpgradesContainer").innerHTML =
         `You have ${prettify(nullifium)} Nullifium${inputs.coreUnlocked ? "." : ` and ${prettify(spirestones)} Spirestones.`}
         <br>
         ${startingCore.isEmpty()
         ? `You have no mods to upgrade.`
-        : `Your next upgrade should be ${mods[coreName].name} at ${prettify(coreCost)} Spirestones.`}`;
-    }
-
-    // add upg amounts
-    for (let i = 0; i < 6; i++) {
-        if (shieldAddAmounts[i] === 0) {
-            document.getElementById(`shieldNewMod${i}Plus`).textContent = "";
-        } else {
-            document.getElementById(`shieldNewMod${i}Plus`).textContent = `+${shieldAddAmounts[i]}`;
-        }
-
-        if (staffAddAmounts[i] === 0) {
-            document.getElementById(`staffNewMod${i}Plus`).textContent = "";
-        } else {
-            document.getElementById(`staffNewMod${i}Plus`).textContent = `+${staffAddAmounts[i]}`;
-        }
-
-        if (coreAddAmounts[i] === 0) {
-            document.getElementById(`coreNewMod${i}Plus`).textContent = "";
-        } else {
-            document.getElementById(`coreNewMod${i}Plus`).textContent = `+${coreAddAmounts[i]}`;
-        }
+        : `Your next upgrade should be ${mods[newCore.next.name].name} at ${prettify(newCore.next.cost)} Spirestones.`}`;
     }
 
     updateModContainer("shieldOld", startingShield);

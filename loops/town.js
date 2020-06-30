@@ -28,7 +28,7 @@ function Town(index) {
 
     this.finishProgress = function(varName, expGain) {
         // return if capped, for performance
-        if (this[`exp${varName}`] >= 505000) return;
+        if (this[`exp${varName}`] === 505000) return;
 
         const prevLevel = this.getLevel(varName);
         if (this[`exp${varName}`] + expGain > 505000) {
@@ -40,7 +40,7 @@ function Town(index) {
         if (level !== prevLevel) {
             view.updateLockedHidden();
             adjustAll();
-            for (const action of view.totalActionList) {
+            for (const action of totalActionList) {
                 if (towns[action.townNum].varNames.indexOf(action.varName) !== -1) {
                     view.updateRegular(action.varName, action.townNum);
                 }
@@ -113,61 +113,15 @@ function Town(index) {
             this.progressVars.push(varName);
         }
     };
-    if (this.index === 0) {
-        this.createVars("Pots");
-        this.createVars("Locks");
-        this.createVars("SQuests");
-        this.createVars("LQuests");
-        this.createProgressVars("Wander");
-        this.createProgressVars("Met");
-        this.createProgressVars("Secrets");
-        this.Heal = 0;
-        this.HealLoopCounter = 0;
-        this.Fight = 0;
-        this.FightLoopCounter = 0;
-        this.SDungeon = 0;
-        this.SDungeonLoopCounter = 0;
-        this.suppliesCost = 300;
-    } else if (this.index === 1) {
-        this.createVars("WildMana");
-        this.createVars("Herbs");
-        this.createVars("Hunt");
-        this.createProgressVars("Forest");
-        this.createProgressVars("Shortcut");
-        this.createProgressVars("Hermit");
-        this.createProgressVars("Flowers");
-        this.createProgressVars("Thicket");
-        this.createProgressVars("Witch");
-        this.DarkRitual = 0;
-        this.DarkRitualLoopCounter = 0;
-    } else if (this.index === 2) {
-        this.createVars("Gamble");
-        this.createProgressVars("City");
-        this.createProgressVars("Drunk");
-        this.AdvGuild = 0;
-        this.AdvGuildLoopCounter = 0;
-        this.CraftGuild = 0;
-        this.CraftGuildLoopCounter = 0;
-        this.LDungeon = 0;
-        this.LDungeonLoopCounter = 0;
-        this.createProgressVars("Apprentice");
-        this.createProgressVars("Mason");
-        this.createProgressVars("Architect");
-    } else if (this.index === 3) {
-        this.createVars("Geysers");
-        this.createVars("MineSoulstones");
-        this.createVars("Artifacts");
-        this.createProgressVars("Mountain");
-        this.createProgressVars("Runes");
-        this.createProgressVars("Cavern");
-        this.createProgressVars("Illusions");
-        this.HuntTrolls = 0;
-        this.HuntTrollsLoopCounter = 0;
-        this.ImbueMind = 0;
-        this.ImbueMindLoopCounter = 0;
-    } else if (this.index === 4) {
-        this.GreatFeast = 0;
-        this.GreatFeastLoopCounter = 0;
+    for (const action of totalActionList) {
+        if (this.index === action.townNum) {
+            this.totalActionList.push(action);
+            if (action.type === "limited") this.createVars(action.varName);
+            if (action.type === "progress") this.createProgressVars(action.varName);
+            if (action.type === "multipart") {
+                this[action.varName] = 0;
+                this[`${action.varName}LoopCounter`] = 0;
+            }
+        }
     }
-
 }

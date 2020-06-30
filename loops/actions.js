@@ -18,7 +18,6 @@ function Actions() {
             return;
         }
         addExpFromAction(curAction);
-
         curAction.ticks++;
         curAction.manaUsed++;
         curAction.timeSpent += 1 / baseManaPerSecond / getActualGameSpeed();
@@ -35,20 +34,20 @@ function Actions() {
             // console.log("using: "+curAction.loopStats[(towns[curAction.townNum][curAction.varName + "LoopCounter"]+segment) % curAction.loopStats.length]+" to add: " + toAdd + " to segment: " + segment + " and part " +towns[curAction.townNum][curAction.varName + "LoopCounter"]+" of progress " + curProgress + " which costs: " + curAction.loopCost(segment));
             towns[curAction.townNum][curAction.varName] += toAdd;
             curProgress += toAdd;
+            let partUpdateRequired = false;
             while (curProgress >= curAction.loopCost(segment)) {
                 curProgress -= curAction.loopCost(segment);
                 // segment finished
                 if (segment === curAction.segments - 1) {
                     // part finished
                     if (curAction.name === "Dark Ritual" && towns[curAction.townNum][curAction.varName] >= 4000000) unlockStory("darkRitualThirdSegmentReached");
+                    if (curAction.name === "Imbue Mind" && towns[curAction.townNum][curAction.varName] >= 700000000) unlockStory("imbueMindThirdSegmentReached");
                     towns[curAction.townNum][curAction.varName] = 0;
                     towns[curAction.townNum][`${curAction.varName}LoopCounter`] += curAction.segments;
                     towns[curAction.townNum][`total${curAction.varName}`]++;
                     segment -= curAction.segments;
                     curAction.loopsFinished();
-                    if (!curAction.segmentFinished) {
-                        view.updateMultiPart(curAction);
-                    }
+                    partUpdateRequired = true;
                     if (curAction.canStart && !curAction.canStart()) {
                         this.completedTicks += curAction.ticks;
                         view.updateTotalTicks();
@@ -63,11 +62,14 @@ function Actions() {
                 }
                 if (curAction.segmentFinished) {
                     curAction.segmentFinished();
-                    view.updateMultiPart(curAction);
+                    partUpdateRequired = true;
                 }
                 segment++;
             }
             view.requestUpdate("updateMultiPartSegments", curAction);
+            if (partUpdateRequired) {
+                view.requestUpdate("updateMultiPart", curAction);
+            }
         }
         if (curAction.ticks >= curAction.adjustedTicks) {
             curAction.ticks = 0;
@@ -88,10 +90,11 @@ function Actions() {
         }
         view.requestUpdate("updateCurrentActionBar", this.currentPos);
         if (curAction.loopsLeft === 0) {
-            if (!this.current[this.currentPos + 1] && document.getElementById("repeatLastAction").checked &&
+            if (!this.current[this.currentPos + 1] && options.repeatLastAction &&
                 (!curAction.canStart || curAction.canStart()) && curAction.townNum === curTown) {
                 curAction.loopsLeft++;
                 curAction.loops++;
+                curAction.extraLoops++;
             } else {
                 this.currentPos++;
             }
@@ -111,11 +114,12 @@ function Actions() {
         }
         while ((curAction.canStart && !curAction.canStart() && curAction.townNum === curTown) || curAction.townNum !== curTown) {
             curAction.errorMessage = this.getErrorMessage(curAction);
-            curAction.loopsFailed = curAction.loopsLeft;
-            curAction.loopsLeft = 0;
             view.updateCurrentActionBar(this.currentPos);
             this.currentPos++;
-            if (this.currentPos >= this.current.length) break;
+            if (this.currentPos >= this.current.length) {
+                curAction = undefined;
+                break;
+            }
             curAction = this.current[this.currentPos];
         }
         return curAction;
@@ -135,35 +139,27 @@ function Actions() {
         this.currentPos = 0;
         this.completedTicks = 0;
         curTown = 0;
-        towns[0].Heal = 0;
-        towns[0].HealLoopCounter = 0;
-        towns[0].Fight = 0;
-        towns[0].FightLoopCounter = 0;
-        towns[0].SDungeon = 0;
-        towns[0].SDungeonLoopCounter = 0;
         towns[0].suppliesCost = 300;
         view.updateResource("supplies");
-        towns[1].DarkRitual = 0;
-        towns[1].DarkRitualLoopCounter = 0;
-        towns[2].AdvGuild = 0;
-        towns[2].AdvGuildLoopCounter = 0;
         curAdvGuildSegment = 0;
-        towns[2].CraftGuild = 0;
-        towns[2].CraftGuildLoopCounter = 0;
         curCraftGuildSegment = 0;
-        towns[2].LDungeon = 0;
-        towns[2].LDungeonLoopCounter = 0;
-        towns[3].HuntTrolls = 0;
-        towns[3].HuntTrollsLoopCounter = 0;
-        towns[3].ImbueMind = 0;
-        towns[3].ImbueMindLoopCounter = 0;
+        for (const town of towns) {
+            for (const action of town.totalActionList) {
+                if (action.type === "multipart") {
+                    town[action.varName] = 0;
+                    town[`${action.varName}LoopCounter`] = 0;
+                }
+            }
+        }
         guild = "";
-        if (document.getElementById("currentListActive").checked) {
+        if (options.keepCurrentList) {
             this.currentPos = 0;
             this.completedTicks = 0;
 
             for (const action of this.current) {
+                action.loops -= action.extraLoops;
                 action.loopsLeft = action.loops;
+                action.extraLoops = 0;
                 action.ticks = 0;
                 action.manaUsed = 0;
                 action.lastMana = 0;
@@ -183,6 +179,7 @@ function Actions() {
 
                 toAdd.loops = action.loops;
                 toAdd.loopsLeft = action.loops;
+                toAdd.extraLoops = 0;
                 toAdd.ticks = 0;
                 toAdd.manaUsed = 0;
                 toAdd.lastMana = 0;
@@ -197,9 +194,9 @@ function Actions() {
             pauseGame();
         }
         this.adjustTicksNeeded();
-        view.updateMultiPartActions();
-        view.updateNextActions();
-        view.updateTime();
+        view.requestUpdate("updateMultiPartActions");
+        view.requestUpdate("updateNextActions");
+        view.requestUpdate("updateTime");
     };
 
     this.adjustTicksNeeded = function() {
@@ -226,7 +223,7 @@ function Actions() {
         toAdd.loops = loops === undefined ? this.addAmount : loops;
 
         if (initialOrder === undefined) {
-            if (document.getElementById("addActionTop").checked) {
+            if (options.addActionsToTop) {
                 this.next.splice(0, 0, toAdd);
             } else {
                 this.next.push(toAdd);

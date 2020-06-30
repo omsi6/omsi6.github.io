@@ -9,10 +9,11 @@ Views.registerView("talentTree", {
     },
     html() {
     // todo: add talent tree
-    const html = `<div>
+        const html =
+            `<div>
                     
-                  </div>`;
-    return html;
-  },
+            </div>`;
+        return html;
+    },
 });
 
