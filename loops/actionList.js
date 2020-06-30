@@ -3363,6 +3363,7 @@ Action.GuidedTour = new Action("Guided Tour", {
     type: "progress",
     expMult: 1,
     townNum: 4,
+	varName: "Tour",
     stats: {
         Per: 0.3,
         Con: 0.2,
@@ -3370,6 +3371,12 @@ Action.GuidedTour = new Action("Guided Tour", {
         Int: 0.1,
         Luck: 0.1
     },
+	canStart() {
+		return resources.gold >= 10;
+	},
+	cost() {
+		addResource("gold", -10);
+	},
     manaCost() {
         return 2500;
     },
@@ -3381,7 +3388,6 @@ Action.GuidedTour = new Action("Guided Tour", {
     },
     finish() {
         towns[4].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
-        addResource("gold", -10);
     },
 });
 
@@ -3403,7 +3409,7 @@ Action.Canvass = new Action("Canvass", {
         return true;
     },
     unlocked() {
-        return true;
+        return towns[4].getLevel("Tour") >= 10;
     },
     finish() {
         towns[4].finishProgress(this.varName, 50);
@@ -3849,10 +3855,10 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return "Host Great Feast";
     },
     visible() {
-        return towns[1].getLevel("Thicket") >= 50;
+		return towns[4].getLevel("Tour") >= 80;
     },
     unlocked() {
-        return false;
+        return false;//towns[4].getLevel("Tour") >= 100;
     },
     goldCost() {
         return 5000 * (getBuffLevel("Feast") + 1);
