@@ -3603,7 +3603,7 @@ Action.CharmSchool = new Action("Charm School", {
     },
 });
 
-Action.EnchantGear = new Action("Enchant Gear", {
+Action.EnchantArmor = new Action("Enchant Armor", {
 	tytpe: "normal",
 	expMult: 1,
 	townNum: 4,

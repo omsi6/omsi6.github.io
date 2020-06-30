@@ -414,7 +414,7 @@
             <desc>You've been generous to important people.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Enchantmented Armor:</title>
+            <title>Enchanted Armor:</title>
             <id>enchantments</id>
             <desc>Divinely blessed weapons and armor, like a hero of legend.</desc>
         </resource>
@@ -1751,13 +1751,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </charm_school>
-		<enchant_gear>
-			<label>Enchant Gear</label>
+		<enchant_armor>
+			<label>Enchant Armor</label>
 			<tooltip><![CDATA[
-			Pull some strings to convince a divine blacksmith to enchant your armor.<br>Costs one favor and one armor.<br>Enchanted armor is three times as effective as normal armor.
+			Pull some strings to convince a divine blacksmith to enchant your armor.<br>Costs one favor and one armor.<br>Gives one enchanted armor.<br>Enchanted armor is three times as effective as normal armor.
 		]]></tooltip>
             <!--TODO: give this action story-->
-		</enchant_gear>
+		</enchant_armor>
         <wizard_college>
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
