@@ -49,6 +49,7 @@ let resources = {
     armor: 0,
     blood: 0,
     artifacts: 0,
+	favors: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,

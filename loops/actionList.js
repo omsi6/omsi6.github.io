@@ -3510,6 +3510,33 @@ Action.SellArtifacts = new Action("Sell Artifacts", {
 	},
 });
 
+Action.GiftArtifacts = new Action("Gift Artifacts", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	canStart() {
+		return resources.artifacts >= 1;
+	},
+	cost() {
+		addResource("artifacts", -1);
+	},
+	manaCost() {
+		return 500;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 10;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 20;
+	},
+	finish() {
+		addResource("favors", 1);
+	},
+});
+
 
 // todo: make this correct
 Action.GreatFeast = new MultipartAction("Great Feast", {

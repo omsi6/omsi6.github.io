@@ -408,6 +408,11 @@
             <id>artifacts</id>
             <desc>Various old rings, bracelets, amulets, and pendants. You might be able to fetch a pretty penny for them.</desc>
         </resource>
+        <resource initially_hidden="true">
+            <title>Favors:</title>
+            <id>favors</id>
+            <desc>You've been generous to important people.</desc>
+        </resource>
         <!--singular items with img icons rather than counts-->
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
@@ -1715,6 +1720,13 @@
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</sell_artifacts>
+		<gift_artifacts>
+			<label>Gift Artifacts</label>
+			<tooltip><![CDATA[
+			Generously give the precious artifacts away.  It's okay, with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</gift_artifacts>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
