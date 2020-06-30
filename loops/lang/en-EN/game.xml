@@ -1723,20 +1723,20 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</get_mana>
-		<sell_artifacts>
-			<label>Sell Artifacts</label>
+		<sell_artifact>
+			<label>Sell Artifact</label>
 			<tooltip><![CDATA[
-			Sell the artifacts you found on Mt. Olympus as priceless ancient heirlooms.<br>Costs one artifact.<br>Gives 50 gold.
+			Sell one of the artifacts you found on Mt. Olympus as a priceless ancient heirloom.<br>Costs one artifact.<br>Gives 50 gold.
 		]]></tooltip>
             <!--TODO: give this action story-->
-		</sell_artifacts>
-		<gift_artifacts>
-			<label>Gift Artifacts</label>
+		</sell_artifact>
+		<gift_artifact>
+			<label>Gift Artifact</label>
 			<tooltip><![CDATA[
-			Generously give the precious artifacts away.  It's okay, with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
+			Gift a precious artifact to a local notable. It's okay - with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
 		]]></tooltip>
             <!--TODO: give this action story-->
-		</gift_artifacts>
+		</gift_artifact>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[

@@ -3498,7 +3498,7 @@ Action.GetMana = new Action("Get Mana", {
     },
 });
 
-Action.SellArtifacts = new Action("Sell Artifacts", {
+Action.SellArtifact = new Action("Sell Artifact", {
 	type: "normal",
 	expMult: 1,
 	townNum: 4,
@@ -3525,7 +3525,7 @@ Action.SellArtifacts = new Action("Sell Artifacts", {
 	},
 });
 
-Action.GiftArtifacts = new Action("Gift Artifacts", {
+Action.GiftArtifact = new Action("Gift Artifact", {
 	type: "normal",
 	expMult: 1,
 	townNum: 4,
