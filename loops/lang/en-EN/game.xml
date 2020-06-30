@@ -1769,7 +1769,7 @@
         <spatiomancy>
             <label>Spatiomancy</label>
             <tooltip><![CDATA[
-            At a base level, this is the art of manipulating matter. At a high level, well, this is that but more powerful. Being able to manipulate space itself will allow you to create more items for certain limited actions. Mana cost is reduced by Wizard College Grade.
+            At a base level, this is the art of manipulating matter. At a high level, well, this is that but more powerful. Being able to manipulate space itself will allow you to create more items for certain limited actions.<br>Mana cost is reduced by Wizard College Grade.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </spatiomancy>

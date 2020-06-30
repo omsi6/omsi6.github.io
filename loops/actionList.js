@@ -196,7 +196,8 @@ function adjustPots() {
     towns[0].totalPots = towns[0].getLevel("Wander") * 5;
 }
 function adjustLocks() {
-    towns[0].totalLocks = towns[0].getLevel("Wander");
+	let spatio = Math.min(getSkillLevel("Spatiomancy"), 200);
+    towns[0].totalLocks = Math.floor(towns[0].getLevel("Wander") * (1 + spatio/200));
 }
 
 Action.SmashPots = new Action("Smash Pots", {
@@ -387,7 +388,8 @@ Action.MeetPeople = new Action("Meet People", {
     },
 });
 function adjustSQuests() {
-    towns[0].totalSQuests = towns[0].getLevel("Met");
+	let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 100), 300) - 100;
+    towns[0].totalSQuests = Math.floor(towns[0].getLevel("Met") * (1 + spatio/200));
 }
 
 Action.TrainStrength = new Action("Train Strength", {
@@ -513,7 +515,8 @@ Action.Investigate = new Action("Investigate", {
     },
 });
 function adjustLQuests() {
-    towns[0].totalLQuests = Math.floor(towns[0].getLevel("Secrets") / 2);
+	let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 200), 400) - 200;
+    towns[0].totalLQuests = Math.floor(towns[0].getLevel("Secrets") / 2 * (1 + spatio/200));
 }
 
 Action.LongQuest = new Action("Long Quest", {
@@ -1942,7 +1945,8 @@ Action.ExploreCity = new Action("Explore City", {
     },
 });
 function adjustSuckers() {
-    towns[2].totalGamble = towns[2].getLevel("City") * 3;
+	let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 300), 500) - 300;
+    towns[2].totalGamble = Math.floor(towns[2].getLevel("City") * 3 * (1 + spatio/200));
 }
 
 Action.Gamble = new Action("Gamble", {
@@ -2810,7 +2814,7 @@ Action.ManaGeyser = new Action("Mana Geyser", {
     },
     affectedBy: ["Buy Pickaxe"],
     manaCost() {
-        return 2000;
+        return Math.ceil(2000 / (1 + getSkillLevel("Spatiomancy") / 100));
     },
     canStart() {
         return resources.pickaxe;
@@ -3664,6 +3668,40 @@ Action.Restoration = new Action("Restoration", {
 	},
 });
 
+Action.Spatiomancy = new Action("Spatiomancy", {
+    type: "normal",
+    expMult: 2,
+    townNum: 4,
+	stats: {
+		Int: 1.0 // Temp
+	},
+	affectedBy: ["Wizard College"],
+	skills: {
+		Spatiomancy: 100
+	},
+	manaCost() {
+		return 30000/getWizCollegeRank().bonus;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 60;
+	},
+	finish() {
+        handleSkillExp(this.skills);
+		view.adjustManaCost("Mana Geyser")
+		adjustLocks();
+		adjustSQuests();
+		adjustLQuests();
+		adjustSuckers();
+        for (const action of totalActionList) {
+            if (towns[action.townNum].varNames.indexOf(action.varName) !== -1) {
+                view.updateRegular(action.varName, action.townNum);
+            }
+        }
+	},
+});
 Action.WingedSteed = new Action("Winged Steed", {
 	tytpe: "normal",
 	expMult: 1,
