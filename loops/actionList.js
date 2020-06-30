@@ -3639,6 +3639,31 @@ function getWizCollegeRank(offset) {
 	return { name, bonus };
 }
 
+Action.Restoration = new Action("Restoration", {
+    type: "normal",
+    expMult: 2,
+    townNum: 4,
+	stats: {
+		Int: 1.0 // Temp
+	},
+	affectedBy: ["Wizard College"],
+	skills: {
+		Restoration: 100
+	},
+	manaCost() {
+		return 30000/getWizCollegeRank().bonus;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 60;
+	},
+	finish() {
+        handleSkillExp(this.skills);
+	},
+});
+
 Action.WingedSteed = new Action("Winged Steed", {
 	tytpe: "normal",
 	expMult: 1,

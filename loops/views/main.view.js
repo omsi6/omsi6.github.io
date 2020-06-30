@@ -181,7 +181,7 @@ function View() {
             return;
         }
         document.getElementById(`skill${skill}Container`).style.display = "inline-block";
-        if (skill === "Combat" || skill === "Pyromancy") {
+        if (skill === "Combat" || skill === "Pyromancy" || skill === "Restoration") {
             this.updateTeamCombat();
         }
 
