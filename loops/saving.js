@@ -55,7 +55,7 @@ let resources = {
     supplies: false,
     pickaxe: false,
     loopingPotion: false,
-	steed: false
+	wingedSteed: false
 };
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const

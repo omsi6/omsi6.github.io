@@ -441,8 +441,8 @@
         </resource>
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/wingedSteed.svg" class="smallIcon">]]></title>
-            <id>steed</id>
-            <desc>A horse with great angelic wings.  It can run across clouds as easily as on dirt.</desc>
+            <id>wingedSteed</id>
+            <desc>A horse with great angelic wings. It can run across clouds as easily as dirt.</desc>
         </resource>
     </tracked_resources>
     <time_controls>

@@ -3816,7 +3816,7 @@ Action.WingedSteed = new Action("Winged Steed", {
 		return towns[4].getLevel("Tour") >= 90;
 	},
 	finish() {
-		addResource("steed", true);
+		addResource("wingedSteed", true);
 	},
 });
 
