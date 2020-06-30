@@ -75,6 +75,7 @@ function Actions() {
             curAction.ticks = 0;
             curAction.loopsLeft--;
 
+            curAction.lastMana = curAction.rawTicks;
             this.completedTicks += curAction.adjustedTicks;
             curAction.finish();
             curAction.manaRemaining = timeNeeded - timer;
@@ -161,6 +162,7 @@ function Actions() {
                 action.extraLoops = 0;
                 action.ticks = 0;
                 action.manaUsed = 0;
+                action.lastMana = 0;
                 action.manaRemaining = 0;
                 action.goldRemaining = 0;
                 action.timeSpent = 0;
@@ -180,6 +182,7 @@ function Actions() {
                 toAdd.extraLoops = 0;
                 toAdd.ticks = 0;
                 toAdd.manaUsed = 0;
+                toAdd.lastMana = 0;
                 toAdd.manaRemaining = 0;
                 toAdd.goldRemaining = 0;
                 toAdd.timeSpent = 0;
@@ -240,7 +243,8 @@ function setAdjustedTicks(action) {
             newCost += action.stats[statName] / (1 + getLevel(statName) / 100);
         }
     }
-    action.adjustedTicks = Math.ceil(action.manaCost() * newCost - 0.000001);
+    action.rawTicks = action.manaCost() * newCost - 0.000001;
+    action.adjustedTicks = Math.ceil(action.rawTicks);
 }
 
 function calcSoulstoneMult(soulstones) {

@@ -763,6 +763,7 @@
         <current_action>
             <mana_original>Mana Original:</mana_original>
             <mana_used>Mana Used:</mana_used>
+            <last_mana>Last Mana:</last_mana>
             <mana_remaining>Mana Remaining:</mana_remaining>
             <gold_remaining>Gold Remaining:</gold_remaining>
             <time_spent>Time Spent:</time_spent>
