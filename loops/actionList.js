@@ -1045,7 +1045,7 @@ Action.StartJourney = new Action("Start Journey", {
     },
 });
 
-/* Action.OpenRift = new Action("Open Rift", {
+Action.OpenRift = new Action("Open Rift", {
     type: "normal",
     expMult: 1,
     townNum: 0,
@@ -1061,15 +1061,15 @@ Action.StartJourney = new Action("Start Journey", {
         return 100000;
     },
     visible() {
-        return (getSkillLevel("Dark") >= 100 && getSkillLevel("Magic")) >= 15;
+        return getSkillLevel("Dark") >= 100 && getSkillLevel("Spatiomancy") >= 50;
     },
     unlocked() {
-        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
+        return getSkillLevel("Dark") >= 200 && getSkillLevel("Spatiomancy") >= 100;
     },
     finish() {
-        unlockTown(1);
+        unlockTown(5);
     },
-}); */
+});
 
 // town 2
 
@@ -3350,10 +3350,15 @@ Action.FaceJudgement = new Action("Face Judgement", {
     },
     finish() {
         unlockStory("judgementFaced");
-        if (resources.reputation >= 50) unlockStory("acceptedIntoValhalla");
-        else if (resources.reputation <= -50) unlockStory("castIntoShadowRealm");
-        // if (resources.reputation >= 50) unlockTown(4);
-        // else if (resources.reputation <= 50) unlockTown(5);
+        if (resources.reputation >= 50) {
+			unlockStory("acceptedIntoValhalla");
+			unlockTown(4);
+		}
+        else if (resources.reputation <= -50) {
+			unlockStory("castIntoShadowRealm");
+			unlockTown(0);
+		}
+		else unlockTown(5);
     },
 });
 
@@ -3917,7 +3922,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
         return true;
     },
     finish() {
-        unlockTown(5);
+        unlockTown(0);
     },
 });
 
