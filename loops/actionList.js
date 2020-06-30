@@ -3537,6 +3537,34 @@ Action.GiftArtifacts = new Action("Gift Artifacts", {
 	},
 });
 
+Action.EnchantGear = new Action("Enchant Gear", {
+	tytpe: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	manaCost() {
+		return 1000; // Temp
+	},
+	canStart() {
+		return resources.favors >= 1 && resources.armor >= 1;
+	},
+	cost() {
+		addResource("favors", -1);
+		addResource("armor", -1);
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 30;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	finish() {
+		addResource("enchantments", 1);
+	},
+});
+
 
 // todo: make this correct
 Action.GreatFeast = new MultipartAction("Great Feast", {

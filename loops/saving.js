@@ -50,6 +50,7 @@ let resources = {
     blood: 0,
     artifacts: 0,
 	favors: 0,
+	enchantments: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,

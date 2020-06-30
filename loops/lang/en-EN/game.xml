@@ -413,6 +413,11 @@
             <id>favors</id>
             <desc>You've been generous to important people.</desc>
         </resource>
+        <resource initially_hidden="true">
+            <title>Enchantmented Armor:</title>
+            <id>enchantments</id>
+            <desc>Divinely blessed weapons and armor, like a hero of legend.</desc>
+        </resource>
         <!--singular items with img icons rather than counts-->
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
@@ -573,7 +578,7 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + armor * Crafting Guild Multiplier / 5)</desc>
+            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + (armor + 3 * enchanted armor) * Crafting Guild Multiplier / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
@@ -1734,6 +1739,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </mercantilism>
+		<enchant_gear>
+			<label>Enchant Gear</label>
+			<tooltip><![CDATA[
+			Pull some strings to convince a divine blacksmith to enchant your armor.<br>Costs one favor and one armor.<br>Enchanted armor is three times as effective as normal armor.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</enchant_gear>
         <wizard_college>
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
