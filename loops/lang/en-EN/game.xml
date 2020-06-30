@@ -1701,6 +1701,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </accept_donations>
+		<get_mana>
+            <label>Get Mana</label>
+            <tooltip><![CDATA[
+            1 gold = 50 mana. Buys all the mana you can.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+		</get_mana>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[

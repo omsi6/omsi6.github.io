@@ -3459,6 +3459,30 @@ Action.AcceptDonations = new Action("Accept Donations", {
 function adjustDonations() {
     towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
 }
+Action.GetMana = new Action("Get Mana", {
+    type: "normal",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Cha: 0.7,
+        Int: 0.2,
+        Luck: 0.1
+    },
+    manaCost() {
+        return 100;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    finish() {
+        addMana(resources.gold * 50);
+        resetResource("gold");
+    },
+});
+
 
 // todo: make this correct
 Action.GreatFeast = new MultipartAction("Great Feast", {
