@@ -1780,6 +1780,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </spatiomancy>
+        <oracle>
+            <label>Oracle</label>
+            <tooltip><![CDATA[
+            (Incomplete)
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </oracle>
 		<winged_steed>
 			<label>Winged Steed</label>
 			<tooltip><![CDATA[

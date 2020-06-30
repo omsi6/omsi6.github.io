@@ -3727,6 +3727,31 @@ Action.Spatiomancy = new Action("Spatiomancy", {
         }
 	},
 });
+Action.Oracle = new Action("Oracle", {
+    type: "normal",
+    expMult: 4,
+    townNum: 4,
+    stats: {
+        Luck: 0.8,
+        Soul: 0.2
+    },
+    allowed() {
+        return trainingLimits;
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 60;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 80;
+    },
+    finish() {
+		
+    },
+});
+
 Action.WingedSteed = new Action("Winged Steed", {
 	tytpe: "normal",
 	expMult: 1,
