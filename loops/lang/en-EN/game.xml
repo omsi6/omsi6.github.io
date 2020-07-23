@@ -832,13 +832,13 @@
         ]]></tooltip>
             <story_1><![CDATA[<b>Glasses bought:</b>⮀ The world snaps into sharp focus as you put them on and you gawk a little as details that had slipped your eyes previously stood out in sharp contrast. You're a little gobsmacked at how much of a difference they make.]]></story_1>
         </buy_glasses>
-        <buy_mana>
+        <buy_mana_z1>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
             1 gold = 50 mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
         ]]></tooltip>
             <!--TODO: give this action story-->
-        </buy_mana>
+        </buy_mana_z1>
         <meet_people>
             <label>Meet People</label>
             <label_done>People Met</label_done>
@@ -1357,13 +1357,13 @@
 			<story_7><![CDATA[<b>80% Rumors Heard:</b>⮀ In a more high-class bar, you catch wind of an architectural design competition, where various architects each design the same house and the one with the best design wins the contract to build it. A polite inquiry gets you the name of the person you need to know to enter the competition.]]></story_7>
 			<story_8><![CDATA[<b>100% Rumors Heard:</b>⮀ You've been to every bar and dinner party, and heard every bit of gossip there is to hear. While you've only met a tiny fraction of Merchanton's population you've had drinks with every rung of society, and you're starting to feel like the city's running out of secrets for you to uncover.]]></story_8>
         </get_drunk>
-        <purchase_mana>
-            <label>Purchase Mana</label>
+        <buy_mana_z3>
+            <label>Buy Mana</label>
             <tooltip><![CDATA[
             1 gold = 50 mana. Buys all the mana you can.
         ]]></tooltip>
             <!--TODO: give this action story-->
-        </purchase_mana>
+        </buy_mana_z3>
         <sell_potions>
             <label>Sell Potions</label>
             <tooltip><![CDATA[
@@ -1716,13 +1716,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </accept_donations>
-		<get_mana>
-            <label>Get Mana</label>
+		<buy_mana_z5>
+            <label>Buy Mana</label>
             <tooltip><![CDATA[
             1 gold = 50 mana. Buys all the mana you can.
         ]]></tooltip>
             <!--TODO: give this action story-->
-		</get_mana>
+		</buy_mana_z5>
 		<sell_artifact>
 			<label>Sell Artifact</label>
 			<tooltip><![CDATA[

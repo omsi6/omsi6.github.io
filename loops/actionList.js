@@ -323,7 +323,7 @@ Action.BuyGlasses = new Action("Buy Glasses", {
     }
 });
 
-Action.BuyMana = new Action("Buy Mana", {
+Action.BuyManaZ1 = new Action("Buy Mana Z1", {
     type: "normal",
     expMult: 1,
     townNum: 0,
@@ -2048,7 +2048,7 @@ Action.GetDrunk = new Action("Get Drunk", {
     },
 });
 
-Action.PurchaseMana = new Action("Purchase Mana", {
+Action.BuyManaZ3 = new Action("Buy Mana Z3", {
     type: "normal",
     expMult: 1,
     townNum: 2,
@@ -3474,7 +3474,7 @@ Action.AcceptDonations = new Action("Accept Donations", {
 function adjustDonations() {
     towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
 }
-Action.GetMana = new Action("Get Mana", {
+Action.BuyManaZ5 = new Action("Buy Mana Z5", {
     type: "normal",
     expMult: 1,
     townNum: 4,
