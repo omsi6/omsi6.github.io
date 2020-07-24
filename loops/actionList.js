@@ -3871,14 +3871,14 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
     },
     loopStats: ["Spd", "Int", "Soul"],
     manaCost() {
-        return Math.ceil(50000 * (1 - towns[1].getLevel("Witch") * 0.005));
+        return 5000000;
     },
     allowed() {
         return 1;
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9);
         let name = "";
         let soulstones = 0;
         for (const stat in stats) {
@@ -3892,14 +3892,14 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
             }
         }
-        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
-        return resources.reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
+        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 5000 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
+        return towns[this.townNum].GreatFeastLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
     },
     loopCost(segment) {
-        return 1000000 * (segment * 2 + 1);
+        return 1000000000 * (segment * 5 + 1);
     },
     tickProgress(offset) {
-        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter + offset) % this.loopStats.length]) / 100) / (1 - towns[1].getLevel("Witch") * 0.005);
+        return getSkillLevel("Practical") * (1 + getLevel(this.loopStats[(towns[4].GreatFeastLoopCounter + offset) % this.loopStats.length]) / 100);
     },
     loopsFinished() {
         addBuffAmt("Feast", 1);
@@ -3928,7 +3928,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
 		return towns[4].getLevel("Tour") >= 80;
     },
     unlocked() {
-        return false;//towns[4].getLevel("Tour") >= 100;
+        return towns[4].getLevel("Tour") >= 100;
     },
     goldCost() {
         return 5000 * (getBuffLevel("Feast") + 1);
