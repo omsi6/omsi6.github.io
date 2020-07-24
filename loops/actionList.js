@@ -3474,6 +3474,45 @@ Action.AcceptDonations = new Action("Accept Donations", {
 function adjustDonations() {
     towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
 }
+
+Action.TidyUp = new MultipartAction("Tidy Up", {
+	type: "multipart",
+	expMult: 1,
+	townNum: 4,
+	varName: "Tidy",
+	stats: {
+		Dex: 1.0 // Temp.
+	},
+	loopStats: ["Dex", "Dex", "Dex"], // Temp.
+	manaCost() {
+		return 10000;
+	},
+	loopCost(segment) {
+		return fibonacci(Math.floor((towns[4].TidyLoopCounter + segment) - towns[4].TidyLoopCounter / 3 + 0.0000001)) * 1000000; // Temp.
+	},
+	tickProgress(offset) {
+		return getSkillLevel("Practical") * (1 + getLevel(this.loopStats[(towns[4].TidyLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[4].totalTidy / 100);
+	},
+	loopsFinished() {
+		addResource("gold", 50);
+	},
+	segmentFinished() {
+		// empty.
+	},
+	getPartName() {
+		return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${numberToWords(Math.floor((towns[4].TidyLoopCounter + 0.0001) / this.segments + 1))}`;
+	},
+	visible() {
+        return towns[4].getLevel("Canvassed") >= 10;
+	},
+	unlocked(){
+        return towns[4].getLevel("Canvassed") >= 30;
+	},
+	finish(){
+		// empty
+	},
+});
+
 Action.BuyManaZ5 = new Action("Buy Mana Z5", {
     type: "normal",
     expMult: 1,

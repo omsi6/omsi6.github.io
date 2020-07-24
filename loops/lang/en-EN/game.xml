@@ -1716,6 +1716,20 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </accept_donations>
+		<tidy_up>
+			<label>Tidy Up</label>
+            <label_done>Tidied</label_done>
+            <label_part>Mess</label_part>
+			<tooltip><![CDATA[
+			Tidy up the place (Incomplete).
+		]]></tooltip>
+			<segment_names>
+                <name>Temp1</name>
+                <name>Temp2</name>
+                <name>Temp3</name>
+            </segment_names>
+            <!--TODO: give this action story-->
+		</tidy_up>
 		<buy_mana_z5>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
