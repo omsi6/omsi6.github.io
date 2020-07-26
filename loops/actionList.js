@@ -341,8 +341,11 @@ Action.BuyManaZ1 = new Action("Buy Mana Z1", {
     unlocked() {
         return towns[0].getLevel("Wander") >= 20;
     },
+	goldCost() {
+		return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+	},
     finish() {
-        addMana(resources.gold * 50);
+        addMana(resources.gold * this.goldCost());
         resetResource("gold");
     },
 });
@@ -2066,8 +2069,11 @@ Action.BuyManaZ3 = new Action("Buy Mana Z3", {
     unlocked() {
         return true;
     },
+	goldCost() {
+		return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+	},
     finish() {
-        addMana(resources.gold * 50);
+        addMana(resources.gold * this.goldCost());
         resetResource("gold");
     },
 });
@@ -3531,8 +3537,11 @@ Action.BuyManaZ5 = new Action("Buy Mana Z5", {
     unlocked() {
         return true;
     },
+	goldCost() {
+		return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+	},
     finish() {
-        addMana(resources.gold * 50);
+        addMana(resources.gold * this.goldCost());
         resetResource("gold");
     },
 });
@@ -3601,7 +3610,7 @@ Action.Mercantilism = new Action("Mercantilism", {
         Soul: 0.1
     },
     skills: {
-        //Mercantilism: 100
+        Mercantilism: 100
     },
     manaCost() {
         return 10000; // Temp
@@ -3613,7 +3622,7 @@ Action.Mercantilism = new Action("Mercantilism", {
         return towns[4].getLevel("Tour") >= 30;
     },
     finish() {
-        //handleSkillExp(this.skills);
+        handleSkillExp(this.skills);
     },
 });
 

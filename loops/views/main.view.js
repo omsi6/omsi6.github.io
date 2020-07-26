@@ -201,7 +201,9 @@ function View() {
                 document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4);
             } else if (skill === "Practical") {
                 document.getElementById("skillBonusPractical").textContent = (1 / (1 + getSkillLevel("Practical") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
-            }
+            } else if (skill === "Mercantilism") {
+				document.getElementById("skillBonusMercantilism").textContent = intToString(Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25), 4);
+		    }
         }
     };
 

@@ -645,6 +645,11 @@
             People to check if they're suckers is increased by 0.5% per level from 301-500 (rounded down).<br>
             Currently multiplying costs by <div id='skillBonusSpatiomancy'></div>x.]]></desc2>
         </spatiomancy>
+		<mercantilism>
+			<label>Mercantilism</label>
+			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
+			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
+		</mercantilism>
         <tooltip>
             <level>Level:</level>
             <level_exp>Level Exp:</level_exp>
@@ -835,8 +840,11 @@
         <buy_mana_z1>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
-            1 gold = 50 mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
+            1 gold = 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
+        ]]></tooltip2>
             <!--TODO: give this action story-->
         </buy_mana_z1>
         <meet_people>
@@ -1360,8 +1368,11 @@
         <buy_mana_z3>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
-            1 gold = 50 mana. Buys all the mana you can.
+            1 gold = 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana. Buys all the mana you can.<br>
+        ]]></tooltip2>
             <!--TODO: give this action story-->
         </buy_mana_z3>
         <sell_potions>
@@ -1733,8 +1744,11 @@
 		<buy_mana_z5>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
-            1 gold = 50 mana. Buys all the mana you can.
+            1 gold = 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana. Buys all the mana you can.
+        ]]></tooltip2>
             <!--TODO: give this action story-->
 		</buy_mana_z5>
 		<sell_artifact>
