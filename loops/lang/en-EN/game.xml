@@ -418,6 +418,11 @@
             <id>enchantments</id>
             <desc>Divinely blessed weapons and armor, like a hero of legend.</desc>
         </resource>
+        <resource initially_hidden="true">
+            <title>Land:</title>
+            <id>land</id>
+            <desc>(Incomplete)</desc>
+        </resource>
         <!--singular items with img icons rather than counts-->
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
@@ -438,6 +443,11 @@
             <title><![CDATA[<img src="img/loopingPotion.svg" class="smallIcon">]]></title>
             <id>loopingPotion</id>
             <desc>It's a potion made with the very same formula that got you into this mess. Why exactly did you make this?</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/seekCitizenship.svg" class="smallIcon">]]></title>
+            <id>citizenship</id>
+            <desc>You're one of Valhalla's proud citizens now, giving you the right to own land there.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/wingedSteed.svg" class="smallIcon">]]></title>
@@ -1808,6 +1818,39 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </spatiomancy>
+        <seek_citizenship>
+            <label>Seek Citizenship</label>
+			<label_done>Citizenship Exam Studied</label_done>
+            <tooltip><![CDATA[
+            Right now, you're just visiting.  If you want to be accepted into their ranks for real, you'll need to study and pass a rigorous exam on Valhallan history and culture.<br>Grants citizenship when taken with 100% progress.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </seek_citizenship>
+        <purchase_land>
+            <label>Purchase Land</label>
+            <label_done>Plots Purchased</label_done>
+            <info_text1>Good land left</info_text1>
+            <info_text2>Good land total</info_text2>
+            <info_text3>Plots to survey</info_text3>
+            <tooltip><![CDATA[
+            There's plenty of open land in Valhalla, empty plots just waiting for someone to build something on them.<br>Costs 50 gold.<br>Every 20 plots is good land for building.<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </purchase_land>
+		<build_housing>
+			<label>Build Housing</label>
+            <tooltip><![CDATA[
+            (Incomplete)<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+		</build_housing>
+		<collect_taxes>
+			<label>Collect Taxes</label>
+            <tooltip><![CDATA[
+            (Incomplete)<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+		</collect_taxes>
         <oracle>
             <label>Oracle</label>
             <tooltip><![CDATA[

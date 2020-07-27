@@ -3401,6 +3401,9 @@ Action.GuidedTour = new Action("Guided Tour", {
         towns[4].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
     },
 });
+function adjustPlots() {
+	towns[4].totalPlots = towns[4].getLevel("Tour") * 2;
+}
 
 Action.Canvass = new Action("Canvass", {
     type: "progress",
@@ -3812,6 +3815,124 @@ Action.Spatiomancy = new Action("Spatiomancy", {
         }
 	},
 });
+
+// PBA, 'purchase land' only unlocks at 100%
+Action.SeekCitizenship = new Action("Seek Citizenship", {
+	type: "progress",
+	expMult: 1,
+	townNum: 4,
+	varName: "Citizen",
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	manaCost() {
+		return 1000; // Temp
+	},
+	visible() {
+		return true; // Temp
+	},
+	unlocked() {
+		return true; // Temp
+	},
+    finish() {
+		towns[4].finishProgress(this.varName, 100);
+		if(towns[4].getLevel("Citizen") >= 100) addResource("citizenship", true);
+    },
+});
+
+// Limited, requires 'seek citizenship' action taken, scales from Tour?
+// 200 plots total, 10 land total.
+Action.PurchaseLand = new Action("Purchase Land", {
+	type: "limited",
+	expMult: 1,
+	townNum: 4,
+	varName: "Plots",
+	stats: {
+		Cha: 1.0 // Temp.
+	},
+	affectedBy: ["Seek Citizenship"],
+	manaCost() {
+		return 1000; // Temp.
+	},
+	canStart() {
+		return resources.citizenship && resources.gold >= 50;
+	},
+	cost() {
+		addResource("gold", -50);
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		towns[4].finishRegular(this.varName, 20, () => {
+			addResource("land", 1);
+			return 1;
+		});
+	},
+});
+
+// Cost scales with Crafting Guild Multiplier?
+Action.BuildHousing = new Action("Build Housing", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Str: 1.0 // Temp.
+	},
+	affectedBy: ["Seek Citizenship"],
+	canStart() {
+		return resources.citizenship && resources.land >= 1;
+	},
+	cost() {
+		addResource("land", -1);
+	},
+	manaCost() {
+		return 1000; // Temp.
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		// Unlock house n for tax gain.
+	},
+});
+
+
+// Borrowing from dungeons.
+// As soon as a house is built, that house starts generating gold similar to how SS regen works.
+// Money earned scales ^0.4, or otherwise diminishing.
+// Collecting money reduces money in the pot but does not change the rate of gain.
+Action.CollectTaxes = new Action("Collect Taxes", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp.
+	},
+	affectedBy: ["Seek Citizenship"],
+	canStart() {
+		return resources.citizenship;
+	},
+	manaCost() {
+		return 100;
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		// Gather all available tax from all houses.
+	},
+});
+
 Action.Oracle = new Action("Oracle", {
     type: "normal",
     expMult: 4,

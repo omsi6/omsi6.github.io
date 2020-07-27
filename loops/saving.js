@@ -51,10 +51,12 @@ let resources = {
     artifacts: 0,
 	favors: 0,
 	enchantments: 0,
+	land: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,
     loopingPotion: false,
+	citizenship: false,
 	wingedSteed: false
 };
 const resourcesTemplate = copyObject(resources);
