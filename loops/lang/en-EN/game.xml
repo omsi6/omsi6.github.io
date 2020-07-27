@@ -451,7 +451,7 @@
         </resource>
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/acquirePermit.svg" class="smallIcon">]]></title>
-            <id>Permit</id>
+            <id>permit</id>
             <desc>The actual right to own land, for real this time.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
