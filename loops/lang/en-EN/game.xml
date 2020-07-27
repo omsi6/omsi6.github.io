@@ -450,6 +450,11 @@
             <desc>You're one of Valhalla's proud citizens now, giving you the right to own land there.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/acquirePermit.svg" class="smallIcon">]]></title>
+            <id>Permit</id>
+            <desc>The actual right to own land, for real this time.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/wingedSteed.svg" class="smallIcon">]]></title>
             <id>wingedSteed</id>
             <desc>A horse with great angelic wings. It can run across clouds as easily as dirt.</desc>
@@ -1826,6 +1831,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </seek_citizenship>
+        <acquire_permit>
+            <label>Acquire Permit</label>
+            <tooltip><![CDATA[
+            Turns out just being a citizen isn't enough, you need to go through special certification as well in order to actually own land.<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </acquire_permit>
         <purchase_land>
             <label>Purchase Land</label>
             <label_done>Plots Purchased</label_done>
@@ -1833,21 +1845,21 @@
             <info_text2>Good land total</info_text2>
             <info_text3>Plots to survey</info_text3>
             <tooltip><![CDATA[
-            There's plenty of open land in Valhalla, empty plots just waiting for someone to build something on them.<br>Costs 50 gold.<br>Every 20 plots is good land for building.<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+            There's plenty of open land in Valhalla, empty plots just waiting for someone to build something on them.<br>Costs 50 gold.<br>Every 20 plots is good land for building.<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </purchase_land>
 		<build_housing>
 			<label>Build Housing</label>
             <tooltip><![CDATA[
-            (Incomplete)<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+            (Incomplete)<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</build_housing>
 		<collect_taxes>
 			<label>Collect Taxes</label>
             <tooltip><![CDATA[
-            (Incomplete)<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+            (Incomplete)<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</collect_taxes>

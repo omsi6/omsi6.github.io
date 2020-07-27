@@ -57,6 +57,7 @@ let resources = {
     pickaxe: false,
     loopingPotion: false,
 	citizenship: false,
+	permit: false,
 	wingedSteed: false
 };
 const resourcesTemplate = copyObject(resources);

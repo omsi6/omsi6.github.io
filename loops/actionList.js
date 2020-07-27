@@ -3840,6 +3840,34 @@ Action.SeekCitizenship = new Action("Seek Citizenship", {
     },
 });
 
+Action.AcquirePermit = new Action("Acquire Permit", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp.
+	},
+	allowed() {
+		return 1;
+	},
+	manaCost() {
+		return 1000; // Temp.
+	},
+	canStart() {
+		return resources.citizenship; // use favors?
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 60;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		addResource("permit", true);
+	},
+});
+
+
 // Limited, requires 'seek citizenship' action taken, scales from Tour?
 // 200 plots total, 10 land total.
 Action.PurchaseLand = new Action("Purchase Land", {
@@ -3861,7 +3889,7 @@ Action.PurchaseLand = new Action("Purchase Land", {
 		addResource("gold", -50);
 	},
 	visible() {
-		return towns[4].getLevel("Citizen") >= 40;
+		return towns[4].getLevel("Citizen") >= 20;
 	},
 	unlocked() {
 		return towns[4].getLevel("Citizen") >= 100;
@@ -3882,7 +3910,7 @@ Action.BuildHousing = new Action("Build Housing", {
 	stats: {
 		Str: 1.0 // Temp.
 	},
-	affectedBy: ["Seek Citizenship"],
+	affectedBy: ["Acquire Permit"],
 	canStart() {
 		return resources.citizenship && resources.land >= 1;
 	},
@@ -3893,7 +3921,7 @@ Action.BuildHousing = new Action("Build Housing", {
 		return 1000; // Temp.
 	},
 	visible() {
-		return towns[4].getLevel("Citizen") >= 40;
+		return towns[4].getLevel("Citizen") >= 60;
 	},
 	unlocked() {
 		return towns[4].getLevel("Citizen") >= 100;
@@ -3915,7 +3943,7 @@ Action.CollectTaxes = new Action("Collect Taxes", {
 	stats: {
 		Cha: 1.0 // Temp.
 	},
-	affectedBy: ["Seek Citizenship"],
+	affectedBy: ["Acquire Permit"],
 	canStart() {
 		return resources.citizenship;
 	},
@@ -3923,7 +3951,7 @@ Action.CollectTaxes = new Action("Collect Taxes", {
 		return 100;
 	},
 	visible() {
-		return towns[4].getLevel("Citizen") >= 40;
+		return towns[4].getLevel("Citizen") >= 60;
 	},
 	unlocked() {
 		return towns[4].getLevel("Citizen") >= 100;
