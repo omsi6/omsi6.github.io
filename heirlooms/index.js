@@ -11,6 +11,7 @@
 
 /*
 
+v1.35 fix annoying floating point error causing mods to rarely be counted 1 extra time for total cost calculations
 v1.34 fix edge case where equipped display wouldn't appear
 v1.33 add daily crit bonus input, remove beta mode, unify handling of input defaults and displaying of them
 v1.32 fix next mod upg cost display, fix upg affordability display on cores
@@ -51,7 +52,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.34;
+const globalVersion = 1.35;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7"];
@@ -126,8 +127,8 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.34) {
-        inputs.version = 1.34;
+    if (inputs.version < 1.35) {
+        inputs.version = 1.35;
     }
 }
 
@@ -191,6 +192,14 @@ Math.log = (function() {
         return log(n) / (base ? log(base) : 1);
     };
 }());
+
+function roundFloatingPointErrors(n) {
+    return parseFloat(n.toFixed(2));
+}
+
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
 
 const mods = {
     breedSpeed: {
@@ -693,7 +702,7 @@ class Heirloom {
     getModSpent(type) {
         let cost = 0;
         if (type === "empty") return cost;
-        const dummyHeirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
+        const dummyHeirloom = new Heirloom(deepClone(this));
         for (const mod of dummyHeirloom.mods) {
             if (mod[0] === type) {
                 const stepAmount = mods[type].stepAmounts[this.rarity];
@@ -703,6 +712,7 @@ class Heirloom {
                 while (mod[1] < targetValue) {
                     cost += dummyHeirloom.getModCost(name);
                     mod[1] += stepAmount;
+                    mod[1] = roundFloatingPointErrors(mod[1]);
                 }
             }
         }
@@ -741,7 +751,7 @@ class Heirloom {
 
     forceCritBreakpoint() {
         if (this.isEmpty()) return new Heirloom();
-        const heirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
+        const heirloom = new Heirloom(deepClone(this));
         let currency = getEffectiveNullifium() - this.getTotalSpent();
         let efficiency = 0;
         let paid = 0;
@@ -801,7 +811,7 @@ class Heirloom {
 
     calculatePurchases() {
         if (this.isEmpty()) return new Heirloom();
-        const heirloom = new Heirloom(JSON.parse(JSON.stringify(this)));
+        const heirloom = new Heirloom(deepClone(this));
         let currency = (this.isCore) ? save.playerSpire.main.spirestones : getEffectiveNullifium() - this.getTotalSpent();
         let efficiency = 0;
         let paid = 0;
