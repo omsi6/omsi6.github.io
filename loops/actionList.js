@@ -1064,7 +1064,7 @@ Action.OpenRift = new Action("Open Rift", {
         return 100000;
     },
     visible() {
-        return getSkillLevel("Dark") >= 100 && getSkillLevel("Spatiomancy") >= 50;
+        return storyReqs.castIntoShadowRealm || storyReqs.fellFromGrace;
     },
     unlocked() {
         return getSkillLevel("Dark") >= 200 && getSkillLevel("Spatiomancy") >= 100;
@@ -4100,6 +4100,13 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     type: "normal",
     expMult: 2,
     townNum: 4,
+	storyReqs(storyNum) {
+		switch(storyNum) {
+			case 1:
+				return storyReqs.fellFromGrace;
+		}
+		return false;
+	},
     stats: {
         Dex: 0.4,
         Luck: 0.3,
@@ -4119,6 +4126,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
         return true;
     },
     finish() {
+		unlockStory("fellFromGrace");
         unlockTown(0);
     },
 });

@@ -157,7 +157,8 @@ const storyReqs = {
     imbueMindThirdSegmentReached: false,
     judgementFaced: false,
     acceptedIntoValhalla: false,
-    castIntoShadowRealm: false
+    castIntoShadowRealm: false,
+	fellFromGrace: false
 };
 
 const curDate = new Date();

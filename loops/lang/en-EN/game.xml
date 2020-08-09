@@ -1899,6 +1899,7 @@
             <tooltip><![CDATA[
             Looks like the only way out of this place is to make them dislike you enough to kick you out. Some moderate vandalism will probably do the job. You'll be cast into the shadow realm and thrown back to the beginning of your journey, but at least you'll go out with a bang!
         ]]></tooltip>
+			<story_1><![CDATA[<b>Fell From Grace:</b>⮀ Incomplete]]></story_1>
             <!--TODO: give this action story-->
         </fall_from_grace>
         <!--town 6-->
