@@ -13,7 +13,7 @@
 	<div id="content-text">
 		Paste your save into the box below to get recommendations for heirloom upgrades.
 		<div class="help">
-			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, and every core mod. (also Trimp Health/Prismatic in U2) If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
+			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, and every core mod. (also Trimp Health/Prismatic in U2) If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh. All mods are "weighed" on heirlooms with innate bonuses. (based on their effect to the bonus)
 				<br><br>
 				Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones, nor saving spirestones for additional floors. But you probably shouldn't spend spirestones until you have a quite a few floors, or have a replacement core so you can recycle your current to afford the next floor.
 				<br><br>
@@ -130,6 +130,7 @@
 				<span id="shieldOldMod5Notification">•</span>
 				<span id="shieldOldMod5" class="heirloomMod">???</span>
 			</div>
+			<div id="shieldOldInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="staffOldContainer" class="heirloomContainer">
 			<div class="heirloomContainerTopRow">
@@ -173,6 +174,7 @@
 				<span id="staffOldMod5Notification">•</span>
 				<span id="staffOldMod5" class="heirloomMod">???</span>
 			</div>
+			<div id="staffOldInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="coreOldContainer" class="heirloomContainer" style="display: none">
 			<div class="heirloomContainerTopRow">
@@ -267,6 +269,7 @@
 				<span id="shieldNewMod5" class="heirloomMod">???</span>
 				<span id="shieldNewMod5Plus">+?</span>
 			</div>
+			<div id="shieldNewInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="staffNewContainer" class="heirloomContainer" style="opacity: 0;">
 			<div class="heirloomContainerTopRow">
@@ -316,6 +319,7 @@
 				<span id="staffNewMod5" class="heirloomMod">???</span>
 				<span id="staffNewMod5Plus">+?</span>
 			</div>
+			<div id="staffNewInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="coreNewContainer" class="heirloomContainer" style="display: none; z-index: 1;">
 			<div class="heirloomContainerTopRow">
