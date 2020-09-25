@@ -236,7 +236,7 @@ const mods = {
         weighable: true,
         stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5],
         softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 15, 30, 45],
-        hardCaps: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100, 100],
+        hardCaps: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100, 125],
         heirloopy: true
     }, 
     playerEfficiency: {
