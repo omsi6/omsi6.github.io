@@ -11,6 +11,7 @@
 
 /*
 
+v1.37 support for scruffy l12/13/15 bonuses, fixed strange behavior with mod gain displays
 v1.36 support for new heirloom tier in v5.4.0 and innates, allow more than 14 carried heirlooms, css cleanup
 v1.35 fix annoying floating point error causing mods to rarely be counted 1 extra time for total cost calculations
 v1.34 fix edge case where equipped display wouldn't appear
@@ -53,10 +54,10 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.36;
+const globalVersion = 1.37;
 document.getElementById("versionNumber").textContent = globalVersion;
 
-const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyE0L2", "scruffyE0L3", "scruffyE0L7"];
+const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
 const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "dailyCrit"];
 const inputs = {
     VMWeight: 12,
@@ -72,9 +73,12 @@ const inputs = {
     preferredStaff: 0,
     preferredCore: 0,
     universe2: false,
-    scruffyE0L2: false,
-    scruffyE0L3: false,
-    scruffyE0L7: false,
+    scruffyL2: false,
+    scruffyL3: false,
+    scruffyL7: false,
+    scruffyL12: false,
+    scruffyL13: false,
+    scruffyL15: false,
     masteriesUnlocked: false,
     coreUnlocked: false,
     universe2Unlocked: false,
@@ -128,8 +132,11 @@ function updateVersion() {
         inputs.beta = savedInputs.Beta;
         inputs.version = 1.25;
     }
-    if (inputs.version < 1.36) {
-        inputs.version = 1.36;
+    if (inputs.version < 1.37) {
+        inputs.scruffyL2 = savedInputs.scruffyE0L2;
+        inputs.scruffyL3 = savedInputs.scruffyE0L3;
+        inputs.scruffyL7 = savedInputs.scruffyE0L7;
+        inputs.version = 1.37;
     }
 }
 
@@ -478,19 +485,19 @@ const mods = {
 };
 
 function getStepAmount(type, rarity) {
-    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mods[type].stepAmounts[rarity];
+    if ((mods[type].heirloopy && inputs.scruffyL3) || mods[type].immutable) return mods[type].stepAmounts[rarity];
     if (inputs.universe2) return mods[type].stepAmounts[rarity] / 10;
     return mods[type].stepAmounts[rarity];
 }
 
 function getSoftCap(type, rarity) {
-    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mods[type].softCaps[rarity];
+    if ((mods[type].heirloopy && inputs.scruffyL3) || mods[type].immutable) return mods[type].softCaps[rarity];
     if (inputs.universe2) return mods[type].softCaps[rarity] / 10;
     return mods[type].softCaps[rarity];
 }
 
 function getHardCap(type, rarity) {
-    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mods[type].hardCaps[rarity];
+    if ((mods[type].heirloopy && inputs.scruffyL3) || mods[type].immutable) return mods[type].hardCaps[rarity];
     if (inputs.universe2) return mods[type].hardCaps[rarity] / 10;
     return mods[type].hardCaps[rarity];
 }
@@ -559,7 +566,7 @@ class Heirloom {
     getModValue(type) {
         for (const mod of this.mods) {
             if (mod[0] === type) {
-                if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return mod[1];
+                if ((mods[type].heirloopy && inputs.scruffyL3) || mods[type].immutable) return mod[1];
                 if (inputs.universe2) return mod[1] / 10;
                 return mod[1];
             }
@@ -594,7 +601,7 @@ class Heirloom {
             // 50 base, 50 from prismatic palace
             let shieldPercent = 100;
             shieldPercent += save.portal.Prismal.radLevel;
-            if (inputs.scruffyE0L2) shieldPercent += 25;
+            if (inputs.scruffyL2) shieldPercent += 25;
 
             return (value + shieldPercent + 100 + stepAmount * inputs.HPWeight) / (value + shieldPercent + 100);
         }
@@ -605,9 +612,11 @@ class Heirloom {
             let megaCritMult = 5;
             if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
             else critChance += this.getModValue("critChance");
-            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyL7 && inputs.universe2)) critChance += 50;
+            if (inputs.scruffyL13 && inputs.universe2) critChance += 50;
             if (critChance === 0) return 1;
             if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
+            if (inputs.scruffyL12 && inputs.universe2) megaCritMult += 2;
             if (inputs.chargedCrits) megaCritMult += 1;
             const megaCrits = Math.floor(critChance / 100);
             critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
@@ -632,10 +641,16 @@ class Heirloom {
                 critDamage += this.getModValue("critDamage");
             }
             if (critDamage === 0) return 1;
-            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) {
+            if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyL7 && inputs.universe2)) {
+                critChanceBefore += 50;
+            }
+            if (inputs.scruffyL13 && inputs.universe2) {
                 critChanceBefore += 50;
             }
             if (inputs.fluffyE5L10 && !inputs.universe2) {
+                megaCritMult += 2;
+            }
+            if (inputs.scruffyL12 && inputs.universe2) {
                 megaCritMult += 2;
             }
             if (inputs.chargedCrits) {
@@ -744,8 +759,10 @@ class Heirloom {
         let megaCritMult = 5;
         if (inputs.chargedCrits) critChance += this.getModValue("critChance") * 1.5;
         else critChance += this.getModValue("critChance");
-        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyL7 && inputs.universe2)) critChance += 50;
+        if (inputs.scruffyL13 && inputs.universe2) critChance += 50;
         if (inputs.fluffyE5L10 && !inputs.universe2) megaCritMult += 2;
+        if (inputs.scruffyL12 && inputs.universe2) megaCritMult += 2;
         if (inputs.chargedCrits) megaCritMult += 1;
         const megaCrits = Math.floor(critChance / 100);
         critChance = Math.min(critChance - megaCrits * 100, 100) / 100;
@@ -767,7 +784,8 @@ class Heirloom {
         const purchases = [0, 0, 0, 0, 0, 0];
         const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
         let critChance = relentlessness * 5 + inputs.dailyCrit;
-        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyE0L7 && inputs.universe2)) critChance += 50;
+        if ((inputs.fluffyE4L10 && !inputs.universe2) || (inputs.scruffyL7 && inputs.universe2)) critChance += 50;
+        if (inputs.scruffyL13 && inputs.universe2) critChance += 50;
         const megaCrits = Math.floor((critChance + (inputs.chargedCrits) ? heirloom.getModValue("critChance") * 1.5 : heirloom.getModValue("critChance")) / 100);
 
         while (true) {
@@ -874,7 +892,7 @@ class Heirloom {
     }
 
     getInnateGain(type) {
-        if (this.rarity < 10) return 0;
+        if (this.rarity < 10) return 1;
         const value = this.getInnate(this.getTotalSpent());
         const stepAmount = this.getInnate(this.getTotalSpent() + this.getModCost(type)) - value;
 
@@ -911,7 +929,7 @@ const averageBadGuyHealthMod = (0.7 + 1.3 + 1.3 + 1 + 0.7 + 0.8 + 1.1 + 1.6 + 1.
 // trimps main.js : Fluffy
 const fluffyRewards = { voidance: 12, critChance: 14, megaCrit: 15, voidelicious: 17 };
 // trimps main.js : Scruffy
-const scruffyRewards = { prism: 2, heirloopy: 3, critChance: 7 };
+const scruffyRewards = { prism: 2, heirloopy: 3, critChance: 7, megaCrit: 13, critChance2: 14, biggerbetterHeirlooms: 16 };
 // trimps config.js : goldenUpgrades
 // trimps main.js: buyGoldenUpgrade(what)
 const goldenVoid = [0.0, 0.02, 0.06, 0.12, 0.2, 0.3, 0.42, 0.56, 0.72];
@@ -1121,7 +1139,7 @@ function voidMapsUpToZone(zone, portal, heirloomBonus) {
 
 function valueDisplay(type, value) {
     if (type === "empty") return "Empty";
-    if ((mods[type].heirloopy && inputs.scruffyE0L3) || mods[type].immutable) return `${parseFloat(value.toPrecision(4))}% ${mods[type].fullName}`;
+    if ((mods[type].heirloopy && inputs.scruffyL3) || mods[type].immutable) return `${parseFloat(value.toPrecision(4))}% ${mods[type].fullName}`;
     return `${parseFloat(inputs.universe2 ? (value / 10).toPrecision(4) : value.toPrecision(4))}% ${mods[type].fullName}`;
 }
 
@@ -1240,7 +1258,7 @@ function updateModContainer(divName, heirloom, spirestones) {
                         `${mods[mod[0]].name}:
                             <ul>
                             <li>Cost: ${heirloom.getModCost(mod[0]) === 1e20 ? "∞" : prettifyCommas(heirloom.getModCost(mod[0]))}</li>
-                            <li>Gain: ${humanify((heirloom.getModGain(mod[0]) + heirloom.getInnateGain(mod[0]) - (mods[mod[0]].weighable ? 2 : 1)) * 100, 4)}%</li>
+                            <li>Gain: ${humanify((heirloom.getModGain(mod[0]) + heirloom.getInnateGain(mod[0]) - 2) * 100, 4)}%</li>
                             <li>Efficiency: ${humanify((heirloom.getModEfficiency(mod[0]) - 1) / (bestEfficiency - 1) * 100, 2)}%</li>
                         </ul>`;
                 }
@@ -1352,6 +1370,7 @@ function deleteHeirloomPopup() {
 }
 
 function getHeirloomNullifiumRatio() {
+    if (inputs.scruffyL15) return 0.8;
     if (save.talents.heirloom2.purchased) return 0.7;
     if (save.talents.heirloom.purchased) return 0.6;
     return 0.5;
@@ -1383,9 +1402,9 @@ function calculate(manualInput) {
     if (!manualInput) {
         inputs.setInput("fluffyE4L10", fluffyRewardsAvailable() >= fluffyRewards.critChance);
         inputs.setInput("fluffyE5L10", fluffyRewardsAvailable() >= fluffyRewards.megaCrit);
-        inputs.setInput("scruffyE0L2", scruffyRewardsAvailable() >= scruffyRewards.prism);
-        inputs.setInput("scruffyE0L3", scruffyRewardsAvailable() >= scruffyRewards.heirloopy);
-        inputs.setInput("scruffyE0L7", scruffyRewardsAvailable() >= scruffyRewards.critChance);
+        inputs.setInput("scruffyL2", scruffyRewardsAvailable() >= scruffyRewards.prism);
+        inputs.setInput("scruffyL3", scruffyRewardsAvailable() >= scruffyRewards.heirloopy);
+        inputs.setInput("scruffyL7", scruffyRewardsAvailable() >= scruffyRewards.critChance);
         inputs.setInput("chargedCrits", save.talents.crit.purchased);
         inputs.setInput("universe2", save.global.universe === 2);
         if (inputs.universe2) {
