@@ -11,6 +11,7 @@
 
 /*
 
+v1.38 backend option to disable text shadows (surstromming 👀)
 v1.37 support for scruffy l12/13/15 bonuses, fixed strange behavior with mod gain displays
 v1.36 support for new heirloom tier in v5.4.0 and innates, allow more than 14 carried heirlooms, css cleanup
 v1.35 fix annoying floating point error causing mods to rarely be counted 1 extra time for total cost calculations
@@ -54,7 +55,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.37;
+const globalVersion = 1.38;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -83,6 +84,7 @@ const inputs = {
     coreUnlocked: false,
     universe2Unlocked: false,
     fluffyUnlocked: false,
+    textShadows: true,
     setInput(name, value) {
         if (checkboxNames.includes(name)) document.getElementById(`${name}Input`).checked = value;
         else if (textboxNames.includes(name)) document.getElementById(`${name}Input`).value = value;
@@ -137,6 +139,9 @@ function updateVersion() {
         inputs.scruffyL3 = savedInputs.scruffyE0L3;
         inputs.scruffyL7 = savedInputs.scruffyE0L7;
         inputs.version = 1.37;
+    }
+    if (inputs.version < 1.38) {
+        inputs.version = 1.38;
     }
 }
 
@@ -1293,7 +1298,8 @@ function updateModContainer(divName, heirloom, spirestones) {
             document.getElementById(`${divName}Info`).innerHTML = infoText;
         }
         document.getElementById(`${divName}?`).style.display = "block";
-        document.getElementById(`${divName}Container`).classList.value = `heirloomContainer ${heirloom.class}`;
+        document.getElementById(`${divName}Container`).classList.value =
+            `heirloomContainer ${heirloom.class} ${inputs.textShadows ? "" : "noShadows"}`;
 
         if (divName.includes("Old")) document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (Old)`;
         else document.getElementById(`${divName}Name`).textContent = `${heirloom.name} (New)`;

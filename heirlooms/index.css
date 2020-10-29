@@ -375,6 +375,10 @@ a:hover, a:active {
 	margin-right:0.3rem;
 }
 
+.noShadows {
+	text-shadow: none !important;
+}
+
 .heirloomRare0{
 	color: #888888;
 }
