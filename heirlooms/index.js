@@ -704,9 +704,9 @@ class Heirloom {
     getModEfficiency(type) {
         if (type === "empty") return 1;
         if (mods[type].weighable) {
-            return ((this.getModGain(type) - 1) / (this.getModCost(type) / this.basePrice)) + 1 + this.getInnateEfficiency(type);
+            return ((this.getModGain(type) - 1) / (this.getModCost(type) / this.basePrice)) + 1;
         }
-        return this.getInnateEfficiency(type) + 1;
+        return 1;
     }
 
     // add arrays for max normal values, if below or equal to, return normal price, else divide the amount over the normal value by the step to get amount and calculate the price with the amount
