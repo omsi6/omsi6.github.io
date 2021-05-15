@@ -11,6 +11,7 @@
 
 /*
 
+v1.39 support for new spire trap levels in v5.5.0
 v1.38 backend option to disable text shadows (surstromming 👀)
 v1.37 support for scruffy l12/13/15 bonuses, fixed strange behavior with mod gain displays
 v1.36 support for new heirloom tier in v5.4.0 and innates, allow more than 14 carried heirlooms, css cleanup
@@ -55,7 +56,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.38;
+const globalVersion = 1.39;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -140,8 +141,8 @@ function updateVersion() {
         inputs.scruffyL7 = savedInputs.scruffyE0L7;
         inputs.version = 1.37;
     }
-    if (inputs.version < 1.38) {
-        inputs.version = 1.38;
+    if (inputs.version < 1.39) {
+        inputs.version = 1.39;
     }
 }
 
