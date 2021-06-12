@@ -11,6 +11,7 @@
 
 /*
 
+v1.40 fix rare negative nu left on new looms due to floating point errors (ty ytterbijum)
 v1.39 support for new spire trap levels in v5.5.0
 v1.38 backend option to disable text shadows (surstromming 👀)
 v1.37 support for scruffy l12/13/15 bonuses, fixed strange behavior with mod gain displays
@@ -56,7 +57,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.39;
+const globalVersion = 1.40;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -141,8 +142,8 @@ function updateVersion() {
         inputs.scruffyL7 = savedInputs.scruffyE0L7;
         inputs.version = 1.37;
     }
-    if (inputs.version < 1.39) {
-        inputs.version = 1.39;
+    if (inputs.version < 1.40) {
+        inputs.version = 1.40;
     }
 }
 
@@ -864,6 +865,8 @@ class Heirloom {
             if (name === "") break;
             if (currency >= cost) {
                 heirloom.mods[index][1] += mods[name].stepAmounts[heirloom.rarity];
+                // fp errors can lead to fractional purchases
+                heirloom.mods[index][1] = roundFloatingPointErrors(heirloom.mods[index][1]);
                 heirloom.mods[index][3] += 1;
                 purchases[index] += 1;
                 currency -= cost;
@@ -1316,6 +1319,7 @@ function updateModContainer(divName, heirloom, spirestones) {
             else document.getElementById(`${divName}Innate`).textContent = `${humanify(heirloom.innate, 1)}% Parity (Innate)`;
         }
 
+        console.log(heirloom.purchases)
         if (heirloom.purchases) {
             for (let i = 0; i < 6; i++) {
                 document.getElementById(`${divName}Mod${i}Plus`).textContent = (heirloom.purchases[i] === 0) ? "" : `+${heirloom.purchases[i]}`;
