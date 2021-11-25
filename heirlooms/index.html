@@ -13,7 +13,7 @@
 	<div id="content-text">
 		Paste your save into the box below to get recommendations for heirloom upgrades.
 		<div class="help">
-			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, and every core mod. (also Trimp Health/Prismatic in U2) If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh. All mods are "weighed" on heirlooms with innate bonuses. (based on their effect to the bonus)
+			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, Parity Power, and every core mod. (also Trimp Health/Prismatic/Inequality in U2) If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
 				<br><br>
 				Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones, nor saving spirestones for additional floors. But you probably shouldn't spend spirestones until you have a quite a few floors, or have a replacement core so you can recycle your current to afford the next floor.
 				<br><br>
@@ -40,6 +40,9 @@
 				<div>
 					<input placeholder="Weapon levels (90)" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')"></input>
 					<input placeholder="Daily crit chance bonus (0)" id="dailyCritInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('dailyCrit')"></input>
+				</div>
+				<div id="equalityTargetInputContainer" style="display: none;">
+					<input placeholder="Equality target (100)" id="equalityTargetInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('equalityTarget')"></input>
 				</div>
 				<div id="fluffyCheckboxesContainer" class="checkboxesContainer" style="display: none;">
 					<div class="checkboxContainer">

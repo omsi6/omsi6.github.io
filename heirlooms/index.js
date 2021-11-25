@@ -4,6 +4,7 @@
 // code for spire td damage calcutations (tdcalc.js) from swaq/bhad (http://swaqvalley.com/td_calc/) with permission
 // beta VM/XP calculations from ymhsbmbesitwf (currently unused)
 // improved miner eff calculation from GhostFrog
+// inequality calculation from surstromming
 // minor help from SpectralFlame, Razenpok, and GhostFrog
 // I hope this tool is useful! :)
 
@@ -11,6 +12,7 @@
 
 /*
 
+v1.42 support for weighing parity power and inequality (ty surstromming for the math)
 v1.41 support for new 5.6.0 heirloom tier and 7 mods per heirloom, css cleanup
 v1.40 fix rare negative nu left on new looms due to floating point errors (ty ytterbijum)
 v1.39 support for new spire trap levels in v5.5.0
@@ -58,17 +60,18 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.41;
+const globalVersion = 1.42;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
-const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "dailyCrit"];
+const textboxNames = ["VMWeight", "XPWeight", "HPWeight", "weaponLevels", "dailyCrit", "equalityTarget"];
 const inputs = {
     VMWeight: 12,
     XPWeight: 11.25,
     HPWeight: 0,
     weaponLevels: 90,
     dailyCrit: 0,
+    equalityTarget: 100,
     version: globalVersion,
     fluffyE4L10: false,
     fluffyE5L10: false,
@@ -107,6 +110,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
         else if (input === "HPWeight" && savedInputs[input] === 0) continue;
         else if (input === "weaponLevels" && savedInputs[input] === 90) continue;
         else if (input === "dailyCrit" && savedInputs[input] === 0) continue;
+        else if (input === "equalityTarget" && savedInputs[input] === 100) continue;
         else if (input === "coreUnlocked" && savedInputs[input]) {
             document.getElementById("coreOldContainer").style.display = "block";
             document.getElementById("nextUpgradesContainer").innerHTML =
@@ -116,6 +120,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
         } else if (input === "universe2Unlocked" && savedInputs[input]) {
             document.getElementById("universe2CheckboxContainer").style.display = "flex";
             if (savedInputs.universe2 && document.getElementById("fluffyCheckboxesContainer").style.display !== "flex") document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
+            if (savedInputs.universe2) document.getElementById("equalityTargetInputContainer").style.display = "flex";
         } else if (input === "fluffyUnlocked" && savedInputs[input]) {
             if (document.getElementById("scruffyCheckboxesContainer").style.display !== "flex") document.getElementById("fluffyCheckboxesContainer").style.display = "flex";
         } 
@@ -143,8 +148,9 @@ function updateVersion() {
         inputs.scruffyL7 = savedInputs.scruffyE0L7;
         inputs.version = 1.37;
     }
-    if (inputs.version < 1.41) {
-        inputs.version = 1.41;
+    if (inputs.version < 1.42) {
+        inputs.equalityTarget = 100;
+        inputs.version = 1.42;
     }
 }
 
@@ -167,6 +173,8 @@ function updateInput(name, value, position) {
         inputs[name] = 90;
     } else if (name === "dailyCrit" && inputDiv.value === "") {
         inputs[name] = 0;
+    } else if (name === "equalityTarget" && inputDiv.value === "") {
+        inputs[name] = 100;
     } else if (name.includes("preferred")) {
         const cachedL = document.getElementById("inventoryColumn1").children.length + document.getElementById("inventoryColumn2").children.length;
         const type = name.split("preferred")[1];
@@ -334,6 +342,7 @@ const mods = {
         name: "Inequality",
         fullName: "Inequality",
         type: "Shield",
+        get weighable() { return inputs.universe2; },
         stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.25],
         softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200],
     },
@@ -439,7 +448,7 @@ const mods = {
         name: "Parity Power",
         fullName: "Parity Power",
         type: "Staff",
-        weighable: false,
+        weighable: true,
         stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
         softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 500],
     },
@@ -704,6 +713,12 @@ class Heirloom {
         if (type === "MinerSpeed") {
             return (Math.log((value + 100 + stepAmount) / (value + 100) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels;
         }
+        if (type === "ParityPower") {
+            return (Math.log((value + 1 + stepAmount) / (value + 1) * (Math.pow(1.2, inputs.weaponLevels) - 1) + 1) / Math.log(1.2)) / inputs.weaponLevels;
+        }
+        if (type === "inequality") {
+            return Math.pow(((1 - (0.1 * (1 - (value + stepAmount) / 100))) / 0.9), inputs.equalityTarget) / Math.pow(((1 - (0.1 * (1 - value / 100))) / 0.9), inputs.equalityTarget);
+        }
         if (this.isCore) {
             loadCore(this);
             const before = getMaxEnemyHP();
@@ -775,7 +790,8 @@ class Heirloom {
     }
 
     getDamageMult() {
-        const trimpAttackMult = 1 + this.getModValue("trimpAttack") / 100;
+        let trimpAttackMult = 1 + this.getModValue("trimpAttack") / 100;
+        trimpAttackMult *= Math.pow(((1 - (0.1 * (1 - this.getModValue("inequality") / 100))) / 0.9), inputs.equalityTarget);
         const relentlessness = (inputs.universe2) ? 0 : save.portal.Relentlessness.level;
         const criticality = (inputs.universe2) ? save.portal.Criticality.radLevel : 0;
         let critChance = relentlessness * 5 + inputs.dailyCrit;
@@ -1494,6 +1510,7 @@ function calculate(manualInput) {
         inputs.setInput("universe2Unlocked", true);
         document.getElementById("universe2CheckboxContainer").style.display = "flex";
         if (inputs.universe2 && document.getElementById("fluffyCheckboxesContainer").style.display !== "flex") document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
+        if (inputs.universe2) document.getElementById("equalityTargetInputContainer").style.display = "flex";
     }
 
     if (save.global.spiresCompleted >= 2) {

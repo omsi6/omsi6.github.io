@@ -39,7 +39,7 @@ p {
 	align-items: center;
 }
 
-#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #dailyCritInput {
+#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #dailyCritInput, #equalityTargetInput {
 	color: black;
 	border: 0.1rem solid black;
 	margin-bottom: -0.1rem;
@@ -85,6 +85,12 @@ p {
 
 #dailyCritInput {
 	margin-left: -0.5rem;
+}
+
+#equalityTargetInput {
+    font-size: 1.1rem;
+    width: 31.1rem;
+	height: 2.6rem;
 }
 
 .checkboxesContainer {
