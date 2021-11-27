@@ -12,6 +12,7 @@
 
 /*
 
+v1.43 update engimatic crit damage softcap and step
 v1.42 support for weighing parity power and inequality (ty surstromming for the math)
 v1.41 support for new 5.6.0 heirloom tier and 7 mods per heirloom, css cleanup
 v1.40 fix rare negative nu left on new looms due to floating point errors (ty ytterbijum)
@@ -60,7 +61,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.42;
+const globalVersion = 1.43;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -151,6 +152,9 @@ function updateVersion() {
     if (inputs.version < 1.42) {
         inputs.equalityTarget = 100;
         inputs.version = 1.42;
+    }
+    if (inputs.version < 1.43) {
+        inputs.version = 1.43;
     }
 }
 
@@ -249,8 +253,8 @@ const mods = {
         fullName: "Crit Damage, additive",
         type: "Shield",
         weighable: true,
-        stepAmounts: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20, 25, 25],
-        softCaps: [60, 60, 60, 100, 200, 300, 400, 500, 650, 850, 1100, 1400],
+        stepAmounts: [5, 5, 5, 5, 10, 10, 10, 10, 15, 20, 25, 50],
+        softCaps: [60, 60, 60, 100, 200, 300, 400, 500, 650, 850, 1100, 1700],
     },
     plaguebringer: {
         name: "Plaguebringer",
