@@ -1812,7 +1812,7 @@
         <restoration>
             <label>Restoration</label>
             <tooltip><![CDATA[
-            You've gone all this way without learning how to heal people, or even yourself. You should probably get around to learning that.<br>Mana cost is reduced by Wizard College Grade.
+            You've gone all this way without learning how to use your magic to heal people, or even yourself. You should probably get around to learning that.<br>Mana cost is reduced by Wizard College Grade.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </restoration>
