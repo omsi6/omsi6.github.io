@@ -181,7 +181,7 @@ function View() {
             return;
         }
         document.getElementById(`skill${skill}Container`).style.display = "inline-block";
-        if (skill === "Combat" || skill === "Pyromancy") {
+        if (skill === "Combat" || skill === "Pyromancy" || skill === "Restoration") {
             this.updateTeamCombat();
         }
 
@@ -201,7 +201,9 @@ function View() {
                 document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4);
             } else if (skill === "Practical") {
                 document.getElementById("skillBonusPractical").textContent = (1 / (1 + getSkillLevel("Practical") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
-            }
+            } else if (skill === "Mercantilism") {
+				document.getElementById("skillBonusMercantilism").textContent = intToString(Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25), 4);
+		    }
         }
     };
 
@@ -337,8 +339,12 @@ function View() {
             }
             let color;
             if (action.name === "Face Judgement") {
-                color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
-            } else {
+                color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 33%, rgba(103, 58, 183, 0.2) 34% 66%, rgba(255, 152, 0, 0.2) 67%)";
+            } else if (action.name === "Fall From Grace") {
+				color = "linear-gradient(to bottom, rgb(255, 255, 255, 0.2) 49%, rgba(255, 152, 0, 0.2) 51%)";
+			} else if (action.name === "Open Rift") {
+				color = "linear-gradient(to bottom, rgb(255, 152, 0, 0.2) 49%, rgba(103, 58, 183, 0.2) 51%)";
+			} else {
                 color = travelNum > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
             }
             totalDivText +=

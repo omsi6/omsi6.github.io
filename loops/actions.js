@@ -143,6 +143,7 @@ function Actions() {
         view.updateResource("supplies");
         curAdvGuildSegment = 0;
         curCraftGuildSegment = 0;
+		curWizCollegeSegment = 0;
         for (const town of towns) {
             for (const action of town.totalActionList) {
                 if (action.type === "multipart") {

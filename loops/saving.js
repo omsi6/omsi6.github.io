@@ -49,10 +49,16 @@ let resources = {
     armor: 0,
     blood: 0,
     artifacts: 0,
+	favors: 0,
+	enchantments: 0,
+	land: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,
-    loopingPotion: false
+    loopingPotion: false,
+	citizenship: false,
+	permit: false,
+	wingedSteed: false
 };
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
@@ -61,7 +67,7 @@ let guild = "";
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Feast", "Aspirant"];
 const buffHardCaps = {
@@ -151,7 +157,8 @@ const storyReqs = {
     imbueMindThirdSegmentReached: false,
     judgementFaced: false,
     acceptedIntoValhalla: false,
-    castIntoShadowRealm: false
+    castIntoShadowRealm: false,
+	fellFromGrace: false
 };
 
 const curDate = new Date();
@@ -164,6 +171,8 @@ const offlineRatio = 1;
 let curAdvGuildSegment = 0;
 // eslint-disable-next-line prefer-const
 let curCraftGuildSegment = 0;
+// eslint-disable-next-line prefer-const
+let curWizCollegeSegment = 0;
 
 const options = {
     theme: "normal",

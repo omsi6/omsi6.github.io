@@ -408,6 +408,21 @@
             <id>artifacts</id>
             <desc>Various old rings, bracelets, amulets, and pendants. You might be able to fetch a pretty penny for them.</desc>
         </resource>
+        <resource initially_hidden="true">
+            <title>Favors:</title>
+            <id>favors</id>
+            <desc>You've been generous to important people.</desc>
+        </resource>
+        <resource initially_hidden="true">
+            <title>Enchanted Armor:</title>
+            <id>enchantments</id>
+            <desc>Divinely blessed weapons and armor, like a hero of legend.</desc>
+        </resource>
+        <resource initially_hidden="true">
+            <title>Land:</title>
+            <id>land</id>
+            <desc>(Incomplete)</desc>
+        </resource>
         <!--singular items with img icons rather than counts-->
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
@@ -428,6 +443,21 @@
             <title><![CDATA[<img src="img/loopingPotion.svg" class="smallIcon">]]></title>
             <id>loopingPotion</id>
             <desc>It's a potion made with the very same formula that got you into this mess. Why exactly did you make this?</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/seekCitizenship.svg" class="smallIcon">]]></title>
+            <id>citizenship</id>
+            <desc>You're one of Valhalla's proud citizens now, giving you the right to own land there.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/acquirePermit.svg" class="smallIcon">]]></title>
+            <id>permit</id>
+            <desc>The actual right to own land, for real this time.</desc>
+        </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/wingedSteed.svg" class="smallIcon">]]></title>
+            <id>wingedSteed</id>
+            <desc>A horse with great angelic wings. It can run across clouds as easily as dirt.</desc>
         </resource>
     </tracked_resources>
     <time_controls>
@@ -568,7 +598,7 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + armor * Crafting Guild Multiplier / 5)</desc>
+            <desc>Self Combat = (Combat skill + Pyromancy skill * 5 + Restoration skill * 2) * (1 + (armor + 3 * enchanted armor) * Crafting Guild Multiplier / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
@@ -630,6 +660,11 @@
             People to check if they're suckers is increased by 0.5% per level from 301-500 (rounded down).<br>
             Currently multiplying costs by <div id='skillBonusSpatiomancy'></div>x.]]></desc2>
         </spatiomancy>
+		<mercantilism>
+			<label>Mercantilism</label>
+			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
+			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
+		</mercantilism>
         <tooltip>
             <level>Level:</level>
             <level_exp>Level Exp:</level_exp>
@@ -818,13 +853,16 @@
         ]]></tooltip>
             <story_1><![CDATA[<b>Glasses bought:</b>⮀ The world snaps into sharp focus as you put them on and you gawk a little as details that had slipped your eyes previously stood out in sharp contrast. You're a little gobsmacked at how much of a difference they make.]]></story_1>
         </buy_glasses>
-        <buy_mana>
+        <buy_mana_z1>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
-            1 gold = 50 mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
+            1 gold = 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana. Buys all the mana you can.<br>Unlocked at 20% Explored.
+        ]]></tooltip2>
             <!--TODO: give this action story-->
-        </buy_mana>
+        </buy_mana_z1>
         <meet_people>
             <label>Meet People</label>
             <label_done>People Met</label_done>
@@ -1343,13 +1381,16 @@
 			<story_7><![CDATA[<b>80% Rumors Heard:</b>⮀ In a more high-class bar, you catch wind of an architectural design competition, where various architects each design the same house and the one with the best design wins the contract to build it. A polite inquiry gets you the name of the person you need to know to enter the competition.]]></story_7>
 			<story_8><![CDATA[<b>100% Rumors Heard:</b>⮀ You've been to every bar and dinner party, and heard every bit of gossip there is to hear. While you've only met a tiny fraction of Merchanton's population you've had drinks with every rung of society, and you're starting to feel like the city's running out of secrets for you to uncover.]]></story_8>
         </get_drunk>
-        <purchase_mana>
-            <label>Purchase Mana</label>
+        <buy_mana_z3>
+            <label>Buy Mana</label>
             <tooltip><![CDATA[
-            1 gold = 50 mana. Buys all the mana you can.
+            1 gold = 
         ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana. Buys all the mana you can.<br>
+        ]]></tooltip2>
             <!--TODO: give this action story-->
-        </purchase_mana>
+        </buy_mana_z3>
         <sell_potions>
             <label>Sell Potions</label>
             <tooltip><![CDATA[
@@ -1702,6 +1743,44 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </accept_donations>
+		<tidy_up>
+			<label>Tidy Up</label>
+            <label_done>Tidied</label_done>
+            <label_part>Mess</label_part>
+			<tooltip><![CDATA[
+			Tidy up the place (Incomplete).
+		]]></tooltip>
+			<segment_names>
+                <name>Temp1</name>
+                <name>Temp2</name>
+                <name>Temp3</name>
+            </segment_names>
+            <!--TODO: give this action story-->
+		</tidy_up>
+		<buy_mana_z5>
+            <label>Buy Mana</label>
+            <tooltip><![CDATA[
+            1 gold = 
+        ]]></tooltip>
+            <tooltip2><![CDATA[
+            mana. Buys all the mana you can.
+        ]]></tooltip2>
+            <!--TODO: give this action story-->
+		</buy_mana_z5>
+		<sell_artifact>
+			<label>Sell Artifact</label>
+			<tooltip><![CDATA[
+			Sell one of the artifacts you found on Mt. Olympus as a priceless ancient heirloom.<br>Costs one artifact.<br>Gives 50 gold.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</sell_artifact>
+		<gift_artifact>
+			<label>Gift Artifact</label>
+			<tooltip><![CDATA[
+			Gift a precious artifact to a local notable. It's okay - with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</gift_artifact>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
@@ -1709,28 +1788,97 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </mercantilism>
+        <charm_school>
+            <label>Charm School</label>
+            <tooltip><![CDATA[
+            (Incomplete)
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </charm_school>
+		<enchant_armor>
+			<label>Enchant Armor</label>
+			<tooltip><![CDATA[
+			Pull some strings to convince a divine blacksmith to enchant your armor.<br>Costs one favor and one armor.<br>Gives one enchanted armor.<br>Enchanted armor is three times as effective as normal armor.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</enchant_armor>
         <wizard_college>
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
             <tooltip><![CDATA[
-            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at ???
+            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at ???
         ]]></tooltip>
             <!--TODO: give this action story-->
         </wizard_college>
         <restoration>
             <label>Restoration</label>
             <tooltip><![CDATA[
-            You've gone all this way without learning how to heal people, or even yourself. You should probably get around to learning that. Mana cost is reduced by Wizard College Grade.
+            You've gone all this way without learning how to use your magic to heal people, or even yourself. You should probably get around to learning that.<br>Mana cost is reduced by Wizard College Grade.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </restoration>
         <spatiomancy>
             <label>Spatiomancy</label>
             <tooltip><![CDATA[
-            At a base level, this is the art of manipulating matter. At a high level, well, this is that but more powerful. Being able to manipulate space itself will allow you to create more items for certain limited actions. Mana cost is reduced by Wizard College Grade.
+            Learn how to control space and matter. Turns out making big changes is <i>hard</i>, but even small changes might allow you to get more done each loop.
+            <br>Mana cost is reduced by Wizard College Grade.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </spatiomancy>
+        <seek_citizenship>
+            <label>Seek Citizenship</label>
+			<label_done>Citizenship Exam Studied</label_done>
+            <tooltip><![CDATA[
+            Right now, you're just visiting.  If you want to be accepted into their ranks for real, you'll need to study and pass a rigorous exam on Valhallan history and culture.<br>Grants citizenship when taken with 100% progress.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </seek_citizenship>
+        <acquire_permit>
+            <label>Acquire Permit</label>
+            <tooltip><![CDATA[
+            Turns out just being a citizen isn't enough, you need to go through special certification as well in order to actually own land.<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </acquire_permit>
+        <purchase_land>
+            <label>Purchase Land</label>
+            <label_done>Plots Purchased</label_done>
+            <info_text1>Good land left</info_text1>
+            <info_text2>Good land total</info_text2>
+            <info_text3>Plots to survey</info_text3>
+            <tooltip><![CDATA[
+            There's plenty of open land in Valhalla, empty plots just waiting for someone to build something on them.<br>Costs 50 gold.<br>Every 20 plots is good land for building.<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </purchase_land>
+		<build_housing>
+			<label>Build Housing</label>
+            <tooltip><![CDATA[
+            (Incomplete)<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+		</build_housing>
+		<collect_taxes>
+			<label>Collect Taxes</label>
+            <tooltip><![CDATA[
+            (Incomplete)<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+		</collect_taxes>
+        <oracle>
+            <label>Oracle</label>
+            <tooltip><![CDATA[
+            (Incomplete)
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </oracle>
+		<winged_steed>
+			<label>Winged Steed</label>
+			<tooltip><![CDATA[
+			Swift on land and sky, it takes more than just gold to own a creature like this.<br>(Effect)(Incomplete)<br>Costs 100 gold and 10 favors.
+		]]></tooltip>
+            <!--TODO: give this action story-->
+		</winged_steed>
         <great_feast>
             <label>Great Feast</label>
             <label_done>Completed</label_done>
@@ -1753,6 +1901,7 @@
             <tooltip><![CDATA[
             Looks like the only way out of this place is to make them dislike you enough to kick you out. Some moderate vandalism will probably do the job. You'll be cast into the shadow realm and thrown back to the beginning of your journey, but at least you'll go out with a bang!
         ]]></tooltip>
+			<story_1><![CDATA[<b>Fell From Grace:</b>⮀ Incomplete]]></story_1>
             <!--TODO: give this action story-->
         </fall_from_grace>
         <!--town 6-->

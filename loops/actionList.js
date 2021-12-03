@@ -196,7 +196,8 @@ function adjustPots() {
     towns[0].totalPots = towns[0].getLevel("Wander") * 5;
 }
 function adjustLocks() {
-    towns[0].totalLocks = towns[0].getLevel("Wander");
+	let spatio = Math.min(getSkillLevel("Spatiomancy"), 200);
+    towns[0].totalLocks = Math.floor(towns[0].getLevel("Wander") * (1 + spatio/200));
 }
 
 Action.SmashPots = new Action("Smash Pots", {
@@ -322,7 +323,7 @@ Action.BuyGlasses = new Action("Buy Glasses", {
     }
 });
 
-Action.BuyMana = new Action("Buy Mana", {
+Action.BuyManaZ1 = new Action("Buy Mana Z1", {
     type: "normal",
     expMult: 1,
     townNum: 0,
@@ -340,8 +341,11 @@ Action.BuyMana = new Action("Buy Mana", {
     unlocked() {
         return towns[0].getLevel("Wander") >= 20;
     },
+	goldCost() {
+		return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+	},
     finish() {
-        addMana(resources.gold * 50);
+        addMana(resources.gold * this.goldCost());
         resetResource("gold");
     },
 });
@@ -387,7 +391,8 @@ Action.MeetPeople = new Action("Meet People", {
     },
 });
 function adjustSQuests() {
-    towns[0].totalSQuests = towns[0].getLevel("Met");
+	let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 100), 300) - 100;
+    towns[0].totalSQuests = Math.floor(towns[0].getLevel("Met") * (1 + spatio/200));
 }
 
 Action.TrainStrength = new Action("Train Strength", {
@@ -513,7 +518,8 @@ Action.Investigate = new Action("Investigate", {
     },
 });
 function adjustLQuests() {
-    towns[0].totalLQuests = Math.floor(towns[0].getLevel("Secrets") / 2);
+	let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 200), 400) - 200;
+    towns[0].totalLQuests = Math.floor(towns[0].getLevel("Secrets") / 2 * (1 + spatio/200));
 }
 
 Action.LongQuest = new Action("Long Quest", {
@@ -1042,7 +1048,7 @@ Action.StartJourney = new Action("Start Journey", {
     },
 });
 
-/* Action.OpenRift = new Action("Open Rift", {
+Action.OpenRift = new Action("Open Rift", {
     type: "normal",
     expMult: 1,
     townNum: 0,
@@ -1058,15 +1064,15 @@ Action.StartJourney = new Action("Start Journey", {
         return 100000;
     },
     visible() {
-        return (getSkillLevel("Dark") >= 100 && getSkillLevel("Magic")) >= 15;
+        return storyReqs.castIntoShadowRealm || storyReqs.fellFromGrace;
     },
     unlocked() {
-        return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
+        return getSkillLevel("Dark") >= 200 && getSkillLevel("Spatiomancy") >= 100;
     },
     finish() {
-        unlockTown(1);
+        unlockTown(5);
     },
-}); */
+});
 
 // town 2
 
@@ -1942,7 +1948,8 @@ Action.ExploreCity = new Action("Explore City", {
     },
 });
 function adjustSuckers() {
-    towns[2].totalGamble = towns[2].getLevel("City") * 3;
+	let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 300), 500) - 300;
+    towns[2].totalGamble = Math.floor(towns[2].getLevel("City") * 3 * (1 + spatio/200));
 }
 
 Action.Gamble = new Action("Gamble", {
@@ -2044,7 +2051,7 @@ Action.GetDrunk = new Action("Get Drunk", {
     },
 });
 
-Action.PurchaseMana = new Action("Purchase Mana", {
+Action.BuyManaZ3 = new Action("Buy Mana Z3", {
     type: "normal",
     expMult: 1,
     townNum: 2,
@@ -2062,8 +2069,11 @@ Action.PurchaseMana = new Action("Purchase Mana", {
     unlocked() {
         return true;
     },
+	goldCost() {
+		return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+	},
     finish() {
-        addMana(resources.gold * 50);
+        addMana(resources.gold * this.goldCost());
         resetResource("gold");
     },
 });
@@ -2810,7 +2820,7 @@ Action.ManaGeyser = new Action("Mana Geyser", {
     },
     affectedBy: ["Buy Pickaxe"],
     manaCost() {
-        return 2000;
+        return Math.ceil(2000 / (1 + getSkillLevel("Spatiomancy") / 100));
     },
     canStart() {
         return resources.pickaxe;
@@ -3346,10 +3356,15 @@ Action.FaceJudgement = new Action("Face Judgement", {
     },
     finish() {
         unlockStory("judgementFaced");
-        if (resources.reputation >= 50) unlockStory("acceptedIntoValhalla");
-        else if (resources.reputation <= -50) unlockStory("castIntoShadowRealm");
-        // if (resources.reputation >= 50) unlockTown(4);
-        // else if (resources.reputation <= 50) unlockTown(5);
+        if (resources.reputation >= 50) {
+			unlockStory("acceptedIntoValhalla");
+			unlockTown(4);
+		}
+        else if (resources.reputation <= -50) {
+			unlockStory("castIntoShadowRealm");
+			unlockTown(0);
+		}
+		else unlockTown(5);
     },
 });
 
@@ -3359,6 +3374,7 @@ Action.GuidedTour = new Action("Guided Tour", {
     type: "progress",
     expMult: 1,
     townNum: 4,
+	varName: "Tour",
     stats: {
         Per: 0.3,
         Con: 0.2,
@@ -3366,6 +3382,12 @@ Action.GuidedTour = new Action("Guided Tour", {
         Int: 0.1,
         Luck: 0.1
     },
+	canStart() {
+		return resources.gold >= 10;
+	},
+	cost() {
+		addResource("gold", -10);
+	},
     manaCost() {
         return 2500;
     },
@@ -3377,9 +3399,11 @@ Action.GuidedTour = new Action("Guided Tour", {
     },
     finish() {
         towns[4].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
-        addResource("gold", -10);
     },
 });
+function adjustPlots() {
+	towns[4].totalPlots = towns[4].getLevel("Tour") * 2;
+}
 
 Action.Canvass = new Action("Canvass", {
     type: "progress",
@@ -3399,7 +3423,7 @@ Action.Canvass = new Action("Canvass", {
         return true;
     },
     unlocked() {
-        return true;
+        return towns[4].getLevel("Tour") >= 10;
     },
     finish() {
         towns[4].finishProgress(this.varName, 50);
@@ -3460,6 +3484,539 @@ function adjustDonations() {
     towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5;
 }
 
+Action.TidyUp = new MultipartAction("Tidy Up", {
+	type: "multipart",
+	expMult: 1,
+	townNum: 4,
+	varName: "Tidy",
+	stats: {
+		Dex: 1.0 // Temp.
+	},
+	loopStats: ["Dex", "Dex", "Dex"], // Temp.
+	manaCost() {
+		return 10000;
+	},
+	loopCost(segment) {
+		return fibonacci(Math.floor((towns[4].TidyLoopCounter + segment) - towns[4].TidyLoopCounter / 3 + 0.0000001)) * 1000000; // Temp.
+	},
+	tickProgress(offset) {
+		return getSkillLevel("Practical") * (1 + getLevel(this.loopStats[(towns[4].TidyLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[4].totalTidy / 100);
+	},
+	loopsFinished() {
+		addResource("gold", 50);
+	},
+	segmentFinished() {
+		// empty.
+	},
+	getPartName() {
+		return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${numberToWords(Math.floor((towns[4].TidyLoopCounter + 0.0001) / this.segments + 1))}`;
+	},
+	visible() {
+        return towns[4].getLevel("Canvassed") >= 10;
+	},
+	unlocked(){
+        return towns[4].getLevel("Canvassed") >= 30;
+	},
+	finish(){
+		// empty
+	},
+});
+
+Action.BuyManaZ5 = new Action("Buy Mana Z5", {
+    type: "normal",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Cha: 0.7,
+        Int: 0.2,
+        Luck: 0.1
+    },
+    manaCost() {
+        return 100;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+	goldCost() {
+		return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+	},
+    finish() {
+        addMana(resources.gold * this.goldCost());
+        resetResource("gold");
+    },
+});
+
+Action.SellArtifact = new Action("Sell Artifact", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	canStart() {
+		return resources.artifacts >= 1;
+	},
+	cost() {
+		addResource("artifacts", -1);
+	},
+	manaCost() {
+		return 500;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 10;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 20;
+	},
+	finish() {
+		addResource("gold", 50);
+	},
+});
+
+Action.GiftArtifact = new Action("Gift Artifact", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	canStart() {
+		return resources.artifacts >= 1;
+	},
+	cost() {
+		addResource("artifacts", -1);
+	},
+	manaCost() {
+		return 500;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 10;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 20;
+	},
+	finish() {
+		addResource("favors", 1);
+	},
+});
+
+Action.Mercantilism = new Action("Mercantilism", {
+    type: "normal",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Per: 0.2, // Temp
+        Int: 0.7,
+        Soul: 0.1
+    },
+    skills: {
+        Mercantilism: 100
+    },
+    manaCost() {
+        return 10000; // Temp
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 20;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 30;
+    },
+    finish() {
+        handleSkillExp(this.skills);
+    },
+});
+
+Action.CharmSchool = new Action("Charm School", {
+    type: "normal",
+    expMult: 4,
+    townNum: 4,
+    stats: {
+        Cha: 0.8,
+        Int: 0.2
+    },
+    allowed() {
+        return trainingLimits;
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 20;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 30;
+    },
+    finish() {
+		// empty
+    },
+});
+
+Action.EnchantArmor = new Action("Enchant Armor", {
+	tytpe: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	manaCost() {
+		return 1000; // Temp
+	},
+	canStart() {
+		return resources.favors >= 1 && resources.armor >= 1;
+	},
+	cost() {
+		addResource("favors", -1);
+		addResource("armor", -1);
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 30;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	finish() {
+		addResource("enchantments", 1);
+	},
+});
+
+Action.WizardCollege = new MultipartAction("Wizard College", {
+	type: "multipart",
+	expMult: 1,
+	townNum: 4,
+	varName: "wizCollege",
+	stats: {
+		Int: 1.0 // Temp
+	},
+	loopStats: ["Int", "Int", "Int"], // Temp
+	manaCost() {
+		return 10000;
+	},
+	allowed() {
+		return 1;
+	},
+	canStart() {
+		return resources.gold >= 500 && resources.favors >= 10;
+	},
+	cost() {
+		addResource("gold", -500);
+		addResource("favors", -10);
+	},
+	loopCost(segment) {
+		return precision3(Math.pow(1.2, towns[4][`${this.varName}LoopCounter`] + segment)) * 5e6; // Temp
+	},
+	tickProgress (offset) {
+		return (getSkillLevel("Magic") + getSkillLevel("Practical") + getSkillLevel("Dark") + getSkillLevel("Chronomancy") + getSkillLevel("Pyromancy") + getSkillLevel("Restoration") + getSkillLevel("Spatiomancy")) * 
+				(1 + getLevel(this.loopStats[(towns[4][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) * 
+				Math.sqrt(1 + towns[4][`total${this.varName}`] / 1000);
+	},
+	loopsFinished() {
+		// empty.
+	},
+	segmentFinished() {
+		curWizCollegeSegment++;
+		view.adjustManaCost("Restoration");
+		view.adjustManaCost("Spatiomancy");
+		// Additional thing?
+	}, 
+	getPartName() {
+		return `${getWizCollegeRank().name}`;
+	},
+	getSegmentName(segment) {
+		return `${getWizCollegeRank(segment % 3).name}`;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 60;
+	},
+	finish() {
+		// guild = "Wizard";
+	},
+});
+function getWizCollegeRank(offset) {
+	let name = ["Initiate", "Student", "Apprentice", "Disciple", "Spellcaster", "Magician", "Wizard", "Great Wizard", "Grand Wizard", "Archwizard", "Sage", "Great Sage", "Grand Sage", "Archsage"][Math.floor(curWizCollegeSegment / 3 + 0.00001)];
+	
+	const segment = (offset === undefined ? 0 : offset - (curWizCollegeSegment % 3)) + curWizCollegeSegment;
+	let bonus = precision3(1 + segment / 20 + Math.pow(segment, 2) / 300);
+	if (name) {
+		if (offset === undefined) {
+			name += ["-", "", "+"][curWizCollegeSegment % 3];
+		} else {
+			name += ["-", "", "+"][offset % 3];
+		}
+	} else {
+		name = "Merlin";
+		bonus = 10;
+	}
+	name += `, Mult x${bonus}`;
+	return { name, bonus };
+}
+
+Action.Restoration = new Action("Restoration", {
+    type: "normal",
+    expMult: 2,
+    townNum: 4,
+	stats: {
+		Int: 1.0 // Temp
+	},
+	affectedBy: ["Wizard College"],
+	skills: {
+		Restoration: 100
+	},
+	manaCost() {
+		return 30000/getWizCollegeRank().bonus;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 60;
+	},
+	finish() {
+        handleSkillExp(this.skills);
+	},
+});
+
+Action.Spatiomancy = new Action("Spatiomancy", {
+    type: "normal",
+    expMult: 2,
+    townNum: 4,
+	stats: {
+		Int: 1.0 // Temp
+	},
+	affectedBy: ["Wizard College"],
+	skills: {
+		Spatiomancy: 100
+	},
+	manaCost() {
+		return 30000/getWizCollegeRank().bonus;
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 40;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 60;
+	},
+	finish() {
+        handleSkillExp(this.skills);
+		view.adjustManaCost("Mana Geyser")
+		adjustLocks();
+		adjustSQuests();
+		adjustLQuests();
+		adjustSuckers();
+        for (const action of totalActionList) {
+            if (towns[action.townNum].varNames.indexOf(action.varName) !== -1) {
+                view.updateRegular(action.varName, action.townNum);
+            }
+        }
+	},
+});
+
+// PBA, 'purchase land' only unlocks at 100%
+Action.SeekCitizenship = new Action("Seek Citizenship", {
+	type: "progress",
+	expMult: 1,
+	townNum: 4,
+	varName: "Citizen",
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	manaCost() {
+		return 1000; // Temp
+	},
+	visible() {
+		return true; // Temp
+	},
+	unlocked() {
+		return true; // Temp
+	},
+    finish() {
+		towns[4].finishProgress(this.varName, 100);
+		if(towns[4].getLevel("Citizen") >= 100) addResource("citizenship", true);
+    },
+});
+
+Action.AcquirePermit = new Action("Acquire Permit", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp.
+	},
+	allowed() {
+		return 1;
+	},
+	manaCost() {
+		return 1000; // Temp.
+	},
+	canStart() {
+		return resources.citizenship; // use favors?
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 60;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		addResource("permit", true);
+	},
+});
+
+
+// Limited, requires 'seek citizenship' action taken, scales from Tour?
+// 200 plots total, 10 land total.
+Action.PurchaseLand = new Action("Purchase Land", {
+	type: "limited",
+	expMult: 1,
+	townNum: 4,
+	varName: "Plots",
+	stats: {
+		Cha: 1.0 // Temp.
+	},
+	affectedBy: ["Seek Citizenship"],
+	manaCost() {
+		return 1000; // Temp.
+	},
+	canStart() {
+		return resources.citizenship && resources.gold >= 50;
+	},
+	cost() {
+		addResource("gold", -50);
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 20;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		towns[4].finishRegular(this.varName, 20, () => {
+			addResource("land", 1);
+			return 1;
+		});
+	},
+});
+
+// Cost scales with Crafting Guild Multiplier?
+Action.BuildHousing = new Action("Build Housing", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Str: 1.0 // Temp.
+	},
+	affectedBy: ["Acquire Permit"],
+	canStart() {
+		return resources.citizenship && resources.land >= 1;
+	},
+	cost() {
+		addResource("land", -1);
+	},
+	manaCost() {
+		return 1000; // Temp.
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 60;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		// Unlock house n for tax gain.
+	},
+});
+
+
+// Borrowing from dungeons.
+// As soon as a house is built, that house starts generating gold similar to how SS regen works.
+// Money earned scales ^0.4, or otherwise diminishing.
+// Collecting money reduces money in the pot but does not change the rate of gain.
+Action.CollectTaxes = new Action("Collect Taxes", {
+	type: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp.
+	},
+	affectedBy: ["Acquire Permit"],
+	canStart() {
+		return resources.citizenship;
+	},
+	manaCost() {
+		return 100;
+	},
+	visible() {
+		return towns[4].getLevel("Citizen") >= 60;
+	},
+	unlocked() {
+		return towns[4].getLevel("Citizen") >= 100;
+	},
+	finish() {
+		// Gather all available tax from all houses.
+	},
+});
+
+Action.Oracle = new Action("Oracle", {
+    type: "normal",
+    expMult: 4,
+    townNum: 4,
+    stats: {
+        Luck: 0.8,
+        Soul: 0.2
+    },
+    allowed() {
+        return trainingLimits;
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 60;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 80;
+    },
+    finish() {
+		
+    },
+});
+
+Action.WingedSteed = new Action("Winged Steed", {
+	tytpe: "normal",
+	expMult: 1,
+	townNum: 4,
+	stats: {
+		Cha: 1.0 // Temp
+	},
+	allowed() {
+		return 1;
+	},
+	manaCost() {
+		return 1000; // Temp
+	},
+	canStart() {
+		return resources.gold >= 100 && resources.favors >= 10;
+	},
+	cost() {
+		addResource("favors", -10);
+		addResource("gold", -100);
+	},
+	visible() {
+		return towns[4].getLevel("Tour") >= 70;
+	},
+	unlocked() {
+		return towns[4].getLevel("Tour") >= 90;
+	},
+	finish() {
+		addResource("wingedSteed", true);
+	},
+});
+
 // todo: make this correct
 Action.GreatFeast = new MultipartAction("Great Feast", {
     type: "multipart",
@@ -3472,14 +4029,14 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
     },
     loopStats: ["Spd", "Int", "Soul"],
     manaCost() {
-        return Math.ceil(50000 * (1 - towns[1].getLevel("Witch") * 0.005));
+        return 5000000;
     },
     allowed() {
         return 1;
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[1][`total${this.varName}`] + 1) * 50 / 9);
+        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9);
         let name = "";
         let soulstones = 0;
         for (const stat in stats) {
@@ -3493,14 +4050,14 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
             }
         }
-        if (stats[name].soulstone < (towns[1][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
-        return resources.reputation <= -5 && towns[1].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
+        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 5000 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
+        return towns[this.townNum].GreatFeastLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
     },
     loopCost(segment) {
-        return 1000000 * (segment * 2 + 1);
+        return 1000000000 * (segment * 5 + 1);
     },
     tickProgress(offset) {
-        return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter + offset) % this.loopStats.length]) / 100) / (1 - towns[1].getLevel("Witch") * 0.005);
+        return getSkillLevel("Practical") * (1 + getLevel(this.loopStats[(towns[4].GreatFeastLoopCounter + offset) % this.loopStats.length]) / 100);
     },
     loopsFinished() {
         addBuffAmt("Feast", 1);
@@ -3526,10 +4083,10 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return "Host Great Feast";
     },
     visible() {
-        return towns[1].getLevel("Thicket") >= 50;
+		return towns[4].getLevel("Tour") >= 80;
     },
     unlocked() {
-        return false;
+        return towns[4].getLevel("Tour") >= 100;
     },
     goldCost() {
         return 5000 * (getBuffLevel("Feast") + 1);
@@ -3543,6 +4100,13 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     type: "normal",
     expMult: 2,
     townNum: 4,
+	storyReqs(storyNum) {
+		switch(storyNum) {
+			case 1:
+				return storyReqs.fellFromGrace;
+		}
+		return false;
+	},
     stats: {
         Dex: 0.4,
         Luck: 0.3,
@@ -3562,7 +4126,8 @@ Action.FallFromGrace = new Action("Fall From Grace", {
         return true;
     },
     finish() {
-        unlockTown(5);
+		unlockStory("fellFromGrace");
+        unlockTown(0);
     },
 });
 
