@@ -121,7 +121,7 @@ GameKeyboard.bindHotkey("shift+c", () => clearList());
 GameKeyboard.bindRepeatableHotkey("=", () => adjustActionListSize(100));
 GameKeyboard.bindRepeatableHotkey("-", () => adjustActionListSize(-100));
 // devs need hotkeys too okay
-if (window.location.href === "http://10.0.0.3:8080/loops/") GameKeyboard.bindHotkey("c", () => cheat());
+if (window.location.href.includes("http://10.0.0.3:8080/loops/")) GameKeyboard.bindHotkey("c", () => cheat());
 
 GameKeyboard.bind("shift", () => setShiftKey(true), "keydown");
 GameKeyboard.bind("shift", () => setShiftKey(false), "keyup");

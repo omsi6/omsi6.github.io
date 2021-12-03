@@ -68,13 +68,19 @@ function View() {
                     <br>
                     <div class='medium bold'>${_txt("stats>tooltip>level")}:</div> <div id='stat${stat}Level2'></div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>level_exp")}:</div> <div id='stat${stat}LevelExp'></div>/<div id='stat${stat}LevelExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat${stat}LevelProgress'></div>%)</div>
+                    <div class='medium bold'>${_txt("stats>tooltip>level_exp")}:</div>
+                    <div id='stat${stat}LevelExp'></div>/<div id='stat${stat}LevelExpNeeded'></div>
+                    <div class='statTooltipPerc'>(<div id='stat${stat}LevelProgress'></div>%)</div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent")}:</div> <div id='stat${stat}Talent2'></div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent")}:</div>
+                    <div id='stat${stat}Talent2'></div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent_exp")}:</div> <div id='stat${stat}TalentExp'></div>/<div id='stat${stat}TalentExpNeeded'></div> <div class='statTooltipPerc'>(<div id='stat${stat}TalentProgress'></div>%)</div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent_exp")}:</div>
+                    <div id='stat${stat}TalentExp'></div>/<div id='stat${stat}TalentExpNeeded'></div>
+                    <div class='statTooltipPerc'>(<div id='stat${stat}TalentProgress'></div>%)</div>
                     <br>
-                    <div class='medium bold'>${_txt("stats>tooltip>talent_multiplier")}:</div> x<div id='stat${stat}TalentMult'></div>
+                    <div class='medium bold'>${_txt("stats>tooltip>talent_multiplier")}:</div>
+                    x<div id='stat${stat}TalentMult'></div>
                     <br>
                     <div id='ss${stat}Container' class='ssContainer'>
                         <div class='bold'>${_txt("stats>tooltip>soulstone")}:</div> <div id='ss${stat}'></div><br>
@@ -175,7 +181,7 @@ function View() {
             return;
         }
         document.getElementById(`skill${skill}Container`).style.display = "inline-block";
-        if (skill === "Combat" || skill === "Pyromancy") {
+        if (skill === "Combat" || skill === "Pyromancy" || skill === "Restoration") {
             this.updateTeamCombat();
         }
 
@@ -195,7 +201,9 @@ function View() {
                 document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4);
             } else if (skill === "Practical") {
                 document.getElementById("skillBonusPractical").textContent = (1 / (1 + getSkillLevel("Practical") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
-            }
+            } else if (skill === "Mercantilism") {
+				document.getElementById("skillBonusMercantilism").textContent = intToString(Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25), 4);
+		    }
         }
     };
 
@@ -234,7 +242,7 @@ function View() {
         if (resource !== "gold") document.getElementById(`${resource}Div`).style.display = resources[resource] ? "inline-block" : "none";
 
         if (resource === "supplies") document.getElementById("suppliesCost").textContent = towns[0].suppliesCost;
-        if (resource === "teamMembers") document.getElementById("teamCost").textContent = (resources.teamMembers + 1) * 200;
+        if (resource === "teamMembers") document.getElementById("teamCost").textContent = (resources.teamMembers + 1) * 100;
 
         if (Number.isFinite(resources[resource])) document.getElementById(resource).textContent = resources[resource];
     };
@@ -298,36 +306,68 @@ function View() {
 
         for (let i = 0; i < actions.next.length; i++) {
             const action = actions.next[i];
+            const translatedAction = translateClassNames(action.name);
             let capButton = "";
-            const townNum = translateClassNames(action.name).townNum;
+            const townNum = translatedAction.townNum;
+            const travelNum = getTravelNum(action.name);
+            const collapses = [];
+            // eslint-disable-next-line no-loop-func
+            actions.next.forEach((a, index) => {
+                if (a.collapsed) {
+                    const collapse = {};
+                    collapse.zone = translateClassNames(a.name).townNum;
+                    collapse.index = index;
+                    collapses.push(collapse);
+                }
+            });
             if (hasLimit(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capAmount(${i}, ${townNum})' class='actionIcon far fa-circle'></i>`;
             } else if (isTraining(action.name)) {
                 capButton = `<i id='capButton${i}' onclick='capTraining(${i})' class='actionIcon far fa-circle'></i>`;
             }
             let isSingular;
-            if (translateClassNames(action.name).allowed === undefined) {
+            if (translatedAction.allowed === undefined) {
                 isSingular = false;
             } else {
-                isSingular = translateClassNames(action.name).allowed() === 1;
+                isSingular = translatedAction.allowed() === 1;
             }
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-            const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5;" : "";
+            const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5" : "";
+            let display = "display: flex";
+            for (const collapse of collapses) {
+                if (townNum === collapse.zone && i < collapse.index) display =  "display: none"
+            }
             let color;
             if (action.name === "Face Judgement") {
-                color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
-            } else {
-                color = getTravelNum(action.name) > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + getTravelNum(action.name)]} 51%)` : this.zoneTints[townNum];
+                color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 33%, rgba(103, 58, 183, 0.2) 34% 66%, rgba(255, 152, 0, 0.2) 67%)";
+            } else if (action.name === "Fall From Grace") {
+				color = "linear-gradient(to bottom, rgb(255, 255, 255, 0.2) 49%, rgba(255, 152, 0, 0.2) 51%)";
+			} else if (action.name === "Open Rift") {
+				color = "linear-gradient(to bottom, rgb(255, 152, 0, 0.2) 49%, rgba(103, 58, 183, 0.2) 51%)";
+			} else {
+                color = travelNum > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
             }
             totalDivText +=
-                `<div id='nextActionContainer${i}' class='nextActionContainer small' ondragover='handleDragOver(event)' ondrop='handleDragDrop(event)' ondragstart='handleDragStart(event)' ondragend='draggedUndecorate(${i})' ondragenter='dragOverDecorate(${i})' ondragleave='dragExitUndecorate(${i})' draggable='true' data-index='${i}' style='background:${color}; ${opacity}'>
-                    <img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
-                    <div class='bold'>${actionLoops}</div>
-                    <div style='float:right; margin-top: 3px; margin-right: 3px;'>
+                `<div
+                    id='nextActionContainer${i}'
+                    class='nextActionContainer small'
+                    ondragover='handleDragOver(event)'
+                    ondrop='handleDragDrop(event)'
+                    ondragstart='handleDragStart(event)'
+                    ondragend='draggedUndecorate(${i})'
+                    ondragenter='dragOverDecorate(${i})'
+                    ondragleave='dragExitUndecorate(${i})'
+                    draggable='true' data-index='${i}'
+                    style='background: ${color}; ${opacity}; ${display};'
+                >
+                    <div><img src='img/${camelize(action.name)}.svg' class='smallIcon imageDragFix'> x 
+                    <div class='bold'>${actionLoops}</div></div>
+                    <div style='float:right; margin-top: 1px; margin-right: 3px;'>
                         ${capButton}
                         ${isSingular ? "" : `<i id='plusButton${i}' onclick='addLoop(${i})' class='actionIcon fas fa-plus'></i>`}
                         ${isSingular ? "" : `<i id='minusButton${i}' onclick='removeLoop(${i})' class='actionIcon fas fa-minus'></i>`}
                         ${isSingular ? "" : `<i id='splitButton${i}' onclick='split(${i})' class='actionIcon fas fa-arrows-alt-h'></i>`}
+                        ${travelNum ? `<i id='collapseButton${i}' onclick='collapse(${i})' class='actionIcon fas fa-${action.collapsed ? "expand" : "compress"}-alt'></i>` : ""}
                         <i id='upButton${i}' onclick='moveUp(${i})' class='actionIcon fas fa-sort-up'></i>
                         <i id='downButton${i}' onclick='moveDown(${i})' class='actionIcon fas fa-sort-down'></i>
                         <i id='skipButton${i}' onclick='disableAction(${i})' class='actionIcon far fa-${action.disabled ? "check" : "times"}-circle'></i>
@@ -345,13 +385,14 @@ function View() {
         for (let i = 0; i < actions.current.length; i++) {
             const action = actions.current[i];
             const actionLoops = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-            const actionLoopsLeft = action.loopsLeft > 99999 ? toSuffix(action.loopsLeft) : formatNumber(action.loopsLeft);
+            const actionLoopsDone = (action.loops - action.loopsLeft) > 99999 ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
             totalDivText +=
                 `<div class='curActionContainer small' onmouseover='view.mouseoverAction(${i}, true)' onmouseleave='view.mouseoverAction(${i}, false)'>
                     <div class='curActionBar' id='action${i}Bar'></div>
                     <div class='actionSelectedIndicator' id='action${i}Selected'></div>
                     <img src='img/${camelize(action.name)}.svg' class='smallIcon'>
-                    x<div id='action${i}LoopsLeft' style='margin-left:3px'>${actionLoops}</div>(<div id='action${i}Loops'>${actionLoopsLeft}</div>)
+                    <div id='action${i}LoopsDone' style='margin-left:3px; border-left: 1px solid #b9b9b9;padding-left: 3px;'>${actionLoopsDone}</div>
+                    /<div id='action${i}Loops'>${actionLoops}</div>
                 </div>`;
         }
 
@@ -364,15 +405,16 @@ function View() {
             totalDivText +=
                 `<div id='actionTooltip${i}' style='display:none;padding-left:10px;width:90%'>` +
                     `<div style='text-align:center;width:100%'>${action.label}</div><br><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_original")}</div> <div id='action${i}ManaOrig'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_used")}</div> <div id='action${i}ManaUsed'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>mana_remaining")}</div> <div id='action${i}Remaining'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>gold_remaining")}</div> <div id='action${i}GoldRemaining'></div><br>` +
-                    `<div class='bold'>${_txt("actions>current_action>time_spent")}</div> <div id='action${i}TimeSpent'></div><br><br>` +
+                    `<b>${_txt("actions>current_action>mana_original")}</b> <div id='action${i}ManaOrig'></div><br>` +
+                    `<b>${_txt("actions>current_action>mana_used")}</b> <div id='action${i}ManaUsed'></div><br>` +
+                    `<b>${_txt("actions>current_action>last_mana")}</b> <div id='action${i}LastMana'></div><br>` +
+                    `<b>${_txt("actions>current_action>mana_remaining")}</b> <div id='action${i}Remaining'></div><br>` +
+                    `<b>${_txt("actions>current_action>gold_remaining")}</b> <div id='action${i}GoldRemaining'></div><br>` +
+                    `<b>${_txt("actions>current_action>time_spent")}</b> <div id='action${i}TimeSpent'></div><br><br>` +
                     `<div id='action${i}ExpGain'></div>` +
                     `<div id='action${i}HasFailed' style='display:none'>` +
-                        `<div class='bold'>${_txt("actions>current_action>failed_attempts")}</div> <div id='action${i}Failed'></div><br>` +
-                        `<div class='bold'>${_txt("actions>current_action>error")}</div> <div id='action${i}Error'></div>` +
+                        `<b>${_txt("actions>current_action>failed_attempts")}</b> <div id='action${i}Failed'></div><br>` +
+                        `<b>${_txt("actions>current_action>error")}</b> <div id='action${i}Error'></div>` +
                     `</div>` +
                 `</div>`;
         }
@@ -390,8 +432,8 @@ function View() {
         if (!action) {
             return;
         }
-        if (action.loopsFailed) {
-            document.getElementById(`action${index}Failed`).textContent = action.loopsFailed;
+        if (action.errorMessage) {
+            document.getElementById(`action${index}Failed`).textContent = action.loopsLeft;
             document.getElementById(`action${index}Error`).textContent = action.errorMessage;
             document.getElementById(`action${index}HasFailed`).style.display = "block";
             div.style.width = "100%";
@@ -399,8 +441,12 @@ function View() {
             div.style.height = "30%";
             div.style.marginTop = "5px";
             if (action.name === "Heal The Sick") unlockStory("failedHeal");
-            if (action.name === "Brew Potions") unlockStory("failedBrewPotions");
-            if (action.name === "Brew Potions" && resources.reputation < 0) unlockStory("failedBrewPotionsNegativeRep");
+            if (action.name === "Brew Potions" && resources.reputation >= 0 && resources.herbs >= 10) unlockStory("failedBrewPotions");
+            if (action.name === "Brew Potions" && resources.reputation < 0 && resources.herbs >= 10) unlockStory("failedBrewPotionsNegativeRep");
+            if (action.name === "Gamble" && resources.reputation < -5) unlockStory("failedGamble");
+            if (action.name === "Gamble" && resources.gold < 20 && resources.reputation > -6) unlockStory("failedGambleLowMoney");
+            if (action.name === "Gather Team") unlockStory("failedGatherTeam");
+            if (action.name === "Craft Armor") unlockStory("failedCraftArmor");
         } else if (action.loopsLeft === 0) {
             div.style.width = "100%";
             div.style.backgroundColor = "#6d6d6d";
@@ -412,6 +458,7 @@ function View() {
         if (curActionShowing === index) {
             document.getElementById(`action${index}ManaOrig`).textContent = formatNumber(action.manaCost() * action.loops);
             document.getElementById(`action${index}ManaUsed`).textContent = formatNumber(action.manaUsed);
+            document.getElementById(`action${index}LastMana`).textContent = intToString(action.lastMana, 3);
             document.getElementById(`action${index}Remaining`).textContent = formatNumber(action.manaRemaining);
             document.getElementById(`action${index}GoldRemaining`).textContent = formatNumber(action.goldRemaining);
             document.getElementById(`action${index}TimeSpent`).textContent = formatTime(action.timeSpent);
@@ -445,10 +492,9 @@ function View() {
 
     this.updateCurrentActionLoops = function(index) {
         const action = actions.current[index];
-        document.getElementById(`action${index}Loops`).textContent = action.loopsLeft > 99999 ? toSuffix(action.loopsLeft) : formatNumber(action.loopsLeft);
-        if (index === (actions.current.length - 1)) {
-            document.getElementById(`action${index}LoopsLeft`).textContent = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
-        }
+        document.getElementById(`action${index}LoopsDone`).textContent = (action.loops - action.loopsLeft) > 99999 
+            ? toSuffix(action.loops - action.loopsLeft) : formatNumber(action.loops - action.loopsLeft);
+        document.getElementById(`action${index}Loops`).textContent = action.loops > 99999 ? toSuffix(action.loops) : formatNumber(action.loops);
     };
 
     this.updateProgressAction = function(varName, town) {
@@ -506,6 +552,16 @@ function View() {
                 }
             }
         }
+        if (totalActionList.filter(action => action.finish.toString().includes("handleSkillExp")).filter(action => action.unlocked()).length > 0) {
+            document.getElementById("skillList").style.display = "inline-block";
+        } else {
+            document.getElementById("skillList").style.display = "none";
+        }
+        if (totalActionList.filter(action => action.finish.toString().includes("updateBuff")).filter(action => action.unlocked()).length > 0) {
+            document.getElementById("buffList").style.display = "flex";
+        } else {
+            document.getElementById("buffList").style.display = "none";
+        }
     };
 
     this.updateStories = function(init) {
@@ -515,16 +571,18 @@ function View() {
                 // greatly reduces/nullifies the cost of checking actions with all stories unlocked, which is nice,
                 // since you're likely to have more stories unlocked at end game, which is when performance is worse
                 const divName = `storyContainer${action.varName}`;
-                if (document.getElementById(divName).innerHTML.includes("???")) {
+                if (init || document.getElementById(divName).innerHTML.includes("???")) {
                     let storyTooltipText = "";
                     let lastInBranch = false;
                     const name = action.name.toLowerCase().replace(/ /gu, "_");
                     const storyAmt = _txt(`actions>${name}`, "fallback").split("⮀").length - 1;
+                    let storiesUnlocked = 0;
                     for (let i = 1; i <= storyAmt; i++) {
                         const storyText = _txt(`actions>${name}>story_${i}`, "fallback").split("⮀");
                         if (action.storyReqs(i)) {
                             storyTooltipText += storyText[0] + storyText[1];
                             lastInBranch = false;
+                            storiesUnlocked++;
                         } else if (lastInBranch) {
                             storyTooltipText += "<b>???:</b> ???";
                         } else {
@@ -536,6 +594,11 @@ function View() {
                     if (document.getElementById(divName).children[2].innerHTML !== storyTooltipText) {
                         document.getElementById(divName).children[2].innerHTML = storyTooltipText;
                         if (!init) showNotification(divName);
+                        if (storiesUnlocked === storyAmt) {
+                            document.getElementById(divName).classList.add("storyContainerCompleted");
+                        } else {
+                            document.getElementById(divName).classList.remove("storyContainerCompleted");
+                        }
                     }
                 }
             }
@@ -692,7 +755,15 @@ function View() {
         const isTravel = getTravelNum(action.name) > 0;
         const divClass = isTravel ? "travelContainer showthat" : "actionContainer showthat";
         const totalDivText =
-            `<div id='container${action.varName}' class='${divClass}' draggable='true' ondragover='handleDragOver(event)' ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)' ondragend='handleDirectActionDragEnd("${action.varName}")' onclick='addActionToList("${action.name}", ${action.townNum})'>
+            `<div
+                id='container${action.varName}'
+                class='${divClass}'
+                draggable='true'
+                ondragover='handleDragOver(event)'
+                ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)'
+                ondragend='handleDirectActionDragEnd("${action.varName}")'
+                onclick='addActionToList("${action.name}", ${action.townNum})'
+            >
                 ${action.label}<br>
                 <div style='position:relative'>
                     <img src='img/${camelize(action.name)}.svg' class='superLargeIcon' draggable='false'>${extraImage}

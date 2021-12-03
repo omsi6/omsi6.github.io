@@ -98,16 +98,12 @@ function recalcInterval(fps) {
     doWork.postMessage({ start: true, ms: (1000 / fps) });
 }
 
-function stopGame(ping) {
+function stopGame() {
     stop = true;
     view.updateTime();
     view.updateCurrentActionBar(actions.currentPos);
     document.title = "*PAUSED* Idle Loops";
     document.getElementById("pausePlay").textContent = _txt("time_controls>play_button");
-    if (ping) {
-        beep(250);
-        setTimeout(() => beep(250), 500);
-    }
 }
 
 function pauseGame(ping) {
@@ -126,7 +122,9 @@ function pauseGame(ping) {
 
 function prepareRestart() {
     const curAction = actions.getNextValidAction();
-    if (options.pauseBeforeRestart) {
+    if (options.pauseBeforeRestart ||
+        (options.pauseOnFailedLoop && 
+         (actions.current.filter(action => action.loopsLeft - action.extraLoops > 0).length > 0))) {
         if (options.pingOnPause) {
             beep(250);
             setTimeout(() => beep(250), 500);
@@ -135,17 +133,8 @@ function prepareRestart() {
             actions.completedTicks += actions.getNextValidAction().ticks;
             view.updateTotalTicks();
         }
-        view.updateCurrentActionBar(actions.current.length - 1);
-        stopGame();
-    } else if (options.pauseOnFailedLoop) {
-        if (curAction) {
-            actions.completedTicks += actions.getNextValidAction().ticks;
-            view.updateTotalTicks();
-        }
-        stopGame();
-        if (options.pingOnPause) {
-            beep(250);
-            setTimeout(() => beep(250), 500);
+        for (let i = 0; i < actions.current.length; i++) {
+            view.updateCurrentActionBar(i);
         }
         stopGame();
     } else {
@@ -390,6 +379,17 @@ function split(index) {
     const isDisabled = toSplit.disabled;
     actions.addAction(toSplit.name, Math.ceil(toSplit.loops / 2), index, isDisabled);
     toSplit.loops = Math.floor(toSplit.loops / 2);
+    view.updateNextActions();
+}
+
+function collapse(index) {
+    actions.nextLast = copyObject(actions.next);
+    const action = actions.next[index];
+    if (action.collapsed) {
+        action.collapsed = false;
+    } else {
+        action.collapsed = true;
+    }
     view.updateNextActions();
 }
 

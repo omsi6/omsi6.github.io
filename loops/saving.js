@@ -17,7 +17,7 @@ let mainTickLoop;
 const saveName = "idleLoops1";
 
 // this is to hide the cheat button if you aren't supposed to cheat
-if (window.location.href === "http://10.0.0.3:8080/loops/") document.getElementById("cheat").style.display = "inline-block";
+if (window.location.href.includes("http://10.0.0.3:8080/loops/")) document.getElementById("cheat").style.display = "inline-block";
 
 const timeNeededInitial = 5 * 50;
 // eslint-disable-next-line prefer-const
@@ -49,10 +49,16 @@ let resources = {
     armor: 0,
     blood: 0,
     artifacts: 0,
+	favors: 0,
+	enchantments: 0,
+	land: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,
-    loopingPotion: false
+    loopingPotion: false,
+	citizenship: false,
+	permit: false,
+	wingedSteed: false
 };
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
@@ -61,7 +67,7 @@ let guild = "";
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Feast", "Aspirant"];
 const buffHardCaps = {
@@ -112,7 +118,47 @@ const storyReqs = {
     darkRitualThirdSegmentReached: false,
     failedBrewPotions: false,
     failedBrewPotionsNegativeRep: false,
-    potionBrewed: false
+    potionBrewed: false,
+    failedGamble: false,
+    failedGambleLowMoney: false,
+    potionSold: false,
+    sell20PotionsInALoop: false,
+    sellPotionFor100Gold: false,
+    advGuildTestsTaken: false,
+    advGuildRankEReached: false,
+    advGuildRankDReached: false,
+    advGuildRankCReached: false,
+    advGuildRankBReached: false,
+    advGuildRankAReached: false,
+    advGuildRankSReached: false,
+    advGuildRankUReached: false,
+    advGuildRankGodlikeReached: false,
+    teammateGathered: false,
+    fullParty: false,
+    failedGatherTeam: false,
+    largeDungeonAttempted: false,
+    clearLDungeon: false,
+    craftGuildTestsTaken: false,
+    craftGuildRankEReached: false,
+    craftGuildRankDReached: false,
+    craftGuildRankCReached: false,
+    craftGuildRankBReached: false,
+    craftGuildRankAReached: false,
+    craftGuildRankSReached: false,
+    craftGuildRankUReached: false,
+    craftGuildRankGodlikeReached: false,
+    armorCrafted: false,
+    craft10Armor: false,
+    failedCraftArmor: false,
+    booksRead: false,
+    pickaxeBought: false,
+    loopingPotionMade: false,
+    slay10TrollsInALoop: false,
+    imbueMindThirdSegmentReached: false,
+    judgementFaced: false,
+    acceptedIntoValhalla: false,
+    castIntoShadowRealm: false,
+	fellFromGrace: false
 };
 
 const curDate = new Date();
@@ -125,6 +171,8 @@ const offlineRatio = 1;
 let curAdvGuildSegment = 0;
 // eslint-disable-next-line prefer-const
 let curCraftGuildSegment = 0;
+// eslint-disable-next-line prefer-const
+let curWizCollegeSegment = 0;
 
 const options = {
     theme: "normal",
@@ -154,7 +202,6 @@ function closeTutorial() {
 
 function clearSave() {
     window.localStorage[saveName] = "";
-    load();
 }
 
 function loadDefaults() {
@@ -180,7 +227,7 @@ function load() {
 
     let toLoad = {};
     // has a save file
-    if (window.localStorage[saveName]) {
+    if (window.localStorage[saveName] && window.localStorage[saveName] !== "null") {
         closeTutorial();
         toLoad = JSON.parse(window.localStorage[saveName]);
     }
@@ -335,7 +382,6 @@ function load() {
         }
     }
 
-    view.initalize();
     for (const town of towns) {
         for (const action of town.totalActionList) {
             if (action.type === "progress")
@@ -352,6 +398,16 @@ function load() {
                     town[`good${varName}`] = toLoad[`good${varName}`];
                 if (toLoad[`good${varName}`] !== undefined)
                     town[`goodTemp${varName}`] = toLoad[`good${varName}`];
+            }
+        }
+    }
+    
+    view.initalize();
+
+    for (const town of towns) {
+        for (const action of town.totalActionList) {
+            if (action.type === "limited") {
+                const varName = action.varName;
                 if (toLoad[`searchToggler${varName}`] !== undefined) {
                     document.getElementById(`searchToggler${varName}`).checked = toLoad[`searchToggler${varName}`];
                 }
@@ -359,7 +415,6 @@ function load() {
             }
         }
     }
-    view.initalize();
 
     for (const option in options) {
         loadOption(option, options[option]);
@@ -675,18 +730,28 @@ function exportOldSave() {
 
 function exportSave() {
     save();
-    document.getElementById("exportImport").value = encode(window.localStorage[saveName]);
+    // idle loops save version 01. patch v0.94, moved from old save system to lzstring base 64
+    document.getElementById("exportImport").value = `ILSV01${LZString.compressToBase64(window.localStorage[saveName])}`;
     document.getElementById("exportImport").select();
     document.execCommand("copy");
 }
 
 function importSave() {
-    if (document.getElementById("exportImport").value === "") {
-        if (!confirm("Importing nothing will delete your save. Are you sure you want to delete your save?")) {
+    const saveData = document.getElementById("exportImport").value;
+    if (saveData === "") {
+        if (confirm("Importing nothing will delete your save. Are you sure you want to delete your save?")) {
+            clearSave();
+        } else {
             return;
         }
     }
-    window.localStorage[saveName] = decode(document.getElementById("exportImport").value);
+    // idle loops save version 01. patch v0.94, moved from old save system to lzstring base 64
+    if (saveData.substr(0, 6) === "ILSV01") {
+        window.localStorage[saveName] = LZString.decompressFromBase64(saveData.substr(6));
+    } else {
+        // handling for old saves from stopsign or patches prior to v0.94
+        window.localStorage[saveName] = decode(saveData);
+    }
     actions.next = [];
     actions.current = [];
     load();

@@ -35,6 +35,14 @@ body {
     display: flex;
 }
 
+#changelog .showthat2:hover {
+    background: #4caf50;
+    border: 1px solid black;
+    margin: -1px 0;
+    margin-left: -6px;
+    padding-left: 5px;
+}
+
 .showthis, .showthis2, .showthisH {
     display:none;
     position:absolute;
@@ -63,6 +71,10 @@ body {
     align-items: center;
 }
 
+#changelog .showthis2 {
+    top: 19px;
+}
+
 .showthisname {
     display:none;
     position:absolute;
@@ -82,13 +94,17 @@ body {
     display:none;
     position:absolute;
     color: black;
-    background: url(img/misc/texture.png);
+    background: url(img/misc/textureDesaturated.png);
     border:1px solid #b89651;
     padding:3px 5px;
     margin-top:-2px;
     margin-left:-1px;
     z-index: 999999;
     text-align:left;
+}
+
+.storyContainerCompleted .showthisstory {
+    background: url(img/misc/texture.png);
 }
 
 .thickProgressBar .showthis {
@@ -164,7 +180,8 @@ input, label {
     cursor:pointer;
 }
 input {
-    margin-right:0;
+    margin-right: 0;
+    margin-left: 0;
     top: 2px;
     position: relative;
     font-family: Arial, Helvetica, serif;
@@ -172,7 +189,7 @@ input {
 
 .buffmaxinput {
     top: 0px;
-    left: -3px;
+    left: -5px;
     width: 24px;
     height: 12px;
     border: none;
@@ -207,8 +224,7 @@ input[type="number"] {
 .button {
     padding: 1px 5px;
     text-align: center;
-    vertical-align:center;
-    min-width:9px;
+    min-width: 9px;
     cursor: pointer;
     outline: none;
     color: #e1e1e1;
@@ -387,9 +403,9 @@ input[type="number"] {
     height: 50px;
     vertical-align: top;
     font-size: 13px;
-    color: #b89651;
     border: 1px solid #b89651;
-    background: url(img/misc/texture.png);
+    color: #b5a585;
+    background: url(img/misc/textureDesaturated.png);
     box-shadow: -2px 2px 1px #bbb;
     border-radius: 5px;
     margin: 3px;
@@ -398,6 +414,10 @@ input[type="number"] {
 .storyContainer:hover {
     border-radius: 0px;
     box-shadow: none;
+}
+.storyContainerCompleted {
+    color: #b89651;
+    background: url(img/misc/texture.png);
 }
 
 .travelContainer {
@@ -410,10 +430,12 @@ input[type="number"] {
 }
 
 #curActionsListContainer {
-    width: 34.9%;
+    width: 35%;
     height: 100%;
     background-color: #c2e6cc;
     position: relative;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 #nextActionsListContainer {
@@ -423,21 +445,32 @@ input[type="number"] {
     vertical-align: top;
     margin-left: -4px;
     position: relative;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.t-cubic #curActionsListContainer,
+.t-cubic #nextActionsListContainer {
+    border-radius: 0;
 }
 
 .nextActionContainer, .curActionContainer {
+    display: flex;
+    align-items: center;
     margin-left:3px;
-    display:block;
     padding-top:1px;
     padding-bottom:1px;
     border-bottom:1px solid #b9b9b9;
     position:relative;
 }
 .nextActionContainer {
-    width:205px;
+    justify-content: space-between;
+    width: 205px;
+    height: 20px;
 }
 .curActionContainer {
-    width:102px;
+    width: 102px;
+    height: 20px;
 }
 
 #curActionsList, #nextActionsList {
@@ -580,7 +613,6 @@ input[type="number"] {
     position:relative;
     height:500px;
     width:100%;
-    /*border:1px solid black;*/
 }
 
 .resizable {
