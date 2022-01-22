@@ -3357,14 +3357,12 @@ Action.FaceJudgement = new Action("Face Judgement", {
     finish() {
         unlockStory("judgementFaced");
         if (resources.reputation >= 50) {
-			unlockStory("acceptedIntoValhalla");
-			unlockTown(4);
-		}
-        else if (resources.reputation <= -50) {
-			unlockStory("castIntoShadowRealm");
-			unlockTown(0);
-		}
-		else unlockTown(5);
+            unlockStory("acceptedIntoValhalla");
+            unlockTown(4);
+        } else if (resources.reputation <= -50) {
+            unlockStory("castIntoShadowRealm");
+            unlockTown(5);
+        }
     },
 });
 
@@ -4127,7 +4125,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     },
     finish() {
 		unlockStory("fellFromGrace");
-        unlockTown(0);
+        unlockTown(6);
     },
 });
 

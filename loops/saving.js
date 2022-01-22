@@ -309,6 +309,12 @@ function load() {
             if (action.name === "Train Dex") {
                 action.name = "Train Dexterity";
             }
+            if (action.name === "Buy Mana") {
+                action.name = "Buy Mana Z1";
+            }
+            if (action.name === "Purchase Mana") {
+                action.name = "Buy Mana Z3";
+            }
             actions.next.push(action);
         }
     }
@@ -331,6 +337,12 @@ function load() {
                 }
                 if (action.name === "Train Dex") {
                     action.name = "Train Dexterity";
+                }
+                if (action.name === "Buy Mana") {
+                    action.name = "Buy Mana Z1";
+                }
+                if (action.name === "Purchase Mana") {
+                    action.name = "Buy Mana Z3";
                 }
                 loadouts[i].push(action);
             }
