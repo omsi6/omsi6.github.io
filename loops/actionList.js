@@ -1067,7 +1067,7 @@ Action.OpenRift = new Action("Open Rift", {
         return storyReqs.castIntoShadowRealm || storyReqs.fellFromGrace;
     },
     unlocked() {
-        return getSkillLevel("Dark") >= 200 && getSkillLevel("Spatiomancy") >= 100;
+        return getSkillLevel("Dark") >= 300 && getSkillLevel("Spatiomancy") >= 100;
     },
     finish() {
         unlockTown(5);

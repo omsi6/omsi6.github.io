@@ -1119,7 +1119,7 @@
         <open_rift>
             <label>Open Rift</label>
             <tooltip><![CDATA[
-            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Adeptsville.<br>Unlocked at 500 Dark Magic.
+            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Adeptsville.<br>Unlocked at 300 Dark Magic and 100 Spatiomancy.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </open_rift>
