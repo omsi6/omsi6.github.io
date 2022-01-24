@@ -573,6 +573,7 @@
             <soulstone_multiplier>Soulstone Mult</soulstone_multiplier>
             <total_multiplier>Total Mult</total_multiplier>
             <bonus_xp>Bonus XP</bonus_xp>
+            <mana_cost_reduction>Mana Cost Reduction</mana_cost_reduction>
             <explanation><![CDATA[
           Each stat level reduces the relevant part of an action's mana cost by 1%.<br>
           Talent exp gain is equal to 1% of stat exp gain, and persists through loops.<br>
