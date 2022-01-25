@@ -455,8 +455,8 @@
             <desc>The actual right to own land, for real this time.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
-            <title><![CDATA[<img src="img/wingedSteed.svg" class="smallIcon">]]></title>
-            <id>wingedSteed</id>
+            <title><![CDATA[<img src="img/pegasus.svg" class="smallIcon">]]></title>
+            <id>pegasus</id>
             <desc>A horse with great angelic wings. It can run across clouds as easily as dirt.</desc>
         </resource>
     </tracked_resources>
@@ -1873,13 +1873,13 @@
         ]]></tooltip>
             <!--TODO: give this action story-->
         </oracle>
-		<winged_steed>
-			<label>Winged Steed</label>
+		<pegasus>
+			<label>Pegasus</label>
 			<tooltip><![CDATA[
-			Swift on land and sky, it takes more than just gold to own a creature like this.<br>(Effect)(Incomplete)<br>Costs 100 gold and 10 favors.
+			Valhalla has its share of wonders. Amongst them are the Pegasi; mythical winged steeds, only available to the finest of citizens. If you wish to get your hands on one you'll need to convince a local to guide you to one of their meeting grounds, and then prove yourself to it. Swift on land and sky, it takes more than just gold to own a creature like this.<br>(Effect)(Incomplete)<br>Costs 100 gold and 10 favors.
 		]]></tooltip>
             <!--TODO: give this action story-->
-		</winged_steed>
+		</pegasus>
         <great_feast>
             <label>Great Feast</label>
             <label_done>Completed</label_done>
@@ -1900,7 +1900,7 @@
         <fall_from_grace>
             <label>Fall From Grace</label>
             <tooltip><![CDATA[
-            Looks like the only way out of this place is to make them dislike you enough to kick you out. Some moderate vandalism will probably do the job. You'll be cast into the shadow realm and thrown back to the beginning of your journey, but at least you'll go out with a bang!
+            Looks like the only way out of this place is to make them dislike you enough to kick you out. Some moderate vandalism will probably do the job. Some people just want to watch something outside of the world burn. You'll be cast into the shadow realm and thrown back to the beginning of your journey.<br>Unlocked at 200 Pyromancy.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Fell From Grace:</b>⮀ Incomplete]]></story_1>
             <!--TODO: give this action story-->

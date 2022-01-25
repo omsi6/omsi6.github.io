@@ -3488,9 +3488,12 @@ Action.TidyUp = new MultipartAction("Tidy Up", {
     townNum: 4,
     varName: "Tidy",
     stats: {
-        Dex: 1.0 // Temp.
+        Spd: 0.3,
+        Dex: 0.3,
+        Str: 0.2,
+        Con: 0.2,
     },
-    loopStats: ["Dex", "Dex", "Dex"], // Temp.
+    loopStats: ["Str", "Dex", "Spd", "Con"],
     manaCost() {
         return 10000;
     },
@@ -3501,7 +3504,7 @@ Action.TidyUp = new MultipartAction("Tidy Up", {
         return getSkillLevel("Practical") * (1 + getLevel(this.loopStats[(towns[4].TidyLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[4].totalTidy / 100);
     },
     loopsFinished() {
-        addResource("gold", 50);
+        addResource("gold", 30);
     },
     segmentFinished() {
         // empty.
@@ -3552,7 +3555,10 @@ Action.SellArtifact = new Action("Sell Artifact", {
     expMult: 1,
     townNum: 4,
     stats: {
-        Cha: 1.0 // Temp
+        Cha: 0.4,
+        Per: 0.3,
+        Luck: 0.2,
+        Soul: 0.1
     },
     canStart() {
         return resources.artifacts >= 1;
@@ -3579,7 +3585,9 @@ Action.GiftArtifact = new Action("Gift Artifact", {
     expMult: 1,
     townNum: 4,
     stats: {
-        Cha: 1.0 // Temp
+        Cha: 0.6,
+        Luck: 0.3,
+        Soul: 0.1
     },
     canStart() {
         return resources.artifacts >= 1;
@@ -3851,10 +3859,13 @@ Action.SeekCitizenship = new Action("Seek Citizenship", {
     townNum: 4,
     varName: "Citizen",
     stats: {
-        Cha: 1.0 // Temp
+        Cha: 0.5,
+        Int: 0.2,
+        Luck: 0.2,
+        Per: 0.1
     },
     manaCost() {
-        return 1000; // Temp
+        return 1500; // Temp
     },
     visible() {
         return true; // Temp
@@ -3864,7 +3875,7 @@ Action.SeekCitizenship = new Action("Seek Citizenship", {
     },
     finish() {
         towns[4].finishProgress(this.varName, 100);
-        if(towns[4].getLevel("Citizen") >= 100) addResource("citizenship", true);
+        if (towns[4].getLevel("Citizen") >= 100) addResource("citizenship", true);
     },
 });
 
@@ -3873,7 +3884,9 @@ Action.AcquirePermit = new Action("Acquire Permit", {
     expMult: 1,
     townNum: 4,
     stats: {
-        Cha: 1.0 // Temp.
+        Int: 0.5,
+        Cha: 0.4,
+        Luck: 0.1
     },
     allowed() {
         return 1;
@@ -3904,7 +3917,12 @@ Action.PurchaseLand = new Action("Purchase Land", {
     townNum: 4,
     varName: "Plots",
     stats: {
-        Cha: 1.0 // Temp.
+        stats: {
+            Luck: 0.3,
+            Int: 0.3,
+            Cha: 0.2,
+            Per: 0.2
+        },
     },
     affectedBy: ["Seek Citizenship"],
     manaCost() {
@@ -3936,7 +3954,10 @@ Action.BuildHousing = new Action("Build Housing", {
     expMult: 1,
     townNum: 4,
     stats: {
-        Str: 1.0 // Temp.
+        Str: 0.4,
+        Con: 0.3,
+        Dex: 0.2,
+        Spd: 0.1
     },
     affectedBy: ["Acquire Permit"],
     canStart() {
@@ -3969,7 +3990,10 @@ Action.CollectTaxes = new Action("Collect Taxes", {
     expMult: 1,
     townNum: 4,
     stats: {
-        Cha: 1.0 // Temp.
+        Cha: 0.4,
+        Spd: 0.4,
+        Per: 0.1,
+        Luck: 0.1
     },
     affectedBy: ["Acquire Permit"],
     canStart() {
@@ -4014,18 +4038,21 @@ Action.Oracle = new Action("Oracle", {
     },
 });
 
-Action.WingedSteed = new Action("Winged Steed", {
+Action.Pegasus = new Action("Pegasus", {
     tytpe: "normal",
     expMult: 1,
     townNum: 4,
     stats: {
-        Cha: 1.0 // Temp
+        Soul: 0.3,
+        Cha: 0.2,
+        Luck: 0.2,
+        int: 0.2
     },
     allowed() {
         return 1;
     },
     manaCost() {
-        return 1000; // Temp
+        return 3000;
     },
     canStart() {
         return resources.gold >= 100 && resources.favors >= 10;
@@ -4041,7 +4068,7 @@ Action.WingedSteed = new Action("Winged Steed", {
         return towns[4].getLevel("Tour") >= 90;
     },
     finish() {
-        addResource("wingedSteed", true);
+        addResource("pegasus", true);
     },
 });
 
@@ -4129,7 +4156,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     expMult: 2,
     townNum: 4,
     storyReqs(storyNum) {
-        switch(storyNum) {
+        switch (storyNum) {
             case 1:
                 return storyReqs.fellFromGrace;
         }
@@ -4151,7 +4178,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
         return true;
     },
     unlocked() {
-        return true;
+        return getSkillLevel("Pyromancy") >= 200;
     },
     finish() {
         unlockStory("fellFromGrace");

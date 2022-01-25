@@ -49,16 +49,16 @@ let resources = {
     armor: 0,
     blood: 0,
     artifacts: 0,
-	favors: 0,
-	enchantments: 0,
-	land: 0,
+    favors: 0,
+    enchantments: 0,
+    land: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,
     loopingPotion: false,
-	citizenship: false,
-	permit: false,
-	wingedSteed: false
+    citizenship: false,
+    permit: false,
+    pegasus: false
 };
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
@@ -158,7 +158,7 @@ const storyReqs = {
     judgementFaced: false,
     acceptedIntoValhalla: false,
     castIntoShadowRealm: false,
-	fellFromGrace: false
+    fellFromGrace: false
 };
 
 const curDate = new Date();
