@@ -4183,7 +4183,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     },
     finish() {
         unlockStory("fellFromGrace");
-        unlockTown(6);
+        unlockTown(5);
     },
 });
 
