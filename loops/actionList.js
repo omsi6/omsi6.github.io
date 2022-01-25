@@ -3688,9 +3688,11 @@ Action.WizardCollege = new MultipartAction("Wizard College", {
     townNum: 4,
     varName: "wizCollege",
     stats: {
-        Int: 1.0 // Temp
+        Int: 0.5,
+        Soul: 0.3,
+        Cha: 0.2
     },
-    loopStats: ["Int", "Int", "Int"], // Temp
+    loopStats: ["Int", "Cha", "Soul"],
     manaCost() {
         return 10000;
     },
@@ -3705,12 +3707,14 @@ Action.WizardCollege = new MultipartAction("Wizard College", {
         addResource("favors", -10);
     },
     loopCost(segment) {
-        return precision3(Math.pow(1.2, towns[4][`${this.varName}LoopCounter`] + segment)) * 5e6; // Temp
+        return precision3(Math.pow(1.3, towns[4][`${this.varName}LoopCounter`] + segment)) * 1e7; // Temp
     },
-    tickProgress (offset) {
-        return (getSkillLevel("Magic") + getSkillLevel("Practical") + getSkillLevel("Dark") + getSkillLevel("Chronomancy") + getSkillLevel("Pyromancy") + getSkillLevel("Restoration") + getSkillLevel("Spatiomancy")) * 
-				(1 + getLevel(this.loopStats[(towns[4][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) * 
-				Math.sqrt(1 + towns[4][`total${this.varName}`] / 1000);
+    tickProgress(offset) {
+        return (
+            getSkillLevel("Magic") + getSkillLevel("Practical") + getSkillLevel("Dark") +
+            getSkillLevel("Chronomancy") + getSkillLevel("Pyromancy") + getSkillLevel("Restoration") + getSkillLevel("Spatiomancy")) * 
+            (1 + getLevel(this.loopStats[(towns[4][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) * 
+            Math.sqrt(1 + towns[4][`total${this.varName}`] / 1000);
     },
     loopsFinished() {
         // empty.
@@ -3760,7 +3764,7 @@ function getWizCollegeRank(offset) {
         "Member of The Council of the Seven",
         "Chair of The Council of the Seven"][Math.floor(curWizCollegeSegment / 3 + 0.00001)];
     const segment = (offset === undefined ? 0 : offset - (curWizCollegeSegment % 3)) + curWizCollegeSegment;
-    let bonus = precision3(Math.log2(1 + Math.pow(1.01, segment)));
+    let bonus = precision3(1 + 0.02 * Math.pow(segment, 1.05));
     if (name) {
         if (offset === undefined) {
             name += ["-", "", "+"][curWizCollegeSegment % 3];
@@ -3789,7 +3793,7 @@ Action.Restoration = new Action("Restoration", {
         Restoration: 100
     },
     manaCost() {
-        return 30000 / getWizCollegeRank().bonus;
+        return 15000 / getWizCollegeRank().bonus;
     },
     visible() {
         return towns[4].getLevel("Tour") >= 40;
@@ -3817,7 +3821,7 @@ Action.Spatiomancy = new Action("Spatiomancy", {
         Spatiomancy: 100
     },
     manaCost() {
-        return 30000 / getWizCollegeRank().bonus;
+        return 20000 / getWizCollegeRank().bonus;
     },
     visible() {
         return towns[4].getLevel("Tour") >= 40;
@@ -3827,7 +3831,7 @@ Action.Spatiomancy = new Action("Spatiomancy", {
     },
     finish() {
         handleSkillExp(this.skills);
-        view.adjustManaCost("Mana Geyser")
+        view.adjustManaCost("Mana Geyser");
         adjustLocks();
         adjustSQuests();
         adjustLQuests();

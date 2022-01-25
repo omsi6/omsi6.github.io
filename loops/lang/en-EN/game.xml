@@ -599,11 +599,11 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = (Combat skill + Pyromancy skill * 5 + Restoration skill * 2) * (1 + (armor + 3 * enchanted armor) * Crafting Guild Multiplier / 5)</desc>
+            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + (armor + 3 * enchanted armor) * Crafting Guild Multiplier / 5)</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
-            <desc>Team Combat = Self Combat + Combat Skill * Team Members * Adventure Guild Multiplier / 2</desc>
+            <desc>Team Combat = Self Combat + (Combat Skill + Restoration skill * 2) * (Team Members / 2) * Adventure Guild Multiplier</desc>
         </tcombat>
         <combat>
             <label>Combat</label>
