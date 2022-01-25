@@ -3959,7 +3959,7 @@ Action.BuildHousing = new Action("Build Housing", {
         Dex: 0.2,
         Spd: 0.1
     },
-    affectedBy: ["Acquire Permit"],
+    affectedBy: ["Acquire Permit", "Purchase Land"],
     canStart() {
         return resources.citizenship && resources.land >= 1;
     },
@@ -3995,12 +3995,13 @@ Action.CollectTaxes = new Action("Collect Taxes", {
         Per: 0.1,
         Luck: 0.1
     },
-    affectedBy: ["Acquire Permit"],
+    affectedBy: ["Build Housing"],
     canStart() {
-        return resources.citizenship;
+        // not working
+        return true;
     },
     manaCost() {
-        return 100;
+        return 1000;
     },
     visible() {
         return towns[4].getLevel("Citizen") >= 60;

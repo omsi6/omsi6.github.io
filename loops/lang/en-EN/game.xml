@@ -1862,7 +1862,7 @@
 		<collect_taxes>
 			<label>Collect Taxes</label>
             <tooltip><![CDATA[
-            (Incomplete)<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
+            (Incomplete)<br>Requires housing.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</collect_taxes>
