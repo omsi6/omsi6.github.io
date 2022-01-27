@@ -1740,7 +1740,7 @@
             <info_text2>Meaningful donations total</info_text2>
             <info_text3>Donations to check for value</info_text3>
             <tooltip><![CDATA[
-            After doing some canvassing for the local charity, you're now able to accept some donations on their behalf, since you know the routine.<br>Costs 1 reputation.<br>Meaningful donations are worth 20 gold each.<br>Every 5 donations is worth a meaningful amount. 
+            After doing some canvassing for the local charity, you're now able to accept some donations on their behalf, since you know the routine.<br>Costs 1 reputation.<br>Requires a reputation above 0.<br>Meaningful donations are worth 20 gold each.<br>Every 5 donations is worth a meaningful amount. 
         ]]></tooltip>
             <!--TODO: give this action story-->
         </accept_donations>

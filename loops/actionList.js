@@ -3463,6 +3463,12 @@ Action.AcceptDonations = new Action("Accept Donations", {
         Spd: 0.3,
         Luck: 0.4
     },
+    canStart() {
+        return resources.reputation > 0;
+    },
+    cost() {
+        addResource("reputation", -1);
+    },
     manaCost() {
         return 2000;
     },
@@ -3473,8 +3479,10 @@ Action.AcceptDonations = new Action("Accept Donations", {
         return towns[4].getLevel("Canvassed") >= 5;
     },
     finish() {
-        addResource("gold", 20);
-        addResource("reputation", -1);
+        towns[4].finishRegular(this.varName, 5, () => {
+            addResource("gold", 20);
+            return 20;
+        });
     },
 });
 
