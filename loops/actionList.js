@@ -3372,7 +3372,7 @@ Action.GuidedTour = new Action("Guided Tour", {
     type: "progress",
     expMult: 1,
     townNum: 4,
-    varName: "Plots",
+    varName: "Tour",
     stats: {
         Per: 0.3,
         Con: 0.2,
@@ -3935,7 +3935,7 @@ Action.PurchaseLand = new Action("Purchase Land", {
     },
     affectedBy: ["Seek Citizenship"],
     manaCost() {
-        return 1000; // Temp.
+        return 2500;
     },
     canStart() {
         return resources.citizenship && resources.gold >= 50;
