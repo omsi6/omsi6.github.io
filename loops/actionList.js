@@ -3372,7 +3372,7 @@ Action.GuidedTour = new Action("Guided Tour", {
     type: "progress",
     expMult: 1,
     townNum: 4,
-    varName: "Tour",
+    varName: "Plots",
     stats: {
         Per: 0.3,
         Con: 0.2,
@@ -3457,6 +3457,7 @@ Action.AcceptDonations = new Action("Accept Donations", {
     type: "limited",
     expMult: 1,
     townNum: 4,
+    varName: "Donations",
     stats: {
         Con: 0.1,
         Cha: 0.2,
