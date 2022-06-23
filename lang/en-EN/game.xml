@@ -1703,7 +1703,7 @@
         <face_judgement>
             <label>Face Judgement</label>
             <tooltip><![CDATA[
-            Face the judgement of the gods. If your reputation is 50 or above, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or below, you'll be cast into the shadow realm and thrown back to the beginning of your journey.<br>Unlocked at 100% Mountain Explored. (this action does nothing right now)
+            Face the judgement of the gods. If your reputation is 50 or above, you'll be accepted into their good graces and granted passage to Valhalla. If your reputation is -50 or below, you'll be cast into the shadow realm and thrown back to the beginning of your journey.<br>Unlocked at 100% Mountain Explored.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Judgement Faced:</b>⮀ Their civilization may have fallen, but their gods are still very real, and the weight of their attention nearly drives you to your knees. Seeking to justify your presence, you begin to speak. Of your life, of your goal, and of your moral fibre. They are not impressed, you can tell, but they seem willing to lend you a hand. Before your eyes the world shifts and warps, and when it snaps back into focus you appear to be somewhere else entirely.]]></story_1>
 			<story_2><![CDATA[<b>Accepted by the Gods:</b>⮀ At the end of your story, a crack of lightning strikes behind the altar and leaves behind a cheerful man. Between the perfect bodily form and the power radiating from him, there's no doubt you're meeting a god in the flesh. He extends his hand, an offer of invitation, and you happily reach out and take it.]]></story_2>
@@ -1792,7 +1792,7 @@
         <charm_school>
             <label>Charm School</label>
             <tooltip><![CDATA[
-            (Incomplete)
+            Learn to make people love you!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </charm_school>
@@ -1869,7 +1869,7 @@
         <oracle>
             <label>Oracle</label>
             <tooltip><![CDATA[
-            (Incomplete)
+            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </oracle>
