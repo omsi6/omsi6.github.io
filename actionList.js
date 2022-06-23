@@ -4202,7 +4202,7 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     type: "multipart",
     expMult: 1,
     townNum: 5,
-    varName: "SpireDungeon",
+    varName: "TheSpire",
     stats: {
         Str: 0.1,
         Dex: 0.1,
@@ -4217,20 +4217,20 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
         return 10000;
     },
     canStart() {
-        const curFloor = Math.floor((towns[this.townNum].SpireDungeonLoopCounter) / this.segments + 0.0000001);
+        const curFloor = Math.floor((towns[this.townNum].TheSpireLoopCounter) / this.segments + 0.0000001);
         return curFloor < dungeons[this.dungeonNum].length;
     },
     loopCost(segment) {
-        return precision3(Math.pow(2, Math.floor((towns[this.townNum].SpireDungeonLoopCounter + segment) / this.segments + 0.0000001)) * 10000000);
+        return precision3(Math.pow(2, Math.floor((towns[this.townNum].TheSpireLoopCounter + segment) / this.segments + 0.0000001)) * 10000000);
     },
     tickProgress(offset) {
-        const floor = Math.floor((towns[this.townNum].SpireDungeonLoopCounter) / this.segments + 0.0000001);
+        const floor = Math.floor((towns[this.townNum].TheSpireLoopCounter) / this.segments + 0.0000001);
         return (getSelfCombat() + getSkillLevel("Magic")) *
-        (1 + getLevel(this.loopStats[(towns[this.townNum].SpireDungeonLoopCounter + offset) % this.loopStats.length]) / 100) *
+        (1 + getLevel(this.loopStats[(towns[this.townNum].TheSpireLoopCounter + offset) % this.loopStats.length]) / 100) *
         Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     },
     loopsFinished() {
-        const curFloor = Math.floor((towns[this.townNum].SpireDungeonLoopCounter) / this.segments + 0.0000001 - 1);
+        const curFloor = Math.floor((towns[this.townNum].TheSpireLoopCounter) / this.segments + 0.0000001 - 1);
         finishDungeon(this.dungeonNum, curFloor);
     },
     visible() {
