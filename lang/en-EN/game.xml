@@ -679,7 +679,10 @@
             <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic exp gain from the Dark Magic action (rounded down) per ritual.</desc>
             <desc2><![CDATA[<br>Actions are 10% faster in Beginnersville per ritual from 1-20.<br>
             Actions are 5% faster in the Forest Path per ritual from 21-40.<br>
-            Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>]]>
+            Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>
+            Actions are 1.5% faster in Mt. Olympus per ritual from 61-80.<br>
+            Actions are 1.0% faster in Valhalla per ritual from 81-100.<br>
+            Actions are 0.5% faster in Adeptsville per ritual from 101-150.<br>]]>
             </desc2>
         </dark_ritual>
         <imbue_mind>
