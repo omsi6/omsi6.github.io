@@ -4266,10 +4266,10 @@ Action.DarkSacrifice = new Action("Dark Sacrifice", {
         return 20000;
     },
     visible() {
-        return getBuffLevel("Ritual") >= 21;
+        return getBuffLevel("Ritual") >= 20;
     },
     unlocked() {
-        return getBuffLevel("Ritual") >= 66;
+        return getBuffLevel("Ritual") >= 60;
     },
     finish() {
         handleSkillExp(this.skills);
