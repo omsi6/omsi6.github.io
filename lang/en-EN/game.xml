@@ -1792,7 +1792,7 @@
         <charm_school>
             <label>Charm School</label>
             <tooltip><![CDATA[
-            Learn to make people love you!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset.
+            Learn to make people love you!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitCha'></div> times per reset.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </charm_school>
@@ -1869,7 +1869,7 @@
         <oracle>
             <label>Oracle</label>
             <tooltip><![CDATA[
-            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitInt'></div> times per reset.
+            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitLck'></div> times per reset.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </oracle>
