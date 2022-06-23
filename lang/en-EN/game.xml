@@ -1869,7 +1869,7 @@
         <oracle>
             <label>Oracle</label>
             <tooltip><![CDATA[
-            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitLck'></div> times per reset.
+            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitLuck'></div> times per reset.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </oracle>
