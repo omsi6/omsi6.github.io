@@ -4202,6 +4202,7 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     type: "multipart",
     expMult: 1,
     townNum: 5,
+    vanName: "SpireDungeon",
     stats: {
         Str: 0.1,
         Dex: 0.1,
@@ -4229,7 +4230,8 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
         Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     },
     loopsFinished() {
-        // empty
+        const curFloor = Math.floor((towns[this.townNum].SpireDungeonLoopCounter) / this.segments + 0.0000001 - 1);
+        finishDungeon(this.dungeonNum, curFloor);
     },
     visible() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
@@ -4238,8 +4240,7 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
     },
     finish() {
-        //1 buff amt per highest spire floor
-        //addBuffAmt("Ritual", 1);
+        handleSkillExp(this.skills);
     },
 });
 
