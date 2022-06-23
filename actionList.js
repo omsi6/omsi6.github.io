@@ -734,7 +734,7 @@ Action.HealTheSick = new MultipartAction("Heal The Sick", {
         return fibonacci(2 + Math.floor((towns[0].HealLoopCounter + segment) / this.segments + 0.0000001)) * 5000;
     },
     tickProgress(offset) {
-        return getSkillLevel("Magic") * (1 + getLevel(this.loopStats[(towns[0].HealLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[0].totalHeal / 100);
+        return getSkillLevel("Magic") * Math.min(getSkillLevel("Restoration")/100, 1) * (1 + getLevel(this.loopStats[(towns[0].HealLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[0].totalHeal / 100);
     },
     loopsFinished() {
         addResource("reputation", 3);
