@@ -1919,13 +1919,13 @@
             <tooltip><![CDATA[
             Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic / 2) to your team combat.<br>Unlocked at ???.
         ]]></tooltip>
+        </raise_zombie>
         <dark_sacrifice>
             <label>Dark Sacrifice</label>
             <tooltip><![CDATA[
             You make a sacrifice of trolls blood to dark gods.<br>Costs 1 blood.<br>Reduces the soulstone cost of dark ritual.<br>Unlocked at 60 dark ritual.
         ]]></tooltip>
-            <!--TODO: give this action story-->
-        </raise_zombie>
+        </dark_sacrifice>
         <the_spire>
             <label>The Spire</label>
             <label_done>Looted</label_done>
