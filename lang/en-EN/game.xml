@@ -666,6 +666,11 @@
 			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
 			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
 		</mercantilism>
+        <commune>
+            <label>Communing</label>
+            <desc>Your blood sacrifices to dark beings makes it easier to communicate with them.</desc>
+            <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100) (rounded up).]]></desc2>
+        </commune>
         <tooltip>
             <level>Level:</level>
             <level_exp>Level Exp:</level_exp>

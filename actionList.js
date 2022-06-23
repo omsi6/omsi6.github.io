@@ -4244,6 +4244,38 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     },
 });
 
+Action.DarkSacrifice = new Action("Dark Sacrifice", {
+    type: "normal",
+    expMult: 1,
+    townNum: 5,
+    stats: {
+        Int: 0.2,
+        Soul: 0.8
+    },
+    skills: {
+        Commune: 100
+    },
+    // this.affectedBy = ["Crafting Guild"];
+    canStart() {
+        return resources.blood >= 1;
+    },
+    cost() {
+        addResource("blood", -1);
+    },
+    manaCost() {
+        return 20000;
+    },
+    visible() {
+        return getBuffLevel("Ritual") >= 21;
+    },
+    unlocked() {
+        return getBuffLevel("Ritual") >= 66;
+    },
+    finish() {
+        handleSkillExp(this.skills);
+    },
+});
+
 const actionsWithGoldCost = Object.values(Action).filter(
     action => action.goldCost !== undefined
 );
