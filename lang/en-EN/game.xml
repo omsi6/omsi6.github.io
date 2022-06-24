@@ -6,8 +6,29 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".96"><![CDATA[
+            <b> June 24th, 2022</b>
+            • The spire now gives rewards! It gives 100 soulstones per floor and well as aspirant ranks <br>
+            • New Skill: Divine Favor. Increases soulstones gained from actions<br>
+            • New Skill: Communing. Reduces soulstone costs of dark ritual<br>
+            • New Buff: Aspirant. Increases talent xp multiplier<br>
+            • New Action: Fight Giants - Self combat fight that increases the effectiveness of seek blessing<br>
+            • New Action: Seek Blessing - Gives divine favor skill xp based on fight giants progress<br>
+            • New Action: Raise Zombies - Increases team combat<br>
+            • New Action: Dark Sacrifice - Gives communing skill xp<br>
+            • Cleaned up a number of tooltips
+            ]]></version>
+            <version verNum=".95"><![CDATA[
+            <b> March 18th, 2022</b>
+            • Added Valhalla zone with numerous new actions - reachable with Face Judgement<br>
+            • Added Adeptsville zone and The Spire dungeon - reachable with Face Judgement<br>
+            • New Skill: Restoration - Improves team combat and effectiveness of Heal the Sick<br>
+            • New Skill: Spatiomancy - Reduces mana gyser costs and increases possible rewards from zone 1 and 3 actions<br>
+            • New Skill: Mercantilism - Increases gold received from Buy Mana actions<br>
+            • New Buff: Great Feast - Increases self combat score<br>
+            ]]></version>
             <version verNum=".94"><![CDATA[
-            <b> June 18th, 2020 - The current date</b>
+            <b> June 18th, 2020</b>
             <b> v0.94 - "One for the history books."</b><br>
             • Added a new set of action stories for Merchanton and Mt. Olympus. These were written by InfernoVulpix from the Discord.<br>
             • Improved centering and alignment of various visual elements.<br>
@@ -671,6 +692,11 @@
 			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
 			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
 		</mercantilism>
+        <divine>
+            <label>Divine Favor</label>
+            <desc>The gods have answered your prayers and given you their blessing.</desc>
+            <desc2><![CDATA[Increases soulstones gained from actions by (1 + level / 60) ^ 0.25 (rounded down).]]></desc2>
+        </divine>
         <commune>
             <label>Communing</label>
             <desc>Your blood sacrifices to dark beings makes it easier to communicate with them.</desc>
@@ -1891,6 +1917,21 @@
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</pegasus>
+        <fight_frost_giants>
+            <label>Fight Giants</label>
+            <label_done>Frost Giants Vanquished</label_done>
+            <tooltip><![CDATA[
+            Join the valkryies in their fight against the frost giants.<br>Improves your ability to seek favor from the gods.<br>Can only have 1 Fight Frost Giants action.<br>Requires a pegasus.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 100% citizenship studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </fight_frost_giants>
+        <seek_blessing>
+            <label>Seek Blessing</label>
+            <tooltip><![CDATA[
+            Pray to the gods to grant you their favor.<br>Increases the number of soulstones earned from all actions.<br>Can only have 1 Seek Blessing action.<br>Requires a pegasus.<br>Gives (50 * Frost Giants Multi) Divine Favor experience.<br>Unlocked at 100% citizenship studied.
+        ]]></tooltip>
+            <!--TODO: give this action story-->
+        </seek_blessing>
         <great_feast>
             <label>Great Feast</label>
             <label_done>Completed</label_done>

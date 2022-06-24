@@ -911,7 +911,7 @@ function finishDungeon(dungeonNum, floorNum) {
     if (rand <= floor.ssChance) {
         const statToAdd = statList[Math.floor(Math.random() * statList.length)];
         floor.lastStat = statToAdd;
-        stats[statToAdd].soulstone = stats[statToAdd].soulstone ? (stats[statToAdd].soulstone + Math.pow(10, dungeonNum)) : 1;
+        stats[statToAdd].soulstone = stats[statToAdd].soulstone ? (stats[statToAdd].soulstone + Math.floor(Math.pow(10, dungeonNum) * Math.pow(1 + getSkillLevel("Divine") / 60, 0.25))) : 1;
         floor.ssChance *= 0.98;
         view.updateSoulstones();
         return true;
@@ -3087,7 +3087,7 @@ Action.MineSoulstones = new Action("Mine Soulstones", {
     finish() {
         towns[3].finishRegular(this.varName, 10, () => {
             const statToAdd = statList[Math.floor(Math.random() * statList.length)];
-            stats[statToAdd].soulstone += 1;
+            stats[statToAdd].soulstone +=  Math.floor(Math.pow(1 + getSkillLevel("Divine") / 60, 0.25)) ;
             view.updateSoulstones();
         });
     },
@@ -3888,6 +3888,7 @@ Action.SeekCitizenship = new Action("Seek Citizenship", {
     },
 });
 
+/*
 Action.AcquirePermit = new Action("Acquire Permit", {
     type: "normal",
     expMult: 1,
@@ -3916,7 +3917,6 @@ Action.AcquirePermit = new Action("Acquire Permit", {
         addResource("permit", true);
     },
 });
-
 
 // Limited, requires 'seek citizenship' action taken, scales from Tour?
 // 200 plots total, 10 land total.
@@ -4022,6 +4022,7 @@ Action.CollectTaxes = new Action("Collect Taxes", {
         // Gather all available tax from all houses.
     },
 });
+*/
 
 Action.Oracle = new Action("Oracle", {
     type: "normal",
@@ -4158,6 +4159,129 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
     },
     finish() {
         view.updateBuff("Feast");
+    },
+});
+
+
+Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
+    type: "multipart",
+    expMult: 1,
+    townNum: 4,
+    varName: "FightFrostGiants",
+    stats: {
+        Str: 0.5,
+        Con: 0.3,
+        Per: 0.2,
+    },
+    loopStats: ["Per", "Con", "Str"],
+    manaCost() {
+        return 20000;
+    },
+    allowed() {
+        return 1;
+    },
+    canStart() {
+        return resources.pegasus;
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(1.3, towns[4][`${this.varName}LoopCounter`] + segment)) * 1e7; // Temp
+    },
+    tickProgress(offset) {
+        return (getSelfCombat() * 
+            (1 + getLevel(this.loopStats[(towns[4][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) * 
+            Math.sqrt(1 + towns[4][`total${this.varName}`] / 1000));
+    },
+    loopsFinished() {
+        // empty.
+    },
+    segmentFinished() {
+        curFightFrostGiantsSegment++;
+        // Additional thing?
+    }, 
+    getPartName() {
+        return `${getFrostGiantsRank().name}`;
+    },
+    getSegmentName(segment) {
+        return `${getFrostGiantsRank(segment % 3).name}`;
+    },
+    visible() {
+        return towns[4].getLevel("Citizen") >= 80;
+    },
+    unlocked() {
+        return towns[4].getLevel("Citizen") >= 100;
+    },
+    finish() {
+        // guild = "Wizard";
+    },
+});
+function getFrostGiantsRank(offset) {
+    let name = [
+        "Private",
+        "Corporal",
+        "Specialist",
+        "Sergeant",
+        "Staff Sergeant",
+        "Sergeant First Class",
+        "Master Sergeant",
+        "Sergeant Major",
+        "Warrant Officer",
+        "Chief Warrant Officer",
+        "Second Lieutenant",
+        "First Lieutenant",
+        "Major",
+        "Lieutenant Colonel",
+        "Colonel",
+        "Lieutenant Commander",
+        "Commander",
+        "Captain",
+        "Rear Admiral",
+        "Vice Admiral"][Math.floor(curFightFrostGiantsSegment / 3 + 0.00001)];
+    const segment = (offset === undefined ? 0 : offset - (curFightFrostGiantsSegment % 3)) + curFightFrostGiantsSegment;
+    let bonus = precision3(1 + 0.05 * Math.pow(segment, 1.05));
+    if (name) {
+        if (offset === undefined) {
+            name += ["-", "", "+"][curFightFrostGiantsSegment % 3];
+        } else {
+            name += ["-", "", "+"][offset % 3];
+        }
+    } else {
+        name = "Admiral";
+        bonus = 10;
+    }
+    name += `, Mult x${bonus}`;
+    return { name, bonus };
+}
+
+Action.SeekBlessing = new Action("Seek Blessing", {
+    type: "normal",
+    expMult: 1,
+    townNum: 4,
+    stats: {
+        Cha: 0.5,
+        Luck: 0.5
+    },
+    skills: {
+        Divine: 50
+    },
+    // this.affectedBy = ["Crafting Guild"];
+    canStart() {
+        return resources.pegasus;
+    },
+    allowed() {
+        return 1;
+    },
+    manaCost() {
+        return 1000000;
+    },
+    visible() {
+        return towns[4].getLevel("Citizen") >= 80;
+    },
+    unlocked() {
+        return towns[4].getLevel("Citizen") >= 100;
+    },
+    finish() {
+        this.skills.Divine = Math.floor(this.skills.Divine * getFrostGiantsRank().bonus);
+        handleSkillExp(this.skills);
     },
 });
 

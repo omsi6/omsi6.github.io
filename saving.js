@@ -68,7 +68,7 @@ let guild = "";
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Commune"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Feast", "Aspirant"];
 const buffHardCaps = {
@@ -174,6 +174,8 @@ let curAdvGuildSegment = 0;
 let curCraftGuildSegment = 0;
 // eslint-disable-next-line prefer-const
 let curWizCollegeSegment = 0;
+// eslint-disable-next-line prefer-const
+let curFightFrostGiantsSegment = 0;
 
 const options = {
     theme: "normal",
