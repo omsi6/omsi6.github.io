@@ -101,7 +101,7 @@ function getSelfCombat() {
 }
 
 function getTeamCombat() {
-    return getSelfCombat("Combat") + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
+    return getSelfCombat("Combat") + (getSkillLevel("Dark") * resources.zombie) + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
 }
 
 function getPrcToNextSkillLevel(skill) {

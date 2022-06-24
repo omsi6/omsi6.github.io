@@ -423,6 +423,11 @@
             <id>land</id>
             <desc>(Incomplete)</desc>
         </resource>
+        <resource initially_hidden="true">
+            <title>Zombies:</title>
+            <id>zombie</id>
+            <desc>A shambling pile of deceased flesh. Super gross.</desc>
+        </resource>
         <!--singular items with img icons rather than counts-->
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/buyGlasses.svg" class="smallIcon">]]></title>
@@ -1917,7 +1922,7 @@
         <raise_zombie>
             <label>Raise Zombie</label>
             <tooltip><![CDATA[
-            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic / 2) to your team combat.<br>Unlocked at ???.
+            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic) to your team combat.<br>Unlocked at 1000 dark magic.
         ]]></tooltip>
         </raise_zombie>
         <dark_sacrifice>

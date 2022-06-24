@@ -1801,7 +1801,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9);
+        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9 / (1 + getSkillLevel("Commune") / 100));
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -1826,7 +1826,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
     },
     loopsFinished() {
         addBuffAmt("Ritual", 1);
-        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9);
+        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9 / (1 + getSkillLevel("Commune") / 100));
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -1854,7 +1854,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         return towns[1].getLevel("Witch") >= 50 && getSkillLevel("Dark") >= 50;
     },
     goldCost() {
-        return 50 * (getBuffLevel("Ritual") + 1);
+        return 50 * (getBuffLevel("Ritual") + 1) / (1 + getSkillLevel("Commune") / 100);
     },
     finish() {
         view.updateBuff("Ritual");
@@ -4197,6 +4197,66 @@ Action.FallFromGrace = new Action("Fall From Grace", {
 });
 
 // town 6
+Action.RaiseZombie = new Action("Raise Zombie", {
+    type: "normal",
+    expMult: 1,
+    townNum: 5,
+    stats: {
+        Con: 0.4,
+        Int: 0.3,
+        Soul: 0.3
+    },
+    canStart() {
+        return resources.blood >= 1;
+    },
+    cost() {
+        addResource("blood", -1);
+    },
+    manaCost() {
+        return 10000;
+    },
+    visible() {
+        return getSkillLevel("Dark") >= 100;
+    },
+    unlocked() {
+        return getSkillLevel("Dark") >= 1000;
+    },
+    finish() {
+        addResource("zombie", 1);
+    },
+});
+
+Action.DarkSacrifice = new Action("Dark Sacrifice", {
+    type: "normal",
+    expMult: 1,
+    townNum: 5,
+    stats: {
+        Int: 0.2,
+        Soul: 0.8
+    },
+    skills: {
+        Commune: 100
+    },
+    canStart() {
+        return resources.blood >= 1;
+    },
+    cost() {
+        addResource("blood", -1);
+    },
+    manaCost() {
+        return 20000;
+    },
+    visible() {
+        return getBuffLevel("Ritual") >= 20;
+    },
+    unlocked() {
+        return getBuffLevel("Ritual") >= 60;
+    },
+    finish() {
+        handleSkillExp(this.skills);
+        view.adjustGoldCost("DarkRitual", Action.DarkRitual.goldCost());
+    },
+});
 
 Action.TheSpire = new DungeonAction("The Spire", 2, {
     type: "multipart",
@@ -4238,38 +4298,6 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     },
     unlocked() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 35;
-    },
-    finish() {
-        handleSkillExp(this.skills);
-    },
-});
-
-Action.DarkSacrifice = new Action("Dark Sacrifice", {
-    type: "normal",
-    expMult: 1,
-    townNum: 5,
-    stats: {
-        Int: 0.2,
-        Soul: 0.8
-    },
-    skills: {
-        Commune: 100
-    },
-    // this.affectedBy = ["Crafting Guild"];
-    canStart() {
-        return resources.blood >= 1;
-    },
-    cost() {
-        addResource("blood", -1);
-    },
-    manaCost() {
-        return 20000;
-    },
-    visible() {
-        return getBuffLevel("Ritual") >= 20;
-    },
-    unlocked() {
-        return getBuffLevel("Ritual") >= 60;
     },
     finish() {
         handleSkillExp(this.skills);
