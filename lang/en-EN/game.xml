@@ -707,12 +707,12 @@
             Self combat is increased by 5% per level. (rounded down)]]>
             </desc>
         </great_feast>
-        <the_spire>
-            <label>The Spire</label>
+        <aspirant>
+            <label>Aspirant</label>
             <desc><![CDATA[Reaching new heights in the spire fills your mind and soul with vigor and clarity.<br>
-            Talent Exp gain is increased by 1% per level. (rounded down).]]>
+            Talent Exp gain is increased by 1% per level.]]>
             </desc>
-        </the_spire>
+        </aspirant>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart><![CDATA[Buffs last through resets.<br>You can click on the right hand number to edit it and adjust the cap for that buff. (buff actions will automatically fail and not spend soulstones past your set cap)]]></no_reset_on_restart>
@@ -1090,7 +1090,7 @@
             Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
-            <last_stat_label>Last Stat</last_stat_label>
+            <last_stat_label>Last</last_stat_label>
             <segment_names>
                 <name>Spike Traps</name>
                 <name>Long Hallways</name>
@@ -1452,7 +1452,7 @@
             Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
-            <last_stat_label>Last Stat</last_stat_label>
+            <last_stat_label>Last</last_stat_label>
             <segment_names>
                 <name>Rally Party</name>
                 <name>Journey to the Entrance</name>
@@ -1657,8 +1657,6 @@
             <tooltip><![CDATA[
             The cavern is teeming with trolls, but thankfully they appear to be friendly from the encounters you've had with them. However, you could do with some troll's blood.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked with 50% Cavern Explored.<br>Gives Combat exp per troll kill, rather than upon action completion.
         ]]></tooltip>
-            <chance_label>Chance</chance_label>
-            <last_stat_label>Last Stat</last_stat_label>
             <segment_names>
                 <name>Find a Hiding Spot</name>
                 <name>Scream Very Loudly to Lure Out the Troll</name>
@@ -1922,7 +1920,7 @@
         <raise_zombie>
             <label>Raise Zombie</label>
             <tooltip><![CDATA[
-            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic) to your team combat.<br>Unlocked at 1000 dark magic.
+            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic / 2) to your team combat.<br>Unlocked at 1000 dark magic.
         ]]></tooltip>
         </raise_zombie>
         <dark_sacrifice>
@@ -1943,7 +1941,7 @@
             Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 100 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
-            <last_stat_label>Last Stat</last_stat_label>
+            <last_stat_label>Last</last_stat_label>
             <segment_names>
                 <name>Locate Entrance</name>
                 <name>Navigate Door Maze</name>

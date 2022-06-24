@@ -4292,6 +4292,7 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].TheSpireLoopCounter) / this.segments + 0.0000001 - 1);
         finishDungeon(this.dungeonNum, curFloor);
+        if (curFloor >= getBuffLevel("Aspirant")) addBuffAmt("Aspirant", 1);
     },
     visible() {
         return (getSkillLevel("Combat") + getSkillLevel("Magic")) >= 15;
@@ -4301,6 +4302,7 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
     },
     finish() {
         handleSkillExp(this.skills);
+        view.updateBuff("Aspirant");
     },
 });
 

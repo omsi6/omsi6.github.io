@@ -101,7 +101,7 @@ function getSelfCombat() {
 }
 
 function getTeamCombat() {
-    return getSelfCombat("Combat") + (getSkillLevel("Dark") * resources.zombie) + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
+    return getSelfCombat("Combat") + (getSkillLevel("Dark") * resources.zombie / 2) + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
 }
 
 function getPrcToNextSkillLevel(skill) {
@@ -145,5 +145,6 @@ function restartStats() {
 
 function getTotalBonusXP(statName) {
     const soulstoneBonus = stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 1;
-    return soulstoneBonus * calcTalentMult(getTalent(statName));
+    const aspirantBonus = getBuffLevel("Aspirant") ?  1 + getBuffLevel("Aspirant") * 0.01 : 1;
+    return soulstoneBonus * calcTalentMult(getTalent(statName)) * aspirantBonus;
 }
