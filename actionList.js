@@ -4280,7 +4280,7 @@ Action.SeekBlessing = new Action("Seek Blessing", {
         return towns[4].getLevel("Citizen") >= 100;
     },
     finish() {
-        this.skills.Divine = Math.floor(this.skills.Divine * getFrostGiantsRank().bonus);
+        this.skills.Divine = Math.floor(50 * getFrostGiantsRank().bonus);
         handleSkillExp(this.skills);
     },
 });
