@@ -1065,7 +1065,7 @@ Action.OpenRift = new Action("Open Rift", {
         return 100000;
     },
     visible() {
-        return storyReqs.castIntoShadowRealm || storyReqs.fellFromGrace;
+        return towns[5].getLevel("Meander") >= 1;
     },
     unlocked() {
         return getSkillLevel("Dark") >= 300 && getSkillLevel("Spatiomancy") >= 100;
