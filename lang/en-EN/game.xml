@@ -6,6 +6,20 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".97"><![CDATA[
+            <b> July 4th, 2022</b>
+            • Added Build Housing and Collect Taxes actions in Valhalla - a new source of gold gain that uses Crafting Guild Rank and Mercantilism skill.<br>
+            • Renamed Adeptsville to Startington<br>
+            • Added Meander action in Startington and set as a requirement to see other actions<br>
+            • Added Destroy Pylon action in startington to reduce the mana cost of spire<br>
+            • Increased the base mana cost of The Spire significantly, mostly offset by destroying pylons<br>
+            • Allowed Spatiomancy to benefit more actions<br>
+            • Fixed Great Feast buff so it actually improves Self Combat<br>
+            • Training mercantilism now costs reputation<br>
+            • Fall From Grace now removes all positive reputation<br>
+            • Tweaked Looping potion to require doubling herbs with spatiomancy in anticipation of end-game use<br>
+            • Cleaned up a bunch more tooltips
+            ]]></version>
             <version verNum=".96"><![CDATA[
             <b> June 24th, 2022</b>
             • The spire now gives rewards! It gives 100 soulstones per floor and well as aspirant ranks <br>
@@ -440,9 +454,14 @@
             <desc>Divinely blessed weapons and armor, like a hero of legend.</desc>
         </resource>
         <resource initially_hidden="true">
-            <title>Land:</title>
-            <id>land</id>
-            <desc>(Incomplete)</desc>
+            <title>Houses:</title>
+            <id>houses</id>
+            <desc>Property constructed in Valhalla. You can collect taxes from tenants.</desc>
+        </resource>
+        <resource initially_hidden="true">
+            <title>Pylons:</title>
+            <id>pylons</id>
+            <desc>Small fragments from the destroyed pylon.</desc>
         </resource>
         <resource initially_hidden="true">
             <title>Zombies:</title>
@@ -680,11 +699,18 @@
         <spatiomancy>
             <label>Spatiomancy</label>
             <desc>Who knew bending reality to your will could be so useful!</desc>
-            <desc2><![CDATA[Mana Geyser and Mana Well are reduced to the original / (1 + level / 100) (rounded up).<br>
-            Houses to check for valuables is increased by 0.5% per level from 1-200 (rounded down).<br>
-            Short quests to finish is increased by 0.5% per level from 101-300 (rounded down).<br>
-            Long quests to finish is increased by 0.5% per level from 201-400 (rounded down).<br>
-            People to check if they're suckers is increased by 0.5% per level from 301-500 (rounded down).<br>
+            <desc2><![CDATA[Mana Geyser and Mana Well are reduced to the original / (1 + level / 100).<br>
+            Houses to build increased by 1% per level from 1 - 500. <br>
+            Locked houses is increased by 0.5% per level from 101-300.<br>
+            Short quests to finish is increased by 0.5% per level from 201-400.<br>
+            Long quests to finish is increased by 0.5% per level from 301-500.<br>
+            Animals in the forest increased by 0.5% per level from 401-600.<br>
+            Herbs to gather increased by 0.5% per level from 501-700.<br>
+            Possible suckers is increased by 0.5% per level from 601-800.<br>
+            Soulstones to mine increased by 0.5% per level from 701-900.<br>
+            Artifacts to take increased by 0.5% per level from 801-1000.<br>
+            People to ask for donations increased by 0.5% per level from 901-1100.<br>
+            Buildings to check for pylons increased by 0.5% per level from 1001-1200.<br>
             Currently multiplying costs by <div id='skillBonusSpatiomancy'></div>x.]]></desc2>
         </spatiomancy>
 		<mercantilism>
@@ -718,13 +744,13 @@
             Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>
             Actions are 1.5% faster in Mt. Olympus per ritual from 61-80.<br>
             Actions are 1.0% faster in Valhalla per ritual from 81-100.<br>
-            Actions are 0.5% faster in Adeptsville per ritual from 101-150.<br>]]>
+            Actions are 0.5% faster in Startington per ritual from 101-150.<br>]]>
             </desc2>
         </dark_ritual>
         <imbue_mind>
             <label>Imbue Mind</label>
-            <desc><![CDATA[Using power from soulstones, you can increase your training limits.<br>
-            Increases the max amount of times you can do each training action by 1 per level.]]>
+            <desc><![CDATA[Using power from soulstones, you can increase your mental prowess.<br>
+            Increases the max amount of times you can do each training action by 1 per level and improves some actions.]]>
             </desc>
         </imbue_mind>
          <great_feast>
@@ -770,7 +796,7 @@
             <desc>A sprawling and jolly city filled with all manner of nice things. Vikings, beer, angels, beer, blah blah blah, and beer! You can spend your time in the great hall, or in the outskirts of the city. Either way, you'll surely have a great time.</desc>
         </town4>
         <town5>
-            <name>Adeptsville</name>
+            <name>Startington</name>
             <desc>A once familiar place, now crawling with shadows and ominous feelings of wasted sick days. There stands a large pillar of gloomy purple light in the center of it all, eminating from a spire surrounded by black clouds. It's emitting 10 weak beams of purple light to various points around the town, and appears to be casting all the shadows. Maybe you should check those spots out.</desc>
         </town5>
     </towns>
@@ -1159,7 +1185,7 @@
         <open_rift>
             <label>Open Rift</label>
             <tooltip><![CDATA[
-            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Adeptsville.<br>Unlocked at 300 Dark Magic and 100 Spatiomancy.
+            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Startington.<br>Unlocked at 300 Dark Magic and 100 Spatiomancy.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </open_rift>
@@ -1636,7 +1662,7 @@
         <looping_potion>
             <label>Looping Potion</label>
             <tooltip><![CDATA[
-            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it. (this does nothing right now)<br>Requires 200 herbs.<br>Unlocked with both 60 Alchemy and 100 Chronomancy.
+            Using your aptness of alchemy and your talent for time, you've managed to recreate the very potion that got you into this whole mess! It can't cure you, but maybe you can find another use for it. (this does nothing right now)<br>Requires 400 herbs.<br>Unlocked with both 500 Alchemy.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Potion Made:</b>⮀ There's no mistake, it's the same potion that you were transporting what feels like an eternity ago. This is chronomancy you'd never have been able to do as a spell, and you take a moment to feel proud at how far you've come. And yet, you don't really know what to do with the thing. Maybe you'll figure something out later.]]></story_1>
         </looping_potion>
@@ -1771,7 +1797,7 @@
             <!--TODO: give this action story-->
         </donate>
         <accept_donations>
-            <label>Accept Donations</label>
+            <label>Collect Donations</label>
             <label_done>Donations Accepted</label_done>
             <info_text1>Meaningful donations left</info_text1>
             <info_text2>Meaningful donations total</info_text2>
@@ -1786,7 +1812,7 @@
             <label_done>Tidied</label_done>
             <label_part>Mess</label_part>
 			<tooltip><![CDATA[
-			Tidy up the place (Incomplete).
+			Tidy up the place.<br>Gives 5 gold and 1 reputation.
 		]]></tooltip>
 			<segment_names>
                 <name>Temp1</name>
@@ -1813,16 +1839,16 @@
             <!--TODO: give this action story-->
 		</sell_artifact>
 		<gift_artifact>
-			<label>Gift Artifact</label>
+			<label>Donate Artifact</label>
 			<tooltip><![CDATA[
-			Gift a precious artifact to a local notable. It's okay - with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
+			Donate a precious artifact to the museum of heroes. It's okay - with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</gift_artifact>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
-            Practice your merchandising skills, which are sorely lacking considering how poor of a deal you're getting from those mana merchants.
+            Practice your merchandising skills, which are sorely lacking considering how poor of a deal you're getting from those mana merchants.<br>Costs 1 reputation.<br>Requires positive reputation.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </mercantilism>
@@ -1844,7 +1870,7 @@
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
             <tooltip><![CDATA[
-            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at ???
+            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </wizard_college>
@@ -1867,39 +1893,21 @@
             <label>Seek Citizenship</label>
 			<label_done>Citizenship Exam Studied</label_done>
             <tooltip><![CDATA[
-            Right now, you're just visiting.  If you want to be accepted into their ranks for real, you'll need to study and pass a rigorous exam on Valhallan history and culture.<br>Grants citizenship when taken with 100% progress.
+            Right now, you're just visiting.  If you want to be accepted into their ranks for real, you'll need to study and pass a rigorous exam on Valhallan history and culture.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </seek_citizenship>
-        <acquire_permit>
-            <label>Acquire Permit</label>
-            <tooltip><![CDATA[
-            Turns out just being a citizen isn't enough, you need to go through special certification as well in order to actually own land.<br>Requires citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
-        ]]></tooltip>
-            <!--TODO: give this action story-->
-        </acquire_permit>
-        <purchase_land>
-            <label>Purchase Land</label>
-            <label_done>Plots Purchased</label_done>
-            <info_text1>Good land left</info_text1>
-            <info_text2>Good land total</info_text2>
-            <info_text3>Plots to survey</info_text3>
-            <tooltip><![CDATA[
-            There's plenty of open land in Valhalla, empty plots just waiting for someone to build something on them.<br>Costs 50 gold.<br>Every 20 plots is good land for building.<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
-        ]]></tooltip>
-            <!--TODO: give this action story-->
-        </purchase_land>
 		<build_housing>
 			<label>Build Housing</label>
             <tooltip><![CDATA[
-            (Incomplete)<br>Requires citizenship and permit.<br>Unlocked at 100% Citizenship Exam Studied.
+            Build a house in the city that you can rent out.<br>Can build as many houses as your crafting guild bonus.<br>Requires 100% citizenship.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</build_housing>
 		<collect_taxes>
 			<label>Collect Taxes</label>
             <tooltip><![CDATA[
-            (Incomplete)<br>Requires housing.<br>Unlocked at 100% Citizenship Exam Studied.
+            Collect taxes from the properties you have built.<br>Gives (houses * Mercantilism / 20) gold.<br>Requires housing.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</collect_taxes>
@@ -1913,7 +1921,7 @@
 		<pegasus>
 			<label>Pegasus</label>
 			<tooltip><![CDATA[
-			Valhalla has its share of wonders. Amongst them are the Pegasi; mythical winged steeds, only available to the finest of citizens. If you wish to get your hands on one you'll need to convince a local to guide you to one of their meeting grounds, and then prove yourself to it. Swift on land and sky, it takes more than just gold to own a creature like this.<br>(Effect)(Incomplete)<br>Costs 100 gold and 10 favors.
+			Valhalla has its share of wonders. Amongst them are the Pegasi; mythical winged steeds, only available to the finest of citizens. If you wish to get your hands on one you'll need to convince a local to guide you to one of their meeting grounds, and then prove yourself to it. Swift on land and sky, it takes more than just gold to own a creature like this.<br>Allows access to special fights.<br>Costs 200 gold and 20 favors.
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</pegasus>
@@ -1936,7 +1944,7 @@
             <label>Great Feast</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            You realize now that you've forgotten the joy of food, after having gone for so "long" without needing to eat anything. It's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Unlocked with ???<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
+            You realize now that you've forgotten the joy of food, after having gone for so "long" without needing to eat anything. It's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Requires 100 reputation.<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              soulstones.
@@ -1958,6 +1966,23 @@
             <!--TODO: give this action story-->
         </fall_from_grace>
         <!--town 6-->
+        <meander>
+            <label>Meander</label>
+            <label_done>Explored</label_done>
+            <tooltip><![CDATA[
+            This place seems familiar, and yet... not. Everything is twisted and wrong. Just being here hurts your head. You'll need to fortify your mind to make any progress here.<br>Gives exp equal to Imbue Mind level.
+            ]]></tooltip>
+        </meander>
+        <destroy_pylons>
+            <label>Destroy Pylons</label>
+            <label_done>Pylons Destroyed</label_done>
+            <info_text1>Buildings with intact pylons</info_text1>
+            <info_text2>Buildings with pylons total</info_text2>
+            <info_text3>Buildings to check for pylons</info_text3>
+            <tooltip><![CDATA[
+            There are strange pylons humming with energy in the abandoned buildings of this town. You're not sure why, but you feel compelled to break them.<br>Reduces the mana cost of The Spire by 10% for each pylon destroyed.
+        ]]></tooltip>
+        </destroy_pylons>
         <raise_zombie>
             <label>Raise Zombie</label>
             <tooltip><![CDATA[

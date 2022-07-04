@@ -324,6 +324,7 @@ function adjustAll() {
     adjustMineSoulstones();
     adjustArtifacts();
     adjustDonations();
+    adjustPylons();
     view.adjustManaCost("Continue On");
 }
 
