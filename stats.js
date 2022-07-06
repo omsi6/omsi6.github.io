@@ -96,12 +96,16 @@ function getBuffLevel(buff) {
     return buffs[buff].amt;
 }
 
+function getArmorLevel() {
+    return 1 + ((resources.armor + 3 * resources.enchantments) * getCraftGuildRank().bonus) / 5;
+}
+
 function getSelfCombat() {
-    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * (1 + (resources.armor * getCraftGuildRank().bonus) / 5);
+    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5 + getSkillLevel("Restoration") * 2) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
 }
 
 function getTeamCombat() {
-    return getSelfCombat("Combat") + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
+    return getSelfCombat("Combat") + (getSkillLevel("Dark") * resources.zombie / 2) + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
 }
 
 function getPrcToNextSkillLevel(skill) {
@@ -138,12 +142,13 @@ function addExp(name, amount) {
 
 function restartStats() {
     for (let i = 0; i < statList.length; i++) {
-        stats[statList[i]].exp = 0;
+        stats[statList[i]].exp = getExpOfLevel(getBuffLevel("Imbuement2"));
         view.updateStat(statList[i]);
     }
 }
 
 function getTotalBonusXP(statName) {
     const soulstoneBonus = stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 1;
-    return soulstoneBonus * calcTalentMult(getTalent(statName));
+    const aspirantBonus = getBuffLevel("Aspirant") ?  1 + getBuffLevel("Aspirant") * 0.01 : 1;
+    return soulstoneBonus * calcTalentMult(getTalent(statName)) * aspirantBonus;
 }

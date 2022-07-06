@@ -17,6 +17,10 @@ function getSpeedMult(zone = curTown) {
     if (zone === 0 && getBuffLevel("Ritual") > 0) speedMult *= 1 + Math.min(getBuffLevel("Ritual"), 20) / 10;
     else if (zone === 1 && getBuffLevel("Ritual") > 20) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 20, 20) / 20;
     else if (zone === 2 && getBuffLevel("Ritual") > 40) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 40, 20) / 40;
+    else if (zone === 3 && getBuffLevel("Ritual") > 60) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 60, 20) / 66;
+    else if (zone === 4 && getBuffLevel("Ritual") > 80) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 80, 20) / 100;
+    else if (zone === 5 && getBuffLevel("Ritual") > 100) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 100, 50) / 200;
+
 
     // chronomancy
     speedMult *= Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25);
@@ -200,7 +204,7 @@ function addResource(resource, amount) {
     else resources[resource] = amount;
     view.updateResource(resource);
 
-    if (resource === "teamMembers" || resource === "armor") view.updateTeamCombat();
+    if (resource === "teamMembers" || resource === "armor" || resource === "zombie") view.updateTeamCombat();
 }
 
 function resetResource(resource) {
@@ -320,6 +324,8 @@ function adjustAll() {
     adjustMineSoulstones();
     adjustArtifacts();
     adjustDonations();
+    adjustWells();
+    adjustPylons();
     view.adjustManaCost("Continue On");
 }
 
@@ -541,6 +547,7 @@ function toggleOffline() {
     if (totalOfflineMs === 0) return;
     if (bonusSpeed === 1) {
         bonusSpeed = 5;
+        bonusUsed = true;
         document.getElementById("isBonusOn").textContent = _txt("time_controls>bonus_seconds>state>on");
     } else {
         bonusSpeed = 1;

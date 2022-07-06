@@ -11,32 +11,47 @@ const statGraph = {
         this.graphObject = new Chart(statChartCtx, {
             type: "radar",
             options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label(context) {
+                                // format raw value as a reasonable percentage
+                                let formattedValue = context.raw;
+                                if (formattedValue > 99.99999999) formattedValue = formattedValue.toPrecision(12);
+                                else if (formattedValue > 99.999999) formattedValue = formattedValue.toPrecision(10);
+                                else if (formattedValue > 99.9999) formattedValue = formattedValue.toPrecision(8);
+                                else if (formattedValue > 99.99) formattedValue = formattedValue.toPrecision(6);
+                                else if (formattedValue === 0) formattedValue = 0;
+                                else formattedValue = formattedValue.toPrecision(4);
+                                return `${context.dataset.label}: ${formattedValue}%`;
+                            }
+                        }
+                    }
+                },
                 elements: {
                     line: {
                         tension: 0,
-                        borderWidth: 3
+                        borderWidth: 4
+                    },
+                    point: {
+                        radius: 5,
+                        hoverRadius: 6,
+                        hitRadius: 1
                     }
                 },
-                scale: {
-                    ticks: {
-                        beginAtZero: true,
-                        display: false,
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 20,
+                        ticks: {
+                            showLabelBackdrop: false,
+                            maxTicksLimit: 6,
+                            stepSize: 10,
+                            precision: 0,
+                            z: 1
+                        },
                     },
                 },
-                tooltips: {
-                    callbacks: {
-                        label(tooltipItem, data) {
-                            let label = data.datasets[tooltipItem.datasetIndex].label || "";
-
-                            if (label) {
-                                label += ": ";
-                            }
-                            label += intToString(tooltipItem.yLabel / (data.datasets[tooltipItem.datasetIndex].label === "Bonus XP" ? radarModifier : 1), 1);
-                            label += data.datasets[tooltipItem.datasetIndex].tooltipComplement || "";
-                            return label;
-                        }
-                    }
-                }
             },
             data: {
                 labels: statLabels,
@@ -49,7 +64,7 @@ const statGraph = {
     getGraphDatasets() {
         const dataset = [
             {
-                label: _txt("stats>tooltip>level"),
+                label: _txt("stats>tooltip>mana_cost_reduction"),
                 data: [],
                 fill: true,
                 backgroundColor: "rgba(157, 103, 205, 0.2)",
@@ -57,40 +72,11 @@ const statGraph = {
                 pointBackgroundColor: "rgb(157, 103, 205)",
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgb(157, 103, 205)"
-            },
-            {
-                label: _txt("stats>tooltip>total_multiplier"),
-                data: [],
-                backgroundColor: "rgba(255, 180, 91, 0.2)",
-                borderColor: "rgb(255, 180, 91)",
-                pointBackgroundColor: "rgb(255, 180, 91)",
-                pointBorderColor: "#fff",
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgb(255, 180, 91)",
-                tooltipComplement: "%",
+                pointHoverBorderColor: "rgb(157, 103, 205)",
             }
         ];
-        let highestLevel = 0;
-        let highestXP = 0;
         for (let i = 0; i < statList.length; i++) {
-            const newLevel = getLevel(statList[i]);
-            const newXP = (getTotalBonusXP(statList[i]) - 1) * 100;
-            if (newLevel > highestLevel) {
-                highestLevel = newLevel;
-            }
-            if (newXP > highestXP) {
-                highestXP = newXP;
-            }
-        }
-        if (highestLevel === 0 || highestXP === 0) {
-            radarModifier = 1;
-        } else {
-            radarModifier = highestLevel / highestXP;
-        }
-        for (let i = 0; i < statList.length; i++) {
-            dataset[0].data.push(getLevel(statList[i]));
-            dataset[1].data.push((getTotalBonusXP(statList[i]) - 1) * 100 * radarModifier);
+            dataset[0].data.push((1 - (1 / (1 + getLevel(statList[i]) * 0.01))) * 100);
         }
         return dataset;
     },
