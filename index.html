@@ -211,6 +211,17 @@
                         <span class="localized" data-lockey="skills>commune>desc2"></span>
                     </div>
                 </div>
+                <div class="skillContainer showthat" id="skillGluttonyContainer" onmouseover="view.showSkill('Gluttony')" onmouseout="view.showSkill(undefined)">
+                    <div class="skillLabel medium bold localized" data-lockey="skills>gluttony>label"></div>
+                    <div class="statNum medium"><div id="skillGluttonyLevel">0</div></div>
+                    <div style="margin-top:18px;"></div>
+                    <div class="thinProgressBarUpper"><div class="statBar skillExpBar townExpBar" id="skillGluttonyLevelBar"></div></div>
+                    <div class="showthis" style="width:490px">
+                        <span class="localized" data-lockey="skills>gluttony>desc"></span><br>
+                        <div class="medium bold localized" data-lockey="skills>tooltip>level_exp"></div> <div id="skillGluttonyLevelExp"></div>/<div id="skillGluttonyLevelExpNeeded"></div> <div class="statTooltipPerc">(<div id="skillGluttonyLevelProgress"></div>%)</div><br>
+                        <span class="localized" data-lockey="skills>gluttony>desc2"></span>
+                    </div>
+                </div>
             </div>
             <div id="buffList" style="width:100%;margin-top:25px;flex-direction: column;display:none;">
                 <div class="showthat">
@@ -326,6 +337,9 @@
         <div id="townInfo3" class='townInfo' style="display:none;"></div>
         <div id="townInfo4" class='townInfo' style="display:none;"></div>
         <div id="townInfo5" class='townInfo' style="display:none;"></div>
+        <div id="townInfo6" class='townInfo' style="display:none;"></div>
+        <div id="townInfo7" class='townInfo' style="display:none;"></div>
+        <div id="townInfo8" class='townInfo' style="display:none;"></div>
 
         <div class="showthat" style="display:block;margin:10px auto 2px auto;text-align:center;">
             <div style="float:left;margin-left:150px;" class="actionIcon fa fa-arrow-left" id="actionsViewLeft" onclick="view.showActions(false)"></div>
@@ -339,12 +353,18 @@
         <div id="actionOptionsTown3" class='actionOptions' style="display:none;"></div>
         <div id="actionOptionsTown4" class='actionOptions' style="display:none;"></div>
         <div id="actionOptionsTown5" class='actionOptions' style="display:none;"></div>
+        <div id="actionOptionsTown6" class='actionOptions' style="display:none;"></div>
+        <div id="actionOptionsTown7" class='actionOptions' style="display:none;"></div>
+        <div id="actionOptionsTown8" class='actionOptions' style="display:none;"></div>
         <div id="actionStoriesTown0" class='actionStories' style="display:none;"></div>
         <div id="actionStoriesTown1" class='actionStories' style="display:none;"></div>
         <div id="actionStoriesTown2" class='actionStories' style="display:none;"></div>
         <div id="actionStoriesTown3" class='actionStories' style="display:none;"></div>
         <div id="actionStoriesTown4" class='actionStories' style="display:none;"></div>
         <div id="actionStoriesTown5" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown6" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown7" class='actionStories' style="display:none;"></div>
+        <div id="actionStoriesTown8" class='actionStories' style="display:none;"></div>
     </div>
 
     <div id="tutorial" style="position:absolute;width:100%;height:100%;left:0;top:0;z-index:9999;">

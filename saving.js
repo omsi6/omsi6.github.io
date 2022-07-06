@@ -65,26 +65,32 @@ let resources = {
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
 let guild = "";
+let bonusUsed = false;
 
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune", "Gluttony"];
 const skills = {};
-const buffList = ["Ritual", "Imbuement", "Feast", "Aspirant"];
+const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Imbuement3"];
 const buffHardCaps = {
     Ritual: 666,
-    Imbuement: 490,
+    Imbuement: 500,
+    Imbuement2: 500,
+    Imbuement3: 7,
     Feast: 100,
     Aspirant: 20
 };
 const buffCaps = {
     Ritual: 666,
-    Imbuement: 490,
+    Imbuement: 500,
+    Imbuement2: 500,
+    Imbuement3: 7,
     Feast: 100,
     Aspirant: 20
 };
 const buffs = {};
+let goldInvested = 0;
 // eslint-disable-next-line prefer-const
 let townShowing = 0;
 // eslint-disable-next-line prefer-const
@@ -177,6 +183,8 @@ let curCraftGuildSegment = 0;
 let curWizCollegeSegment = 0;
 // eslint-disable-next-line prefer-const
 let curFightFrostGiantsSegment = 0;
+// eslint-disable-next-line prefer-const
+let curFightJungleMonstersSegment = 0;
 
 const options = {
     theme: "normal",
@@ -255,14 +263,14 @@ function load() {
         }
     }
 
-    if (toLoad.buffCaps !== undefined) {
+    /*if (toLoad.buffCaps !== undefined) {
         for (const property in buffCaps) {
             if (toLoad.buffCaps.hasOwnProperty(property)) {
                 buffCaps[property] = toLoad.buffCaps[property];
                 document.getElementById(`buff${property}Cap`).value = buffCaps[property];
             }
         }
-    }
+    }*/
 
     if (toLoad.storyReqs !== undefined) {
         for (const property in storyReqs) {
@@ -292,11 +300,12 @@ function load() {
     } else {
         townsUnlocked = toLoad.townsUnlocked === undefined ? [0] : toLoad.townsUnlocked;
     }
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i <= 8; i++) {
         towns[i] = new Town(i);
     }
     actionTownNum = toLoad.actionTownNum === undefined ? 0 : toLoad.actionTownNum;
     trainingLimits = toLoad.trainingLimits === undefined ? 10 : toLoad.trainingLimits;
+    goldInvested = toLoad.goldInvested === undefined ? 0 : toLoad.goldInvested;
 
     actions.next = [];
     if (toLoad.nextList) {
@@ -478,6 +487,7 @@ function save() {
     toSave.totalTalent = totalTalent;
     toSave.skills = skills;
     toSave.buffs = buffs;
+    toSave.goldInvested = goldInvested;
     toSave.version75 = true;
 
     for (const town of towns) {
@@ -505,7 +515,7 @@ function save() {
     toSave.storyShowing = storyShowing;
     toSave.storyMax = storyMax;
     toSave.storyReqs = storyReqs;
-    toSave.buffCaps = buffCaps;
+    //toSave.buffCaps = buffCaps;
 
     toSave.date = new Date();
     toSave.totalOfflineMs = totalOfflineMs;

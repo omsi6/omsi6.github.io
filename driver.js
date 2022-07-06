@@ -324,6 +324,7 @@ function adjustAll() {
     adjustMineSoulstones();
     adjustArtifacts();
     adjustDonations();
+    adjustWells();
     adjustPylons();
     view.adjustManaCost("Continue On");
 }
@@ -546,6 +547,7 @@ function toggleOffline() {
     if (totalOfflineMs === 0) return;
     if (bonusSpeed === 1) {
         bonusSpeed = 5;
+        bonusUsed = true;
         document.getElementById("isBonusOn").textContent = _txt("time_controls>bonus_seconds>state>on");
     } else {
         bonusSpeed = 1;

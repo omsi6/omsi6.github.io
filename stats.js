@@ -142,7 +142,7 @@ function addExp(name, amount) {
 
 function restartStats() {
     for (let i = 0; i < statList.length; i++) {
-        stats[statList[i]].exp = 0;
+        stats[statList[i]].exp = getExpOfLevel(getBuffLevel("Imbuement2"));
         view.updateStat(statList[i]);
     }
 }

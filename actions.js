@@ -145,6 +145,7 @@ function Actions() {
         curCraftGuildSegment = 0;
 		curWizCollegeSegment = 0;
         curFightFrostGiantsSegment = 0;
+        curFightJungleMonstersSegment = 0;
         for (const town of towns) {
             for (const action of town.totalActionList) {
                 if (action.type === "multipart") {
@@ -154,6 +155,7 @@ function Actions() {
             }
         }
         guild = "";
+        if (bonusSpeed > 1) bonusUsed = true; else bonusUsed = false;
         if (options.keepCurrentList) {
             this.currentPos = 0;
             this.completedTicks = 0;

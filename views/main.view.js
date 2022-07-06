@@ -250,6 +250,8 @@ function View() {
     };
     this.updateResources = function() {
         for (const resource in resources) this.updateResource(resource);
+        document.getElementById("goldInvested").textContent = intToStringRound(goldInvested);
+        document.getElementById("bankInterest").textContent = intToStringRound(goldInvested * .001);
     };
     this.updateTeamCombat = function() {
         if (towns[2].unlocked) {
@@ -268,7 +270,11 @@ function View() {
         "rgba(255, 235, 59, 0.2)",
         "rgba(96, 125, 139, 0.2)",
         "rgba(255, 255, 255, 0.2)",
-        "rgba(103, 58, 183, 0.2)"
+        "rgba(103, 58, 183, 0.2)",
+        "rgba(76, 175, 80, 0.4)",
+        "rgba(255, 0, 0, 0.2)",
+        "rgba(103, 58, 183, 0.2)",
+        //"rgba(103, 58, 183, 0.2)"
     ];
     this.updateNextActions = function() {
         let count = 0;
@@ -1078,7 +1084,7 @@ const nextActionsDiv = document.getElementById("nextActionsList");
 const actionOptionsTown = [];
 const actionStoriesTown = [];
 const townInfos = [];
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i <= 8; i++) {
     actionOptionsTown[i] = document.getElementById(`actionOptionsTown${i}`);
     actionStoriesTown[i] = document.getElementById(`actionStoriesTown${i}`);
     townInfos[i] = document.getElementById(`townInfo${i}`);

@@ -6,6 +6,20 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".98"><![CDATA[
+            <b> July ?th, 2022</b>
+            • New Zones - Jungle Path, Commerceville, and Valley of Olympus. Major milestones are implemented, with more content to come
+            • New Buff (Mountain): Imbue Body - Sacrifices talent exp to permanently raise starting stats.<br>
+            • New Skill (Jungle Path): Gluttony - Decreases the soulstone cost of great feast.<br>
+            • New Action (Startington): Mana Well - Gives mana based on how quickly in the loop it is completed (adjusted for bonus second use)<br>
+            • New Actions (Jungle Path): Explore Jungle & Fight Jungle Monsters - Generic exploration/progress action where exp is based on fight monsters completion<br>
+            • New Actions (Jungle Path): Rescue Survivors & Prepare Buffet - Uses Resto skill, then herbs and hide to give Gluttony exp<br>
+            • New Action (Jungle Path): Escape - Unlocks next zone, but requires being completed within 60 seconds of starting the loop (adjusted for bonus second use) 
+            • New Actions (Fightersville): Invest & Collect interest. Grants a small percentage of lifetime investments<br>
+            • New Actions (Fightersville): Purchase Key & Leave City - Progress to next zone for cost of 1M gold<br>
+            • New Actions (Valley Of Olympus): Imbue Soul & Challenge Gods - (Incomplete) Planned end of game<br>
+            • Minor fix to how Spatiomancy effects herbs.
+            ]]></version>
             <version verNum=".97"><![CDATA[
             <b> July 4th, 2022</b>
             • Added Build Housing and Collect Taxes actions in Valhalla - a new source of gold gain that uses Crafting Guild Rank and Mercantilism skill.<br>
@@ -504,6 +518,11 @@
             <id>pegasus</id>
             <desc>A horse with great angelic wings. It can run across clouds as easily as dirt.</desc>
         </resource>
+        <resource initially_hidden="true" no_count="true">
+            <title><![CDATA[<img src="img/purchaseKey.svg" class="smallIcon">]]></title>
+            <id>key</id>
+            <desc>Needed to go to the next town.</desc>
+        </resource>
     </tracked_resources>
     <time_controls>
         <play_button>Play</play_button>
@@ -728,6 +747,11 @@
             <desc>Your blood sacrifices to dark beings makes it easier to communicate with them.</desc>
             <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100) (rounded up).]]></desc2>
         </commune>
+        <gluttony>
+            <label>Gluttony</label>
+            <desc>The insatiable hunger of the jungle has started to rub off on you.</desc>
+            <desc2><![CDATA[Great Feast soulstone costs are reduced to the original / (1 + level / 100).]]></desc2>
+        </gluttony>
         <tooltip>
             <level>Level:</level>
             <level_exp>Level Exp:</level_exp>
@@ -753,6 +777,12 @@
             Increases the max amount of times you can do each training action by 1 per level and improves some actions.]]>
             </desc>
         </imbue_mind>
+        <imbue_body>
+            <label>Imbue Body</label>
+            <desc><![CDATA[By sacrificing your accumulated talent, you can permanently improve yourself.<br>
+            At the start of a new loop, all stats begin at Imbue Body level.]]>
+            </desc>
+        </imbue_body>
          <great_feast>
             <label>Great Feast</label>
             <desc><![CDATA[That feast was so filling that it manages to keep you well satiated through your loops! That's some impressive magic.<br>
@@ -765,6 +795,11 @@
             Talent Exp gain is increased by 1% per level.]]>
             </desc>
         </aspirant>
+        <imbue_soul>
+            <label>Imbue Soul</label>
+            <desc><![CDATA[(Incomplete) Sacrifice everything for the ultimate power.
+            ]]></desc>
+        </imbue_soul>
         <tooltip>
             <level>Level</level>
             <no_reset_on_restart><![CDATA[Buffs last through resets.<br>You can click on the right hand number to edit it and adjust the cap for that buff. (buff actions will automatically fail and not spend soulstones past your set cap)]]></no_reset_on_restart>
@@ -799,6 +834,18 @@
             <name>Startington</name>
             <desc>A once familiar place, now crawling with shadows and ominous feelings of wasted sick days. There stands a large pillar of gloomy purple light in the center of it all, eminating from a spire surrounded by black clouds. It's emitting 10 weak beams of purple light to various points around the town, and appears to be casting all the shadows. Maybe you should check those spots out.</desc>
         </town5>
+        <town6>
+            <name>Jungle Path</name>
+            <desc>A twisting jungle that seems determined to swallow you in its depths.</desc>
+        </town6>
+        <town7>
+            <name>Commerceville</name>
+            <desc>Everyone here is looking to make a buck.</desc>
+        </town7>
+        <town8>
+            <name>Valley of Olympus</name>
+            <desc>A mountain shaped hole in the groud.</desc>
+        </town8>
     </towns>
     <talents>
         <calculated_shattering>
@@ -1185,7 +1232,7 @@
         <open_rift>
             <label>Open Rift</label>
             <tooltip><![CDATA[
-            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Startington.<br>Unlocked at 300 Dark Magic and 100 Spatiomancy.
+            Using your vast knowledge of the dark arts, you can open a rift into the shadow realm to send you straight to Startington.<br>Unfortunately, it doesn't seem like you can fit any supplies through the rift.<br>Unlocked at 300 Dark Magic and 100 Spatiomancy.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </open_rift>
@@ -1763,6 +1810,21 @@
 			<story_1><![CDATA[<b>Third phase reached:</b>⮀ The soulstones are all arranged, glowing a bright uniform white. You sit in the center and close your eyes as the ritual begins. You can sense the soulstones all around you, bathed in light, and you mentally reach out and start pulling them closer.]]></story_1>
 			<story_2><![CDATA[<b>Imbuement complete:</b>⮀ It's overwhelming. You're thinking faster than you remember ever thinking before, your mind flashing from scene to scene as fragments of knowledge float by on the sidelines. Slowing down would be fatal, you have no choice but to trust the strength of your mind. Finally, it ends, and you open your eyes. The soulstones are nowhere to be found and the lake is just clear water now.]]></story_2>
         </imbue_mind>
+        <imbue_body>
+            <label>Imbue Body</label>
+            <label_done>Completed</label_done>
+            <tooltip><![CDATA[
+            With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Sacrifices (imbuements+1) levels of talent. Currently sacrificing 
+        ]]></tooltip>
+            <tooltip2><![CDATA[
+             levels of talent.
+        ]]></tooltip2>
+            <segment_names>
+                <name>Submerge youself</name>
+                <name>Focus essence</name>
+                <name>Absorb Knowledge</name>
+            </segment_names>
+        </imbue_body>
         <face_judgement>
             <label>Face Judgement</label>
             <tooltip><![CDATA[
@@ -1973,6 +2035,16 @@
             This place seems familiar, and yet... not. Everything is twisted and wrong. Just being here hurts your head. You'll need to fortify your mind to make any progress here.<br>Gives exp equal to Imbue Mind level.
             ]]></tooltip>
         </meander>
+        <mana_well>
+            <label>Mana Well</label>
+            <label_done>Wells Checked</label_done>
+            <info_text1>Full wells left</info_text1>
+            <info_text2>Spots with full wells total</info_text2>
+            <info_text3>Spots to check for wells</info_text3>
+            <tooltip><![CDATA[
+            Search the town for wells that still have any mana left. They seem to be rapidly draining.<br>Full wells have 5000 mana, but lose 10 mana for every second that has passed in the loop.<br>Every 100 wells still has mana.
+        ]]></tooltip>
+        </mana_well>
         <destroy_pylons>
             <label>Destroy Pylons</label>
             <label_done>Pylons Destroyed</label_done>
@@ -2021,6 +2093,106 @@
             </segment_names>
             <!--TODO: give this action story-->
         </the_spire>
+        <purchase_supplies>
+        <label>Buy Supplies</label>
+            <tooltip><![CDATA[
+            Prepare to move on.<br>Costs 500 gold.<br>This merchant doesn't seem to be willing to haggle with you though.<br>You only need one set of supplies.<br>Unlocked at a combined Combat and Magic skill of 35.
+        ]]></tooltip>
+        </purchase_supplies>
+        <journey_forth>
+            <label>Journey Forth</label>
+            <tooltip><![CDATA[
+            Follow the trail out of town. Anywhere has to be better than here. You think.<br>Costs 1 supplies. Finish once to unlock Jungle Path's actions, then finish this in order to use Jungle Path's actions.
+        ]]></tooltip>
+        </journey_forth>
+        <fight_jungle_monsters>
+            <label>Fight Jungle</label>
+            <label_done>Creatures Defeated</label_done>
+            <tooltip><![CDATA[
+            Even the basic creatures here are terrifying.<br>
+            Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>
+            Gives 1 hide per segment completed.
+        ]]></tooltip>
+        </fight_jungle_monsters>
+        <explore_jungle>
+            <label>Explore Jungle</label>
+            <label_done>Explored</label_done>
+            <tooltip><![CDATA[
+            It would be easier to explore here if something didn't jump out at you from behind every tree.<br>
+            Gives progress based on Jungle Creatures Defeated.<br>
+            Gives 1 herb.
+        ]]></tooltip>
+        </explore_jungle>
+        <rescue_survivors>
+            <label>Rescue Survivors</label>
+            <label_done>Saved</label_done>
+            <label_part>Survivor</label_part>
+            <tooltip><![CDATA[
+            There are people lost wandering the jungle. If you can find them, you can patch them up and bring them back to camp.<br>Gives (magic skill) * (restoration skill / 100) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) * (Jungle Explored %) progress points per mana.<br>Rescued survivors give 10 herbs or a hide.
+        ]]></tooltip>
+            <segment_names>
+                <name>Find</name>
+                <name>Help</name>
+                <name>Assure</name>
+            </segment_names>
+        </rescue_survivors>
+        <prepare_buffet>
+            <label>Prepare Buffet</label>
+            <tooltip><![CDATA[
+            It's not quite the same as making potions, but you can use your alchemy skills to prepare food for the gathered group.<br>
+            Costs 10 herbs and a hide.<br>
+            Gives Gluttony exp equal to (Rescued Survivors * 5).
+        ]]></tooltip>
+        </prepare_buffet>
+        <escape>
+            <label>Escape</label>
+            <tooltip><![CDATA[
+            The jungle seems to grow ever larger with every moment that passes. You'll have to get out of here fast.<br>Must be started within 60 seconds of the loop.
+        ]]></tooltip>
+        </escape>
+        <invest>
+            <label>Invest</label>
+            <tooltip><![CDATA[
+            Invest into the perpetual bank. The interest it makes should be available to you in the future.<br>
+            Total gold invested: <div id='goldInvested'></div>
+        ]]></tooltip>
+        </invest>
+        <collect_interest>
+            <label>Collect Interest</label>
+            <tooltip><![CDATA[
+            Collect your interest from the perpetual bank.<br>
+            Gives 0.1% of your total gold invested.<br>
+            Current interest: <div id='bankInterest'></div>
+        ]]></tooltip>
+        </collect_interest>
+        <purchase_key>
+            <label>Purchase Key</label>
+            <tooltip><![CDATA[
+            With enough money, you can buy the town itself. Then they'll have to let you out.<br>Costs
+        ]]></tooltip>
+        <tooltip2>gold.</tooltip2>
+        </purchase_key>
+        <leave_city>
+            <label>Leave City</label>
+            <tooltip><![CDATA[
+            These people are wolves, it's time to get out of here.<br>Requires Key to the City.
+        ]]></tooltip>
+        </leave_city>
+        <imbue_soul>
+            <label>Imbue Soul</label>
+            <label_done>Completed</label_done>
+            <tooltip><![CDATA[
+            Resets all talent levels, soulstones, imbue mind and imbue body. Other skills and buffs are unchanged.<br>
+            (Incomplete) No effect yet.
+        ]]></tooltip>
+        </imbue_soul>
+        <challenge_gods>
+            <label>Challenge Gods</label>
+            <tooltip><![CDATA[
+            This is it. The final showdown. If you can defeat the seven gods, you can finally end all this looping nonsense for good.<br>
+            Requires Imbue Soul 7.
+        ]]></tooltip>
+        </challenge_gods>
     </actions>
     <spells>
         <title>Spells</title>

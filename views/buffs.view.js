@@ -4,8 +4,10 @@ Views.registerView("buffsContainer", {
         const fullNames = {
             Ritual: "Dark Ritual",
             Imbuement: "Imbue Mind",
+            Imbuement2: "Imbue Body",
             Feast: "Great Feast",
-            Aspirant: "Aspirant"
+            Aspirant: "Aspirant",
+            Imbuement3: "Imbue Soul"
         };
         let html = "";
         for (const buff of buffList) {
