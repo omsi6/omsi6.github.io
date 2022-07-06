@@ -33,15 +33,15 @@ function View() {
     };
 
     this.statLocs = [
-        { x: 165, y: 43 },
-        { x: 270, y: 79 },
-        { x: 325, y: 170 },
-        { x: 306, y: 284 },
-        { x: 225, y: 352 },
-        { x: 102, y: 352 },
-        { x: 26, y: 284 },
-        { x: 2, y: 170 },
-        { x: 56, y: 79 }
+        { x: 166, y: 45 },
+        { x: 267, y: 80 },
+        { x: 321, y: 167 },
+        { x: 303, y: 279 },
+        { x: 224, y: 343 },
+        { x: 106, y: 343 },
+        { x: 33, y: 278 },
+        { x: 10, y: 167 },
+        { x: 61, y: 80 }
     ];
     this.createStats = function() {
         statGraph.init();
@@ -181,7 +181,7 @@ function View() {
             return;
         }
         document.getElementById(`skill${skill}Container`).style.display = "inline-block";
-        if (skill === "Combat" || skill === "Pyromancy") {
+        if (skill === "Combat" || skill === "Pyromancy" || skill === "Restoration") {
             this.updateTeamCombat();
         }
 
@@ -201,6 +201,10 @@ function View() {
                 document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4);
             } else if (skill === "Practical") {
                 document.getElementById("skillBonusPractical").textContent = (1 / (1 + getSkillLevel("Practical") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+            } else if (skill === "Mercantilism") {
+                document.getElementById("skillBonusMercantilism").textContent = intToString(Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25), 4);
+            } else if (skill === "Spatiomancy") {
+                document.getElementById("skillBonusSpatiomancy").textContent = (1 / (1 + getSkillLevel("Spatiomancy") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             }
         }
     };
@@ -246,6 +250,8 @@ function View() {
     };
     this.updateResources = function() {
         for (const resource in resources) this.updateResource(resource);
+        document.getElementById("goldInvested").textContent = intToStringRound(goldInvested);
+        document.getElementById("bankInterest").textContent = intToStringRound(goldInvested * .001);
     };
     this.updateTeamCombat = function() {
         if (towns[2].unlocked) {
@@ -264,7 +270,11 @@ function View() {
         "rgba(255, 235, 59, 0.2)",
         "rgba(96, 125, 139, 0.2)",
         "rgba(255, 255, 255, 0.2)",
-        "rgba(103, 58, 183, 0.2)"
+        "rgba(103, 58, 183, 0.2)",
+        "rgba(76, 175, 80, 0.4)",
+        "rgba(255, 0, 0, 0.2)",
+        "rgba(103, 58, 183, 0.2)",
+        //"rgba(103, 58, 183, 0.2)"
     ];
     this.updateNextActions = function() {
         let count = 0;
@@ -333,11 +343,15 @@ function View() {
             const opacity = action.disabled || action.loops === 0 ? "opacity: 0.5" : "";
             let display = "display: flex";
             for (const collapse of collapses) {
-                if (townNum === collapse.zone && i < collapse.index) display =  "display: none"
+                if (townNum === collapse.zone && i < collapse.index) display = "display: none";
             }
             let color;
             if (action.name === "Face Judgement") {
                 color = "linear-gradient(to bottom, rgb(183, 203, 196) 49%, transparent 51%), linear-gradient(to right, rgba(255, 255, 255, 0.2) 50%, rgba(103, 58, 183, 0.2) 51%)";
+            } else if (action.name === "Fall From Grace") {
+                color = "linear-gradient(to bottom, rgb(255, 255, 255, 0.2) 49%, rgba(103, 58, 183, 0.2) 51%)";
+            } else if (action.name === "Open Rift") {
+                color = "linear-gradient(to bottom, rgb(255, 152, 0, 0.2) 49%, rgba(103, 58, 183, 0.2) 51%)";
             } else {
                 color = travelNum > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
             }
@@ -401,6 +415,7 @@ function View() {
                     `<div style='text-align:center;width:100%'>${action.label}</div><br><br>` +
                     `<b>${_txt("actions>current_action>mana_original")}</b> <div id='action${i}ManaOrig'></div><br>` +
                     `<b>${_txt("actions>current_action>mana_used")}</b> <div id='action${i}ManaUsed'></div><br>` +
+                    `<b>${_txt("actions>current_action>last_mana")}</b> <div id='action${i}LastMana'></div><br>` +
                     `<b>${_txt("actions>current_action>mana_remaining")}</b> <div id='action${i}Remaining'></div><br>` +
                     `<b>${_txt("actions>current_action>gold_remaining")}</b> <div id='action${i}GoldRemaining'></div><br>` +
                     `<b>${_txt("actions>current_action>time_spent")}</b> <div id='action${i}TimeSpent'></div><br><br>` +
@@ -451,6 +466,7 @@ function View() {
         if (curActionShowing === index) {
             document.getElementById(`action${index}ManaOrig`).textContent = formatNumber(action.manaCost() * action.loops);
             document.getElementById(`action${index}ManaUsed`).textContent = formatNumber(action.manaUsed);
+            document.getElementById(`action${index}LastMana`).textContent = intToString(action.lastMana, 3);
             document.getElementById(`action${index}Remaining`).textContent = formatNumber(action.manaRemaining);
             document.getElementById(`action${index}GoldRemaining`).textContent = formatNumber(action.goldRemaining);
             document.getElementById(`action${index}TimeSpent`).textContent = formatTime(action.timeSpent);
@@ -1068,7 +1084,7 @@ const nextActionsDiv = document.getElementById("nextActionsList");
 const actionOptionsTown = [];
 const actionStoriesTown = [];
 const townInfos = [];
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i <= 8; i++) {
     actionOptionsTown[i] = document.getElementById(`actionOptionsTown${i}`);
     actionStoriesTown[i] = document.getElementById(`actionStoriesTown${i}`);
     townInfos[i] = document.getElementById(`townInfo${i}`);
