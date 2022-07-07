@@ -8,6 +8,7 @@
             </meta>
             <version verNum=".99"><![CDATA[
             <b> July 7th, 2022</b>
+            • New Action (Commerceville): Excursion - Exploration action to reveal other actions in the zone<br>
             • New Actions (Commerceville): Pick Pocket, Rob Warehouse, Insurance Fraud - Gold gain based on thieves guild bonus & thievery<br>
             • Finished implementation of thievery skill - Increases gold gain of pick locks, gamble, and thieves guild actions<br>
             • Added temporary effect for imbue soul - Adds 50% action speed per completion. Will likely be changed later<br>
@@ -2206,7 +2207,7 @@
             <tooltip><![CDATA[
             Help travels by making their load a bit lighter.<br>
             Requires thieves guild.<br>
-            Can be completed <div id='actionAllowedPockets'>x</div> times based on expedition progress.<br>
+            Can be completed <div id='actionAllowedPockets'>x</div> times based on excursion progress and spatiomancy.<br>
             Rewards
         ]]></tooltip>
         <tooltip2>gold per thieves guild rank.</tooltip2>
@@ -2217,7 +2218,7 @@
             <tooltip><![CDATA[
             Diversify your skills into inventory management.<br>
             Requires thieves guild and 100% pockets picked.<br>
-            Can be completed <div id='actionAllowedWarehouses'>x</div> times based on expedition progress.<br>
+            Can be completed <div id='actionAllowedWarehouses'>x</div> times based on excursion progress and spatiomancy.<br>
             Rewards
         ]]></tooltip>
         <tooltip2>gold per thieves guild rank.</tooltip2>
@@ -2228,7 +2229,7 @@
             <tooltip><![CDATA[
             Insurance is a scam, anyway. You're basically robin hood.<br>
             Requires thieves guild and 100% warehouses robbed.<br>
-            Can be completed <div id='actionAllowedInsurance'>x</div> times based on expedition progress.<br>
+            Can be completed <div id='actionAllowedInsurance'>x</div> times based on excursion progress and spatiomancy.<br>
             Rewards
         ]]></tooltip>
         <tooltip2>gold per thieves guild rank.</tooltip2>
