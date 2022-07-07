@@ -1059,6 +1059,9 @@ Action.OpenRift = new Action("Open Rift", {
         Luck: 0.1,
         Soul: 0.7
     },
+    skills: {
+        Dark: 1000
+    },
     allowed() {
         return 1;
     },
@@ -3752,6 +3755,9 @@ Action.EnchantArmor = new Action("Enchant Armor", {
         Int: 0.2,
         Luck: 0.2
     },
+    skills: {
+        Crafting: 50
+    },
     manaCost() {
         return 1000; // Temp
     },
@@ -4238,6 +4244,9 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
         Con: 0.3,
         Per: 0.2,
     },
+    skills: {
+        Combat: 1500
+    },
     loopStats: ["Per", "Con", "Str"],
     manaCost() {
         return 20000;
@@ -4488,6 +4497,9 @@ Action.RaiseZombie = new Action("Raise Zombie", {
         Int: 0.3,
         Soul: 0.3
     },
+    skills: {
+        Dark: 100
+    },
     canStart() {
         return resources.blood >= 1;
     },
@@ -4553,6 +4565,9 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
         Per: 0.2,
         Int: 0.2,
         Soul: 0.2
+    },
+    skills: {
+        Combat: 100
     },
     loopStats: ["Per", "Int", "Con", "Spd", "Dex", "Per", "Int", "Str", "Soul"],
     manaCost() {
@@ -4691,6 +4706,9 @@ Action.FightJungleMonsters = new MultipartAction("Fight Jungle Monsters", {
         Dex: 0.3,
         Per: 0.4,
     },
+    skills: {
+        Combat: 2000
+    },
     loopStats: ["Dex", "Str", "Per"],
     manaCost() {
         return 30000;
@@ -4778,7 +4796,7 @@ Action.RescueSurvivors = new MultipartAction("Rescue Survivors", {
         Spd: 0.2
     },
     skills: {
-        Restoration: 10
+        Restoration: 25
     },
     loopStats: ["Per", "Spd", "Cha"],
     manaCost() {
@@ -4926,7 +4944,8 @@ Action.ThievesGuild = new MultipartAction("Thieves Guild", {
         Spd: 0.3
     },
     skills: {
-        Thievery: 50
+        Thievery: 50,
+        Practical: 50
     },
     loopStats: ["Per", "Dex", "Spd"],
     manaCost() {
@@ -5130,6 +5149,9 @@ Action.Invest = new Action("Invest", {
         Per: 0.3,
         Spd: 0.3
     },
+    skills: {
+        Mercantilism: 100
+    },
     allowed() {
         return 1;
     },
@@ -5137,7 +5159,7 @@ Action.Invest = new Action("Invest", {
         return 50000;
     },
     canStart() {
-        return true;
+        return resources.gold > 0;
     },
     visible() {
         return true;
@@ -5160,6 +5182,9 @@ Action.CollectInterest = new Action("Collect Interest", {
         Con: 0.4,
         Per: 0.3,
         Spd: 0.3
+    },
+    skills: {
+        Mercantilism: 50
     },
     allowed() {
         return 1;
@@ -5199,7 +5224,7 @@ Action.PurchaseKey = new Action("Purchase Key", {
         return 20000;
     },
     canStart() {
-        return resources.gold >= 1000000 && !resources.supplies;
+        return resources.gold >= 1000000 && !resources.key;
     },
     cost() {
         addResource("gold", -1000000);
