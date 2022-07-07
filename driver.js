@@ -20,7 +20,11 @@ function getSpeedMult(zone = curTown) {
     else if (zone === 3 && getBuffLevel("Ritual") > 60) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 60, 20) / 66;
     else if (zone === 4 && getBuffLevel("Ritual") > 80) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 80, 20) / 100;
     else if (zone === 5 && getBuffLevel("Ritual") > 100) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 100, 50) / 200;
+    else if (zone === 6 && getBuffLevel("Ritual") > 150) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 150, 50) / 200;
+    else if (zone === 7 && getBuffLevel("Ritual") > 200) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 200, 50) / 200;
+    else if (zone === 8 && getBuffLevel("Ritual") > 250) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 250, 50) / 200;
 
+    if (getBuffLevel("Ritual") > 300) speedMult *= 1 + (getBuffLevel("Ritual") - 300) / 1000; 
 
     // chronomancy
     speedMult *= Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25);

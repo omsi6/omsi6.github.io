@@ -7,7 +7,7 @@
                 <version_prefix>Version</version_prefix>
             </meta>
             <version verNum=".98"><![CDATA[
-            <b> July ?th, 2022</b>
+            <b> July 6th, 2022</b>
             • New Zones - Jungle Path, Commerceville, and Valley of Olympus. Major milestones are implemented, with more content to come
             • New Buff (Mountain): Imbue Body - Sacrifices talent exp to permanently raise starting stats.<br>
             • New Skill (Jungle Path): Gluttony - Decreases the soulstone cost of great feast.<br>
@@ -18,6 +18,7 @@
             • New Actions (Fightersville): Invest & Collect interest. Grants a small percentage of lifetime investments<br>
             • New Actions (Fightersville): Purchase Key & Leave City - Progress to next zone for cost of 1M gold<br>
             • New Actions (Valley Of Olympus): Imbue Soul & Challenge Gods - (Incomplete) Planned end of game<br>
+            • Dark Ritual now works in all zones and provides a very minor speed increase up to max level. Need to find a way to hide description for locked zones.<br>
             • Minor fix to how Spatiomancy effects herbs.
             ]]></version>
             <version verNum=".97"><![CDATA[
@@ -768,8 +769,12 @@
             Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>
             Actions are 1.5% faster in Mt. Olympus per ritual from 61-80.<br>
             Actions are 1.0% faster in Valhalla per ritual from 81-100.<br>
-            Actions are 0.5% faster in Startington per ritual from 101-150.<br>]]>
-            </desc2>
+            Actions are 0.5% faster in Startington per ritual from 101-150.<br>
+            Actions are 0.5% faster in Jungle Path per ritual from 151-200.<br>
+            Actions are 0.5% faster in Commerceville per ritual from 201-250.<br>
+            Actions are 0.5% faster in Valley of Olympus per ritual from 251-300.<br>
+            Actions are 0.1% faster globally per ritual from 301-666.<br>
+            ]]></desc2>
         </dark_ritual>
         <imbue_mind>
             <label>Imbue Mind</label>
@@ -1208,7 +1213,7 @@
         <buy_supplies>
             <label>Buy Supplies</label>
             <tooltip><![CDATA[
-            Prepare to move on.<br>Costs <div id='suppliesCost'></div> gold.<br>You only need one set of supplies.<br>Unlocked at a combined Combat and Magic skill of 35.
+            Prepare to move on.<br>Costs <div id='suppliesCost'></div> gold.<br>You only need one set of supplies.
         ]]></tooltip>
             <story_1><![CDATA[<b>Supplies bought:</b>⮀ A tent, enough rations to last for a month, portable cooking equipment and other assorted paraphernalia for your trip. The tent is durable and the rations don't taste bland and lifeless. It was probably worth the 300 gold asking price. Good thing you knew how to haggle.]]></story_1>
             <story_2><![CDATA[<b>Supplies bought without haggling:</b>⮀ How luxurious! You had the gold to just throw it away now, even though the mana would've been more beneficial in the long run, not having to haggle once in awhile was surprisingly nice. Truly, you have grown luxuriant.]]></story_2>
