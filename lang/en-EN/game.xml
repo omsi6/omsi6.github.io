@@ -14,6 +14,7 @@
             • Added temporary effect for imbue soul - Adds 50% action speed per completion. Will likely be changed later<br>
             • Improved handling of bonus time on time-gated actions. Effective time used for these actions can be viewed in the "Mana Used" tooltip<br>
             • Bugfix: Donate allowed going negative on gold<br>
+            • Bugfix: Collect interest was only rewarding 1/10th of the intended amount<br>
             • Numerous updates and clarifications in various tooltips
             ]]></version>
             <version verNum=".98"><![CDATA[
