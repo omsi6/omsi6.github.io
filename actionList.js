@@ -1063,7 +1063,7 @@ Action.OpenRift = new Action("Open Rift", {
         return 1;
     },
     manaCost() {
-        return 100000;
+        return 50000;
     },
     visible() {
         return towns[5].getLevel("Meander") >= 1;
@@ -4790,7 +4790,7 @@ Action.RescueSurvivors = new MultipartAction("Rescue Survivors", {
         return getSkillLevel("Magic") * Math.max(getSkillLevel("Restoration") / 100, 1) * (1 + getLevel(this.loopStats[(towns[6].RescueLoopCounter + offset) % this.loopStats.length]) / 100) * Math.sqrt(1 + towns[6].totalRescue / 100);
     },
     loopsFinished() {
-        addResource("reputation", 1);
+        addResource("reputation", 4);
     },
     getPartName() {
         return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${numberToWords(Math.floor((towns[6].RescueLoopCounter + 0.0001) / this.segments + 1))}`;
@@ -4870,6 +4870,80 @@ Action.Escape = new Action("Escape", {
 });
 
 //Town 8
+Action.ThievesGuild = new MultipartAction("Thieves Guild", {
+    type: "multipart",
+    expMult: 2,
+    townNum: 7,
+    varName: "ThievesGuild",
+    stats: {
+        Dex: 0.4,
+        Per: 0.3,
+        Spd: 0.3
+    },
+    skills: {
+        Thievery: 50
+    },
+    loopStats: ["Per", "Dex", "Spd"],
+    manaCost() {
+        return 75000;
+    },
+    allowed() {
+        return 1;
+    },
+    canStart() {
+        return guild === "" && resources.reputation < 0;
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(1.2, towns[7][`${this.varName}LoopCounter`] + segment)) * 5e8;
+    },
+    tickProgress(offset) {
+        return (getSkillLevel("Practical") +
+                getSkillLevel("Thievery")) *
+                (1 + getLevel(this.loopStats[(towns[7][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
+                Math.sqrt(1 + towns[7][`total${this.varName}`] / 1000);
+    },
+    loopsFinished() {
+    },
+    segmentFinished() {
+        curThievesGuildSegment++;
+        handleSkillExp(this.skills);
+        addResource("gold", 10);
+    },
+    getPartName() {
+        return `Rank ${getThievesGuildRank().name}`;
+    },
+    getSegmentName(segment) {
+        return `Rank ${getThievesGuildRank(segment % 3).name}`;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    finish() {
+        guild = "Thieves";
+    },
+});
+function getThievesGuildRank(offset) {
+    let name = ["F", "E", "D", "C", "B", "A", "S", "SS", "SSS", "SSSS", "U", "UU", "UUU", "UUUU"][Math.floor(curThievesGuildSegment / 3 + 0.00001)];
+
+    const segment = (offset === undefined ? 0 : offset - (curThievesGuildSegment % 3)) + curThievesGuildSegment;
+    let bonus = precision3(1 + segment / 20 + Math.pow(segment, 2) / 300);
+    if (name) {
+        if (offset === undefined) {
+            name += ["-", "", "+"][curThievesGuildSegment % 3];
+        } else {
+            name += ["-", "", "+"][offset % 3];
+        }
+    } else {
+        name = "Godlike";
+        bonus = 10;
+    }
+    name += `, Mult x${bonus}`;
+    return { name, bonus };
+}
+
 Action.Invest = new Action("Invest", {
     type: "normal",
     expMult: 1,

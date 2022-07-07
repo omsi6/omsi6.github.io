@@ -9,17 +9,20 @@
             <version verNum=".98"><![CDATA[
             <b> July 6th, 2022</b>
             • New Zones - Jungle Path, Commerceville, and Valley of Olympus. Major milestones are implemented, with more content to come
-            • New Buff (Mountain): Imbue Body - Sacrifices talent exp to permanently raise starting stats.<br>
-            • New Skill (Jungle Path): Gluttony - Decreases the soulstone cost of great feast.<br>
+            • New Buff: Imbue Body - Sacrifices talent exp to permanently raise starting stats.<br>
+            • New Skill: Gluttony - Decreases the soulstone cost of great feast.<br>
+            • New Skill: Thievery - Improves gold gain of certain actions<br>
             • New Action (Startington): Mana Well - Gives mana based on how quickly in the loop it is completed (adjusted for bonus second use)<br>
             • New Actions (Jungle Path): Explore Jungle & Fight Jungle Monsters - Generic exploration/progress action where exp is based on fight monsters completion<br>
             • New Actions (Jungle Path): Rescue Survivors & Prepare Buffet - Uses Resto skill, then herbs and hide to give Gluttony exp<br>
             • New Action (Jungle Path): Escape - Unlocks next zone, but requires being completed within 60 seconds of starting the loop (adjusted for bonus second use) 
-            • New Actions (Fightersville): Invest & Collect interest. Grants a small percentage of lifetime investments<br>
-            • New Actions (Fightersville): Purchase Key & Leave City - Progress to next zone for cost of 1M gold<br>
+            • New Actions (Commerceville): Thieves Guild - Functions similar to crafting guild, but with a focus on gold income<br>
+            • New Actions (Commerceville): Invest & Collect interest. Grants a small percentage of lifetime investments<br>
+            • New Actions (Commerceville): Purchase Key & Leave City - Progress to next zone for cost of 1M gold<br>
             • New Actions (Valley Of Olympus): Imbue Soul & Challenge Gods - (Incomplete) Planned end of game<br>
-            • Dark Ritual now works in all zones and provides a very minor speed increase up to max level. Need to find a way to hide description for locked zones.<br>
-            • Minor fix to how Spatiomancy effects herbs.
+            • Dark Ritual now works in all zones and provides a very minor speed increase up to max level. Need to find a way to hide description for locked zones<br>
+            • Decreased mana cost of open rift from 100k -> 50k<br> 
+            • Minor fix to how Spatiomancy effects herbs
             ]]></version>
             <version verNum=".97"><![CDATA[
             <b> July 4th, 2022</b>
@@ -753,6 +756,11 @@
             <desc>The insatiable hunger of the jungle has started to rub off on you.</desc>
             <desc2><![CDATA[Great Feast soulstone costs are reduced to the original / (1 + level / 100).]]></desc2>
         </gluttony>
+        <thievery>
+            <label>Thievery</label>
+            <desc>Allows for the redistribution of wealth.</desc>
+            <desc2><![CDATA[TBD]]></desc2>
+        </thievery>
         <tooltip>
             <level>Level:</level>
             <level_exp>Level Exp:</level_exp>
@@ -2133,7 +2141,7 @@
             <label_done>Saved</label_done>
             <label_part>Survivor</label_part>
             <tooltip><![CDATA[
-            There are people lost wandering the jungle. If you can find them, you can patch them up and bring them back to camp.<br>Gives (magic skill) * (restoration skill / 100) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) * (Jungle Explored %) progress points per mana.<br>Rescued survivors give 10 herbs or a hide.
+            There are people lost wandering the jungle. If you can find them, you can patch them up and bring them back to camp.<br>Gives (magic skill) * (restoration skill / 100) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) * (Jungle Explored %) progress points per mana.<br>Rescued survivors give 4 reputation.
         ]]></tooltip>
             <segment_names>
                 <name>Find</name>
@@ -2155,6 +2163,13 @@
             The jungle seems to grow ever larger with every moment that passes. You'll have to get out of here fast.<br>Must be started within 60 seconds of the loop.
         ]]></tooltip>
         </escape>
+        <thieves_guild>
+            <label>Thieves Guild</label>
+            <label_done>Pursestrings Cut</label_done>
+            <tooltip><![CDATA[
+            Learn to transfer wealth to those most in need. You, mostly.<br>Take their tests and get a rank!<br>Requires negative reputation.<br>You can only join 1 guild at a time, and only try once.<br>Gives 10 gold per segment completed.<br>Gives ((practical magic skill) + (thievery skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Gives Thievery exp upon segment completion, rather than upon action completion.
+        ]]></tooltip>
+        </thieves_guild>
         <invest>
             <label>Invest</label>
             <tooltip><![CDATA[
@@ -2165,7 +2180,8 @@
         <collect_interest>
             <label>Collect Interest</label>
             <tooltip><![CDATA[
-            Collect your interest from the perpetual bank.<br>
+            Collect your interest from the perpetual bank. They'll only give you allow the withdrawl if you're an upstanding citizen.<br>
+            Requires positive reputation.<br>
             Gives 0.1% of your total gold invested.<br>
             Current interest: <div id='bankInterest'></div>
         ]]></tooltip>

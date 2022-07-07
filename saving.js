@@ -70,7 +70,7 @@ let bonusUsed = false;
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
-const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune", "Gluttony"];
+const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune", "Gluttony", "Thievery"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Imbuement3"];
 const buffHardCaps = {
@@ -185,6 +185,8 @@ let curWizCollegeSegment = 0;
 let curFightFrostGiantsSegment = 0;
 // eslint-disable-next-line prefer-const
 let curFightJungleMonstersSegment = 0;
+// eslint-disable-next-line prefer-const
+let curThievesGuildSegment = 0;
 
 const options = {
     theme: "normal",

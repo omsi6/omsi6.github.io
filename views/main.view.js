@@ -265,15 +265,15 @@ function View() {
         }
     };
     this.zoneTints = [
-        "rgba(255, 152, 0, 0.2)",
-        "rgba(76, 175, 80, 0.2)",
-        "rgba(255, 235, 59, 0.2)",
-        "rgba(96, 125, 139, 0.2)",
-        "rgba(255, 255, 255, 0.2)",
-        "rgba(103, 58, 183, 0.2)",
-        "rgba(76, 175, 80, 0.4)",
-        "rgba(255, 0, 0, 0.2)",
-        "rgba(103, 58, 183, 0.2)",
+        "rgba(255, 152, 0, 0.2)", //Beginnersville
+        "rgba(76, 175, 80, 0.2)", //Forest Path
+        "rgba(255, 235, 59, 0.2)", //Merchanton
+        "rgba(96, 125, 139, 0.2)", //Mt Olympus
+        "rgba(255, 255, 255, 0.2)", //Valhalla
+        "rgba(103, 58, 183, 0.2)", //Startington
+        "rgba(76, 175, 80, 0.4)", //Jungle Path
+        "rgba(255, 235, 59, 0.4)", //Commerceville
+        "rgba(103, 58, 183, 0.4)", //Valley of Olympus
         //"rgba(103, 58, 183, 0.2)"
     ];
     this.updateNextActions = function() {
