@@ -9,6 +9,7 @@ let gameTicksLeft = 0;
 let refund = false;
 let radarUpdateTime = 0;
 let timeCounter = 0;
+let effectiveTime = 0;
 
 function getSpeedMult(zone = curTown) {
     let speedMult = 1;
@@ -28,6 +29,9 @@ function getSpeedMult(zone = curTown) {
 
     // chronomancy
     speedMult *= Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25);
+
+    //Imbue Soul
+    speedMult += 0.5 * getBuffLevel("Imbuement3");
 
     return speedMult;
 }
@@ -60,6 +64,7 @@ function tick() {
         }
         timer++;
         timeCounter += 1 / baseManaPerSecond / getActualGameSpeed();
+        effectiveTime += 1 / baseManaPerSecond / getSpeedMult();
 
         actions.tick();
         for (const dungeon of dungeons) {
@@ -154,6 +159,7 @@ function restart() {
     shouldRestart = false;
     timer = 0;
     timeCounter = 0;
+    effectiveTime = 0;
     timeNeeded = timeNeededInitial;
     document.title = "Idle Loops";
     resetResources();
@@ -330,6 +336,9 @@ function adjustAll() {
     adjustDonations();
     adjustWells();
     adjustPylons();
+    adjustPockets();
+    adjustWarehouses();
+    adjustInsurance();
     view.adjustManaCost("Continue On");
 }
 
@@ -551,7 +560,6 @@ function toggleOffline() {
     if (totalOfflineMs === 0) return;
     if (bonusSpeed === 1) {
         bonusSpeed = 5;
-        bonusUsed = true;
         document.getElementById("isBonusOn").textContent = _txt("time_controls>bonus_seconds>state>on");
     } else {
         bonusSpeed = 1;

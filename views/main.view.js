@@ -30,6 +30,7 @@ function View() {
             view.updateLockedHidden();
         }, 2000);
         adjustAll();
+        this.updateActionTooltips();
     };
 
     this.statLocs = [
@@ -205,6 +206,14 @@ function View() {
                 document.getElementById("skillBonusMercantilism").textContent = intToString(Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25), 4);
             } else if (skill === "Spatiomancy") {
                 document.getElementById("skillBonusSpatiomancy").textContent = (1 / (1 + getSkillLevel("Spatiomancy") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+            } else if (skill === "Divine") {
+                document.getElementById("skillBonusDivine").textContent = intToString(Math.pow(1 + getSkillLevel("Divine") / 60, 0.25), 4);
+            }else if (skill === "Commune") {
+                document.getElementById("skillBonusCommune").textContent = (1 / (1 + getSkillLevel("Commune") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+            }else if (skill === "Gluttony") {
+                document.getElementById("skillBonusGluttony").textContent = (1 / (1 + getSkillLevel("Gluttony") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+            }else if (skill === "Thievery") {
+                document.getElementById("skillBonusThievery").textContent = intToString(Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25), 4);
             }
         }
     };
@@ -239,6 +248,7 @@ function View() {
     };
     this.updateTotalTicks = function() {
         document.getElementById("totalTicks").textContent = `${formatNumber(actions.completedTicks)} | ${formatTime(timeCounter)}`;
+        document.getElementById("effectiveTime").textContent = `${formatTime(effectiveTime)}`;
     };
     this.updateResource = function(resource) {
         if (resource !== "gold") document.getElementById(`${resource}Div`).style.display = resources[resource] ? "inline-block" : "none";
@@ -250,9 +260,14 @@ function View() {
     };
     this.updateResources = function() {
         for (const resource in resources) this.updateResource(resource);
+    };
+    this.updateActionTooltips = function() {
         document.getElementById("goldInvested").textContent = intToStringRound(goldInvested);
         document.getElementById("bankInterest").textContent = intToStringRound(goldInvested * .001);
-    };
+        document.getElementById("actionAllowedPockets").textContent = intToStringRound(towns[7].totalPockets);
+        document.getElementById("actionAllowedWarehouses").textContent = intToStringRound(towns[7].totalWarehouses);
+        document.getElementById("actionAllowedInsurance").textContent = intToStringRound(towns[7].totalInsurance);
+    }
     this.updateTeamCombat = function() {
         if (towns[2].unlocked) {
             document.getElementById("skillSCombatContainer").style.display = "inline-block";

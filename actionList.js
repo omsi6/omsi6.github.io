@@ -275,7 +275,7 @@ Action.PickLocks = new Action("Pick Locks", {
     goldCost() {
         let practical = getSkillLevel("Practical");
         practical = practical <= 200 ? practical : 200;
-        return Math.floor(10 * (1 + practical / 100));
+        return Math.floor(10 * (1 + practical / 100) * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
     },
     finish() {
         towns[0].finishRegular(this.varName, 10, () => {
@@ -1998,7 +1998,8 @@ Action.Gamble = new Action("Gamble", {
     },
     finish() {
         towns[2].finishRegular(this.varName, 10, () => {
-            addResource("gold", 60);
+            let goldGain = 60 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25)
+            addResource("gold", goldGain);
             return 60;
         });
     },
@@ -3500,6 +3501,9 @@ Action.Donate = new Action("Donate", {
         Spd: 0.2,
         Int: 0.4,
     },
+    canStart() {
+        return resources.gold >= 20;
+    },
     manaCost() {
         return 2000;
     },
@@ -4437,7 +4441,7 @@ Action.ManaWell = new Action("Mana Well", {
     },
     finish() {
         towns[5].finishRegular(this.varName, 100, () => {
-        let wellMana = 5000 - Math.floor(10 * bonusUsed ? timeCounter * 5 : timeCounter);
+        let wellMana = 5000 - Math.floor(10 * effectiveTime);
         addMana(wellMana);
         return wellMana;
         });
@@ -4853,7 +4857,7 @@ Action.Escape = new Action("Escape", {
         return 1;
     },
     canStart() {
-        return bonusUsed ? timeCounter * 5 < 60: timeCounter < 60;
+        return effectiveTime < 60;
     },
     manaCost() {
         return 50000;
@@ -4870,6 +4874,47 @@ Action.Escape = new Action("Escape", {
 });
 
 //Town 8
+Action.Excursion = new Action("Excursion", {
+    type: "progress",
+    expMult: 1,
+    townNum: 7,
+    stats: {
+        Per: 0.2,
+        Con: 0.2,
+        Cha: 0.2,
+        Spd: 0.3,
+        Luck: 0.1
+    },
+    affectedBy: ["Buy Glasses"],
+    manaCost() {
+        return 25000;
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    goldCost() {
+        return guild === "Thieves" ? 20 : 100;
+    },
+    finish() {
+        towns[7].finishProgress(this.varName, 50 * (resources.glasses ? 2 : 1));
+    }
+});
+function adjustPockets() {
+    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1100), 1300) - 1100;
+    towns[7].totalPockets = Math.floor(towns[7].getLevel("Excursion") * (1 + spatio/200));
+}
+function adjustWarehouses() {
+    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1200), 1400) - 1200;
+    towns[7].totalWarehouses = Math.floor(towns[7].getLevel("Excursion") / 4 * (1 + spatio/200));
+}
+function adjustInsurance() {
+    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1300), 1500) - 1300;
+    towns[7].totalInsurance = Math.floor(towns[7].getLevel("Excursion") / 10 * (1 + spatio/200));
+}
+
 Action.ThievesGuild = new MultipartAction("Thieves Guild", {
     type: "multipart",
     expMult: 2,
@@ -4916,13 +4961,14 @@ Action.ThievesGuild = new MultipartAction("Thieves Guild", {
         return `Rank ${getThievesGuildRank(segment % 3).name}`;
     },
     visible() {
-        return true;
+        return towns[7].getLevel("Excursion") >= 10;
     },
     unlocked() {
-        return true;
+        return towns[7].getLevel("Excursion") >= 10;
     },
     finish() {
         guild = "Thieves";
+        view.adjustGoldCost("Excursion", Action.Excursion.goldCost());
     },
 });
 function getThievesGuildRank(offset) {
@@ -4944,6 +4990,137 @@ function getThievesGuildRank(offset) {
     return { name, bonus };
 }
 
+Action.PickPockets = new Action("Pick Pockets", {
+    type: "progress",
+    expMult: 1.5,
+    townNum: 7,
+    stats: {
+        Dex: 0.4,
+        Spd: 0.4,
+        Luck: 0.2
+    },
+    skills: {
+        Thievery() {
+            return 10 * (1 + towns[7].getLevel("PickPockets") / 100);
+        }
+    },
+    affectedBy: ["Thieves Guild"],
+    allowed() {
+        return towns[7].totalPockets;
+    },
+    canStart() {
+        return guild === "Thieves";
+    },
+    manaCost() {
+        return 20000;
+    },
+    visible() {
+        return getSkillLevel("Thievery") > 0;
+    },
+    unlocked() {
+        return getSkillLevel("Thievery") > 0;
+    },
+    goldCost() {
+        return Math.floor(1 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+    },
+    finish() {
+        towns[7].finishProgress(this.varName, 30 * getThievesGuildRank().bonus);
+        handleSkillExp(this.skills);
+        view.adjustExpGain(Action.ThievesGuild);
+        const goldGain = Math.floor(this.goldCost() * getThievesGuildRank().bonus);
+        addResource("gold", goldGain);
+        return goldGain;
+    },
+});
+
+Action.RobWarehouse = new Action("Rob Warehouse", {
+    type: "progress",
+    expMult: 2,
+    townNum: 7,
+    stats: {
+        Dex: 0.4,
+        Spd: 0.2,
+        Int: 0.2,
+        Luck: 0.2
+    },
+    skills: {
+        Thievery() {
+            return 20 * (1 + towns[7].getLevel("RobWarehouse") / 100);
+        }
+    },
+    affectedBy: ["Thieves Guild"],
+    allowed() {
+        return towns[7].totalWarehouses;
+    },
+    canStart() {
+        return guild === "Thieves";
+    },
+    manaCost() {
+        return 50000;
+    },
+    visible() {
+        return towns[7].getLevel("PickPockets") >= 25;
+    },
+    unlocked() {
+        return towns[7].getLevel("PickPockets") >= 100;
+    },
+    goldCost() {
+        return Math.floor(10 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+        },
+    finish() {
+        towns[7].finishProgress(this.varName, 20 * getThievesGuildRank().bonus);
+        handleSkillExp(this.skills);
+        view.adjustExpGain(Action.ThievesGuild);
+        const goldGain = Math.floor(this.goldCost() * getThievesGuildRank().bonus);
+        addResource("gold", goldGain);
+        return goldGain;
+    },
+});
+
+Action.InsuranceFraud = new Action("Insurance Fraud", {
+    type: "progress",
+    expMult: 2.5,
+    townNum: 7,
+    stats: {
+        Dex: 0.2,
+        Spd: 0.2,
+        Int: 0.3,
+        Luck: 0.3
+    },
+    skills: {
+        Thievery() {
+            return 40 * (1 + towns[7].getLevel("InsuranceFraud") / 100);
+        }
+    },
+    affectedBy: ["Thieves Guild"],
+    allowed() {
+        return towns[7].totalInsurance;
+    },
+    canStart() {
+        return guild === "Thieves";
+    },
+    manaCost() {
+        return 100000;
+    },
+    visible() {
+        return towns[7].getLevel("RobWarehouse") >= 50;
+    },
+    unlocked() {
+        return towns[7].getLevel("RobWarehouse") >= 100;
+    },
+    goldCost() {
+        return Math.floor(100 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+    },
+    finish() {
+        towns[7].finishProgress(this.varName, 10 * getThievesGuildRank().bonus);
+        handleSkillExp(this.skills);
+        view.adjustExpGain(Action.ThievesGuild);
+        const goldGain = Math.floor(this.goldCost() * getThievesGuildRank().bonus);
+        addResource("gold", goldGain);
+        return goldGain;
+    },
+});
+
 Action.Invest = new Action("Invest", {
     type: "normal",
     expMult: 1,
@@ -4953,7 +5130,6 @@ Action.Invest = new Action("Invest", {
         Per: 0.3,
         Spd: 0.3
     },
-    affectedBy: ["Donate"],
     allowed() {
         return 1;
     },
@@ -4971,6 +5147,7 @@ Action.Invest = new Action("Invest", {
     },
     finish() {
         goldInvested += resources.gold;
+        if (goldInvested > 999999999999) goldInvested = 999999999999;
         resetResource("gold");
     },
 });
@@ -4984,7 +5161,6 @@ Action.CollectInterest = new Action("Collect Interest", {
         Per: 0.3,
         Spd: 0.3
     },
-    affectedBy: ["Accept Donations"],
     allowed() {
         return 1;
     },

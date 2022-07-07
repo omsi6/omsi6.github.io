@@ -17,7 +17,7 @@ let mainTickLoop;
 const saveName = "idleLoops1";
 
 // this is to hide the cheat button if you aren't supposed to cheat
-if (window.location.href.includes("http://10.0.0.3:8080/loops/")) document.getElementById("cheat").style.display = "inline-block";
+if (window.location.href.includes("http://127.0.0.2:8080")) document.getElementById("cheat").style.display = "inline-block";
 
 const timeNeededInitial = 5 * 50;
 // eslint-disable-next-line prefer-const
@@ -65,7 +65,6 @@ let resources = {
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
 let guild = "";
-let bonusUsed = false;
 
 let curLoadout = 0;
 let loadouts = [];

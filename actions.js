@@ -155,7 +155,6 @@ function Actions() {
             }
         }
         guild = "";
-        if (bonusSpeed > 1) bonusUsed = true; else bonusUsed = false;
         if (options.keepCurrentList) {
             this.currentPos = 0;
             this.completedTicks = 0;

@@ -6,6 +6,15 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum=".99"><![CDATA[
+            <b> July 7th, 2022</b>
+            • New Actions (Commerceville): Pick Pocket, Rob Warehouse, Insurance Fraud - Gold gain based on thieves guild bonus & thievery<br>
+            • Finished implementation of thievery skill - Increases gold gain of pick locks, gamble, and thieves guild actions<br>
+            • Added temporary effect for imbue soul - Adds 50% action speed per completion. Will likely be changed later<br>
+            • Improved handling of bonus time on time-gated actions. Effective time used for these actions can be viewed in the "Mana Used" tooltip<br>
+            • Bugfix: Donate allowed going negative on gold<br>
+            • Numerous updates and clarifications in various tooltips
+            ]]></version>
             <version verNum=".98"><![CDATA[
             <b> July 6th, 2022</b>
             • New Zones - Jungle Path, Commerceville, and Valley of Olympus. Major milestones are implemented, with more content to come
@@ -734,32 +743,40 @@
             Artifacts to take increased by 0.5% per level from 801-1000.<br>
             People to ask for donations increased by 0.5% per level from 901-1100.<br>
             Buildings to check for pylons increased by 0.5% per level from 1001-1200.<br>
+            Pockets to pick increased by 0.5% per level from from 1101-1300.<br>
+            Warehouses to rob increased by 0.5% per level from 1201-1400.<br>
+            Insurance companies to defraud increased by 0.5% per level from 1301-1500.<br>
             Currently multiplying costs by <div id='skillBonusSpatiomancy'></div>x.]]></desc2>
         </spatiomancy>
 		<mercantilism>
 			<label>Mercantilism</label>
 			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
-			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
+			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br>
+            Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
 		</mercantilism>
         <divine>
             <label>Divine Favor</label>
             <desc>The gods have answered your prayers and given you their blessing.</desc>
-            <desc2><![CDATA[Increases soulstones gained from actions by (1 + level / 60) ^ 0.25 (rounded down).]]></desc2>
+            <desc2><![CDATA[Increases soulstones gained from actions by (1 + level / 60) ^ 0.25 (rounded down).<br>
+            Currently granting <div id='skillBonusDivine'></div>x soulstone gains.]]></desc2>
         </divine>
         <commune>
             <label>Communing</label>
             <desc>Your blood sacrifices to dark beings makes it easier to communicate with them.</desc>
-            <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100) (rounded up).]]></desc2>
+            <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100) (rounded up).<br>
+            Currently multiplying costs by <div id='skillBonusCommune'></div>x.]]></desc2>
         </commune>
         <gluttony>
             <label>Gluttony</label>
             <desc>The insatiable hunger of the jungle has started to rub off on you.</desc>
-            <desc2><![CDATA[Great Feast soulstone costs are reduced to the original / (1 + level / 100).]]></desc2>
+            <desc2><![CDATA[Great Feast soulstone costs are reduced to the original / (1 + level / 100).<br>
+            Currently multiplying costs by <div id='skillBonusGluttony'></div>x.]]></desc2>
         </gluttony>
         <thievery>
             <label>Thievery</label>
             <desc>Allows for the redistribution of wealth.</desc>
-            <desc2><![CDATA[TBD]]></desc2>
+            <desc2><![CDATA[Increases gold gain from Pick Locks, Gamble, and Thieving Guild actions by (1 + level / 60) ^ 0.25.<br>
+            Currently granting <div id='skillBonusThievery'></div>x increased gold.]]></desc2>
         </thievery>
         <tooltip>
             <level>Level:</level>
@@ -810,7 +827,8 @@
         </aspirant>
         <imbue_soul>
             <label>Imbue Soul</label>
-            <desc><![CDATA[(Incomplete) Sacrifice everything for the ultimate power.
+            <desc><![CDATA[(Incomplete) Sacrifice everything for the ultimate power.<br>
+            Increases all action speed by 50% per level (additively).
             ]]></desc>
         </imbue_soul>
         <tooltip>
@@ -892,7 +910,8 @@
             <mana_used_explanation><![CDATA[
           Shows stat gain affecting speed.<br>
           Updates every completed action.<br>
-          Accurate at end of run.]]></mana_used_explanation>
+          Accurate at end of run.<br>
+          Effective time: <div id='effectiveTime'>0</div>]]></mana_used_explanation>
             <amount>Amount</amount>
             <current_list_active>Keep current list active</current_list_active>
             <repeat_last_action>Repeat last action on list</repeat_last_action>
@@ -1827,7 +1846,7 @@
             <label>Imbue Body</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Sacrifices (imbuements+1) levels of talent. Currently sacrificing 
+            With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Body action.<br>Level is limited by imbue mind rank.<br>Sacrifices (imbuements+1) levels of talent. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              levels of talent.
@@ -1860,7 +1879,8 @@
             <label>Canvass</label>
             <label_done>Houses Canvassed</label_done>
             <tooltip><![CDATA[
-            The city has a local charity that's looking for volunteers to canvass around for potential benefactors. Maybe if you know the information of some of said people, it could be helpful.
+            The city has a local charity that's looking for volunteers to canvass around for potential benefactors. Maybe if you know the information of some of said people, it could be helpful.<br>
+            Unlocked at 10% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </canvass>
@@ -2163,13 +2183,56 @@
             The jungle seems to grow ever larger with every moment that passes. You'll have to get out of here fast.<br>Must be started within 60 seconds of the loop.
         ]]></tooltip>
         </escape>
+        <excursion>
+            <label>Excursion</label>
+            <label_done>Seen</label_done>
+            <tooltip><![CDATA[
+            Pay a local street urchin to show you around town. As a tourist, it feels like you're getting ripped off.<br>
+            Cost is reduced by 80% with local guild membership.<br>
+            Currently costs 
+            ]]></tooltip>
+            <tooltip2>gold.</tooltip2>
+        </excursion>
         <thieves_guild>
             <label>Thieves Guild</label>
             <label_done>Pursestrings Cut</label_done>
             <tooltip><![CDATA[
-            Learn to transfer wealth to those most in need. You, mostly.<br>Take their tests and get a rank!<br>Requires negative reputation.<br>You can only join 1 guild at a time, and only try once.<br>Gives 10 gold per segment completed.<br>Gives ((practical magic skill) + (thievery skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Gives Thievery exp upon segment completion, rather than upon action completion.
+            Learn to transfer wealth to those most in need. You, mostly.<br>Take their tests and get a rank!<br>Requires negative reputation.<br>You can only join 1 guild at a time (including from Merchanton), and only try once.<br>Gives 10 gold per segment completed.<br>Gives ((practical magic skill) + (thievery skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Gives Thievery exp upon segment completion, rather than upon action completion.
         ]]></tooltip>
         </thieves_guild>
+        <pick_pockets>
+            <label>Pick Pockets</label>
+            <label_done>Pockets Picked</label_done>
+            <tooltip><![CDATA[
+            Help travels by making their load a bit lighter.<br>
+            Requires thieves guild.<br>
+            Can be completed <div id='actionAllowedPockets'>x</div> times based on expedition progress.<br>
+            Rewards
+        ]]></tooltip>
+        <tooltip2>gold per thieves guild rank.</tooltip2>
+        </pick_pockets>
+        <rob_warehouse>
+            <label>Rob Warehouse</label>
+            <label_done>Warehouses Robbed</label_done>
+            <tooltip><![CDATA[
+            Diversify your skills into inventory management.<br>
+            Requires thieves guild and 100% pockets picked.<br>
+            Can be completed <div id='actionAllowedWarehouses'>x</div> times based on expedition progress.<br>
+            Rewards
+        ]]></tooltip>
+        <tooltip2>gold per thieves guild rank.</tooltip2>
+        </rob_warehouse>
+        <insurance_fraud>
+            <label>Insurance Fraud</label>
+            <label_done>Fraud Committed</label_done>
+            <tooltip><![CDATA[
+            Insurance is a scam, anyway. You're basically robin hood.<br>
+            Requires thieves guild and 100% warehouses robbed.<br>
+            Can be completed <div id='actionAllowedInsurance'>x</div> times based on expedition progress.<br>
+            Rewards
+        ]]></tooltip>
+        <tooltip2>gold per thieves guild rank.</tooltip2>
+        </insurance_fraud>
         <invest>
             <label>Invest</label>
             <tooltip><![CDATA[
@@ -2204,7 +2267,8 @@
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
             Resets all talent levels, soulstones, imbue mind and imbue body. Other skills and buffs are unchanged.<br>
-            (Incomplete) No effect yet.
+            Requires 500 Imbue Mind and Body.<br>
+            (Temporary)Raises all action speeds by 50%.
         ]]></tooltip>
         </imbue_soul>
         <challenge_gods>
