@@ -4836,7 +4836,7 @@ Action.PrepareBuffet = new Action("Prepare Buffet", {
         return towns[6].getLevel("ExploreJungle") >= 20;
     },
     finish() {
-        this.skills.Gluttory = Math.floor(towns[6].RescueLoopCounter * 5);
+        this.skills.Gluttony = Math.floor(towns[6].RescueLoopCounter * 5);
         handleSkillExp(this.skills);
     },
 });
