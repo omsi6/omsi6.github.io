@@ -5177,7 +5177,7 @@ Action.CollectInterest = new Action("Collect Interest", {
         return true;
     },
     finish() {
-        let interestGold = Math.floor(goldInvested * .0001);
+        let interestGold = Math.floor(goldInvested * .001);
         addResource("gold", interestGold);
         return interestGold;
     },
