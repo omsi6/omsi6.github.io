@@ -525,12 +525,7 @@
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/seekCitizenship.svg" class="smallIcon">]]></title>
             <id>citizenship</id>
-            <desc>You're one of Valhalla's proud citizens now, giving you the right to own land there.</desc>
-        </resource>
-        <resource initially_hidden="true" no_count="true">
-            <title><![CDATA[<img src="img/acquirePermit.svg" class="smallIcon">]]></title>
-            <id>permit</id>
-            <desc>The actual right to own land, for real this time.</desc>
+            <desc>You're one of Valhalla's proud citizens now, giving you the right to fight in their honor.</desc>
         </resource>
         <resource initially_hidden="true" no_count="true">
             <title><![CDATA[<img src="img/pegasus.svg" class="smallIcon">]]></title>
