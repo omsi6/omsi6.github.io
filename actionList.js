@@ -4173,7 +4173,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9 (1 + getSkillLevel("Gluttony") / 100));
+        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9 / (1 + getSkillLevel("Gluttony") / 100));
         let name = "";
         let soulstones = 0;
         for (const stat in stats) {
@@ -4914,10 +4914,11 @@ Action.Excursion = new Action("Excursion", {
         return true;
     },
     goldCost() {
-        return guild === "Thieves" ? 20 : 100;
+        return guild === "Thieves" ? 2 : 10;
     },
     finish() {
         towns[7].finishProgress(this.varName, 50 * (resources.glasses ? 2 : 1));
+        addResource("gold", guild === "Thieves" ? -2 : -10);
     }
 });
 function adjustPockets() {
@@ -5306,8 +5307,8 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
             view.requestUpdate("updateStat", stat);
         }
         view.updateStats();
-        addBuffAmt("Imbuement", -getBuffLevel("Imbuement"));
-        addBuffAmt("Imbuement2", -getBuffLevel("Imbuement2"));
+        addBuffAmt("Imbuement", -1 * getBuffLevel("Imbuement"));
+        addBuffAmt("Imbuement2", -1 * getBuffLevel("Imbuement2"));
         addBuffAmt("Imbuement3", 1);
         view.adjustGoldCost("ImbueSoul", this.goldCost());
     },
