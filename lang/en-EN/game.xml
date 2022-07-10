@@ -2028,7 +2028,7 @@
         <collect_interest>
             <label>Collect Interest</label>
             <tooltip><![CDATA[
-            Collect your interest from the perpetual bank. They'll only give you allow the withdrawl if you're an upstanding citizen.<br>
+            Collect your interest from the perpetual bank.<br>
             Gives 0.1% of your total gold invested.<br>
             Current interest: <div id='bankInterest'></div>
         ]]></tooltip>
