@@ -147,8 +147,9 @@ function addBuffAmt(name, amount) {
 function addExp(name, amount) {
     stats[name].exp += amount;
     const aspirantBonus = getBuffLevel("Aspirant") ?  1 + getBuffLevel("Aspirant") * 0.01 : 1;
-    stats[name].talent += Math.floor(amount / 100 * aspirantBonus * getSkillBonus("Wunderkind"));
-    totalTalent += amount / 100;
+    let talentGain = Math.floor((amount * aspirantBonus + amount * getSkillBonus("Wunderkind")) / 100)
+    stats[name].talent += talentGain;
+    totalTalent += talentGain;
     view.requestUpdate("updateStat", name);
 }
 
