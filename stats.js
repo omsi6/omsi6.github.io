@@ -92,6 +92,17 @@ function getSkillLevel(skill) {
     return getSkillLevelFromExp(skills[skill].exp);
 }
 
+function getSkillBonus(skill) {
+    let change;
+    if (skill === "Dark" || skill === "Chrono" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Theivery") change = "increase";
+    else if (skill === "Practical" || skill === "Spatiomancy" || skill === "Commune" || skill === "Gluttony") change = "decrease";
+    else console.log("Skill not found");
+
+    if(change == "increase") return Math.pow(1 + getSkillLevel(skill) / 60, 0.25);
+    else if (change == "decrease") return 1 / (1 + getSkillLevel(skill) / 100);
+    else return 0;
+}
+
 function getBuffLevel(buff) {
     return buffs[buff].amt;
 }
@@ -135,7 +146,8 @@ function addBuffAmt(name, amount) {
 
 function addExp(name, amount) {
     stats[name].exp += amount;
-    stats[name].talent += amount / 100;
+    const aspirantBonus = getBuffLevel("Aspirant") ?  1 + getBuffLevel("Aspirant") * 0.01 : 1;
+    stats[name].talent += Math.floor(amount / 100 * aspirantBonus * getSkillBonus("Wunderkind"));
     totalTalent += amount / 100;
     view.requestUpdate("updateStat", name);
 }
@@ -149,6 +161,5 @@ function restartStats() {
 
 function getTotalBonusXP(statName) {
     const soulstoneBonus = stats[statName].soulstone ? calcSoulstoneMult(stats[statName].soulstone) : 1;
-    const aspirantBonus = getBuffLevel("Aspirant") ?  1 + getBuffLevel("Aspirant") * 0.01 : 1;
-    return soulstoneBonus * calcTalentMult(getTalent(statName)) * aspirantBonus;
+    return soulstoneBonus * calcTalentMult(getTalent(statName));
 }

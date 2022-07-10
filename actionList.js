@@ -25,6 +25,7 @@ const limitedActions = [
     "Gamble",
     "Mana Geyser",
     "Mine Soulstones",
+    "Take Artifacts",
     "Accept Donations",
     "Mana Well",
     "Destroy Pylons"
@@ -153,7 +154,9 @@ DungeonAction.prototype.getPartName = function() {
     return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
 };
 
-// town 1
+//====================================================================================================
+//Zone 1 - Beginnersville
+//====================================================================================================
 Action.Wander = new Action("Wander", {
     type: "progress",
     expMult: 1,
@@ -1080,8 +1083,9 @@ Action.OpenRift = new Action("Open Rift", {
     },
 });
 
-// town 2
-
+//====================================================================================================
+//Zone 2 - Forest Path
+//====================================================================================================
 Action.ExploreForest = new Action("Explore Forest", {
     type: "progress",
     expMult: 1,
@@ -1904,8 +1908,9 @@ Action.ContinueOn = new Action("Continue On", {
     },
 });
 
-// town 3
-
+//====================================================================================================
+//Zone 3 - Merchanton
+//====================================================================================================
 Action.ExploreCity = new Action("Explore City", {
     type: "progress",
     expMult: 1,
@@ -2001,7 +2006,7 @@ Action.Gamble = new Action("Gamble", {
     },
     finish() {
         towns[2].finishRegular(this.varName, 10, () => {
-            let goldGain = 60 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25)
+            let goldGain = Math.floor(60 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
             addResource("gold", goldGain);
             return 60;
         });
@@ -2727,8 +2732,9 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     },
 });
 
-// town 4
-
+//====================================================================================================
+//Zone 4 - Mt Olympus
+//====================================================================================================
 Action.StartTrek = new Action("Start Trek", {
     type: "normal",
     expMult: 2,
@@ -3432,8 +3438,9 @@ Action.FaceJudgement = new Action("Face Judgement", {
     },
 });
 
-// town 5
-
+//====================================================================================================
+//Zone 5 - Valhalla
+//====================================================================================================
 Action.GuidedTour = new Action("Guided Tour", {
     type: "progress",
     expMult: 1,
@@ -3746,6 +3753,31 @@ Action.CharmSchool = new Action("Charm School", {
     },
 });
 
+Action.Oracle = new Action("Oracle", {
+    type: "normal",
+    expMult: 4,
+    townNum: 4,
+    stats: {
+        Luck: 0.8,
+        Soul: 0.2
+    },
+    allowed() {
+        return trainingLimits;
+    },
+    manaCost() {
+        return 2000;
+    },
+    visible() {
+        return towns[4].getLevel("Tour") >= 30;
+    },
+    unlocked() {
+        return towns[4].getLevel("Tour") >= 40;
+    },
+    finish() {
+		
+    },
+});
+
 Action.EnchantArmor = new Action("Enchant Armor", {
     tytpe: "normal",
     expMult: 1,
@@ -3820,7 +3852,6 @@ Action.WizardCollege = new MultipartAction("Wizard College", {
         curWizCollegeSegment++;
         view.adjustManaCost("Restoration");
         view.adjustManaCost("Spatiomancy");
-        // Additional thing?
     }, 
     getPartName() {
         return `${getWizCollegeRank().name}`;
@@ -3835,7 +3866,7 @@ Action.WizardCollege = new MultipartAction("Wizard College", {
         return towns[4].getLevel("Tour") >= 60;
     },
     finish() {
-        // guild = "Wizard";
+        //guild = "Wizard";
     },
 });
 function getWizCollegeRank(offset) {
@@ -4026,31 +4057,6 @@ Action.CollectTaxes = new Action("Collect Taxes", {
     },
 });
 
-Action.Oracle = new Action("Oracle", {
-    type: "normal",
-    expMult: 4,
-    townNum: 4,
-    stats: {
-        Luck: 0.8,
-        Soul: 0.2
-    },
-    allowed() {
-        return trainingLimits;
-    },
-    manaCost() {
-        return 2000;
-    },
-    visible() {
-        return towns[4].getLevel("Tour") >= 60;
-    },
-    unlocked() {
-        return towns[4].getLevel("Tour") >= 80;
-    },
-    finish() {
-		
-    },
-});
-
 Action.Pegasus = new Action("Pegasus", {
     tytpe: "normal",
     expMult: 1,
@@ -4085,7 +4091,6 @@ Action.Pegasus = new Action("Pegasus", {
     },
 });
 
-// todo: make this correct
 Action.GreatFeast = new MultipartAction("Great Feast", {
     type: "multipart",
     expMult: 5,
@@ -4216,7 +4221,6 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
         return towns[4].getLevel("Citizen") >= 100;
     },
     finish() {
-        // guild = "Wizard";
     },
 });
 function getFrostGiantsRank(offset) {
@@ -4268,7 +4272,6 @@ Action.SeekBlessing = new Action("Seek Blessing", {
     skills: {
         Divine: 50
     },
-    // this.affectedBy = ["Crafting Guild"];
     canStart() {
         return resources.pegasus;
     },
@@ -4326,7 +4329,9 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     },
 });
 
-// town 6
+//====================================================================================================
+//Zone 6 - Startington
+//====================================================================================================
 Action.Meander = new Action("Meander", {
     type: "progress",
     expMult: 1,
@@ -4599,7 +4604,9 @@ Action.JourneyForth = new Action("Journey Forth", {
     },
 });
 
-//Town 7
+//====================================================================================================
+//Zone 7 - Jungle Path
+//====================================================================================================
 Action.ExploreJungle = new Action("Explore Jungle", {
     type: "progress",
     expMult: 1,
@@ -4794,6 +4801,38 @@ Action.PrepareBuffet = new Action("Prepare Buffet", {
     },
 });
 
+Action.Totem = new Action("Totem", {
+    type: "normal",
+    expMult: 1,
+    townNum: 6,
+    stats: {
+        Con: 0.3,
+        Per: 0.2,
+        Soul: 0.5
+    },
+    skills: {
+        Wunderkind: 100
+    },
+    canStart() {
+        return resources.loopingPotion;
+    },
+    cost() {
+        addResource("loopingPotion", false);
+    },
+    manaCost() {
+        return 30000;
+    },
+    visible() {
+        return towns[6].getLevel("ExploreJungle") >= 25;
+    },
+    unlocked() {
+        return towns[6].getLevel("ExploreJungle") >= 50;
+    },
+    finish() {
+        handleSkillExp(this.skills);
+    },
+});
+
 Action.Escape = new Action("Escape", {
     type: "normal",
     expMult: 2,
@@ -4822,7 +4861,9 @@ Action.Escape = new Action("Escape", {
     },
 });
 
-//Town 8
+//====================================================================================================
+//Zone 8 - Commerceville
+//====================================================================================================
 Action.Excursion = new Action("Excursion", {
     type: "progress",
     expMult: 1,
@@ -5207,7 +5248,9 @@ Action.LeaveCity = new Action("Leave City", {
     },
 });
 
-//Town 9
+//====================================================================================================
+//Zone 9 - Valley of Olympus
+//====================================================================================================
 Action.ImbueSoul = new MultipartAction("Imbue Soul", {
     type: "multipart",
     expMult: 5,

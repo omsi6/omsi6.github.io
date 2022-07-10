@@ -208,11 +208,13 @@ function View() {
                 document.getElementById("skillBonusSpatiomancy").textContent = (1 / (1 + getSkillLevel("Spatiomancy") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             } else if (skill === "Divine") {
                 document.getElementById("skillBonusDivine").textContent = intToString(Math.pow(1 + getSkillLevel("Divine") / 60, 0.25), 4);
-            }else if (skill === "Commune") {
+            } else if (skill === "Commune") {
                 document.getElementById("skillBonusCommune").textContent = (1 / (1 + getSkillLevel("Commune") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+            } else if (skill === "Wunderkind") {
+                document.getElementById("skillBonusWunderkind").textContent = intToString(Math.pow(1 + getSkillLevel("Wunderkind") / 60, 0.25), 4);
             }else if (skill === "Gluttony") {
                 document.getElementById("skillBonusGluttony").textContent = (1 / (1 + getSkillLevel("Gluttony") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
-            }else if (skill === "Thievery") {
+            } else if (skill === "Thievery") {
                 document.getElementById("skillBonusThievery").textContent = intToString(Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25), 4);
             }
         }

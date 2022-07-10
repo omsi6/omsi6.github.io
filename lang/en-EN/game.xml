@@ -6,6 +6,18 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.0"><![CDATA[
+            <b> July 9th, 2022</b>
+            • New Skill: Wunderkind - Increases talent exp gain<br>
+            • New Action (Jungle Path): Totem - Consumes a looping potion to give Wunderkind skill Exp<br>
+            • Change: Moved the Oracle skill to be next to Charm School<br>
+            • Bugfix: Aspirant bonus was being applied to all exp gain, not just talent exp<br>
+            • Bugfix: Gamble action gold was not rounding<br>
+            • Bugfix: Removed reputation requirement from collect interest tooltip<br>
+            • Bugfix: Removed "this does nothing" from Collect Artifacts<br>
+            • Bugfix: Added the max quantity button to the Collect Artifacts action<br>
+            • Removed versions from changelog >1 year old
+            ]]></version>
             <version verNum=".99"><![CDATA[
             <b> July 7th, 2022</b>
             • New Action (Commerceville): Excursion - Exploration action to reveal other actions in the zone<br>
@@ -15,10 +27,10 @@
             • Improved handling of bonus time on time-gated actions. Effective time used for these actions can be viewed in the "Mana Used" tooltip<br>
             • Bugfix: Donate allowed going negative on gold<br>
             • Bugfix: Collect interest was only rewarding 1/10th of the intended amount<br>
-            • Bugfix: Excursion didn't cost gold
-            • Bugfix: Imbue Soul didn't have costs
-            • Bugfix: Thieves guild segments weren't resetting
-            • Bugfix: Great feast throwing an error
+            • Bugfix: Excursion didn't cost gold<br>
+            • Bugfix: Imbue Soul didn't have costs<br>
+            • Bugfix: Thieves guild segments weren't resetting<br>
+            • Bugfix: Great feast throwing an error<br>
             • Numerous updates and clarifications in various tooltips
             ]]></version>
             <version verNum=".98"><![CDATA[
@@ -67,259 +79,16 @@
             ]]></version>
             <version verNum=".95"><![CDATA[
             <b> March 18th, 2022</b>
+            • Omsi's beta content!
             • Added Valhalla zone with numerous new actions - reachable with Face Judgement<br>
             • Added Adeptsville zone and The Spire dungeon - reachable with Face Judgement<br>
             • New Skill: Restoration - Improves team combat and effectiveness of Heal the Sick<br>
             • New Skill: Spatiomancy - Reduces mana gyser costs and increases possible rewards from zone 1 and 3 actions<br>
             • New Skill: Mercantilism - Increases gold received from Buy Mana actions<br>
             • New Buff: Great Feast - Increases self combat score<br>
+            • More new actions than you can shake a stick at!<br>
+            • Probably lots more stuff, too?
             ]]></version>
-            <version verNum=".94"><![CDATA[
-            <b> June 18th, 2020</b>
-            <b> v0.94 - "One for the history books."</b><br>
-            • Added a new set of action stories for Merchanton and Mt. Olympus. These were written by InfernoVulpix from the Discord.<br>
-            • Improved centering and alignment of various visual elements.<br>
-            • Rounded the corners of the action list.<br>
-            • Improved the save exporting system, reducing savefile export character lengths by up to 35%.<br>
-            • The changelog notes are now fixed to the top of the tooltip no matter the position of the version, and the versions now a hover effect.<br>
-            • Fixed various issues relating to element visibility when hard resetting your savefile through import.<br>
-            <br><b> v0.94b - June 18th, 2020</b><br>
-            • Fixed a bug where the skill list and buff list visibility checks were mixed up.<br>
-            <br><b> v0.94c - June 20th, 2020</b><br>
-            • Added a button on travel actions to collapse their respective zone.<br>
-            • Improved grammar on the first Adventure Guild action story.<br>
-            • Fixed the first Imbue Mind action story being unobtainable if you had capped it before the update.<br>
-            <br><b> v0.94d - June 27th, 2020</b><br>
-            • Action stories are now colored differently when you have unlocked all the stories for an action versus when you haven't.<br>
-            • Collapsing travel actions now only hides actions in the same zone that are before the travel action in your list.<br>
-            • Editable buff caps are now explained in the "Buffs" section's hover text.<br>
-            • Fixed the horizontal spacing on buff caps.<br>
-            • Fixed the negative and low reputation failed action stories for Brew Potions being obtainable from failing the action by having less than 10 herbs.<br>
-            • Fixed improper hiding of action stories when importing a new save file.
-        ]]></version>
-            <version verNum=".93"><![CDATA[
-            <b> March 16th, 2020 - June 18th, 2020</b>
-            <b> v0.93 - "Diminishing returns."</b><br>
-            • Team member gold cost and cost increase from 200 > 100 per.<br>
-            • Travel actions in the next action list now have multicolored backgrounds where the top half is the zone they're in, and the bottom half is the zone they bring you to.<br>
-            • Options are now all saved.<br>
-            • Manually set buff caps are now saved.<br>
-            • Fixed Mason and Architect not updating their exp gains in their tooltips properly upon completion.<br>
-            • Fixed odd behavior on failed actions in edge cases.<br>
-            • Fixed buffs improperly visually appearing and disappearing.<br>
-            • Fixed buff hard caps not working.<br>
-            <br><b> v0.93b - June 17th, 2020</b><br>
-            • Fixed pause on failed loop acting the same as pause before restart.<br>
-            • Slightly improved the visuals and centering on the current and next action bars.<br>
-            • The current action list now displays action loops in the form of "done/total", instead of "total(remaining)".
-        ]]></version>
-            <version verNum=".92"><![CDATA[
-            <b> April 29th, 2019 - March 16th, 2020</b>
-            <b> v0.92 - "For your eyes."</b><br>
-            • Added Themes. You can find these under a dropdown in the options menu. Currently there are 3 themes: Normal, Dark, and Cubic.<br>
-            • Actions in the next action list now have backgrounds depending on the zone the action is from.<br>
-            • Added a disable action button next to the remove action button. (this ignores the action when creating your current action list on restart)<br>
-            • Added a visual indicator for actions with 0 loops, that indicates they will be ignored when creating your current action list on restart.<br>
-            • Increased the horizontal size of actions on the next action list.<br>
-            • Action list buttons now hide when you begin to drag an action, and reappear when you finish the drag.<br>
-            • Adjusted the next action list buttons for consistency.<br>
-            • Reduced the space between the "x" and the loop count for actions on the current action bar.<br>
-            • Made the loop count for actions on the current action bar apply the same number formatting as actions on the next action list.<br>
-            • When you have the max allowed amount of an action on your list, it will now show with a red tinted background, distinguishing it from locked actions.<br>
-            • Buffs now display under the buff section upon unlocking them, rather than obtaining them at least once.<br>
-            • Adjusted the buff displays, to be more consistent with stats and skills.<br>
-            • Notable performance improvements, especially in edge cases.<br>
-            • Added missing commas to the Small dungeon and Large Dungeon floor looted counts in their tooltips.<br>
-            • Abjusted the current actions mana used display to allow space for larger numbers, and improved formatting.<br>
-            • Changed the self combat and team combat tooltips to mention guild multiplier instead of guild rank, for clarity.<br>
-            • Replaced references to "combined skill" with "combined Combat and Magic skill", for clarity.<br>
-            • Replaced references to "rank bonus" with "guild multiplier", for clarity.<br>
-            • Added an additional decimal point of precision for time values of < 10 seconds.<br>
-            • Fixed action buttons not being properly vertically centered.<br>
-            • Fixed visual elements not correctly updating upon import.<br>
-            • Fixed various typos.<br>
-            • Fixed actions with gold costs not properly updating their gold remaining upon completion.<br>
-            • Fixed the seconds left in loop display not updating if you toggled bonus seconds on/off while paused.<br>
-            • Fixed missing spaces between the stat shortforms and the exp gains on the current action bar tooltips.<br>
-            • Fixed improper vertical spacing between buff/buff cap numbers.<br>
-            • Fixed export to Stopsign not correctly removing new actions from the current action list.<br>
-            • Fixed loadout names not correctly resetting when you wiped your save.
-        ]]></version>
-            <version verNum=".91"><![CDATA[
-            <b> April 2nd, 2019 - April 29th, 2019</b>
-            <b> v0.91 - "A storied future."</b><br>
-            • Added action stories. These are short stories for most actions. These were written by Jacmac from the Discord. As of now, there are 120 individual entries. These become visible when their corresponding action is unlocked, and readable when a certain listed requirement is fulfilled. (arrow to the right of "Action Options" to view them)<br>
-            • Changed bonus seconds gains from 80% > 100%, and drain from 3/s > 4/s. (this will result in a 5x speed multiplier, up from the previous 4x)<br>
-            • When the delta between the last update and the current time is too long, the game will now attempt to give you bonus seconds equal to it, rather than just skipping it.<br>
-            • Action tooltips now display skill exp gain (if applicable) above stat percentages.<br>
-            • Dark Ritual and Imbue Mind now take the remainder of soulstones after division from the stat with the most soulstones, rather than soul.<br>
-            • Changed Dark Ritual's unlock requirement from 90% Thicket Explored to 50% Witch Knowledge to prevent confusion.<br>
-            • Changed the icons for Small Dungeon, Wild Mana, Looping Potion, and Buy Supplies to be consistent with other icons.<br>
-            • Supplies now shows as an icon in the resource list, to be consistent with other resources that are limited to 1.<br>
-            • Renamed Train Dex to Train Dexterity.<br>
-            • Added colons in various different places they were missing.<br>
-            • Minor performance improvements. (higher for those not using the radar chart)<br>
-            • Changes on patch notes are now preceded by • instead of *.<br>
-            • Modified the Throw Party and Old Shortcut tooltips for clarity.<br>
-            • Face Judgement now requires 100% Mountain Explored.<br>
-            • Translations now fallback to english if there's no translated version of the text. This means that the French translation has been re-enabled, but do note that it's only a partial translation.<br>
-            • Slightly adjusted the spacing and location of buttons on the saving menu.<br>
-            • Added a button on the saving menu to export your save in a Stopsign compatible form.<br>
-            • Skill levels now have a comma after 999, and a suffix after 9999.<br>
-            • Scarce action tooltips now display their total checked below their total found, and have a semicolon preceding their found count.<br>
-            • Added a visual indicator for when you save a loadout.<br>
-            • Added hotkeys for changing the current zone, showing action options/stories, and undoing the most recent action list change.<br>
-            • Revamped the changelog tooltips to allow for a scrollbar.<br>
-            • Fixed various typos.<br>
-            • Fixed the spacing between the load and clear list buttons.<br>
-            • Fixed certain tooltips not closing if you moved your mouse downwards onto the tooltip too quickly.<br>
-            • Fixed tooltips on thick progress bars overlapping with the bars themselves.<br>
-            • Fixed commas not appearing on travel action mana costs.<br>
-            • Fixed level exp on skill tooltips being labeled as "Level".<br>
-            • Fixed certain tooltips not closing if you moved your mouse downwards onto the tooltip too quickly.<br>
-            • Fixed ping on pause not working properly with pause on failed loop.<br>
-            • Fixed mana/gold remaining displays on the action list sometimes being incorrect at high game speeds.<br>
-            • Fixed failed actions being able to spend mana for a single tick before failing.<br>
-            • Fixed soulstone count not updating if you sacrificed exactly the amount of soulstones you had in a specific stat.<br>
-            • Fixed improper margins between town info and action options/stories before everything in a town is unlocked.<br>
-            • Fixed improper progress gains on multi part actions in certain cases.<br>
-            • Fixed bonus seconds provding a speed boost for a tick after enabling them, even when you had none.<br>
-            • Fixed the radar chart breaking if you imported a save and then swapped to it.
-        ]]></version>
-            <version verNum=".90"><![CDATA[
-            <b> February 16th, 2019 - April 2nd, 2019</b>
-            <b> v0.90 - "Crumbs in the keyboard."</b><br>
-            • Added hotkeys. (found in the options menu, hover over the word "hotkeys" for a list)<br>
-            • The small bar that appears when you hover over an action on the current action list has been restyled to better fit the game.<br>
-            • Performance has been greatly to moderately increased depending on the situation.<br>
-            • You can now shift+click actions with caps to add them to your action list at their capped amount. (or hold shift and then drag them into the list)<br>
-            • Fixed mana remaining not visually updating upon reset.<br>
-            • Fixed loadout names sometimes not loading.<br>
-            • Fixed Gamble not showing its unlock requirement.
-        ]]></version>
-            <version verNum=".89"><![CDATA[
-            <b> February 7th, 2019 - February 16th, 2019</b>
-            <b> v0.89 - "Cobwebs in the corner."</b><br>
-            • Fixed the stat radar exp/talent bars all being stacked on top of one another<br>
-            • Added an input box in the options that allows you to adjust the update rate of the game. This shouldn't affect your rate of progress, but there's a chance it might have a very small effect. It will increase your performance when reduced below the default of 50.<br>
-            • Stat percentages on actions tooltips are now always listed in the same order as the stats on the left side of the screen.<br>
-            • Added a time spent display for actions in the current action list.<br>
-            • You can now drag actions directly from the action options into your loop.<br>
-            • Fixed ping on pause not working.<br>
-            • Fixed incorrect formulas on the Dark Magic/Chronomancy tooltips.<br>
-            • Fixed soulstone costing actions not updating their tooltip cost upon completion.<br>
-            • Fixed the progress bar on multi part actions being larger than other progress bars.<br>
-            • Added 30 humorous new monster names for Fight Monsters.
-        ]]></version>
-            <version verNum=".88"><![CDATA[
-            <b> January 29th, 2019 - February 7th, 2019</b>
-            <b> v0.88 - "Almost spring cleaning."</b><br>
-            • Dark Ritual and Imbue Mind now have hard caps on the amount buffs you can get from them.<br>
-            • Dark Ritual and Imbue Mind now display their current soulstone cost on their respective action tooltips.<br>
-            • Reworked the buff display to allow for user limiting of the number of action completions for buff actions. The left number is your current amount, the right number is the amount you will stop being able to start the action at. You can change the right number, but you can not increase it past the hard cap.<br>
-            • Fixed a horizontal scrollbar appearing on the action list in certain cases.<br>
-            • There is now a fancy themed vertical scrollbar on the action list for browsers that support it. (Chrome, Safari, Opera, and a slightly worse looking one in Firefox)<br>
-            • Reworded reputation requirements on certain actions to prevent confusion.
-        ]]></version>
-            <version verNum=".87"><![CDATA[
-            <b> January 16th, 2019 - January 29th</b>
-            <b> v0.87 - "How about you name this one."</b><br>
-            • Fixed resource icons pushing page elements downwards when visible.<br>
-            • You can now name your loadouts by typing a name in the custom add amount box and then saving them. There is a 30 character max, and they can't only consist of numbers.<br>
-            • Versions now have dates and names in the patchnotes. <br>
-            • Patchnotes from the original version have been removed.
-        ]]></version>
-            <version verNum=".86"><![CDATA[
-            <b> December 6th, 2018 - January 16th, 2019</b>
-            <b> v0.86 - "Customization, confirmation, checkboxes."</b><br>
-            • Added a custom number input for the amount selections on the actions list.<br>
-            • Amounts on the actions list are now formatted at values > 999,999.<br>
-            • Formatted values now always have at least 3 digits of precision.<br>
-            • Added a checkbox to pause when a loop fails. (this will trigger if your loop ends before you reach the last action)<br>
-            • Added a confirmation when importing nothing, that warns you it will delete your save.
-        ]]></version>
-            <version verNum=".85"><![CDATA[
-            <b class="versiontitle"> November 7th, 2018 - December 6th, 2018</b>
-            <b class="versiontitle"> v0.85 - "This one isn't illusory."</b><br>
-            • New actions - Check Walls, Take Artifacts, Imbue Mind<br>
-            • Pyromancy mana cost 12000 > 14000.<br>
-            • Pyromancy self combat per level 10 > 5.<br>
-            • Start Trek now requires 60% City Explored.<br>
-            • The Crafting Guild and Adventure Guild rank bonuses at Godlike have been decreased. (77x > 10x)<br>
-            • Chronomancy and Dark Magic now show their current bonus on their skill tooltips.<br>
-            • Added commas to certain numbers >= 1,000 but < 9,999.<br>
-            • Items that you can only get one of now display as icons always on the right side of your resources.<br>
-            • Fixed minor typos/grammatical errors.<br>
-            • Increased the icon size for actions by 4 pixels.<br>
-            • The French translation has been disabled as it is currently broken, and no longer supported.
-        ]]></version>
-            <version verNum=".84"><![CDATA[
-            <b> October 14th, 2018 - November 7th, 2018</b>
-            <b> v0.84 - "Stop going so fast."</b><br>
-            • Chronomancy speed bonus sqrt(1 + level / 200) > (1 + level / 60) ^ 0.25.<br>
-            • Dark Magic mana gain bonus (1 + level / 100) > (1 + level / 60) ^ 0.25.<br>
-            • The action list height now saves on reload.<br>
-        ]]></version>
-            <version verNum=".83"><![CDATA[
-            <b> October 9th, 2018 - October 14th, 2018</b>
-            <b> v0.83 - "Bonus buttons."</b><br>
-            • Added an additional loadout slot.<br>
-            • Added 100/50 buttons to the amount selections on the actions list.<br>
-            • Added buttons to the top right of the actions list that allow you to adjust its vertical length.<br>
-            • When your loop ends during an action, your mana used that loop will now update properly.<br>
-            • Fixed various tooltips not overlapping certain elements.
-        ]]></version>
-            <version verNum=".82"><![CDATA[
-            <b> October 6th, 2018 - October 9th, 2018</b>
-            <b> v0.82 - "Please help I don't understand math."</b><br>
-            • New action - Face Judgement.<br>
-            • The talent multiplier formula has been changed to be worse at higher levels. (talent ^ 0.5 / 5) > (talent ^ 0.4 / 3)<br>
-            • Mine Soulstones mana cost 2500 > 5000.<br>
-            • Adjusted the placement of Pyromancy.<br>
-            • The currently selected loadout stays highlighted on refresh.<br>
-            • Fixed the mana cost reductions from Witch Knowledge and Runes Deciphered being applied improperly.<br>
-            • Fixed the Witch Knowledge Dark Ritual mana cost reduction not increasing the speed of the ritual to account for the reduced cost.
-        ]]></version>
-            <version verNum=".81"><![CDATA[
-            <b> October 3rd, 2018 - October 6th, 2018</b>
-            <b> v0.81 - "A new hobby."</b><br>
-            • New action - Bird Watching.<br>
-            • Fixed the speed bonuses Dark Ritual and Chronomancy draining bonus seconds faster.
-        ]]></version>
-            <version verNum=".80"><![CDATA[
-            <b> September 27th, 2018 - October 3rd, 2018</b>
-            <b> v0.80 - "The fine print."</b><br>
-            • New action - Looping Potion.<br>
-            • Dark Ritual now has bonuses for rituals 21-60, and a new unlimited per ritual bonus.<br>
-            • Chronomancy speed bonus sqrt(1 + level / 100) > sqrt(1 + level / 200).<br>
-            • The short forms of stat names have been capitalized.<br>
-            • Checkboxes have been vertically aligned.<br>
-            • Colons have been added to the end of resources with counts.<br>
-            • Fixed various minor bugs.
-        ]]></version>
-            <version verNum=".79"><![CDATA[
-            <b> September 20th, 2018 - September 27th, 2018</b>
-            <b> v0.79 - "Flowers and fire and trolls, oh my!"</b><br>
-            • Descriptions, flavor text, and tooltips have been changed in various places.<br>
-            • New actions - Follow Flowers, Mine Soulstones, Pyromancy, Hunt Trolls<br>
-            • Dark Ritual exp bonus 2000% -> 1000%<br>
-            • Dark Magic now reduces your reputation by 1 per completion.<br>
-            • Dark Ritual reputation requirement 0 or less -> -5 or less<br>
-            • Clear Thicket unlock 60% Forest Explored -> 20% Flower Trail Followed<br>
-            • Clear Thicket mana cost 300 -> 500<br>
-            • Explore Cavern no longer requires the pickaxe.<br>
-            • The font size on actions has been reduced by 1 pixel.
-        ]]></version>
-            <version verNum=".78"><![CDATA[
-            <b> August 18th, 2018 - September 20th, 2018</b>
-            <b> v0.78 - "Is it just me or is it getting evil in here?"</b><br>
-            • New actions - Clear Thicket, Talk to Witch, Dark Magic, Dark Ritual, Buy Pickaxe<br>
-            • Removed actions - Tournament<br>
-            • New zone - Mt. Olympus<br>
-            • Changed the colors for soul and charisma<br>
-            • Old Shortcut mana cost 1200 -> 800<br>
-            • Talk to Hermit mana cost 2000 -> 1200
-        ]]></version>
         </changelog>
         <save>
             <meta>
@@ -752,21 +521,27 @@
 		<mercantilism>
 			<label>Mercantilism</label>
 			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
-			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25 (rounded down).<br>
+			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25.<br>
             Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
 		</mercantilism>
         <divine>
             <label>Divine Favor</label>
             <desc>The gods have answered your prayers and given you their blessing.</desc>
-            <desc2><![CDATA[Increases soulstones gained from actions by (1 + level / 60) ^ 0.25 (rounded down).<br>
+            <desc2><![CDATA[Increases soulstones gained from actions by (1 + level / 60) ^ 0.25.<br>
             Currently granting <div id='skillBonusDivine'></div>x soulstone gains.]]></desc2>
         </divine>
         <commune>
             <label>Communing</label>
             <desc>Your blood sacrifices to dark beings makes it easier to communicate with them.</desc>
-            <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100) (rounded up).<br>
+            <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100).<br>
             Currently multiplying costs by <div id='skillBonusCommune'></div>x.]]></desc2>
         </commune>
+        <wunderkind>
+            <label>Wunderkind</label>
+            <desc>Even with your eyes closed, you still see the glow of the totem.</desc>
+            <desc2><![CDATA[Talent exp gain is increased by (1 + level / 60) ^ 0.25.<br>
+            Currently granting <div id='skillBonusWunderkind'></div>x talent exp.]]></desc2>
+        </wunderkind>
         <gluttony>
             <label>Gluttony</label>
             <desc>The insatiable hunger of the jungle has started to rub off on you.</desc>
@@ -1821,7 +1596,7 @@
             <info_text2>Alcoves with artifacts total</info_text2>
             <info_text3>Alcoves to check for artifacts</info_text3>
             <tooltip><![CDATA[
-            Behind some of the illusory walls, there are various sorts of artifacts that seem to belong to some sort of ancient civilization. Or at least that's what you'll say if anybody comes looking for them. (these do nothing right now)<br>Every 25 alcoves has an artifact.<br>Unlocked with 5% Illusory Walls Discovered.
+            Behind some of the illusory walls, there are various sorts of artifacts that seem to belong to some sort of ancient civilization. Or at least that's what you'll say if anybody comes looking for them.<br>Every 25 alcoves has an artifact.<br>Unlocked with 5% Illusory Walls Discovered.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Artifact taken:</b>⮀ You pick up an ornate necklace from the stone statue it was displayed on. It's made out of precious materials with incredible craftsmanship. If there's anything magical about it you can't figure it out, but there's really no reason to not take a priceless historical artifact with you.]]></story_1>
 			<story_2><![CDATA[<b>20 Artifacts taken:</b>⮀ Your collection is an unfocused assortment of unrelated artifacts found from all over the mountain, the only quality they all share being impeccable detail and craftsmanship. It seems like you're only picking clean what hasn't been lost to other people over time, but what you found will fetch a pretty penny nonetheless.]]></story_2>
@@ -2178,6 +1953,15 @@
             Gives Gluttony exp equal to (Rescued Survivors * 5).
         ]]></tooltip>
         </prepare_buffet>
+        <totem>
+            <label>Totem</label>
+            <tooltip><![CDATA[
+            Deep within the jungle, you find a totem pulsing with energy. Just standing near it, you feel more capable. If you drink a looping potion here, perhaps some of that energy will stay with you on future loops.<br>
+            Requires a looping potion.<br>
+            Unlocked at Jungle Explored 50%.<br>
+            Grants 100 Wunderkind exp.
+        ]]></tooltip>
+        </totem>
         <escape>
             <label>Escape</label>
             <tooltip><![CDATA[
@@ -2245,7 +2029,6 @@
             <label>Collect Interest</label>
             <tooltip><![CDATA[
             Collect your interest from the perpetual bank. They'll only give you allow the withdrawl if you're an upstanding citizen.<br>
-            Requires positive reputation.<br>
             Gives 0.1% of your total gold invested.<br>
             Current interest: <div id='bankInterest'></div>
         ]]></tooltip>
