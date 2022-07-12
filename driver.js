@@ -345,8 +345,12 @@ function adjustAll() {
 function capAmount(index, townNum) {
     const action = actions.next[index];
     const varName = `good${translateClassNames(action.name).varName}`;
-    const alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
-    const newLoops = towns[townNum][varName] - alreadyExisting;
+    let alreadyExisting;
+    if (action.name.startsWith("Survey")) alreadyExisting = getOtherSurveysOnList("") + (action.disabled ? action.loops : 0);
+    else alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
+    let newLoops;
+    if (action.name.startsWith("Survey")) newLoops = 500 - alreadyExisting;
+    else newLoops = towns[townNum][varName] - alreadyExisting;
     actions.nextLast = copyObject(actions.next);
     if (action.loops + newLoops < 0) action.loops = 0;
     else action.loops += newLoops;

@@ -284,6 +284,16 @@ function getNumOnList(actionName) {
     return count;
 }
 
+function getOtherSurveysOnList(surveyName) {
+    let count = 0;
+    for (const action of actions.next) {
+        if (!action.disabled && action.name.startsWith("Survey") && action.name != surveyName) {
+            count += action.loops;
+        }
+    }
+    return count;
+}
+
 function getNumOnCurList(actionName) {
     let count = 0;
     for (const action of actions.current) {

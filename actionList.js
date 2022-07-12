@@ -15,6 +15,15 @@ function translateClassNames(name) {
 }
 
 const limitedActions = [
+    "SurveyZ0",
+    "SurveyZ1",
+    "SurveyZ2",
+    "SurveyZ3",
+    "SurveyZ4",
+    "SurveyZ5",
+    "SurveyZ6",
+    "SurveyZ7",
+    "SurveyZ8",
     "Smash Pots",
     "Pick Locks",
     "Short Quest",
@@ -171,16 +180,16 @@ function SurveyAction(townNum) {
             Luck: 0.2
         },
         allowed() {
-            return 100;
+            return 500 - getOtherSurveysOnList(this.varName);
         },
         manaCost() {
             return 10000 * (this.townNum + 1);
         },
         visible() {
-            return getExploreProgress() > this.townNum * 5;
+            return getExploreProgress() > 0;
         },
         unlocked() {
-            return getExploreProgress() > this.townNum * 5;
+            return getExploreProgress() > 0;
         },
         finish() {
             towns[this.townNum].finishProgress(this.varName, getExploreSkill());

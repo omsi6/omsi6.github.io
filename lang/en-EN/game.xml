@@ -8,6 +8,13 @@
             </meta>
             <version verNum="1.2"><![CDATA[
             <b> July 12th, 2022</b>
+            Minor Survey Rework - still needs a bit more attention and explorers guild needs a use<br>
+            • Change: Survey is unlocked in all zones after joining explorers guild<br>
+            • Change: Survey actions cap raised to 500, but now applies across all survey actions<br>
+            • Change: Survey added as limited action, so the circle icon can be used        
+            ]]></version>
+            <version verNum="1.2"><![CDATA[
+            <b> July 12th, 2022</b>
             • Change: Constructed additional warehouses so numbers would be prettier with all increases<br>
             • Bugfix: Player was falling asleep on the wagon, missing the merchantville stop, and ending up on the mountain<br>
             • Bugfix: Imbue soul wasn't resetting buffs<br>
@@ -755,7 +762,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ0>
@@ -765,7 +772,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ1>
@@ -775,7 +782,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ2>
@@ -785,7 +792,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ3>
@@ -795,7 +802,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ4>
@@ -805,7 +812,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ5>
@@ -815,7 +822,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ6>
@@ -825,7 +832,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ7>
@@ -835,7 +842,7 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
+            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ8>
