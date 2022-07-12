@@ -101,7 +101,7 @@ let skillShowing;
 let curActionShowing;
 let dungeonShowing;
 let actionTownNum;
-let trainingLimits;
+let trainingLimits = 10;
 let storyShowing = 0;
 let storyMax = 0;
 const storyReqs = {
@@ -306,7 +306,7 @@ function load() {
         towns[i] = new Town(i);
     }
     actionTownNum = toLoad.actionTownNum === undefined ? 0 : toLoad.actionTownNum;
-    trainingLimits = toLoad.trainingLimits === undefined ? 10 : toLoad.trainingLimits;
+    trainingLimits = 10 + getBuffLevel("Imbuement");
     goldInvested = toLoad.goldInvested === undefined ? 0 : toLoad.goldInvested;
 
     actions.next = [];
@@ -485,7 +485,6 @@ function save() {
     toSave.dungeons = dungeons;
     toSave.townsUnlocked = townsUnlocked;
     toSave.actionTownNum = actionTownNum;
-    toSave.trainingLimits = trainingLimits;
 
     toSave.stats = stats;
     toSave.totalTalent = totalTalent;
