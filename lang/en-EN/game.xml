@@ -6,6 +6,16 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.2"><![CDATA[
+            <b> July 12th, 2022</b>
+            • Change: Constructed additional warehouses so numbers would be prettier with all increases<br>
+            • Bugfix: Player was falling asleep on the wagon, missing the merchantville stop, and ending up on the mountain<br>
+            • Bugfix: Imbue soul wasn't resetting buffs<br>
+            • Bugfix: Excursion costs weren't modified by explorers guild<br>
+            • Bugfix: Key wasn't being reset correctly<br>
+            • Bugfix: Underworld action was showing failed, even when successful<br>
+            • Bugfix: Mana well and Buy mana tooltips now update when leveling skills that benefit them
+            ]]></version>
             <version verNum="1.1"><![CDATA[
             <b> July 11th, 2022</b>
             • New Guild: Explorers - Voted by the community, the explorers guild has opened shop in Commerceville!<br>
@@ -742,8 +752,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ0>
@@ -752,8 +762,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ1>
@@ -762,8 +772,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ2>
@@ -772,8 +782,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ3>
@@ -782,8 +792,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ4>
@@ -792,8 +802,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ5>
@@ -802,8 +812,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ6>
@@ -812,8 +822,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ7>
@@ -822,8 +832,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of survey progress in all zones.<br>
-            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ8>
@@ -1978,7 +1988,9 @@
             <info_text2>Spots with full wells total</info_text2>
             <info_text3>Spots to check for wells</info_text3>
             <tooltip><![CDATA[
-            Search the town for wells that still have any mana left. They seem to be rapidly draining.<br>Full wells have 5000 mana, but lose 10 mana for every second that has passed in the loop.<br>Every 100 wells still has mana.
+            Search the town for wells that still have any mana left. They seem to be rapidly draining.<br>
+            Full wells have 5000 mana, but lose 10 mana for every second that has passed in the loop.<br>
+            Every 100 wells still has mana.
         ]]></tooltip>
         </mana_well>
         <destroy_pylons>
@@ -2196,7 +2208,7 @@
             <tooltip><![CDATA[
             Resets all talent levels, soulstones, imbue mind and imbue body. Other skills and buffs are unchanged.<br>
             Requires 500 Imbue Mind and Body.<br>
-            (Temporary)Raises all action speeds by 50%.
+            (Temporary - may change later)Raises all action speeds by 50%.
         ]]></tooltip>
         </imbue_soul>
         <challenge_gods>
