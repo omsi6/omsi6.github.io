@@ -1146,7 +1146,7 @@ Action.HitchRide = new Action("Hitch Ride", {
         return 1;
     },
     manaCost() {
-        return 0;
+        return 1;
     },
     canStart() {
         return true;
@@ -5095,7 +5095,7 @@ Action.Excursion = new Action("Excursion", {
         return 25000;
     },
     canStart() {
-        return resources.gold > this.goldCost();
+        return resources.gold > 2;
     },
     visible() {
         return true;
