@@ -12,6 +12,8 @@
             • Change: Survey is unlocked in all zones after joining explorers guild<br>
             • Change: Survey actions cap raised to 500, but now applies across all survey actions<br>
             • Change: Survey added as limited action, so the circle icon can be used<br>
+            • Change: Added max actions to oracle and charm school<br>
+            • Change: Completing totem for the first time doubles the bonus from imbue body<br>
             • Bugfix: Looping potion tooltip<br>
             • Bugfix: Spatiomancy was increasing mana well costs
             ]]></version>
@@ -570,7 +572,9 @@
         <wunderkind>
             <label>Wunderkind</label>
             <desc>Even with your eyes closed, you still see the glow of the totem.</desc>
-            <desc2><![CDATA[Talent exp gain is increased by (1 + level / 60) ^ 0.25.<br>
+            <desc2><![CDATA[
+            Doubles the initial stat gain of Imbue Body<br>
+            Talent exp gain is increased by (1 + level / 60) ^ 0.25.<br>
             Currently granting <div id='skillBonusWunderkind'></div>x talent exp.]]></desc2>
         </wunderkind>
         <gluttony>
@@ -2107,6 +2111,7 @@
             <label>Totem</label>
             <tooltip><![CDATA[
             Deep within the jungle, you find a totem pulsing with energy. Just standing near it, you feel more capable. If you drink a looping potion here, perhaps some of that energy will stay with you on future loops.<br>
+            Doubles the initial stat gain bonus of Imbue Body on first completion.<br>
             Requires a looping potion.<br>
             Unlocked at Jungle Explored 50%.<br>
             Grants 100 Wunderkind exp.

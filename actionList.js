@@ -45,7 +45,9 @@ const trainingActions = [
     "Train Dexterity",
     "Sit By Waterfall",
     "Read Books",
-    "Bird Watching"
+    "Bird Watching",
+    "Oracle",
+    "Charm School"
 ];
 function hasLimit(name) {
     return limitedActions.includes(name);

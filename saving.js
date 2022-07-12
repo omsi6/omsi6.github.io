@@ -14,6 +14,11 @@ function cheat() {
     else gameSpeed = 1;
 }
 
+function bonusCheat()
+{
+    totalOfflineMs = 1000000000000000;
+}
+
 let mainTickLoop;
 const saveName = "idleLoops1";
 
