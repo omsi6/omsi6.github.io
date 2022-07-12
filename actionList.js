@@ -2198,7 +2198,7 @@ Action.BuyManaZ3 = new Action("Buy Mana Z3", {
         return true;
     },
     goldCost() {
-        return Math.floor(50 * Math.pow(1 + getSkillBonus("Mercantilism")));
+        return Math.floor(50 * getSkillBonus("Mercantilism"));
     },
     finish() {
         addMana(resources.gold * this.goldCost());
