@@ -44,7 +44,7 @@ function hasLimit(name) {
 function getTravelNum(name) {
     if (name === "Face Judgement" && resources.reputation <= 50) return 2;
     if (name === "Face Judgement" && resources.reputation >= 50) return 1;
-    if (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Fall From Grace" || name === "Journey Forth" || name === "Escape" || name === "Leave City") return 1;
+    if (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Fall From Grace" || name === "Journey Forth" || name === "Escape" || name === "Leave City" || name === "Guru") return 1;
     if (name === "Hitch Ride") return 2;
     if (name === "Underworld") return 5;
     if (name === "Open Portal") return -5;
@@ -3611,15 +3611,13 @@ Action.Guru = new Action("Guru", {
         return resources.herbs >= 1000;
     },
     visible() {
-        return false;
         return getExploreProgress() >= 100;
     },
     unlocked() {
-        return false;
         return getExploreProgress() >= 100;
     },
     finish() {
-        unlockTown(8);
+        unlockTown(4);
     },
 });
 

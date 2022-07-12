@@ -94,9 +94,9 @@ function getSkillLevel(skill) {
 
 function getSkillBonus(skill) {
     let change;
-    if (skill === "Dark" || skill === "Chronomancy" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Theivery") change = "increase";
+    if (skill === "Dark" || skill === "Chronomancy" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Thievery") change = "increase";
     else if (skill === "Practical" || skill === "Spatiomancy" || skill === "Commune" || skill === "Gluttony") change = "decrease";
-    else console.log("Skill not found");
+    else console.log("Skill not found:" + skill);
 
     if(change == "increase") return Math.pow(1 + getSkillLevel(skill) / 60, 0.25);
     else if (change == "decrease") return 1 / (1 + getSkillLevel(skill) / 100);

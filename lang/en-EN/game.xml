@@ -1763,6 +1763,12 @@
 			<story_2><![CDATA[<b>Accepted by the Gods:</b>⮀ At the end of your story, a crack of lightning strikes behind the altar and leaves behind a cheerful man. Between the perfect bodily form and the power radiating from him, there's no doubt you're meeting a god in the flesh. He extends his hand, an offer of invitation, and you happily reach out and take it.]]></story_2>
 			<story_3><![CDATA[<b>Cast into the Shadow Realm:</b>⮀ There is only one word for the act of facing the gods while the stench of their dark cousins emanates from you: defiance. They know you aren't here to win their favour, but to spit in their faces as an emissary of their hated nemeses. Enraged, the gods strike you down, and you sink into a world of roiling black turmoil. And yet, the dark gods you're aligned with act too, and you see in front of you a path leading out of the abyss.]]></story_3>
         </face_judgement>
+        <guru>
+            <label>Guru</label>
+            <tooltip><![CDATA[The greatest explorer the guild has ever known was said to have found a path without judgement to Valhalla itself. Now, as his equal, he is willing to show you the way if you bring him a few herbs.<br>
+            Requires 1000 herbs.
+            ]]></tooltip>
+        </guru>
         <!--town 5-->
         <guided_tour>
             <label>Guided Tour</label>
