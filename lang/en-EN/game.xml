@@ -14,7 +14,8 @@
             • Bugfix: Excursion costs weren't modified by explorers guild<br>
             • Bugfix: Key wasn't being reset correctly<br>
             • Bugfix: Underworld action was showing failed, even when successful<br>
-            • Bugfix: Mana well and Buy mana tooltips now update when leveling skills that benefit them
+            • Bugfix: Mana well and Buy mana tooltips now update when leveling skills that benefit them<br>
+            • Bugfix: Skill rework was causing pick locks to give double gold
             ]]></version>
             <version verNum="1.1"><![CDATA[
             <b> July 11th, 2022</b>
