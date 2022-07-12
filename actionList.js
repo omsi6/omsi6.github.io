@@ -44,7 +44,10 @@ function hasLimit(name) {
 function getTravelNum(name) {
     if (name === "Face Judgement" && resources.reputation <= 50) return 2;
     if (name === "Face Judgement" && resources.reputation >= 50) return 1;
-    if (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Fall From Grace" || name === "Journey Forth" || name === "Escape" || name === "Flee Town") return 1;
+    if (name === "Start Journey" || name === "Continue On" || name === "Start Trek" || name === "Fall From Grace" || name === "Journey Forth" || name === "Escape" || name === "Leave City") return 1;
+    if (name === "Hitch Ride") return 2;
+    if (name === "Underworld") return 5;
+    if (name === "Open Portal") return -5;
     return 0;
 }
 function isTraining(name) {
@@ -155,6 +158,49 @@ DungeonAction.prototype.getPartName = function() {
 };
 
 //====================================================================================================
+//Survery Actions (All Zones)
+//====================================================================================================
+function SurveyAction(townNum) {
+    var obj = {
+        type: "progress",
+        expMult: 1,
+        stats: {
+            Per: 0.4,
+            Spd: 0.3,
+            Con: 0.2,
+            Luck: 0.2
+        },
+        allowed() {
+            return 100;
+        },
+        manaCost() {
+            return 10000 * (this.townNum + 1);
+        },
+        visible() {
+            return getExploreProgress() > this.townNum * 5;
+        },
+        unlocked() {
+            return getExploreProgress() > this.townNum * 5;
+        },
+        finish() {
+            towns[this.townNum].finishProgress(this.varName, getExploreSkill());
+        }
+    }
+    obj.townNum = townNum;
+    return obj; 
+}
+
+Action.SurveyZ0 = new Action("SurveyZ0", SurveyAction(0));
+Action.SurveyZ1 = new Action("SurveyZ1", SurveyAction(1));
+Action.SurveyZ2 = new Action("SurveyZ2", SurveyAction(2));
+Action.SurveyZ3 = new Action("SurveyZ3", SurveyAction(3));
+Action.SurveyZ4 = new Action("SurveyZ4", SurveyAction(4));
+Action.SurveyZ5 = new Action("SurveyZ5", SurveyAction(5));
+Action.SurveyZ6 = new Action("SurveyZ6", SurveyAction(6));
+Action.SurveyZ7 = new Action("SurveyZ7", SurveyAction(7));
+Action.SurveyZ8 = new Action("SurveyZ8", SurveyAction(8));
+
+//====================================================================================================
 //Zone 1 - Beginnersville
 //====================================================================================================
 Action.Wander = new Action("Wander", {
@@ -198,11 +244,14 @@ Action.Wander = new Action("Wander", {
     }
 });
 function adjustPots() {
-    towns[0].totalPots = towns[0].getLevel("Wander") * 5;
+    let town = towns[0];
+    let basePots = town.getLevel("Wander") * 5;
+    town.totalPots = Math.floor(basePots + basePots * getSurveyBonus(town));
 }
 function adjustLocks() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 100), 300) - 100;
-    towns[0].totalLocks = Math.floor(towns[0].getLevel("Wander") * (1 + spatio/200));
+    let town = towns[0];
+    let baseLocks = town.getLevel("Wander");
+    town.totalLocks = Math.floor(baseLocks * getSkillMod("Spatiomancy", 100, 300, .5) + baseLocks * getSurveyBonus(town));
 }
 
 Action.SmashPots = new Action("Smash Pots", {
@@ -223,7 +272,7 @@ Action.SmashPots = new Action("Smash Pots", {
         Spd: 0.6
     },
     manaCost() {
-        return Math.ceil(50 / (1 + getSkillLevel("Practical") / 100));
+        return Math.ceil(50 * getSkillBonus("Practical"));
     },
     visible() {
         return true;
@@ -233,7 +282,7 @@ Action.SmashPots = new Action("Smash Pots", {
     },
     // note this name is misleading: it is used for mana and gold gain.
     goldCost() {
-        return Math.floor(100 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
+        return Math.floor(100 * getSkillBonus("Dark"));
     },
     finish() {
         towns[0].finishRegular(this.varName, 10, () => {
@@ -276,9 +325,8 @@ Action.PickLocks = new Action("Pick Locks", {
         return towns[0].getLevel("Wander") >= 20;
     },
     goldCost() {
-        let practical = getSkillLevel("Practical");
-        practical = practical <= 200 ? practical : 200;
-        return Math.floor(10 * (1 + practical / 100) * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+        let base = 10;
+        return Math.floor(base * getSkillMod("Practical",0,200,1) + base * getSkillBonus("Thievery"));
     },
     finish() {
         towns[0].finishRegular(this.varName, 10, () => {
@@ -317,10 +365,37 @@ Action.BuyGlasses = new Action("Buy Glasses", {
         return 50;
     },
     visible() {
-        return towns[0].getLevel("Wander") >= 3;
+        return towns[0].getLevel("Wander") >= 3 && getExploreProgress() < 100;
     },
     unlocked() {
         return towns[0].getLevel("Wander") >= 20;
+    },
+    finish() {
+        addResource("glasses", true);
+        unlockStory("glassesBought");
+    }
+});
+
+Action.FoundGlasses = new Action("Found Glasses", {
+    type: "normal",
+    expMult: 0,
+    townNum: 0,
+    stats: {
+    },
+    allowed() {
+        return 1;
+    },
+    canStart() {
+        return false;
+    },
+    manaCost() {
+        return 0;
+    },
+    visible() {
+        return getExploreProgress() >= 100;
+    },
+    unlocked() {
+        return false;
     },
     finish() {
         addResource("glasses", true);
@@ -347,7 +422,7 @@ Action.BuyManaZ1 = new Action("Buy Mana Z1", {
         return towns[0].getLevel("Wander") >= 20;
     },
     goldCost() {
-        return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+        return Math.floor(50 * getSkillBonus("Mercantilism"));
     },
     finish() {
         addMana(resources.gold * this.goldCost());
@@ -396,8 +471,9 @@ Action.MeetPeople = new Action("Meet People", {
     },
 });
 function adjustSQuests() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 200), 400) - 200;
-    towns[0].totalSQuests = Math.floor(towns[0].getLevel("Met") * (1 + spatio/200));
+    let town = towns[0];
+    let baseSQuests = town.getLevel("Met");
+    town.totalSQuests = Math.floor(baseSQuests * getSkillMod("Spatiomancy", 200, 400, .5) + baseSQuests * getSurveyBonus(town));
 }
 
 Action.TrainStrength = new Action("Train Strength", {
@@ -469,9 +545,8 @@ Action.ShortQuest = new Action("Short Quest", {
         return towns[0].getLevel("Met") >= 5;
     },
     goldCost() {
-        let practical = Math.max(getSkillLevel("Practical") - 100, 0);
-        practical = Math.min(practical, 200);
-        return Math.floor(20 * (1 + practical / 100));
+        let base = 20;
+        return Math.floor(base * getSkillMod("Practical",100,300,1));
     },
     finish() {
         towns[0].finishRegular(this.varName, 5, () => {
@@ -523,8 +598,9 @@ Action.Investigate = new Action("Investigate", {
     },
 });
 function adjustLQuests() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 300), 500) - 300;
-    towns[0].totalLQuests = Math.floor(towns[0].getLevel("Secrets") / 2 * (1 + spatio/200));
+    let town = towns[0];
+    let baseLQuests = town.getLevel("Secrets") / 2;
+    town.totalLQuests = Math.floor(baseLQuests * getSkillMod("Spatiomancy", 300, 500, .5)) + baseLQuests * getSurveyBonus(town);
 }
 
 Action.LongQuest = new Action("Long Quest", {
@@ -558,9 +634,8 @@ Action.LongQuest = new Action("Long Quest", {
         return towns[0].getLevel("Secrets") >= 10;
     },
     goldCost() {
-        let practical = Math.max(getSkillLevel("Practical") - 200, 0);
-        practical = Math.min(practical, 200);
-        return Math.floor(30 * (1 + practical / 100));
+        let base = 30;
+        return Math.floor(base * getSkillMod("Practical",200,400,1));
     },
     finish() {
         towns[0].finishRegular(this.varName, 5, () => {
@@ -916,7 +991,7 @@ function finishDungeon(dungeonNum, floorNum) {
     if (rand <= floor.ssChance) {
         const statToAdd = statList[Math.floor(Math.random() * statList.length)];
         floor.lastStat = statToAdd;
-        stats[statToAdd].soulstone = stats[statToAdd].soulstone ? (stats[statToAdd].soulstone + Math.floor(Math.pow(10, dungeonNum) * Math.pow(1 + getSkillLevel("Divine") / 60, 0.25))) : 1;
+        stats[statToAdd].soulstone = stats[statToAdd].soulstone ? (stats[statToAdd].soulstone + Math.floor(Math.pow(10, dungeonNum) * getSkillBonus("Divine"))) : 1;
         floor.ssChance *= 0.98;
         view.updateSoulstones();
         return true;
@@ -1053,6 +1128,40 @@ Action.StartJourney = new Action("Start Journey", {
     },
 });
 
+Action.HitchRide = new Action("Hitch Ride", {
+    type: "normal",
+    expMult: 1,
+    townNum: 0,
+    storyReqs(storyNum) {
+        switch (storyNum) {
+            case 1:
+                return townsUnlocked.includes(1);
+        }
+        return false;
+    },
+    stats: {
+        Cha: 1,
+    },
+    allowed() {
+        return 1;
+    },
+    manaCost() {
+        return 0;
+    },
+    canStart() {
+        return true;
+    },
+    visible() {
+        return getExploreProgress() >= 25;
+    },
+    unlocked() {
+        return getExploreProgress() >= 25;
+    },
+    finish() {
+        unlockTown(3);
+    },
+});
+
 Action.OpenRift = new Action("Open Rift", {
     type: "normal",
     expMult: 1,
@@ -1133,15 +1242,19 @@ Action.ExploreForest = new Action("Explore Forest", {
     },
 });
 function adjustWildMana() {
-    towns[1].totalWildMana = towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Thicket") * 5;
+    let town = towns[1];
+    let baseWildMana = town.getLevel("Forest") * 5 + town.getLevel("Thicket") * 5;
+    town.totalWildMana = Math.floor(baseWildMana + baseWildMana * getSurveyBonus(town));
 }
 function adjustHunt() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 400), 600) - 400;
-    towns[1].totalHunt = towns[1].getLevel("Forest") * 2 * (1 + spatio/200);
+    let town = towns[1];
+    let baseHunt = town.getLevel("Forest") * 2;
+    town.totalHunt = Math.floor(baseHunt * getSkillMod("Spatiomancy", 400, 600, .5) + baseHunt * getSurveyBonus(town));
 }
 function adjustHerbs() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 500), 700) - 500;
-    towns[1].totalHerbs = (towns[1].getLevel("Forest") * 5 + towns[1].getLevel("Shortcut") * 2 + towns[1].getLevel("Flowers") * 13) * (1 + spatio/200);
+    let town = towns[1];
+    let baseHerbs = (town.getLevel("Forest") * 5 + town.getLevel("Shortcut") * 2 + town.getLevel("Flowers") * 13);
+    town.totalHerbs = Math.floor(baseHerbs * getSkillMod("Spatiomancy", 500, 700, .5) + baseHerbs * getSurveyBonus(town));
 }
 
 Action.WildMana = new Action("Wild Mana", {
@@ -1161,7 +1274,7 @@ Action.WildMana = new Action("Wild Mana", {
         Soul: 0.2
     },
     manaCost() {
-        return Math.ceil(150 / (1 + getSkillLevel("Practical") / 100));
+        return Math.ceil(150 * getSkillBonus("Practical"));
     },
     visible() {
         return true;
@@ -1170,7 +1283,7 @@ Action.WildMana = new Action("Wild Mana", {
         return towns[1].getLevel("Forest") >= 2;
     },
     goldCost() {
-        return Math.floor(250 * Math.pow(1 + getSkillLevel("Dark") / 60, 0.25));
+        return Math.floor(250 * getSkillBonus("Dark"));
     },
     finish() {
         towns[1].finishRegular(this.varName, 10, () => {
@@ -1813,7 +1926,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9 / (1 + getSkillLevel("Commune") / 100));
+        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9 * getSkillBonus("Commune"));
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -1838,7 +1951,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
     },
     loopsFinished() {
         addBuffAmt("Ritual", 1);
-        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9 / (1 + getSkillLevel("Commune") / 100));
+        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9 * getSkillBonus("Commune"));
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -1866,7 +1979,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         return towns[1].getLevel("Witch") >= 50 && getSkillLevel("Dark") >= 50;
     },
     goldCost() {
-        return 50 * (getBuffLevel("Ritual") + 1) / (1 + getSkillLevel("Commune") / 100);
+        return 50 * (getBuffLevel("Ritual") + 1) * getSkillBonus("Commune");
     },
     finish() {
         view.updateBuff("Ritual");
@@ -1892,7 +2005,7 @@ Action.ContinueOn = new Action("Continue On", {
         Spd: 0.4
     },
     allowed() {
-        return 1;
+        return getNumOnList("Open Portal") > 0 ? 2 : 1;
     },
     manaCost() {
         return Math.ceil(8000 - (60 * towns[1].getLevel("Shortcut")));
@@ -1961,8 +2074,9 @@ Action.ExploreCity = new Action("Explore City", {
     },
 });
 function adjustSuckers() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 600), 800) - 600;
-    towns[2].totalGamble = Math.floor(towns[2].getLevel("City") * 3 * (1 + spatio/200));
+    let town = towns[2];
+    let baseGamble = town.getLevel("City") * 3;
+    town.totalGamble = Math.floor(baseGamble * getSkillMod("Spatiomancy", 600, 800, .5) + baseGamble * getSurveyBonus(town));
 }
 
 Action.Gamble = new Action("Gamble", {
@@ -2006,7 +2120,7 @@ Action.Gamble = new Action("Gamble", {
     },
     finish() {
         towns[2].finishRegular(this.varName, 10, () => {
-            let goldGain = Math.floor(60 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+            let goldGain = Math.floor(60 * getSkillBonus("Thievery"));
             addResource("gold", goldGain);
             return 60;
         });
@@ -2084,7 +2198,7 @@ Action.BuyManaZ3 = new Action("Buy Mana Z3", {
         return true;
     },
     goldCost() {
-        return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+        return Math.floor(50 * Math.pow(1 + getSkillBonus("Mercantilism")));
     },
     finish() {
         addMana(resources.gold * this.goldCost());
@@ -2732,9 +2846,6 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     },
 });
 
-//====================================================================================================
-//Zone 4 - Mt Olympus
-//====================================================================================================
 Action.StartTrek = new Action("Start Trek", {
     type: "normal",
     expMult: 2,
@@ -2752,7 +2863,7 @@ Action.StartTrek = new Action("Start Trek", {
         Spd: 0.1
     },
     allowed() {
-        return 1;
+        return getNumOnList("Open Portal") > 0 ? 2 : 1;
     },
     manaCost() {
         return Math.ceil(12000);
@@ -2767,6 +2878,43 @@ Action.StartTrek = new Action("Start Trek", {
         unlockTown(3);
     },
 });
+
+Action.Underworld = new Action("Underworld", {
+    type: "normal",
+    expMult: 1,
+    townNum: 2,
+    stats: {
+        Cha: 1,
+    },
+    allowed() {
+        return 1;
+    },
+    cost() {
+        addResource("gold, -500")
+    },
+    manaCost() {
+        return 50000;
+    },
+    canStart() {
+        return resources.gold >= 500;
+    },
+    visible() {
+        return getExploreProgress() >= 50;
+    },
+    unlocked() {
+        return getExploreProgress() >= 50;
+    },
+    goldCost() {
+        return 500;
+    },
+    finish() {
+        unlockTown(7);
+    },
+});
+
+//====================================================================================================
+//Zone 4 - Mt Olympus
+//====================================================================================================
 
 Action.ClimbMountain = new Action("Climb Mountain", {
     type: "progress",
@@ -2835,7 +2983,7 @@ Action.ManaGeyser = new Action("Mana Geyser", {
     },
     affectedBy: ["Buy Pickaxe"],
     manaCost() {
-        return Math.ceil(2000 / (1 + getSkillLevel("Spatiomancy") / 100));
+        return Math.ceil(2000 * getSkillBonus("Spatiomancy"));
     },
     canStart() {
         return resources.pickaxe;
@@ -2854,7 +3002,9 @@ Action.ManaGeyser = new Action("Mana Geyser", {
     },
 });
 function adjustGeysers() {
-    towns[3].totalGeysers = towns[3].getLevel("Mountain") * 10;
+    let town = towns[3];
+    let baseGeysers = town.getLevel("Mountain") * 10;
+    town.totalGeysers = baseGeysers + baseGeysers * getSurveyBonus(town);
 }
 
 Action.DecipherRunes = new Action("Decipher Runes", {
@@ -3102,15 +3252,16 @@ Action.MineSoulstones = new Action("Mine Soulstones", {
     finish() {
         towns[3].finishRegular(this.varName, 10, () => {
             const statToAdd = statList[Math.floor(Math.random() * statList.length)];
-            stats[statToAdd].soulstone +=  Math.floor(Math.pow(1 + getSkillLevel("Divine") / 60, 0.25)) ;
+            stats[statToAdd].soulstone +=  Math.floor(getSkillBonus("Divine"));
             view.updateSoulstones();
         });
     },
 });
 
 function adjustMineSoulstones() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 700), 900) - 700;
-    towns[3].totalMineSoulstones = towns[3].getLevel("Cavern") * 3 * (1 + spatio/200);
+    let town = towns[3];
+    let baseMine = town.getLevel("Cavern") * 3;
+    town.totalMineSoulstones = Math.floor(baseMine * getSkillMod("Spatiomancy", 700, 900, .5) + baseMine * getSurveyBonus(town));
 }
 
 Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
@@ -3246,8 +3397,9 @@ Action.TakeArtifacts = new Action("Take Artifacts", {
     },
 });
 function adjustArtifacts() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 800), 1000) - 800;
-    towns[3].totalArtifacts = towns[3].getLevel("Illusions") * 5 * (1 + spatio/200);
+    let town = towns[3];
+    let baseArtifacts = town.getLevel("Illusions") * 5;
+    town.totalArtifacts = Math.floor(baseArtifacts * getSkillMod("Spatiomancy", 800, 1000, .5) + baseArtifacts * getSurveyBonus(town));
 }
 
 Action.ImbueMind = new MultipartAction("Imbue Mind", {
@@ -3438,6 +3590,37 @@ Action.FaceJudgement = new Action("Face Judgement", {
     },
 });
 
+Action.Guru = new Action("Guru", {
+    type: "normal",
+    expMult: 1,
+    townNum: 3,
+    stats: {
+        Cha: 0.5,
+        Soul: 0.5
+    },
+    allowed() {
+        return 1;
+    },
+    manaCost() {
+        return 100000;
+    },
+    cost() {
+        addResource("herbs", -1000);
+    },
+    canStart() {
+        return resources.herbs >= 1000;
+    },
+    visible() {
+        return getExploreProgress() >= 100;
+    },
+    unlocked() {
+        return getExploreProgress() >= 100;
+    },
+    finish() {
+        unlockTown(8);
+    },
+});
+
 //====================================================================================================
 //Zone 5 - Valhalla
 //====================================================================================================
@@ -3472,9 +3655,6 @@ Action.GuidedTour = new Action("Guided Tour", {
         towns[4].finishProgress(this.varName, 100 * (resources.glasses ? 2 : 1));
     },
 });
-function adjustPlots() {
-    towns[4].totalPlots = towns[4].getLevel("Tour") * 2;
-}
 
 Action.Canvass = new Action("Canvass", {
     type: "progress",
@@ -3564,8 +3744,9 @@ Action.AcceptDonations = new Action("Accept Donations", {
 });
 
 function adjustDonations() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 900), 1100) - 900;
-    towns[4].totalDonations = towns[4].getLevel("Canvassed") * 5 * (1 + spatio/200);
+    let town = towns[4];
+    let base = town.getLevel("Canvassed") * 5;
+    town.totalDonations = Math.floor(base * getSkillMod("Spatiomancy", 900, 1100, .5) + base * getSurveyBonus(town));
 }
 
 Action.TidyUp = new MultipartAction("Tidy Up", {
@@ -3629,7 +3810,7 @@ Action.BuyManaZ5 = new Action("Buy Mana Z5", {
         return true;
     },
     goldCost() {
-        return Math.floor(50 * Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25));
+        return Math.floor(50 * getSkillBonus("Mercantilism"));
     },
     finish() {
         addMana(resources.gold * this.goldCost());
@@ -4006,8 +4187,7 @@ Action.BuildHousing = new Action("Build Housing", {
     },
     affectedBy: ["Crafting Guild"],
     canStart() {
-        let spatio = Math.min(getSkillLevel("Spatiomancy"), 500);
-        let maxHouses = Math.floor(getCraftGuildRank().bonus * (1 + spatio * .01));
+        let maxHouses = Math.floor(getCraftGuildRank().bonus * getSkillMod("Spatiomancy",0,500,1));
         return guild === "Crafting" && towns[4].getLevel("Citizen") >= 100 && resources.houses < maxHouses;
     },
     manaCost() {
@@ -4109,7 +4289,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9 / (1 + getSkillLevel("Gluttony") / 100));
+        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9 * getSkillBonus("Gluttony"));
         let name = "";
         let soulstones = 0;
         for (const stat in stats) {
@@ -4134,7 +4314,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
     },
     loopsFinished() {
         addBuffAmt("Feast", 1);
-        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 5000 / 9 / (1 + getSkillLevel("Gluttony") / 100));
+        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 5000 / 9 * getSkillBonus("Gluttony"));
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -4162,7 +4342,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return towns[4].getLevel("Tour") >= 100;
     },
     goldCost() {
-        return 5000 * (getBuffLevel("Feast") + 1) / (1 + getSkillLevel("Gluttony") / 100);
+        return 5000 * (getBuffLevel("Feast") + 1) * getSkillBonus("Gluttony");
     },
     finish() {
         view.updateBuff("Feast");
@@ -4324,6 +4504,7 @@ Action.FallFromGrace = new Action("Fall From Grace", {
     },
     finish() {
         if (resources.reputation >= 0) resources.reputation = -1;
+        view.updateResource('reputation');
         unlockStory("fellFromGrace");
         unlockTown(5);
     },
@@ -4358,8 +4539,9 @@ Action.Meander = new Action("Meander", {
     }
 });
 function adjustPylons() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1000), 1200) - 1000;
-    towns[5].totalPylons = towns[5].getLevel("Meander") * 10 * (1 + spatio/200);
+    let town = towns[5];
+    let base = town.getLevel("Meander") * 10;
+    town.totalPylons = Math.floor(base * getSkillMod("Spatiomancy", 1000, 1200, .5) + base * getSurveyBonus(town));
 }
 
 Action.ManaWell = new Action("Mana Well", {
@@ -4373,7 +4555,7 @@ Action.ManaWell = new Action("Mana Well", {
         Int: 0.1,
     },
     manaCost() {
-        return Math.ceil(2500 / (1 + getSkillLevel("Spatiomancy") / 100));
+        return Math.ceil(2500 / getSkillBonus("Spatiomancy"));
     },
     canStart() {
         return true;
@@ -4386,14 +4568,16 @@ Action.ManaWell = new Action("Mana Well", {
     },
     finish() {
         towns[5].finishRegular(this.varName, 100, () => {
-        let wellMana = 5000 - Math.floor(10 * effectiveTime);
+        let wellMana = Math.min(5000 - Math.floor(10 * effectiveTime), 0);
         addMana(wellMana);
         return wellMana;
         });
     },
 });
 function adjustWells() {
-    towns[5].totalWells = towns[5].getLevel("Meander") * 10;
+    let town = towns[5];
+    let base = town.getLevel("Meander") * 10;
+    town.totalWells = Math.floor(base + base * getSurveyBonus(town));
 }
 
 Action.DestroyPylons = new Action("Destroy Pylons", {
@@ -4861,6 +5045,35 @@ Action.Escape = new Action("Escape", {
     },
 });
 
+Action.OpenPortal = new Action("Open Portal", {
+    type: "normal",
+    expMult: 1,
+    townNum: 6,
+    stats: {
+        Int: 0.2,
+        Luck: 0.1,
+        Soul: 0.7
+    },
+    skills: {
+        Restoration: 2500
+    },
+    allowed() {
+        return 1;
+    },
+    manaCost() {
+        return 50000;
+    },
+    visible() {
+        return getExploreProgress() >= 75;
+    },
+    unlocked() {
+        return getSkillLevel("Restoration") >= 1000;
+    },
+    finish() {
+        unlockTown(1);
+    },
+});
+
 //====================================================================================================
 //Zone 8 - Commerceville
 //====================================================================================================
@@ -4879,6 +5092,9 @@ Action.Excursion = new Action("Excursion", {
     manaCost() {
         return 25000;
     },
+    canStart() {
+        return resources.gold > goldCost();
+    },
     visible() {
         return true;
     },
@@ -4894,16 +5110,61 @@ Action.Excursion = new Action("Excursion", {
     }
 });
 function adjustPockets() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1100), 1300) - 1100;
-    towns[7].totalPockets = Math.floor(towns[7].getLevel("Excursion") * (1 + spatio/200));
+    let town = towns[7];
+    let base = town.getLevel("Excursion");
+    town.totalPockets = Math.floor(base * getSkillMod("Spatiomancy", 1100, 1300, .5) + base * getSurveyBonus(town));
 }
 function adjustWarehouses() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1200), 1400) - 1200;
-    towns[7].totalWarehouses = Math.floor(towns[7].getLevel("Excursion") / 4 * (1 + spatio/200));
+    let town = towns[7];
+    let base = town.getLevel("Excursion") / 4;
+    town.totalWarehouses = Math.floor(base * getSkillMod("Spatiomancy", 1200, 1400, .5) + base * getSurveyBonus(town));
 }
 function adjustInsurance() {
-    let spatio = Math.min(Math.max(getSkillLevel("Spatiomancy"), 1300), 1500) - 1300;
-    towns[7].totalInsurance = Math.floor(towns[7].getLevel("Excursion") / 10 * (1 + spatio/200));
+    let town = towns[7];
+    let base = town.getLevel("Excursion") / 10;
+    town.totalInsurance = Math.floor(base * getSkillMod("Spatiomancy", 1300, 1500, .5) + base * getSurveyBonus(town));
+}
+
+Action.ExplorersGuild = new Action("Explorers Guild", {
+    type: "normal",
+    expMult: 1,
+    townNum: 7,
+    stats: {
+        Per: 0.4,
+        Cha: 0.3,
+        Int: 0.2,
+        Luck: 0.2
+    },
+    manaCost() {
+        return 65000;
+    },
+    allowed() {
+        return 1;
+    },
+    canStart() {
+        return guild === "";
+    },
+    visible() {
+        return towns[7].getLevel("Excursion") >= 5;
+    },
+    unlocked() {
+        return towns[7].getLevel("Excursion") >= 10;
+    },
+    finish() {
+        if (getExploreSkill() == 0) towns[this.townNum].finishProgress("SurveyZ"+this.townNum, 100);
+        guild = "Explorer";
+    }
+});
+function getExploreProgress() {
+    let totalExploreProgress = 0;
+    towns.forEach((town, index) => {
+        if (town.getLevel("SurveyZ"+index)) totalExploreProgress += town.getLevel("SurveyZ"+index);
+    });
+    if (totalExploreProgress == 0) return 0;
+    else return Math.max(Math.floor(totalExploreProgress / towns.length), 1);
+}
+function getExploreSkill() {
+    return Math.floor(Math.sqrt(getExploreProgress()));
 }
 
 Action.ThievesGuild = new MultipartAction("Thieves Guild", {
@@ -4953,10 +5214,10 @@ Action.ThievesGuild = new MultipartAction("Thieves Guild", {
         return `Rank ${getThievesGuildRank(segment % 3).name}`;
     },
     visible() {
-        return towns[7].getLevel("Excursion") >= 10;
+        return towns[7].getLevel("Excursion") >= 20;
     },
     unlocked() {
-        return towns[7].getLevel("Excursion") >= 10;
+        return towns[7].getLevel("Excursion") >= 25;
     },
     finish() {
         guild = "Thieves";
@@ -5013,7 +5274,7 @@ Action.PickPockets = new Action("Pick Pockets", {
         return getSkillLevel("Thievery") > 0;
     },
     goldCost() {
-        return Math.floor(1 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+        return Math.floor(1 * getSkillBonus("Thievery"));
     },
     finish() {
         towns[7].finishProgress(this.varName, 30 * getThievesGuildRank().bonus);
@@ -5057,7 +5318,7 @@ Action.RobWarehouse = new Action("Rob Warehouse", {
         return towns[7].getLevel("PickPockets") >= 100;
     },
     goldCost() {
-        return Math.floor(10 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+        return Math.floor(10 * getSkillBonus("Thievery"));
         },
     finish() {
         towns[7].finishProgress(this.varName, 20 * getThievesGuildRank().bonus);
@@ -5101,7 +5362,7 @@ Action.InsuranceFraud = new Action("Insurance Fraud", {
         return towns[7].getLevel("RobWarehouse") >= 100;
     },
     goldCost() {
-        return Math.floor(100 * Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25));
+        return Math.floor(100 * getSkillBonus("Thievery"));
     },
     finish() {
         towns[7].finishProgress(this.varName, 10 * getThievesGuildRank().bonus);

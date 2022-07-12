@@ -6,6 +6,16 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.1"><![CDATA[
+            <b> July 11th, 2022</b>
+            • New Guild: Explorers - Voted by the community, the explorers guild has opened shop in Commerceville!<br>
+            • Unlocks a new "Survey" action in all zones - Survey progress minorly increases the number of limited resources (% * 0.5)<br>
+            • Overall Survey progress also unlocks shortcuts for new ways to move between zones<br>
+            • Bugfix: Mana well costs could become negative, subtracting mana from the player<br>
+            • Bugfix: Excursion didn't check if you had enough gold to start<br>
+            • Bugfix: Reputation display wasn't updated after fall from grace action<br>
+            • Backend: Major rework of how skill bonuses are calculated in code. The results should be the same, but make the code easier to read and maintain. Unfortunately, I expect at least a few bugs from typos in this.<br>
+            ]]></version>
             <version verNum="1.0"><![CDATA[
             <b> July 9th, 2022</b>
             • New Skill: Wunderkind - Increases talent exp gain<br>
@@ -726,6 +736,97 @@
             <failed_attempts>Failed Attempts:</failed_attempts>
             <error>Error:</error>
         </current_action>
+        <!--survey-->
+            <surveyZ0>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ0>
+        <surveyZ1>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ1>
+        <surveyZ2>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ2>
+        <surveyZ3>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ3>
+        <surveyZ4>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ4>
+        <surveyZ5>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ5>
+        <surveyZ6>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ6>
+        <surveyZ7>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ7>
+        <surveyZ8>
+            <label>Survey</label>
+            <label_done>Surveyed</label_done>
+            <tooltip><![CDATA[
+            The explorers guild has taught you to find what most would miss.<br>
+            Gives progress equal to the square root of survey progress in all zones.<br>
+            Can only be completed <div class='surveyLimit'>100</div> times per loop<br>
+            Currently granting <div class='surveySkill'></div> exp per action.
+            ]]></tooltip>
+        </surveyZ8>
         <!--town 1-->
         <wander>
             <label>Wander</label>
@@ -774,6 +875,13 @@
         ]]></tooltip>
             <story_1><![CDATA[<b>Glasses bought:</b>⮀ The world snaps into sharp focus as you put them on and you gawk a little as details that had slipped your eyes previously stood out in sharp contrast. You're a little gobsmacked at how much of a difference they make.]]></story_1>
         </buy_glasses>
+        <found_glasses>
+            <label>Found Glasses</label>
+            <tooltip><![CDATA[
+            You could have sworn you had a spare pair of glasses somewhere. Now you've explored to the ends of the world. Every nook or cranny has revealed to you their secrets. And you've found them - in the last place anyone would ever think to look. On top of your head.<br>
+            You now start all loops with glasses.
+        ]]></tooltip>
+        </found_glasses>
         <buy_mana_z1>
             <label>Buy Mana</label>
             <tooltip><![CDATA[
@@ -1037,6 +1145,12 @@
         ]]></tooltip>
             <story_1><![CDATA[<b>Traveled to the second zone:</b>⮀ You leave town, heading towards the forest that stood between the village and Merchanton. You had exhausted every option in Beginnersville and there was nothing here that would stop the loops, it was time to look for other areas and solutions.]]></story_1>
         </start_journey>
+        <hitch_ride>
+            <label>Hitch Ride</label>
+            <tooltip><![CDATA[
+            The explorers guild has a contract with various caravaans for transport around the world. They have taught you the secret handsigns to gain passage. And this one just happens to have some spare mana to share on the journey!
+        ]]></tooltip>
+        </hitch_ride>
         <open_rift>
             <label>Open Rift</label>
             <tooltip><![CDATA[
@@ -1463,6 +1577,13 @@
         ]]></tooltip>
 			<story_1><![CDATA[<b>Traveled to the fourth zone:</b>⮀ Merchanton is an interesting place, but unfortunately it doesn't seem to have your cure. You've heard many wonderous things about Mt. Olympus though, and if the stories are real then maybe divine intervention or old magic could be the solution you're looking for. They also say the mountain is dangerous, but to be honest you've always wanted to go mountain climbing.]]></story_1>
         </start_trek>
+        <underworld>
+            <label>Underworld</label>
+            <tooltip><![CDATA[
+            Your knowledge in the explorers guild continues to open new doors. Grease the right hinges with a bit of gold, and who knows where you can end up.<br>Costs
+        ]]></tooltip>
+        <tooltip2>gold.</tooltip2>
+        </underworld>
         <!--town 4-->
         <climb_mountain>
             <label>Climb Mountain</label>
@@ -1968,6 +2089,13 @@
             The jungle seems to grow ever larger with every moment that passes. You'll have to get out of here fast.<br>Must be completed within 60 seconds of the loop (hover Mana Used for effective time).
         ]]></tooltip>
         </escape>
+        <open_portal>
+            <label>Open Portal</label>
+            <tooltip><![CDATA[
+            The explorers guild tells you of a secret grove within jungle where the space between realms is weakest. With enough restoration skill, you may be able to open a rift back and leave the shadow realm.<br>
+            Requires 1000 Restoration.
+        ]]></tooltip>
+        </open_portal>
         <excursion>
             <label>Excursion</label>
             <label_done>Seen</label_done>
@@ -1978,6 +2106,16 @@
             ]]></tooltip>
             <tooltip2>gold.</tooltip2>
         </excursion>
+        <explorers_guild>
+            <label>Explorers Guild</label>
+            <tooltip><![CDATA[
+            Ever feel like there's more stuff out there that you're missing? The explorer's guild knows it! Learn to find more of everything, and with enough standing even new ways to move about the world.<br>
+            You can only join 1 guild at a time (including from Merchanton), and only try once.<br>
+            Unlocks the Survey action in other zones based on world survey progress.<br>
+            Unlocks new shortcuts for every 25% world survey progress<br>
+            Current world survey progress: <div id='totalSurveyProgress'></div>%.
+        ]]></tooltip>
+        </explorers_guild>
         <thieves_guild>
             <label>Thieves Guild</label>
             <label_done>Pursestrings Cut</label_done>

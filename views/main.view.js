@@ -1,5 +1,7 @@
 "use strict";
 
+let screenSize;
+
 function View() {
     this.initalize = function() {
         this.createStats();
@@ -197,25 +199,25 @@ function View() {
             document.getElementById(`skill${skill}LevelProgress`).textContent = intToString(levelPrc, 2);
 
             if (skill === "Dark") {
-                document.getElementById("skillBonusDark").textContent = intToString(Math.pow(1 + getSkillLevel("Dark") / 60, 0.25), 4);
+                document.getElementById("skillBonusDark").textContent = intToString(getSkillBonus("Dark"), 4);
             } else if (skill === "Chronomancy") {
-                document.getElementById("skillBonusChronomancy").textContent = intToString(Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25), 4);
+                document.getElementById("skillBonusChronomancy").textContent = intToString(getSkillBonus("Chronomancy"), 4);
             } else if (skill === "Practical") {
-                document.getElementById("skillBonusPractical").textContent = (1 / (1 + getSkillLevel("Practical") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+                document.getElementById("skillBonusPractical").textContent = getSkillBonus("Practical").toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             } else if (skill === "Mercantilism") {
-                document.getElementById("skillBonusMercantilism").textContent = intToString(Math.pow(1 + getSkillLevel("Mercantilism") / 60, 0.25), 4);
+                document.getElementById("skillBonusMercantilism").textContent = intToString(getSkillBonus("Mercantilism"), 4);
             } else if (skill === "Spatiomancy") {
-                document.getElementById("skillBonusSpatiomancy").textContent = (1 / (1 + getSkillLevel("Spatiomancy") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+                document.getElementById("skillBonusSpatiomancy").textContent = getSkillBonus("Spatiomancy").toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             } else if (skill === "Divine") {
-                document.getElementById("skillBonusDivine").textContent = intToString(Math.pow(1 + getSkillLevel("Divine") / 60, 0.25), 4);
+                document.getElementById("skillBonusDivine").textContent = intToString(getSkillBonus("Divine"), 4);
             } else if (skill === "Commune") {
-                document.getElementById("skillBonusCommune").textContent = (1 / (1 + getSkillLevel("Commune") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+                document.getElementById("skillBonusCommune").textContent = getSkillBonus("Commune").toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             } else if (skill === "Wunderkind") {
-                document.getElementById("skillBonusWunderkind").textContent = intToString(Math.pow(1 + getSkillLevel("Wunderkind") / 60, 0.25), 4);
+                document.getElementById("skillBonusWunderkind").textContent = intToString(getSkillBonus("Wunderkind"), 4);
             }else if (skill === "Gluttony") {
-                document.getElementById("skillBonusGluttony").textContent = (1 / (1 + getSkillLevel("Gluttony") / 100)).toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
+                document.getElementById("skillBonusGluttony").textContent = getSkillBonus("Gluttony").toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             } else if (skill === "Thievery") {
-                document.getElementById("skillBonusThievery").textContent = intToString(Math.pow(1 + getSkillLevel("Thievery") / 60, 0.25), 4);
+                document.getElementById("skillBonusThievery").textContent = intToString(getSkillBonus("Thievery"), 4);
             }
         }
     };
@@ -270,6 +272,10 @@ function View() {
         document.getElementById("actionAllowedPockets").textContent = intToStringRound(towns[7].totalPockets);
         document.getElementById("actionAllowedWarehouses").textContent = intToStringRound(towns[7].totalWarehouses);
         document.getElementById("actionAllowedInsurance").textContent = intToStringRound(towns[7].totalInsurance);
+        document.getElementById("totalSurveyProgress").textContent = getExploreProgress();
+        Array.from(document.getElementsByClassName("surveySkill")).forEach(div => {
+            div.textContent = getExploreSkill();
+        });
     }
     this.updateTeamCombat = function() {
         if (towns[2].unlocked) {
@@ -371,7 +377,7 @@ function View() {
             } else if (action.name === "Open Rift") {
                 color = "linear-gradient(to bottom, rgb(255, 152, 0, 0.2) 49%, rgba(103, 58, 183, 0.2) 51%)";
             } else {
-                color = travelNum > 0 ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
+                color = (travelNum > 0 || travelNum == -5) ? `linear-gradient(${this.zoneTints[townNum]} 49%, ${this.zoneTints[townNum + travelNum]} 51%)` : this.zoneTints[townNum];
             }
             totalDivText +=
                 `<div
@@ -1161,6 +1167,7 @@ function adjustActionListSize(amt) {
         curActionsDiv.style.maxHeight = `${Math.min(Math.max(parseInt(curActionsDiv.style.maxHeight) + amt, 457), 1957)}px`;
         nextActionsDiv.style.maxHeight = `${Math.min(Math.max(parseInt(nextActionsDiv.style.maxHeight) + amt, 457), 1957)}px`;
     }
+    setScreenSize();
     saveUISettings();
 }
 
@@ -1169,4 +1176,35 @@ function updateBuffCaps() {
         document.getElementById(`buff${buff}Cap`).value = Math.min(parseInt(document.getElementById(`buff${buff}Cap`).value), buffHardCaps[buff]);
         buffCaps[buff] = parseInt(document.getElementById(`buff${buff}Cap`).value);
     }
+}
+
+function setScreenSize() {
+    screenSize = document.body.scrollHeight;
+}
+
+//Attempts at getting divs to stay on screen, but can't figure it out still
+function clampDivs() {
+    let tooltips = Array.from(document.getElementsByClassName("showthis"));
+    let test = document.getElementById("radarStats");
+    console.log(screenSize);
+    tooltips.forEach(tooltip => {
+        var offsets = cumulativeOffset(tooltip);
+        if (offsets.top != 0) console.log("Top: " + offsets.top + ". Height: " + tooltip.clientHeight + ". Total: " + (offsets.top + tooltip.clientHeight) + ". Screensize: " + screenSize);
+        if (offsets.top < 0) console.log("Offscreen - top");
+        if (offsets.top + tooltip.clientHeight > screenSize) tooltip.style.top = -100 + 'px';
+    });
+}
+
+function cumulativeOffset(element) {
+    var top = 0, bottom = 0;
+    do {
+        top += element.offsetTop  || 0;
+        bottom += element.offsetBottom || 0;
+        element = element.offsetParent;
+    } while(element);
+
+    return {
+        top: top,
+        bottom: bottom
+    };
 }

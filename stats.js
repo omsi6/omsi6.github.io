@@ -94,7 +94,7 @@ function getSkillLevel(skill) {
 
 function getSkillBonus(skill) {
     let change;
-    if (skill === "Dark" || skill === "Chrono" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Theivery") change = "increase";
+    if (skill === "Dark" || skill === "Chronomancy" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Theivery") change = "increase";
     else if (skill === "Practical" || skill === "Spatiomancy" || skill === "Commune" || skill === "Gluttony") change = "decrease";
     else console.log("Skill not found");
 
@@ -103,8 +103,24 @@ function getSkillBonus(skill) {
     else return 0;
 }
 
+function getSkillMod(name, min, max, percentChange) {
+    if (getSkillLevel(name) < min) return 1;
+    else return 1 + Math.min(getSkillLevel(name) - min, max-min) * percentChange / 100;
+}
+
 function getBuffLevel(buff) {
     return buffs[buff].amt;
+}
+
+function getRitualBonus(min, max, speed)
+{
+    if (getBuffLevel("Ritual") < min) return 1;
+    else return 1 + Math.min(getBuffLevel("Ritual") - min, max-min) * speed / 100;
+}
+
+function getSurveyBonus(town)
+{
+    return town.getLevel("Survey") * .005;
 }
 
 function getArmorLevel() {

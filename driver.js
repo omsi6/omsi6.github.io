@@ -15,21 +15,20 @@ function getSpeedMult(zone = curTown) {
     let speedMult = 1;
 
     // dark ritual
-    if (zone === 0 && getBuffLevel("Ritual") > 0) speedMult *= 1 + Math.min(getBuffLevel("Ritual"), 20) / 10;
-    else if (zone === 1 && getBuffLevel("Ritual") > 20) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 20, 20) / 20;
-    else if (zone === 2 && getBuffLevel("Ritual") > 40) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 40, 20) / 40;
-    else if (zone === 3 && getBuffLevel("Ritual") > 60) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 60, 20) / 66;
-    else if (zone === 4 && getBuffLevel("Ritual") > 80) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 80, 20) / 100;
-    else if (zone === 5 && getBuffLevel("Ritual") > 100) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 100, 50) / 200;
-    else if (zone === 6 && getBuffLevel("Ritual") > 150) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 150, 50) / 200;
-    else if (zone === 7 && getBuffLevel("Ritual") > 200) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 200, 50) / 200;
-    else if (zone === 8 && getBuffLevel("Ritual") > 250) speedMult *= 1 + Math.min(getBuffLevel("Ritual") - 250, 50) / 200;
-
-    if (getBuffLevel("Ritual") > 300) speedMult *= 1 + (getBuffLevel("Ritual") - 300) / 1000; 
-
+    if (zone === 0) speedMult *= getRitualBonus(0, 20, 10);
+    else if (zone === 1) speedMult *= getRitualBonus(20, 40, 5);
+    else if (zone === 2) speedMult *= getRitualBonus(40, 60, 2.5);
+    else if (zone === 3) speedMult *= getRitualBonus(60, 80, 1.5);
+    else if (zone === 4) speedMult *= getRitualBonus(80, 100, 1);
+    else if (zone === 5) speedMult *= getRitualBonus(100, 150, .5);
+    else if (zone === 6) speedMult *= getRitualBonus(150, 200, .5);
+    else if (zone === 7) speedMult *= getRitualBonus(200, 250, .5);
+    else if (zone === 8) speedMult *= getRitualBonus(250, 300, .5);
+    speedMult *= getRitualBonus(300, 666, .1);
+    
     // chronomancy
-    speedMult *= Math.pow(1 + getSkillLevel("Chronomancy") / 60, 0.25);
-
+    speedMult *= getSkillBonus("Chronomancy");
+    
     //Imbue Soul
     speedMult += 0.5 * getBuffLevel("Imbuement3");
 
@@ -224,6 +223,7 @@ function resetResource(resource) {
 
 function resetResources() {
     resources = copyObject(resourcesTemplate);
+    if(getExploreProgress() >= 100) addResource("glasses", true);
     view.updateResources();
 }
 
