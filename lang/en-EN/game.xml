@@ -6,14 +6,17 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.3"><![CDATA[
+            <b> July 12th, 2022</b>
+            • Change: Added max actions to oracle and charm school<br>
+            • Change: Completing totem for the first time doubles the bonus from imbue body<br>
+            ]]></version>
             <version verNum="1.2"><![CDATA[
             <b> July 12th, 2022</b>
             Minor Survey Rework - still needs a bit more attention and explorers guild needs a use<br>
             • Change: Survey is unlocked in all zones after joining explorers guild<br>
             • Change: Survey actions cap raised to 500, but now applies across all survey actions<br>
             • Change: Survey added as limited action, so the circle icon can be used<br>
-            • Change: Added max actions to oracle and charm school<br>
-            • Change: Completing totem for the first time doubles the bonus from imbue body<br>
             • Bugfix: Looping potion tooltip<br>
             • Bugfix: Spatiomancy was increasing mana well costs
             ]]></version>
