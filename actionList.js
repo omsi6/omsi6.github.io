@@ -326,7 +326,7 @@ Action.PickLocks = new Action("Pick Locks", {
     },
     goldCost() {
         let base = 10;
-        return Math.floor(base * getSkillMod("Practical",0,200,1) + base * getSkillBonus("Thievery"));
+        return Math.floor(base * getSkillMod("Practical",0,200,1) + base * getSkillBonus("Thievery") - base);
     },
     finish() {
         towns[0].finishRegular(this.varName, 10, () => {
@@ -1158,7 +1158,7 @@ Action.HitchRide = new Action("Hitch Ride", {
         return getExploreProgress() >= 25;
     },
     finish() {
-        unlockTown(3);
+        unlockTown(2);
     },
 });
 
@@ -2890,7 +2890,7 @@ Action.Underworld = new Action("Underworld", {
         return 1;
     },
     cost() {
-        addResource("gold, -500")
+        addResource("gold", -500)
     },
     manaCost() {
         return 50000;
@@ -3906,6 +3906,9 @@ Action.Mercantilism = new Action("Mercantilism", {
     },
     finish() {
         handleSkillExp(this.skills);
+        view.adjustManaCost("Buy Mana Z1");
+        view.adjustManaCost("Buy Mana Z3");
+        view.adjustManaCost("Buy Mana Z5");
     },
 });
 
@@ -4141,6 +4144,7 @@ Action.Spatiomancy = new Action("Spatiomancy", {
     finish() {
         handleSkillExp(this.skills);
         view.adjustManaCost("Mana Geyser");
+        view.adjustManaCost("Mana Well");
         adjustAll();
         for (const action of totalActionList) {
             if (towns[action.townNum].varNames.indexOf(action.varName) !== -1) {
@@ -5102,7 +5106,7 @@ Action.Excursion = new Action("Excursion", {
         return true;
     },
     goldCost() {
-        return guild === "Thieves" ? 2 : 10;
+        return (guild === "Thieves" || guild === "Explorer") ? 2 : 10;
     },
     finish() {
         towns[7].finishProgress(this.varName, 50 * (resources.glasses ? 2 : 1));
@@ -5116,7 +5120,7 @@ function adjustPockets() {
 }
 function adjustWarehouses() {
     let town = towns[7];
-    let base = town.getLevel("Excursion") / 4;
+    let base = town.getLevel("Excursion") / 2.5;
     town.totalWarehouses = Math.floor(base * getSkillMod("Spatiomancy", 1200, 1400, .5) + base * getSurveyBonus(town));
 }
 function adjustInsurance() {
@@ -5541,11 +5545,11 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
             stats[stat].soulstone = 0;
             view.requestUpdate("updateStat", stat);
         }
-        view.updateStats();
-        addBuffAmt("Imbuement", -1 * getBuffLevel("Imbuement"));
-        addBuffAmt("Imbuement2", -1 * getBuffLevel("Imbuement2"));
+        buffs["Imbuement"].amt = 0;
+        buffs["Imbuement2"].amt = 0;
         addBuffAmt("Imbuement3", 1);
-        view.adjustGoldCost("ImbueSoul", this.goldCost());
+        view.updateBuffs();
+        view.updateStats();
     },
     getPartName() {
         return "Imbue Soul";

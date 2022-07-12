@@ -60,7 +60,8 @@ let resources = {
     pickaxe: false,
     loopingPotion: false,
     citizenship: false,
-    pegasus: false
+    pegasus: false,
+    key: false
 };
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
