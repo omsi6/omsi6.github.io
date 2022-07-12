@@ -4766,7 +4766,7 @@ Action.JourneyForth = new Action("Journey Forth", {
         Spd: 0.3
     },
     allowed() {
-        return 1;
+        return getNumOnList("Open Portal") > 0 ? 2 : 1;
     },
     manaCost() {
         return 20000;
