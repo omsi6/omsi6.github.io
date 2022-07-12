@@ -282,11 +282,13 @@ Action.SmashPots = new Action("Smash Pots", {
     },
     // note this name is misleading: it is used for mana and gold gain.
     goldCost() {
-        return Math.floor(100 * getSkillBonus("Dark"));
+        console.log(getSkillBonus("Dark"));
+        return Math.floor(300 * getSkillBonus("Dark"));
     },
     finish() {
         towns[0].finishRegular(this.varName, 10, () => {
             const manaGain = this.goldCost();
+            console.log(manaGain);
             addMana(manaGain);
             return manaGain;
         });
@@ -3590,7 +3592,7 @@ Action.FaceJudgement = new Action("Face Judgement", {
     },
 });
 
-/*Action.Guru = new Action("Guru", {
+Action.Guru = new Action("Guru", {
     type: "normal",
     expMult: 1,
     townNum: 3,
@@ -3611,15 +3613,17 @@ Action.FaceJudgement = new Action("Face Judgement", {
         return resources.herbs >= 1000;
     },
     visible() {
+        return true;
         return getExploreProgress() >= 100;
     },
     unlocked() {
+        return true;
         return getExploreProgress() >= 100;
     },
     finish() {
         unlockTown(8);
     },
-});*/
+});
 
 //====================================================================================================
 //Zone 5 - Valhalla
