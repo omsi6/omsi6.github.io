@@ -3590,7 +3590,7 @@ Action.FaceJudgement = new Action("Face Judgement", {
     },
 });
 
-Action.Guru = new Action("Guru", {
+/*Action.Guru = new Action("Guru", {
     type: "normal",
     expMult: 1,
     townNum: 3,
@@ -3619,7 +3619,7 @@ Action.Guru = new Action("Guru", {
     finish() {
         unlockTown(8);
     },
-});
+});*/
 
 //====================================================================================================
 //Zone 5 - Valhalla
