@@ -3611,11 +3611,11 @@ Action.Guru = new Action("Guru", {
         return resources.herbs >= 1000;
     },
     visible() {
-        return true;
+        return false;
         return getExploreProgress() >= 100;
     },
     unlocked() {
-        return true;
+        return false;
         return getExploreProgress() >= 100;
     },
     finish() {
@@ -5095,7 +5095,7 @@ Action.Excursion = new Action("Excursion", {
         return 25000;
     },
     canStart() {
-        return resources.gold > goldCost();
+        return resources.gold > this.goldCost();
     },
     visible() {
         return true;
