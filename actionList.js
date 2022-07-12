@@ -3429,7 +3429,8 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     },
     canStart() {
         let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 20 / 9);
+        const tempSoulstonesToSacrifice = Math.floor((getBuffLevel("Imbuement") + 1) * 20 / 9);
+        console.log(tempSoulstonesToSacrifice);
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -3443,7 +3444,9 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
             }
         }
-        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
+        console.log("TempCanStart: " + tempCanStart);
+        if (stats[name].soulstone < (getBuffLevel("Imbuement") + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
+        console.log("TempCanStart: " + tempCanStart);
         return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     },
     loopCost(segment) {
@@ -3455,7 +3458,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     loopsFinished() {
         trainingLimits++;
         addBuffAmt("Imbuement", 1);
-        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 20 / 9);
+        const tempSoulstonesToSacrifice = Math.floor(getBuffLevel("Imbuement") * 20 / 9);
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -3469,7 +3472,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
                 stats[stat].soulstone -= tempSoulstonesToSacrifice;
             }
         }
-        stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 20 - tempSoulstonesToSacrifice * 8;
+        stats[name].soulstone -= getBuffLevel("Imbuement") * 20 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
         view.adjustGoldCost("ImbueMind", this.goldCost());
     },
