@@ -3430,7 +3430,6 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     canStart() {
         let tempCanStart = true;
         const tempSoulstonesToSacrifice = Math.floor((getBuffLevel("Imbuement") + 1) * 20 / 9);
-        console.log(tempSoulstonesToSacrifice);
         let name = "";
         let soulstones = -1;
         for (const stat in stats) {
@@ -3444,9 +3443,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
                 if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
             }
         }
-        console.log("TempCanStart: " + tempCanStart);
         if (stats[name].soulstone < (getBuffLevel("Imbuement") + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
-        console.log("TempCanStart: " + tempCanStart);
         return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     },
     loopCost(segment) {
