@@ -312,9 +312,6 @@ function load() {
     actions.next = [];
     if (toLoad.nextList) {
         for (const action of toLoad.nextList) {
-            if (action.name === "Guided Tour") {
-                continue;
-            }
             if (action.name === "Sell Gold") {
                 action.name = "Buy Mana";
             }

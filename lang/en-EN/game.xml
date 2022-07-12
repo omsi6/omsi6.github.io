@@ -15,7 +15,8 @@
             • Bugfix: Key wasn't being reset correctly<br>
             • Bugfix: Underworld action was showing failed, even when successful<br>
             • Bugfix: Mana well and Buy mana tooltips now update when leveling skills that benefit them<br>
-            • Bugfix: Skill rework was causing pick locks to give double gold
+            • Bugfix: Skill rework was causing pick locks to give double gold<br>
+            • Bugfix: Guided tour was being removed from active list on refresh
             ]]></version>
             <version verNum="1.1"><![CDATA[
             <b> July 11th, 2022</b>
