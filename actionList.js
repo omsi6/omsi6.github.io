@@ -600,7 +600,7 @@ Action.Investigate = new Action("Investigate", {
 function adjustLQuests() {
     let town = towns[0];
     let baseLQuests = town.getLevel("Secrets") / 2;
-    town.totalLQuests = Math.floor(baseLQuests * getSkillMod("Spatiomancy", 300, 500, .5)) + baseLQuests * getSurveyBonus(town);
+    town.totalLQuests = Math.floor(baseLQuests * getSkillMod("Spatiomancy", 300, 500, .5) + baseLQuests * getSurveyBonus(town));
 }
 
 Action.LongQuest = new Action("Long Quest", {
