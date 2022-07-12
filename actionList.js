@@ -4568,7 +4568,7 @@ Action.ManaWell = new Action("Mana Well", {
         Int: 0.1,
     },
     manaCost() {
-        return Math.ceil(2500 / getSkillBonus("Spatiomancy"));
+        return Math.ceil(2500 * getSkillBonus("Spatiomancy"));
     },
     canStart() {
         return true;

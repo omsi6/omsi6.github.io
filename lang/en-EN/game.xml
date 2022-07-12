@@ -12,7 +12,8 @@
             • Change: Survey is unlocked in all zones after joining explorers guild<br>
             • Change: Survey actions cap raised to 500, but now applies across all survey actions<br>
             • Change: Survey added as limited action, so the circle icon can be used<br>
-            • Bugfix: Looping potion tooltip
+            • Bugfix: Looping potion tooltip<br>
+            • Bugfix: Spatiomancy was increasing mana well costs
             ]]></version>
             <version verNum="1.2"><![CDATA[
             <b> July 12th, 2022</b>
