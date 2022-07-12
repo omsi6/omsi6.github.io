@@ -5547,6 +5547,7 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
         }
         buffs["Imbuement"].amt = 0;
         buffs["Imbuement2"].amt = 0;
+        trainingLimits = 0;
         addBuffAmt("Imbuement3", 1);
         view.updateBuffs();
         view.updateStats();
