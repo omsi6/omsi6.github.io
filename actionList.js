@@ -282,13 +282,11 @@ Action.SmashPots = new Action("Smash Pots", {
     },
     // note this name is misleading: it is used for mana and gold gain.
     goldCost() {
-        console.log(getSkillBonus("Dark"));
         return Math.floor(300 * getSkillBonus("Dark"));
     },
     finish() {
         towns[0].finishRegular(this.varName, 10, () => {
             const manaGain = this.goldCost();
-            console.log(manaGain);
             addMana(manaGain);
             return manaGain;
         });
