@@ -5095,7 +5095,7 @@ Action.Excursion = new Action("Excursion", {
         return 25000;
     },
     canStart() {
-        return resources.gold > 2;
+        return resources.gold > this.goldCost();
     },
     visible() {
         return true;
