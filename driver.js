@@ -169,6 +169,7 @@ function restart() {
     view.updateSkills();
     actions.restart();
     view.updateCurrentActionsDivs();
+    view.updateTrials();
 }
 
 function addActionToList(name, townNum, isTravelAction, insertAtIndex) {

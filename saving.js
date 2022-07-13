@@ -19,6 +19,16 @@ function bonusCheat()
     totalOfflineMs = 1000000000000000;
 }
 
+function surveyCheat()
+{
+    for(i= 0; i<9; i++)
+    {
+        varName = "SurveyZ" + i
+        towns[i][`exp${varName}`] = 505000;
+        view.updateProgressAction(varName, towns[i]);
+    }
+}
+
 let mainTickLoop;
 const saveName = "idleLoops1";
 
@@ -71,20 +81,22 @@ let resources = {
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
 let guild = "";
-
 let curLoadout = 0;
 let loadouts = [];
 let loadoutnames = ["1", "2", "3", "4", "5"];
 const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune", "Wunderkind", "Gluttony", "Thievery"];
 const skills = {};
-const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Imbuement3"];
+const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Heroism", "Imbuement3"];
+const dungeonFloors = [6, 9, 20];
+const trialFloors = [50, 100, 1000];
 const buffHardCaps = {
     Ritual: 666,
     Imbuement: 500,
     Imbuement2: 500,
     Imbuement3: 7,
     Feast: 100,
-    Aspirant: 20
+    Aspirant: 20,
+    Heroism: 50
 };
 const buffCaps = {
     Ritual: 666,
@@ -92,7 +104,8 @@ const buffCaps = {
     Imbuement2: 500,
     Imbuement3: 7,
     Feast: 100,
-    Aspirant: 20
+    Aspirant: 20,
+    Heroism: 50
 };
 const buffs = {};
 let goldInvested = 0;
@@ -378,24 +391,36 @@ function load() {
         removeClassFromDiv(document.getElementById(`load${curLoadout}`), "unused");
     }
 
-    if (toLoad.dungeons) {
-        if (toLoad.dungeons.length === 2) {
+    /*if (toLoad.dungeons) {
+        if (toLoad.dungeons.length < dungeons.length) {
             toLoad.dungeons.push([]);
         }
-    }
+    }*/
     const level = { ssChance: 1, completed: 0 };
     let floors = 0;
+    if(toLoad.dungeons === undefined) toLoad.dungeons = copyArray(dungeons);
     for (let i = 0; i < dungeons.length; i++) {
-        if (i === 0) floors = 6;
-        else if (i === 1) floors = 9;
-        else if (i === 2) floors = 20;
+        floors = dungeonFloors[i];
         for (let j = 0; j < floors; j++) {
-            if (toLoad.dungeons && toLoad.dungeons[i][j]) {
+            if (toLoad.dungeons[i] != undefined && toLoad.dungeons && toLoad.dungeons[i][j]) {
                 dungeons[i][j] = toLoad.dungeons[i][j];
             } else {
                 dungeons[i][j] = copyArray(level);
             }
             dungeons[i][j].lastStat = "NA";
+        }
+    }
+
+    const trialLevel = {completed: 0};
+    if(toLoad.trials === undefined) toLoad.trials = copyArray(trials);
+    for (let i = 0; i < trials.length; i++) {
+        floors = trialFloors[i];
+        for (let j = 0; j < floors; j++) {
+            if (toLoad.trials[i] != undefined && toLoad.trials && toLoad.trials[i][j]) {
+                trials[i][j] = toLoad.trials[i][j];
+            } else {
+                trials[i][j] = copyArray(trialLevel);
+            }
         }
     }
 
@@ -485,6 +510,7 @@ function save() {
     const toSave = {};
     toSave.curLoadout = curLoadout;
     toSave.dungeons = dungeons;
+    toSave.trials = trials;
     toSave.townsUnlocked = townsUnlocked;
     toSave.actionTownNum = actionTownNum;
 
@@ -527,237 +553,6 @@ function save() {
 
     window.localStorage[saveName] = JSON.stringify(toSave);
 }
-
-function isOldAction(name) {
-    if (name === "Wander") {
-        return true;
-    }
-    if (name === "Smash Pots") {
-        return true;
-    }
-    if (name === "Pick Locks") {
-        return true;
-    }
-    if (name === "Buy Glasses") {
-        return true;
-    }
-    if (name === "Buy Mana") {
-        return true;
-    }
-    if (name === "Meet People") {
-        return true;
-    }
-    if (name === "Train Strength") {
-        return true;
-    }
-    if (name === "Short Quest") {
-        return true;
-    }
-    if (name === "Investigate") {
-        return true;
-    }
-    if (name === "Long Quest") {
-        return true;
-    }
-    if (name === "Warrior Lessons") {
-        return true;
-    }
-    if (name === "Mage Lessons") {
-        return true;
-    }
-    if (name === "Throw Party") {
-        return true;
-    }
-    if (name === "Heal The Sick") {
-        return true;
-    }
-    if (name === "Fight Monsters") {
-        return true;
-    }
-    if (name === "Small Dungeon") {
-        return true;
-    }
-    if (name === "Buy Supplies") {
-        return true;
-    }
-    if (name === "Haggle") {
-        return true;
-    }
-    if (name === "Start Journey") {
-        return true;
-    }
-    // town 2
-    if (name === "Explore Forest") {
-        return true;
-    }
-    if (name === "Wild Mana") {
-        return true;
-    }
-    if (name === "Gather Herbs") {
-        return true;
-    }
-    if (name === "Hunt") {
-        return true;
-    }
-    if (name === "Sit By Waterfall") {
-        return true;
-    }
-    if (name === "Old Shortcut") {
-        return true;
-    }
-    if (name === "Talk To Hermit") {
-        return true;
-    }
-    if (name === "Practical Magic") {
-        return true;
-    }
-    if (name === "Learn Alchemy") {
-        return true;
-    }
-    if (name === "Brew Potions") {
-        return true;
-    }
-    if (name === "Train Dex") {
-        return true;
-    }
-    if (name === "Train Speed") {
-        return true;
-    }
-    if (name === "Continue On") {
-        return true;
-    }
-    // town 3
-    if (name === "Explore City") {
-        return true;
-    }
-    if (name === "Gamble") {
-        return true;
-    }
-    if (name === "Get Drunk") {
-        return true;
-    }
-    if (name === "Purchase Mana") {
-        return true;
-    }
-    if (name === "Sell Potions") {
-        return true;
-    }
-    if (name === "Read Books") {
-        return true;
-    }
-    if (name === "Adventure Guild") {
-        return true;
-    }
-    if (name === "Gather Team") {
-        return true;
-    }
-    if (name === "Large Dungeon") {
-        return true;
-    }
-    if (name === "Crafting Guild") {
-        return true;
-    }
-    if (name === "Craft Armor") {
-        return true;
-    }
-    if (name === "Apprentice") {
-        return true;
-    }
-    if (name === "Mason") {
-        return true;
-    }
-    if (name === "Architect") {
-        return true;
-    }
-
-    return false;
-}
-
-// start old save
-
-function exportOldSave() {
-    // eslint-disable-next-line max-len
-    if (!confirm("This will give you your save file with all save data for any content added in this fork removed.This will allow you to import your save back to stopsign.github.io, but you will lose any progress you made on features exclusive to this fork.")) return;
-    const toSave = {};
-    toSave.curLoadout = Math.min(curLoadout, 4);
-    toSave.dungeons = [dungeons[0], dungeons[1]];
-    if (towns[2].unlocked()) toSave.maxTown = 2;
-    else if (towns[1].unlocked()) toSave.maxTown = 1;
-    else if (towns[0].unlocked()) toSave.maxTown = 0;
-    toSave.actionTownNum = 0;
-    toSave.trainingLimits = 10;
-
-    let currentTown = towns[0];
-    toSave.stats = stats;
-    toSave.skills = {};
-    for (let i = 0; i < 4; i++) {
-        toSave.skills[skillList[i]] = skills[skillList[i]];
-    }
-    toSave.expWander = currentTown.expWander;
-    toSave.expMet = currentTown.expMet;
-    toSave.expSecrets = currentTown.expSecrets;
-    toSave.totalHeal = currentTown.totalHeal;
-    toSave.totalFight = currentTown.totalFight;
-    toSave.totalSDungeon = currentTown.totalSDungeon;
-
-    currentTown = towns[1];
-    toSave.expForest = currentTown.expForest;
-    toSave.expShortcut = currentTown.expShortcut;
-    toSave.expHermit = currentTown.expHermit;
-
-    currentTown = towns[2];
-    toSave.expCity = currentTown.expCity;
-    toSave.expDrunk = currentTown.expDrunk;
-    toSave.totalAdvGuild = currentTown.totalAdvGuild;
-    toSave.totalCraftGuild = currentTown.totalCraftGuild;
-    toSave.totalLDungeon = currentTown.totalLDungeon;
-    toSave.version75 = true;
-    toSave.expApprentice = currentTown.expApprentice;
-    toSave.expMason = currentTown.expMason;
-    toSave.expArchitect = currentTown.expArchitect;
-
-    for (const town of towns) {
-        for (const action of town.totalActionList) {
-            if (town.varNames.indexOf(action.varName) !== -1) {
-                const varName = action.varName;
-                toSave[`total${varName}`] = town[`total${varName}`];
-                toSave[`checked${varName}`] = town[`checked${varName}`];
-                toSave[`good${varName}`] = town[`good${varName}`];
-                toSave[`goodTemp${varName}`] = town[`good${varName}`];
-                if (document.getElementById(`searchToggler${varName}`)) {
-                    toSave[`searchToggler${varName}`] = document.getElementById(`searchToggler${varName}`).checked;
-                }
-            }
-        }
-    }
-    const tempNextList = [];
-    for (let i = 0; i < actions.next.length; i++) {
-        if (isOldAction(actions.next[i].name)) tempNextList[tempNextList.length] = actions.next[i];
-    }
-    for (const action of tempNextList) {
-        action.disabled = undefined;
-    }
-    toSave.nextList = tempNextList;
-    const tempLoadouts = [[], [], [], [], []];
-    for (let i = 0; i < 5; i++) {
-        for (let l = 0; l < loadouts[i].length; l++) {
-            if (isOldAction(loadouts[i][l].name)) tempLoadouts[i][tempLoadouts[i].length] = loadouts[i][l];
-        }
-    }
-    toSave.loadouts = tempLoadouts;
-    toSave.repeatLast = options.repeatLastAction;
-    toSave.pingOnPause = options.pingOnPause;
-    toSave.storyShowing = storyShowing;
-    toSave.storyMax = storyMax;
-    toSave.date = new Date();
-    toSave.totalOfflineMs = totalOfflineMs;
-
-    document.getElementById("exportImport").value = encode(JSON.stringify(toSave));
-    document.getElementById("exportImport").select();
-    document.execCommand("copy");
-}
-
-// end old save
 
 function exportSave() {
     save();

@@ -155,17 +155,35 @@ DungeonAction.prototype = Object.create(MultipartAction.prototype);
 DungeonAction.prototype.constructor = DungeonAction;
 DungeonAction.prototype.completedTooltip = function() {
     let ssDivContainer = "";
-    for (let i = 0; i < dungeons[this.dungeonNum].length; i++) {
-        ssDivContainer += `Floor ${i + 1} |
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>chance_label`)} </div> <div id='soulstoneChance${this.dungeonNum}_${i}'></div>% - 
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>last_stat_label`)} </div> <div id='soulstonePrevious${this.dungeonNum}_${i}'>NA</div> - 
-                            <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>label_done`)}</div> <div id='soulstoneCompleted${this.dungeonNum}_${i}'></div><br>`;
+    if (this.dungeonNum < 3) {
+        for (let i = 0; i < dungeons[this.dungeonNum].length; i++) {
+            ssDivContainer += `Floor ${i + 1} |
+                                <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>chance_label`)} </div> <div id='soulstoneChance${this.dungeonNum}_${i}'></div>% - 
+                                <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>last_stat_label`)} </div> <div id='soulstonePrevious${this.dungeonNum}_${i}'>NA</div> - 
+                                <div class='bold'>${_txt(`actions>${getXMLName(this.name)}>label_done`)}</div> <div id='soulstoneCompleted${this.dungeonNum}_${i}'></div><br>`;
+        }
     }
     return _txt(`actions>${getXMLName(this.name)}>completed_tooltip`) + ssDivContainer;
 };
 DungeonAction.prototype.getPartName = function() {
     const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + 0.0001) / this.segments + 1);
     return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= dungeons[this.dungeonNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
+};
+
+function TrialAction(name, trialNum, extras) {
+    MultipartAction.call(this, name, extras);
+    this.trialNum = trialNum;
+}
+TrialAction.prototype = Object.create(MultipartAction.prototype);
+TrialAction.prototype.constructor = TrialAction;
+TrialAction.prototype.completedTooltip = function() {
+    return this.name + `- Highest Floor: <div id='trial${this.trialNum}HighestFloor'>0</div><br>
+    Current Floor: <div id='trial${this.trialNum}CurFloor'>0</div> - Completed <div id='trial${this.trialNum}CurFloorCompleted'>x</div> times<br>
+    Last Floor: <div id='trial${this.trialNum}LastFloor'>N/A</div> - Completed <div id='trial${this.trialNum}LastFloorCompleted'>N/A</div> times<br>`;
+}
+TrialAction.prototype.getPartName = function() {
+    const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + 0.0001) / this.segments + 1);
+    return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= trials[this.trialNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
 };
 
 //====================================================================================================
@@ -1936,23 +1954,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         return 1;
     },
     canStart() {
-        let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 50 / 9 * getSkillBonus("Commune"));
-        let name = "";
-        let soulstones = -1;
-        for (const stat in stats) {
-            if (stats[stat].soulstone > soulstones) {
-                name = stat;
-                soulstones = stats[stat].soulstone;
-            }
-        }
-        for (const stat in stats) {
-            if (stat !== name) {
-                if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
-            }
-        }
-        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 50 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
-        return resources.reputation <= -5 && towns[this.townNum].DarkRitualLoopCounter === 0 && tempCanStart && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
+        return resources.reputation <= -5 && towns[this.townNum].DarkRitualLoopCounter === 0 && checkSoulstoneSac(this.goldCost()) && getBuffLevel("Ritual") < parseInt(document.getElementById("buffRitualCap").value);
     },
     loopCost(segment) {
         return 1000000 * (segment * 2 + 1);
@@ -1961,22 +1963,8 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         return getSkillLevel("Dark") * (1 + getLevel(this.loopStats[(towns[1].DarkRitualLoopCounter + offset) % this.loopStats.length]) / 100) / (1 - towns[1].getLevel("Witch") * 0.005);
     },
     loopsFinished() {
+        sacrificeSoulstones(this.goldCost());
         addBuffAmt("Ritual", 1);
-        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 50 / 9 * getSkillBonus("Commune"));
-        let name = "";
-        let soulstones = -1;
-        for (const stat in stats) {
-            if (stats[stat].soulstone > soulstones) {
-                name = stat;
-                soulstones = stats[stat].soulstone;
-            }
-        }
-        for (const stat in stats) {
-            if (stat !== name) {
-                stats[stat].soulstone -= tempSoulstonesToSacrifice;
-            }
-        }
-        stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 50 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
         view.adjustGoldCost("DarkRitual", this.goldCost());
     },
@@ -1990,7 +1978,7 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         return towns[1].getLevel("Witch") >= 50 && getSkillLevel("Dark") >= 50;
     },
     goldCost() {
-        return 50 * (getBuffLevel("Ritual") + 1) * getSkillBonus("Commune");
+        return Math.ceil(50 * (getBuffLevel("Ritual") + 1) * getSkillBonus("Commune"));
     },
     finish() {
         view.updateBuff("Ritual");
@@ -1998,6 +1986,35 @@ Action.DarkRitual = new MultipartAction("Dark Ritual", {
         if (towns[1].DarkRitualLoopCounter >= 0) unlockStory("darkRitualThirdSegmentReached");
     },
 });
+
+function checkSoulstoneSac(amount) {
+    let check = true;
+    for (const stat in stats) {
+        if (stats[stat].soulstone < amount / 9) check = false;
+    }
+    return check;
+}
+
+function sacrificeSoulstones(amount) {
+    let batch;
+    let highestSoulstoneStat = "";
+    let highestSoulstone = -1;
+    amount > 9000 ? batch = 1000 : amount > 900 ? batch = 100 : batch = 10;
+    while (amount > 0)
+    {
+        if (batch > amount) batch = amount;
+        for (const stat in stats) {
+            if (stats[stat].soulstone > highestSoulstone) {
+                highestSoulstoneStat = stat;
+                highestSoulstone = stats[stat].soulstone;
+            }
+        }
+        //console.log("Subtracting " + batch + " soulstones from " + highestSoulstoneStat + ". Old total: " + stats[highestSoulstoneStat].soulstone + ". New Total: " + (stats[highestSoulstoneStat].soulstone - batch));
+        stats[highestSoulstoneStat].soulstone -= batch;
+        amount -= batch;
+    }
+}
+
 
 Action.ContinueOn = new Action("Continue On", {
     type: "normal",
@@ -2857,6 +2874,67 @@ Action.BuyPickaxe = new Action("Buy Pickaxe", {
     },
 });
 
+Action.HeroesTrial = new TrialAction("Heroes Trial", 0, {
+    type: "multipart",
+    expMult: 0.5,
+    townNum: 2,
+    varName: "HTrial",
+    stats: {
+        Dex: 0.11,
+        Str: 0.11,
+        Con: 0.11,
+        Spd: 0.11,
+        Per: 0.11,
+        Cha: 0.11,
+        Int: 0.11,
+        Luck: 0.11,
+        Soul: 0.11
+    },
+    skills: {
+        Combat: 5000,
+        Pyromancy: 1000,
+        Restoration: 1000
+    },
+    loopStats: ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"],
+    affectedBy: ["Team"],
+    manaCost() {
+        return 100000;
+    },
+    canStart() {
+        const floors = 50;
+        const curFloor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001);
+        return curFloor < floors;
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(2, Math.floor((towns[this.townNum].HTrialLoopCounter + segment) / this.segments + 0.0000001)) * 1e8);
+    },
+    tickProgress(offset) {
+        const floor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001);
+        return getTeamCombat() *
+            (1 + getLevel(this.loopStats[(towns[this.townNum].HTrialLoopCounter + offset) % this.loopStats.length]) / 100) *
+            Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
+    },
+    loopsFinished() {
+        const curFloor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001 - 1);
+        console.log(curFloor);
+        trials[this.trialNum][curFloor].completed++;
+        if (curFloor >= getBuffLevel("Heroism")) addBuffAmt("Heroism", 1);
+        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        view.updateTrialInfo(this.trialNum, curFloor + 1);
+    },
+    visible() {
+        return towns[this.townNum].getLevel("Survey") >= 100;
+    },
+    unlocked() {
+        return towns[this.townNum].getLevel("Survey") >= 100;
+    },
+    finish() {
+        handleSkillExp(this.skills);
+        view.updateBuff("Heroism");
+        view.updateSkills();
+    },
+});
+
 Action.StartTrek = new Action("Start Trek", {
     type: "normal",
     expMult: 2,
@@ -3439,23 +3517,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
         return 1;
     },
     canStart() {
-        let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((getBuffLevel("Imbuement") + 1) * 20 / 9);
-        let name = "";
-        let soulstones = -1;
-        for (const stat in stats) {
-            if (stats[stat].soulstone > soulstones) {
-                name = stat;
-                soulstones = stats[stat].soulstone;
-            }
-        }
-        for (const stat in stats) {
-            if (stat !== name) {
-                if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
-            }
-        }
-        if (stats[name].soulstone < (getBuffLevel("Imbuement") + 1) * 20 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
-        return towns[3].ImbueMindLoopCounter === 0 && tempCanStart && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
+        return towns[3].ImbueMindLoopCounter === 0 && checkSoulstoneSac(this.goldCost()) && getBuffLevel("Imbuement") < parseInt(document.getElementById("buffImbuementCap").value);
     },
     loopCost(segment) {
         return 100000000 * (segment * 5 + 1);
@@ -3464,23 +3526,9 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
         return getSkillLevel("Magic") * (1 + getLevel(this.loopStats[(towns[3].ImbueMindLoopCounter + offset) % this.loopStats.length]) / 100);
     },
     loopsFinished() {
+        sacrificeSoulstones(this.goldCost());
         trainingLimits++;
         addBuffAmt("Imbuement", 1);
-        const tempSoulstonesToSacrifice = Math.floor(getBuffLevel("Imbuement") * 20 / 9);
-        let name = "";
-        let soulstones = -1;
-        for (const stat in stats) {
-            if (stats[stat].soulstone > soulstones) {
-                name = stat;
-                soulstones = stats[stat].soulstone;
-            }
-        }
-        for (const stat in stats) {
-            if (stat !== name) {
-                stats[stat].soulstone -= tempSoulstonesToSacrifice;
-            }
-        }
-        stats[name].soulstone -= getBuffLevel("Imbuement") * 20 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
         view.adjustGoldCost("ImbueMind", this.goldCost());
     },
@@ -4303,23 +4351,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return 1;
     },
     canStart() {
-        let tempCanStart = true;
-        const tempSoulstonesToSacrifice = Math.floor((towns[this.townNum][`total${this.varName}`] + 1) * 5000 / 9 * getSkillBonus("Gluttony"));
-        let name = "";
-        let soulstones = 0;
-        for (const stat in stats) {
-            if (stats[stat].soulstone > soulstones) {
-                name = stat;
-                soulstones = stats[stat].soulstone;
-            }
-        }
-        for (const stat in stats) {
-            if (stat !== name) {
-                if (stats[stat].soulstone < tempSoulstonesToSacrifice) tempCanStart = false;
-            }
-        }
-        if (stats[name].soulstone < (towns[this.townNum][`total${this.varName}`] + 1) * 5000 - tempSoulstonesToSacrifice * 8) tempCanStart = false;
-        return resources.reputation >= 100 && towns[this.townNum].GreatFeastLoopCounter === 0 && tempCanStart && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
+        return resources.reputation >= 100 && towns[this.townNum].GreatFeastLoopCounter === 0 && checkSoulstoneSac(this.goldCost()) && getBuffLevel("Feast") < parseInt(document.getElementById("buffFeastCap").value);
     },
     loopCost(segment) {
         return 1000000000 * (segment * 5 + 1);
@@ -4328,22 +4360,8 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return getSkillLevel("Practical") * (1 + getLevel(this.loopStats[(towns[4].GreatFeastLoopCounter + offset) % this.loopStats.length]) / 100);
     },
     loopsFinished() {
+        sacrificeSoulstones(this.goldCost());
         addBuffAmt("Feast", 1);
-        const tempSoulstonesToSacrifice = Math.floor(towns[this.townNum][`total${this.varName}`] * 5000 / 9 * getSkillBonus("Gluttony"));
-        let name = "";
-        let soulstones = -1;
-        for (const stat in stats) {
-            if (stats[stat].soulstone > soulstones) {
-                name = stat;
-                soulstones = stats[stat].soulstone;
-            }
-        }
-        for (const stat in stats) {
-            if (stat !== name) {
-                stats[stat].soulstone -= tempSoulstonesToSacrifice;
-            }
-        }
-        stats[name].soulstone -= towns[this.townNum][`total${this.varName}`] * 5000 - tempSoulstonesToSacrifice * 8;
         view.updateSoulstones();
         view.adjustGoldCost("GreatFeast", this.goldCost());
     },
@@ -4357,7 +4375,7 @@ Action.GreatFeast = new MultipartAction("Great Feast", {
         return towns[4].getLevel("Tour") >= 100;
     },
     goldCost() {
-        return 5000 * (getBuffLevel("Feast") + 1) * getSkillBonus("Gluttony");
+        return Math.ceil(5000 * (getBuffLevel("Feast") + 1) * getSkillBonus("Gluttony"));
     },
     finish() {
         view.updateBuff("Feast");
@@ -4705,6 +4723,7 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
         Combat: 100
     },
     loopStats: ["Per", "Int", "Con", "Spd", "Dex", "Per", "Int", "Str", "Soul"],
+    affectedBy: ["Team"],
     manaCost() {
         return 100000 * Math.pow(0.9,resources.pylons);
     },
@@ -4713,11 +4732,11 @@ Action.TheSpire = new DungeonAction("The Spire", 2, {
         return curFloor < dungeons[this.dungeonNum].length;
     },
     loopCost(segment) {
-        return precision3(Math.pow(2, Math.floor((towns[this.townNum].TheSpireLoopCounter + segment) / this.segments + 0.0000001)) * 10000000);
+        return precision3(Math.pow(2, Math.floor((towns[this.townNum].TheSpireLoopCounter + segment) / this.segments + 0.0000001)) * 1e7);
     },
     tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].TheSpireLoopCounter) / this.segments + 0.0000001);
-        return (getSelfCombat() + getSkillLevel("Magic")) *
+        return getTeamCombat() *
         (1 + getLevel(this.loopStats[(towns[this.townNum].TheSpireLoopCounter + offset) % this.loopStats.length]) / 100) *
         Math.sqrt(1 + dungeons[this.dungeonNum][floor].completed / 200);
     },
@@ -5168,6 +5187,7 @@ Action.ExplorersGuild = new Action("Explorers Guild", {
     finish() {
         if (getExploreSkill() == 0) towns[this.townNum].finishProgress("SurveyZ"+this.townNum, 100);
         guild = "Explorer";
+        view.adjustGoldCost("Excursion", Action.Excursion.goldCost());
     }
 });
 function getExploreProgress() {

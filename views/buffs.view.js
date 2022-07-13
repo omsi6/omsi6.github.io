@@ -7,6 +7,7 @@ Views.registerView("buffsContainer", {
             Imbuement2: "Imbue Body",
             Feast: "Great Feast",
             Aspirant: "Aspirant",
+            Heroism: "Heroism",
             Imbuement3: "Imbue Soul"
         };
         let html = "";
