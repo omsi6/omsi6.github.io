@@ -1619,7 +1619,7 @@
             <label_complete>Completed</label_complete>
             <label_part>Heroes Trial</label_part>
             <tooltip><![CDATA[
-            With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Body action.<br>Level is limited by imbue mind rank.<br>Sacrifices (imbuements+1) levels of talent. Currently sacrificing 
+            Gather your party to take on the trial of heroes! 
         ]]></tooltip>
             <segment_names>
                 <name>Locate Entrance</name>
