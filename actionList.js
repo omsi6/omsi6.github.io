@@ -1997,11 +1997,11 @@ function checkSoulstoneSac(amount) {
 
 function sacrificeSoulstones(amount) {
     let batch;
-    let highestSoulstoneStat = "";
-    let highestSoulstone = -1;
     amount > 9000 ? batch = 1000 : amount > 900 ? batch = 100 : batch = 10;
     while (amount > 0)
     {
+        let highestSoulstoneStat = "";
+        let highestSoulstone = -1;
         if (batch > amount) batch = amount;
         for (const stat in stats) {
             if (stats[stat].soulstone > highestSoulstone) {
