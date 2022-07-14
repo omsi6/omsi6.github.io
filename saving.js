@@ -107,8 +107,8 @@ const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
 let guild = "";
 let curLoadout = 0;
-let loadouts = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
-let loadoutnames = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+let loadouts;
+let loadoutnames;
 //let loadoutnames = ["1", "2", "3", "4", "5"];
 const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune", "Wunderkind", "Gluttony", "Thievery"];
 const skills = {};
@@ -283,6 +283,9 @@ function load() {
     loadDefaults();
     loadUISettings();
 
+    loadouts = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+    loadoutnames = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+
     let toLoad = {};
     // has a save file
     if (window.localStorage[saveName] && window.localStorage[saveName] !== "null") {
@@ -375,6 +378,7 @@ function load() {
         }
     }
     actions.nextLast = copyObject(actions.next);
+
     if (toLoad.loadouts) {
         for (let i = 0; i < loadouts.length; i++) {
             if (!toLoad.loadouts[i]) {
