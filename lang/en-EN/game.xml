@@ -10,6 +10,8 @@
             <b> July 12th, 2022</b>
             • Change: Reworked Loadouts, allowing up to 15 to be saved<br>
             • Bugfix: Restoration skill was applying to self combat instead of team combat<br>
+            • Bugfix: A number of actions that had skill exp added to them weren't properly granting the exp<br>
+            • Bugfix: Added descriptions of where each shortcut takes you to the tooltip
             ]]></version>
             <version verNum="1.5"><![CDATA[
             <b> July 13th, 2022</b>
@@ -1196,7 +1198,8 @@
         <hitch_ride>
             <label>Hitch Ride</label>
             <tooltip><![CDATA[
-            The explorers guild has a contract with various caravaans for transport around the world. They have taught you the secret handsigns to gain passage. And this one just happens to have some spare mana to share on the journey!
+            The explorers guild has a contract with various caravaans for transport around the world. They have taught you the secret handsigns to gain passage. And this one just happens to have some spare mana to share on the journey!<br>
+            Travels to Merchanton.
         ]]></tooltip>
         </hitch_ride>
         <open_rift>
@@ -1648,7 +1651,8 @@
         <underworld>
             <label>Underworld</label>
             <tooltip><![CDATA[
-            Your knowledge in the explorers guild continues to open new doors. Grease the right hinges with a bit of gold, and who knows where you can end up.<br>Costs
+            Your knowledge in the explorers guild continues to open new doors. Grease the right hinges with a bit of gold, and who knows where you can end up.<br>
+            Travels to Commerceville.<br>Costs
         ]]></tooltip>
         <tooltip2>gold.</tooltip2>
         </underworld>
@@ -1834,6 +1838,7 @@
         <guru>
             <label>Guru</label>
             <tooltip><![CDATA[The greatest explorer the guild has ever known was said to have found a path without judgement to Valhalla itself. Now, as his equal, he is willing to show you the way if you bring him a few herbs.<br>
+            Travels to Valhalla, bypassing Face Judgement and Reputation requirements.<br>
             Requires 1000 herbs.
             ]]></tooltip>
         </guru>
@@ -1995,7 +2000,7 @@
             <label>Fight Giants</label>
             <label_done>Frost Giants Vanquished</label_done>
             <tooltip><![CDATA[
-            Join the valkryies in their fight against the frost giants.<br>Improves your ability to seek favor from the gods.<br>Can only have 1 Fight Frost Giants action.<br>Requires a pegasus.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 100% citizenship studied.
+            Join the valkyries in their fight against the frost giants.<br>Improves your ability to seek favor from the gods.<br>Can only have 1 Fight Frost Giants action.<br>Requires a pegasus.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 100% citizenship studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </fight_frost_giants>
@@ -2172,6 +2177,7 @@
             <label>Open Portal</label>
             <tooltip><![CDATA[
             The explorers guild tells you of a secret grove within jungle where the space between realms is weakest. With enough restoration skill, you may be able to open a rift back and leave the shadow realm.<br>
+            Travels to Forest Path<br>
             Requires 1000 Restoration.
         ]]></tooltip>
         </open_portal>

@@ -1216,6 +1216,7 @@ Action.OpenRift = new Action("Open Rift", {
         return getSkillLevel("Dark") >= 300 && getSkillLevel("Spatiomancy") >= 100;
     },
     finish() {
+        handleSkillExp(this.skills);
         addResource("supplies", false);
         unlockTown(5);
     },
@@ -3400,7 +3401,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
         return towns[3].getLevel("Cavern") >= 50;
     },
     finish() {
-        // nothing
+        handleSkillExp(this.skills);
     },
 });
 
@@ -4049,6 +4050,7 @@ Action.EnchantArmor = new Action("Enchant Armor", {
         return towns[4].getLevel("Tour") >= 40;
     },
     finish() {
+        handleSkillExp(this.skills);
         addResource("enchantments", 1);
     },
 });
@@ -4247,6 +4249,9 @@ Action.BuildHousing = new Action("Build Housing", {
         Dex: 0.2,
         Spd: 0.1
     },
+    skills: {
+        Crafting: 100
+    },
     affectedBy: ["Crafting Guild"],
     canStart() {
         let maxHouses = Math.floor(getCraftGuildRank().bonus * getSkillMod("Spatiomancy",0,500,1));
@@ -4263,6 +4268,7 @@ Action.BuildHousing = new Action("Build Housing", {
     },
     finish() {
         addResource("houses", 1);
+        handleSkillExp(this.skills);
     },
 });
 
@@ -4433,6 +4439,7 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
         return towns[4].getLevel("Citizen") >= 100;
     },
     finish() {
+        handleSkillExp(this.skills);
     },
 });
 function getFrostGiantsRank(offset) {
@@ -4668,6 +4675,7 @@ Action.RaiseZombie = new Action("Raise Zombie", {
         return getSkillLevel("Dark") >= 1000;
     },
     finish() {
+        handleSkillExp(this.skills);
         addResource("zombie", 1);
     },
 });
@@ -4900,6 +4908,7 @@ Action.FightJungleMonsters = new MultipartAction("Fight Jungle Monsters", {
         return true;
     },
     finish() {
+        handleSkillExp(this.skills);
     },
 });
 function getFightJungleMonstersRank(offset) {
@@ -5103,6 +5112,7 @@ Action.OpenPortal = new Action("Open Portal", {
         return getSkillLevel("Restoration") >= 1000;
     },
     finish() {
+        handleSkillExp(this.skills);
         unlockTown(1);
     },
 });
@@ -5256,6 +5266,7 @@ Action.ThievesGuild = new MultipartAction("Thieves Guild", {
     finish() {
         guild = "Thieves";
         view.adjustGoldCost("Excursion", Action.Excursion.goldCost());
+        handleSkillExp(this.skills);
     },
 });
 function getThievesGuildRank(offset) {
@@ -5436,6 +5447,7 @@ Action.Invest = new Action("Invest", {
         return true;
     },
     finish() {
+        handleSkillExp(this.skills);
         goldInvested += resources.gold;
         if (goldInvested > 999999999999) goldInvested = 999999999999;
         resetResource("gold");
@@ -5470,6 +5482,7 @@ Action.CollectInterest = new Action("Collect Interest", {
         return true;
     },
     finish() {
+        handleSkillExp(this.skills);
         let interestGold = Math.floor(goldInvested * .001);
         addResource("gold", interestGold);
         return interestGold;
