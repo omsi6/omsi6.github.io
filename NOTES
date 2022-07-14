@@ -1,147 +1,88 @@
-To add a new regular action:
-    New class in actionList.js
-    End of town.js, this.createVars("New");
-    in view.js, createTownActions()
-    in actionList.js, translateClassNames(), add the translation
-    in actionList.js, in the parent progress class, finish(), towns[X].total<var>
-    get an svg
+==Vew action==
+    New class in actionList.js based on action type (Order in list is order it will appear in game)
+    Add svg to img folder
+    Add data in game.xml
+    Most stuff is automatically generated and saved by town.js. Any extra data that needs persistance should either
+        be a new resource or a variable added to saving.js that is called in the save and load functions and reset
+        in actions.js restart()
 
-Add a new basic action:
-    New class in actionList.js
-    in view.js, createTownActions()
-    in actionList.js, translateClassNames(), add the translation
-    get an svg
-
-Add a new progress bar action:
-    New class in actionList.js
-    End of town.js, this.createProgressVars("New");
-    in view.js, this.createTownAction(tempObj); this.createActionProgress(tempObj);
-    in actionList.js, translateClassNames(), add the translation
-    get an svg
-    add to save() and load()
-
-Add a new multipart progress bar action:
-    New class in actionList.js
-    in actionList.js, translateClassNames(), add the translation
-    get an svg
-    add to save() and load()
-    in view.js, this.createTownAction(tempObj); this.createMultiPartPBar(tempObj); and updateMultiPartActions();
-    End of town.js, new vars
-    actions.js restart()
-
-New Skill
+==New Skill==
     New divs in index.html
     add to skill list in saving.js
-	
-	
-TODO:
-show mana in previous run
-show mana saved by skills
-Adding actions group if same type
-change isVisible for stats to use data instead
-drag/drop actions
-show mana/gold/resources gain per action in tooltip
-actions fail if they don't do anything useful
-import/export just action list
-draggable action list size
-change tab title when pause
-graphics to show when to-check decreases
-modifier for highest achieved
-hard numbers for wander progress
-custom input numbers for action list
-hover -> focus
+    add to getSkillBonus() in stats.js if the skill uses the increase or reduce formulas
+    add description in game.xml
+    add code to update skill values in main.view.js
 
-Tutoring - 50 combat, 50 magic, 100% city explored, str 20, dex 20, per 10, int 20, con 30, exp 150%
+==New Buff==
+    Add name translation in buffs.view.js
+    Add to buff list and buff caps in saving.js
+    Add to buffs section in game.xml files
 
-training soft caps per action - 1000x initial mana cost before 60% exp, trainings 80%.
+==New Resource==
+    Add to resources list in saving.js
+    Add resource section of game.xml files
 
+==New Trial==
 
-Remove talent
-    everything has a 10 + (90 / (1 + completed/1000)) multiplier to initial mana cost
-    rebalance mana costs
-    rebalance soulstone effect (maybe)
+    Increase the length of trials[] at the end of index.hmtl
+    Create a new action in the action list based on the template below
+    Other general new action stuff
 
-
-remove clear list, import/export list there
-
-
-
-
-breakpoint action
-folder action
-
-
-
-.75
-	
-    large dungeon - like small dungeon, but uses team combat and gives 10 soulstones and items
-	
-    craft armor - cost 2 hides, gives 20% self combat, faster w/ craftsmanship skill
-    apprentice - faster w/ rank, PBA
-        craftsmanship skill +
-    journeyman - faster w/ rank, PBA
-        craftsmanship skill ++
-    architect - faster w/ rank, PBA
-        craftsmanship skill +++
-
-.76
-    Follow Flowers - PBA, more herbs
-        Clear thicket - PBA, more wild mana
-        talk to witch - PBA, slightly improve mage lessons, improve gather wild mana
-        learn dark magic - improves dark magic skill, costs reputation, req rep < 3
-            Dark Magic Skill -
-                Smash pots and wild mana 1% more reward per level.
-
-.77
-   rework small/large dungeon
-   checkbox to short-circuit heal/fight/dungeon when complete with a part
-
-.78
-    Perform ritual - req rep < 0, MPBA, gives perm +initial mana
-    initial mana to 100
-    smash pots max to 25, but give double mana
-    pick locks cost 100 less
-    half short quests, cost 600
-    half long quests, cost 1500
-    investigate double price, triple reward
-    buy supplies to 300 gold
-    heal req 1 rep
-    fight req 2 rep
-    trainStr to zone 3
-    trainDex/Spd to zone 2
-    wild mana higher initial, worse ratio, 25
-    Read Manuals - very hard PBA, improves train combat/magic
-    <hidden until dark magic> - Sacrifice - Costs 50 more soulstones each time, gives permanent +10% time modifier in zone 1, max 200%
-
-.79
-    Performance & data management rework
-
-
-town 2 - forest road
-
-
-town 3 - guilds and stuff
-
-    adventurers guild
-        hire adventurer
-        large dungeon
-        identify items
-        join tournament
-    crafters guild
-        tan & cure - costs hide, gives leather
-        apprentice builder -
-        journeyman builder -
-        architect -
-    merchants guild
-        apprentice
-        start a business / hire employees
-        promote business
-        manage business
-
-
-    read books
-
-    Build Boat
-    Hire Crew
-    Inspire Crew
-    Set Sail
+Action.Trial = new TrialAction("TrialName", trialNum, {
+    type: "multipart",
+    expMult: 0,
+    townNum: townNum,
+    stats: {
+        Dex: 0.11,
+        Str: 0.11,
+        Con: 0.11,
+        Spd: 0.11,
+        Per: 0.11,
+        Cha: 0.11,
+        Int: 0.11,
+        Luck: 0.11,
+        Soul: 0.11
+    },
+    loopStats: ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"],
+    affectedBy: ["Team"],
+    floorScaling: 1.5, //Difficulty is raised to this exponent each floor
+    baseScaling: 1e10, //Difficulty is multiplied by this number each floor
+    manaCost() {
+        return 100000;
+    },
+    baseProgress() {
+        //Determines what skills give progress to the trial
+        return getTeamCombat();
+    },
+    floorReward() {
+        //Rewards given per floor
+    },
+    canStart() {
+        const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
+        return curFloor < trialFloors[this.trialNum];
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(this.floorScaling, Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + segment) / this.segments + 0.0000001)) * baseScaling);
+    },
+    tickProgress(offset) {
+        const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
+        return baseProgress() *
+            (1 + getLevel(this.loopStats[(towns[this.townNum][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
+            Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
+    },
+    loopsFinished() {
+        const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001 - 1);
+        trials[this.trialNum][curFloor].completed++;
+        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        view.updateTrialInfo(this.trialNum, curFloor + 1);
+        this.floorReward();
+    },
+    visible() {
+        return true;
+    },
+    unlocked() {
+        return true;
+    },
+    finish() {
+    },
+});
