@@ -95,17 +95,21 @@ let resources = {
     houses: 0,
     pylons: 0,
     zombie: 0,
+    power: 0,
     glasses: false,
     supplies: false,
     pickaxe: false,
     loopingPotion: false,
     citizenship: false,
     pegasus: false,
-    key: false
+    key: false,
+    stone: false
 };
 const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
 let guild = "";
+let portalUsed = false;
+let stoneLoc = 0;
 let curLoadout = 0;
 let loadouts;
 let loadoutnames;
@@ -114,7 +118,7 @@ const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark"
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Heroism", "Imbuement3"];
 const dungeonFloors = [6, 9, 20];
-const trialFloors = [50, 100, 1000];
+const trialFloors = [50, 100, 7, 1000];
 const buffHardCaps = {
     Ritual: 666,
     Imbuement: 500,
@@ -135,6 +139,7 @@ const buffCaps = {
 };
 const buffs = {};
 let goldInvested = 0;
+let stonesUsed = {1:0, 3:0, 5:0, 6:0};
 // eslint-disable-next-line prefer-const
 let townShowing = 0;
 // eslint-disable-next-line prefer-const
@@ -355,6 +360,7 @@ function load() {
     actionTownNum = toLoad.actionTownNum === undefined ? 0 : toLoad.actionTownNum;
     trainingLimits = 10 + getBuffLevel("Imbuement");
     goldInvested = toLoad.goldInvested === undefined ? 0 : toLoad.goldInvested;
+    if (toLoad.stonesUsed) stonesUsed = toLoad.stonesUsed;
 
     actions.next = [];
     if (toLoad.nextList) {
@@ -550,6 +556,7 @@ function save() {
     toSave.skills = skills;
     toSave.buffs = buffs;
     toSave.goldInvested = goldInvested;
+    toSave.stonesUsed = stonesUsed;
     toSave.version75 = true;
 
     for (const town of towns) {

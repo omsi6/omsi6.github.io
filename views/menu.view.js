@@ -51,12 +51,6 @@ Views.registerView("menu", {
                 <div class='button' style='margin-top: 1px;' onclick='importSave()'>${_txt("menu>save>import_button")}</div><br>
                 ${_txt("menu>save>export_comment")}<br>
                 ${_txt("menu>save>import_comment")}
-                <div class='showthat2'>
-                    ${_txt("menu>save>import_hover_special")}
-                    <div class='showthis2'>
-                        ${_txt("menu>save>import_hover_special_tooltip")}
-                    </div>
-                </div>
                 <br>
             </div>
         </div>`;

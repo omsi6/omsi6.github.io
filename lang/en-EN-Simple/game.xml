@@ -174,11 +174,8 @@
               Paste a save and click Import to import.]]></export_comment>
             <import_button>Import</import_button>
             <import_comment><![CDATA[
-              WARNING: Import will break the game if invalid save. Empty import will hard clear the game<br>
-              If you reaaallly want to edit your save file, ]]></import_comment>
-            <import_hover_special>hover me</import_hover_special>
-            <import_hover_special_tooltip>
-                <![CDATA[In the console, use decode("pasted savefile"), edit, then encode('pasted savefile'), then import it<br>This is mainly for fixing broken savefiles - don't be a cheater.]]></import_hover_special_tooltip>
+              WARNING: Import will break the game if invalid save. Empty import will hard clear the game
+              ]]></import_comment>
         </save>
         <faq>
             <meta>
@@ -323,7 +320,7 @@
         <resource initially_hidden="true">
             <title>Blood:</title>
             <id>blood</id>
-            <desc>Regailed for it's regenerative properties. (this does nothing currently)</desc>
+            <desc>Regailed for it's regenerative properties.</desc>
         </resource>
         <resource initially_hidden="true">
             <title>Artifacts:</title>
@@ -453,7 +450,7 @@
             <title>Bonus Seconds</title>
             <main_text><![CDATA[
           When bonus is on, you get 4 extra seconds per second (5x faster).<br>
-          Accrue 1 bonus second per second when paused or offline. (capped at 1 month per offline period)<br>
+          Accrue 1 bonus second per second when paused or offline, capped at 1 month per offline period.<br>
           Bonus is
         ]]></main_text>
             <state>
@@ -525,7 +522,7 @@
             <explanation><![CDATA[
           Each stat level reduces the relevant part of an action's mana cost by 1%.<br>
           Talent exp gain is equal to 1% of stat exp gain, and persists through loops.<br>
-          Talent multiplies xp gain by (1+(talentLevel)^0.4/3).<br>
+          Talent multiplies xp gain.<br>
           XP gain towards a stat per action is (original mana / actual mana) * (talent bonus) per tick.<br>
           Total Mult is a combination of your talent and soulstone bonuses.<br><br>
           e.g. Meet People costs 800 mana and has a breakdown of <div class="bold">Int</div> 10% <div class="bold">Cha</div> 80% <div class="bold">Soul</div> 10%.<br>
@@ -547,11 +544,11 @@
         <title>Skills</title>
         <scombat>
             <label>Self Combat</label>
-            <desc>Self Combat = (Combat skill + Pyromancy skill * 5) * (1 + (armor + 3 * enchanted armor) * Crafting Guild Multiplier / 5)</desc>
+            <desc>Self Combat is increased by Combat Skill, Pyromancy Skill, and Armor (based on Crafting Guild Skill).</desc>
         </scombat>
         <tcombat>
             <label>Team Combat</label>
-            <desc>Team Combat = Self Combat + (Combat Skill + Restoration skill * 2) * (Team Members / 2) * Adventure Guild Multiplier</desc>
+            <desc>Team Combat is increased by Self Combat, Restoration Skill, and Party Size (Team Members and Zombies, based on their respective skills).</desc>
         </tcombat>
         <combat>
             <label>Combat</label>
@@ -564,21 +561,21 @@
         <practical>
             <label>Practical Magic</label>
             <desc>Mage Hand, Prestidigitation, Detect Magic, and other useful tricks to help out.</desc>
-            <desc2><![CDATA[Smash Pots and Wild Mana costs are reduced to the original / (1 + level / 100) (rounded up).<br>
-      Pick Locks get 1% more gold per level from 1-200 (rounded down).<br>
-      Short Quests get 1% more gold per level from 101-300 (rounded down).<br>
-      Long Quests get 1% more gold per level from 201-400 (rounded down).<br>
+            <desc2><![CDATA[Smash Pots and Wild Mana costs are reduced.<br>
+      Pick Locks get 1% more gold per level from 1-200.<br>
+      Short Quests get 1% more gold per level from 101-300.<br>
+      Long Quests get 1% more gold per level from 201-400.<br>
       Currently multiplying costs by <div id='skillBonusPractical'></div>x.]]></desc2>
         </practical>
         <alchemy>
             <label>Alchemy</label>
             <desc>Brewing potions is hard work! It's a good thing you found a teacher.</desc>
-            <desc2>The Magic teacher in Beginnersville adores alchemists. +1% Magic exp gain from the Mage Lessons action (rounded down) per level.</desc2>
+            <desc2>The Magic teacher in Beginnersville adores alchemists. +1% Magic exp gain from the Mage Lessons action per level.</desc2>
         </alchemy>
         <dark>
             <label>Dark Magic</label>
             <desc>Use various dark arts to help you harvest mana.</desc>
-            <desc2><![CDATA[Multiply the mana gain from Smash Pots and Wild Mana by (1 + level / 60) ^ 0.25 (rounded down).<br> Currently granting <div id='skillBonusDark'></div>x mana gains.]]></desc2>
+            <desc2><![CDATA[Increase the mana gain from Smash Pots and Wild Mana.<br> Currently granting <div id='skillBonusDark'></div>x mana gains.]]></desc2>
         </dark>
         <crafting>
             <label>Crafting</label>
@@ -587,7 +584,7 @@
         <chronomancy>
             <label>Chronomancy</label>
             <desc>Harness the magic of time to, well, speed up time.</desc>
-            <desc2><![CDATA[Actions in all zones are (1 + level / 60) ^ 0.25 times faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
+            <desc2><![CDATA[Actions in all zones are faster.<br> Currently granting <div id='skillBonusChronomancy'></div>x speed.]]></desc2>
         </chronomancy>
         <pyromancy>
             <label>Pyromancy</label>
@@ -602,7 +599,7 @@
         <spatiomancy>
             <label>Spatiomancy</label>
             <desc>Who knew bending reality to your will could be so useful!</desc>
-            <desc2><![CDATA[Mana Geyser and Mana Well are reduced to the original / (1 + level / 100).<br>
+            <desc2><![CDATA[Mana Geyser and Mana Well costs are reduced.<br>
             Houses to build increased by 1% per level from 1 - 500. <br>
             Locked houses is increased by 0.5% per level from 101-300.<br>
             Short quests to finish is increased by 0.5% per level from 201-400.<br>
@@ -622,19 +619,19 @@
 		<mercantilism>
 			<label>Mercantilism</label>
 			<desc>Smooth talk your way to better rates with the mana merchants.</desc>
-			<desc2><![CDATA[Multiply the mana gain from Buy Mana by (1 + level / 60) ^ 0.25.<br>
+			<desc2><![CDATA[Increase the mana gain from Buy Mana.<br>
             Currently granting <div id='skillBonusMercantilism'></div>x mana gains.]]></desc2>
 		</mercantilism>
         <divine>
             <label>Divine Favor</label>
             <desc>The gods have answered your prayers and given you their blessing.</desc>
-            <desc2><![CDATA[Increases soulstones gained from actions by (1 + level / 60) ^ 0.25.<br>
+            <desc2><![CDATA[Increases soulstones gained from actions.<br>
             Currently granting <div id='skillBonusDivine'></div>x soulstone gains.]]></desc2>
         </divine>
         <commune>
             <label>Communing</label>
             <desc>Your blood sacrifices to dark beings makes it easier to communicate with them.</desc>
-            <desc2><![CDATA[Dark Ritual soulstone costs are reduced to the original / (1 + level / 100).<br>
+            <desc2><![CDATA[Dark Ritual soulstone costs are reduced.<br>
             Currently multiplying costs by <div id='skillBonusCommune'></div>x.]]></desc2>
         </commune>
         <wunderkind>
@@ -642,19 +639,19 @@
             <desc>Even with your eyes closed, you still see the glow of the totem.</desc>
             <desc2><![CDATA[
             Doubles the initial stat gain of Imbue Body<br>
-            Talent exp gain is increased by (1 + level / 60) ^ 0.25.<br>
+            Talent exp gain is increased.<br>
             Currently granting <div id='skillBonusWunderkind'></div>x talent exp.]]></desc2>
         </wunderkind>
         <gluttony>
             <label>Gluttony</label>
             <desc>The insatiable hunger of the jungle has started to rub off on you.</desc>
-            <desc2><![CDATA[Great Feast soulstone costs are reduced to the original / (1 + level / 100).<br>
+            <desc2><![CDATA[Great Feast soulstone costs are reduced.<br>
             Currently multiplying costs by <div id='skillBonusGluttony'></div>x.]]></desc2>
         </gluttony>
         <thievery>
             <label>Thievery</label>
             <desc>Allows for the redistribution of wealth.</desc>
-            <desc2><![CDATA[Increases gold gain from Pick Locks, Gamble, and Thieving Guild actions by (1 + level / 60) ^ 0.25.<br>
+            <desc2><![CDATA[Increases gold gain from Pick Locks, Gamble, and Thieving Guild actions.<br>
             Currently granting <div id='skillBonusThievery'></div>x increased gold.]]></desc2>
         </thievery>
         <tooltip>
@@ -667,7 +664,7 @@
         <title>Buffs</title>
         <dark_ritual>
             <label>Dark Ritual</label>
-            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic exp gain from the Dark Magic action (rounded down) per ritual.</desc>
+            <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic exp gain from the Dark Magic action per ritual.</desc>
             <desc2><![CDATA[<br>Actions are 10% faster in Beginnersville per ritual from 1-20.<br>
             Actions are 5% faster in the Forest Path per ritual from 21-40.<br>
             Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>
@@ -695,7 +692,7 @@
          <great_feast>
             <label>Great Feast</label>
             <desc><![CDATA[That feast was so filling that it manages to keep you well satiated through your loops! That's some impressive magic.<br>
-            Self combat is increased by 5% per level. (rounded down)]]>
+            Self combat is increased by 5% per level.]]>
             </desc>
         </great_feast>
         <aspirant>
@@ -712,13 +709,13 @@
         </heroism>
         <imbue_soul>
             <label>Imbue Soul</label>
-            <desc><![CDATA[(Incomplete) Sacrifice everything for the ultimate power.<br>
-            Increases all action speed by 50% per level (additively).
+            <desc><![CDATA[Sacrifice everything for the ultimate power.<br>
+            Increases all action speed by 50% per level additively.
             ]]></desc>
         </imbue_soul>
         <tooltip>
             <level>Level</level>
-            <no_reset_on_restart><![CDATA[Buffs last through resets.<br>You can click on the right hand number to edit it and adjust the cap for that buff. (buff actions will automatically fail and not spend soulstones past your set cap)]]></no_reset_on_restart>
+            <no_reset_on_restart><![CDATA[Buffs last through resets.]]></no_reset_on_restart>
         </tooltip>
     </buffs>
     <towns>
@@ -841,7 +838,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -851,7 +849,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -861,7 +860,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -871,7 +871,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -881,7 +882,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -891,7 +893,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -901,7 +904,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -911,7 +915,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -921,7 +926,8 @@
             <label_done>Surveyed</label_done>
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
-            Gives progress equal to the square root of average survey progress across all zones.<br>
+            Increases the number of limited actions available in this zone.<br>
+            Progress is equal to the square root of average survey progress across all zones.<br>
             Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
@@ -1167,7 +1173,7 @@
             <label_done>Healed</label_done>
             <label_part>Patient</label_part>
             <tooltip><![CDATA[
-            You won't be able to heal them all, but they'll be thankful for doing what you can.<br>Healing is always 3 parts, each with a main stat - Diagnose (Per), Treat (Int), Inform (Cha).<br>Gives (magic skill) * (restoration skill / 50) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of 1 or above.<br>Unlocked at 12 Magic skill.<br>Gives 3 reputation upon patient completion.
+            You won't be able to heal them all, but they'll be thankful for doing what you can.<br>Healing is always 3 parts, each with a main stat - Diagnose (Per), Treat (Int), Inform (Cha).<br>Progress is based on Magic, Restoration, and number of times completed.<br>Requires a reputation of 1 or above.<br>Unlocked at 12 Magic skill.<br>Gives 3 reputation upon patient completion.
         ]]></tooltip>
             <story_1><![CDATA[<b>Patient healed:</b>⮀ You're allowed in to see the patients and begin healing. It's excellent practice and everyone you heal, be it from broken bones to small scrapes is extraordinarily thankful for your help.]]></story_1>
             <story_2><![CDATA[<b>10 Patients healed in a loop:</b>⮀ Your reputation is absolutely sterling, you've basically cleared out the entire healing home and the nurses and healers are more than thankful for your help.]]></story_2>
@@ -1183,7 +1189,7 @@
             <label>Fight Monsters</label>
             <label_done>Killed</label_done>
             <tooltip><![CDATA[
-            Slowly, you're figuring out their patterns.<br>Fighting rotates between 3 types of battles, each with a main stat - Quick (Spd), Defensive (Str), Aggressive (Con).<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of 2 or above.<br>Unlocked at 10 Combat skill.<br>Gives 20 gold per fight segment completion.
+            Slowly, you're figuring out their patterns.<br>Fighting rotates between 3 types of battles, each with a main stat - Quick (Spd), Defensive (Str), Aggressive (Con).<br>Progress is based on Self Combat.<br>Requires a reputation of 2 or above.<br>Unlocked at 10 Combat skill.<br>Gives 20 gold per fight segment completion.
         ]]></tooltip>
             <segment_names>
                 <name>Deer</name>
@@ -1275,10 +1281,10 @@
             <label_complete>Completed</label_complete>
             <label_part>Small Dungeon</label_part>
             <tooltip><![CDATA[
-            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Gives (magic + self combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at a combined Combat and Magic skill of 35.<br>Requires a reputation of 2 or above.<br>Gives 1 soulstone per completion - hover over Looted for info.
+            There are small changes each time; it's harder to get used to. The soulstones at the end last through loops, but they're not always in the dungeon... Strange.<br>The dungeon requires different skills at different points.<br>One action can clear multiple floors if your stats are high enough.<br>Progress is based on Self Combat, Magic Skill, and number of times that floor has been completed.<br>Unlocked at a combined Combat and Magic skill of 35.<br>Requires a reputation of 2 or above.<br>Gives 1 soulstone per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
-            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
+            Each soulstone improves a random stat's exp gain.<br>Each floor has a soulstone that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last</last_stat_label>
@@ -1526,7 +1532,7 @@
             <label>Dark Ritual</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Gives (dark magic skill) * (1 + witch knowledge / 100) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Requires a reputation of -5 or below.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 50% Witch Knowledge and 50 Dark Magic.<br>Sacrifices (50 * (rituals completed+1)) soulstones. Currently sacrificing 
+            Sacrifice an increasing amount of soulstones to the dark gods, granting a permanent speed 10% boost to all actions in Beginnersville.<br>Progress is based on Dark Magic Skill and Witch Knowledge.<br>Requires a reputation of -5 or below.<br>Can only have 1 Dark Ritual action.<br>Unlocked with both 50% Witch Knowledge and 50 Dark Magic.<br>Sacrifices 50 soulstones per level of Ritual. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              soulstones.
@@ -1616,7 +1622,7 @@
             <label>Adventure Guild</label>
             <label_done>Impressed</label_done>
             <tooltip><![CDATA[
-            The one stop shop for all your adventuring needs.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 200 mana per rank.<br>Gives ((magic skill)/2 + (self combat)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 20% Rumors Heard.
+            The one stop shop for all your adventuring needs.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 200 mana per rank.<br>Progress is based on Self Combat, Magic, and number of times completed.<br>Unlocked at 20% Rumors Heard.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Tests taken:</b>⮀ You've gone through the standardized tests of the guild, and you're a little surprised at how low you placed. It seems that what you've considered impressive up until now is just the bare minimum around here.]]></story_1>
 			<story_2><![CDATA[<b>E Rank achieved:</b>⮀ You've clawed your way out of the ranks of the common riffraff. You still don't stand out at all, but it feels good to not be on the bottom rung anymore.]]></story_2>
@@ -1632,7 +1638,7 @@
             <label>Gather Team</label>
             <tooltip><![CDATA[
             You don't have to take them on by yourself.<br>Max 5 other team members.<br>Costs <div id='teamCost'></div>
-            gold, and the cost goes up by 100 gold per member.<br>Each member adds (Adventure Guild Multiplier) * (Combat Skill / 2) to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocked at 20% Rumors Heard.
+            gold, and the cost goes up by 100 gold per member.<br>Each member adds to your Team Combat based on Adventure Guild Multiplier.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocked at 20% Rumors Heard.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Teammate gathered:</b>⮀ Cassandra, self-professed expert spell-slinger, makes no attempt to hide her suspicion of the newcomer who's insisting on an expedition the same day they joined the guild. Still, you're paying the asking price, so she grudgingly accepts. You can tell that she won't be a pleasant companion, though.]]></story_1>
 			<story_2><![CDATA[<b>Full party:</b>⮀ Cassandra was a solo adventurer, but you've located a full party willing to join you in the dungeon. There's Marcus the swordsman, Raven the archer, Harvey the spell-slinger, Emily the healer, and Kyla, a rare specialist in magic-augmented dagger fighting. And you, now that you've paid them handsomely to join you.]]></story_2>
@@ -1644,10 +1650,10 @@
             <label_complete>Completed</label_complete>
             <label_part>Large Dungeon</label_part>
             <tooltip><![CDATA[
-            With your party, you set out to accomplish great feats of dungeoneering that you couldn't have done while alone.<br>Gives (magic + team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Requires at least one other party member.<br>Unlocked at 20% Rumors Heard.<br>Gives 10 soulstones per completion - hover over Looted for info.
+            With your party, you set out to accomplish great feats of dungeoneering that you couldn't have done while alone.<br>Progress is based on Team Combat, Magic Skill, and the number of times the floor has been completed.<br>Requires at least one other party member.<br>Unlocked at 20% Rumors Heard.<br>Gives 10 soulstones per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
-            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
+            Each soulstone improves a random stat's exp gain.<br>Each floor has 10 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last</last_stat_label>
@@ -1670,7 +1676,7 @@
             <label>Crafting Guild</label>
             <label_done>Cried From Beauty</label_done>
             <tooltip><![CDATA[
-            Learn to use your hands to build big structures.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 10 gold per segment completed.<br>Gives ((magic skill)/2 + (crafting skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 30% Rumors Heard.<br>Gives Crafting exp upon segment completion, rather than upon action completion.
+            Learn to use your hands to build big structures.<br>Take their tests and get a rank!<br>You can only join 1 guild at a time, and only try once.<br>Gives 10 gold per segment completed.<br>Progress is based on Crafting Skill, Magic Skill, and number of times completed.<br>Unlocked at 30% Rumors Heard.<br>Gives Crafting exp upon segment completion, rather than upon action completion.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Tests taken:</b>⮀ You want to make a cool suit of armor, but you don't know the first thing about metalworking so you apply as a carpenter until you know more. Your results are… unimpressive, and the clerk confides that you're likely to spend a couple years running errands before they let you actually learn anything.]]></story_1>
 			<story_2><![CDATA[<b>E Rank achieved:</b>⮀ You've proven yourself handy with wood, and they grant you a higher rank. A particularly harsh examiner says your work is shoddy and crude, but you seem to be above the errand boys now.]]></story_2>
@@ -1685,7 +1691,7 @@
         <craft_armor>
             <label>Craft Armor</label>
             <tooltip><![CDATA[
-            Turn hide into armor through hard work.<br>Gives (20% * Crafting Guild Multiplier) to Self Combat per armor.<br>Costs 2 hides.<br>Unlocked at 30% Rumors Heard.
+            Turn hide into armor through hard work.<br>Increases Self Combat per armor based on Crafting Skill.<br>Costs 2 hides.<br>Unlocked at 30% Rumors Heard.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Armor crafted:</b>⮀ It only covers your torso from the front, but it fits well and can take a blow. Getting stabbed in the chest sucks, so even if it doesn't cover everything you're glad you made it. Now, what about the rest of the set?]]></story_1>
 			<story_2><![CDATA[<b>10 Armor crafted:</b>⮀ You're covered head to toe in hand-crafted leather armor. You even have gloves and a helmet, and you've taken care that it's comfortable and flexible. You feel ready to take on any monster, knowing that there's sturdy armor between it and you.]]></story_2>
@@ -1853,7 +1859,7 @@
             <label>Explore Cavern</label>
             <label_done>Cavern Explored</label_done>
             <tooltip><![CDATA[
-            Explore the expansive and twisting cavern beneath the mountain, who knows what wonders (or terrors) you'll find down there.<br>Unlocked at 40% Mountain Explored.
+            Explore the expansive and twisting cavern beneath the mountain, who knows what wonders and terrors you'll find down there.<br>Unlocked at 40% Mountain Explored.
         ]]></tooltip>
 			<story_1><![CDATA[<b>1% Cavern Explored:</b>⮀ You carefully step inside the tunnel, the warning runes on your mind. When horrible things fail to happen, you go a little further. What awaits you in the depths of the mountain?]]></story_1>
 			<story_2><![CDATA[<b>10% Cavern Explored:</b>⮀ Only a few minutes in you find a branching path. You pick one at random and investigate, only to find more branches further along. Keeping track of all of this is going to be a challenge.]]></story_2>
@@ -1881,7 +1887,7 @@
             <label>Hunt Trolls</label>
             <label_done>Slain</label_done>
             <tooltip><![CDATA[
-            The cavern is teeming with trolls, but thankfully they appear to be friendly from the encounters you've had with them. However, you could do with some troll's blood.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked with 50% Cavern Explored.<br>Gives Combat exp per troll kill, rather than upon action completion.
+            The cavern is teeming with trolls, but thankfully they appear to be friendly from the encounters you've had with them. However, you could do with some troll's blood.<br>Progress is based on Self Combat and number of times completed.<br>Unlocked with 50% Cavern Explored.<br>Gives Combat exp per troll kill, rather than upon action completion.
         ]]></tooltip>
             <segment_names>
                 <name>Find a Hiding Spot</name>
@@ -1924,7 +1930,7 @@
             <label>Imbue Mind</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices (20 * (imbuements+1)) soulstones. Currently sacrificing 
+            Deep behind one of the many illusory walls, you've found a small glowing lake full of some sort of liquid. Your soulstones seem to glow when they get close to it. You appear to be able to use them as a link to your mind, but the process requires a very large amount of mana and will destroy them once it's complete. Each imbuement will increase the training limit by 1.<br>Progress is based on Magic Skill.<br>Can only have 1 Imbue Mind action.<br>Unlocked with both 70% Illusory Walls Discovered and 300 Magic.<br>Sacrifices soulstones per Imbue Mind Completed. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              soulstones.
@@ -1941,7 +1947,7 @@
             <label>Imbue Body</label>
             <label_done>Completed</label_done>
             <tooltip><![CDATA[
-            With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Gives (magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Imbue Body action.<br>Level is limited by imbue mind rank.<br>Sacrifices (imbuements+1) levels of talent. Currently sacrificing 
+            With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Progress is based on Magic Skill.<br>Can only have 1 Imbue Body action.<br>Level is limited by imbue mind rank.<br>Sacrifices a level of talent per Imbue Body completion. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              levels of talent.
@@ -2067,7 +2073,7 @@
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
             <tooltip><![CDATA[
-            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.
+            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Progress is based on all magical skills and number of times completed.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </wizard_college>
@@ -2104,7 +2110,7 @@
 		<collect_taxes>
 			<label>Collect Taxes</label>
             <tooltip><![CDATA[
-            Collect taxes from the properties you have built.<br>Gives (houses * Mercantilism / 20) gold.<br>Requires housing.<br>Unlocked at 100% Citizenship Exam Studied.
+            Collect taxes from the properties you have built.<br>Rewards gold based on Houses Built and Mercantilism Skill.<br>Requires housing.<br>Unlocked at 100% Citizenship Exam Studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
 		</collect_taxes>
@@ -2126,14 +2132,14 @@
             <label>Fight Giants</label>
             <label_done>Frost Giants Vanquished</label_done>
             <tooltip><![CDATA[
-            Join the valkyries in their fight against the frost giants.<br>Improves your ability to seek favor from the gods.<br>Can only have 1 Fight Frost Giants action.<br>Requires a pegasus.<br>Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 100% citizenship studied.
+            Join the valkyries in their fight against the frost giants.<br>Improves your ability to seek favor from the gods.<br>Can only have 1 Fight Frost Giants action.<br>Requires a pegasus.<br>Progress is based on Self Combat and number of times completed.<br>Unlocked at 100% citizenship studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </fight_frost_giants>
         <seek_blessing>
             <label>Seek Blessing</label>
             <tooltip><![CDATA[
-            Pray to the gods to grant you their favor.<br>Increases the number of soulstones earned from all actions.<br>Can only have 1 Seek Blessing action.<br>Requires a pegasus.<br>Gives (50 * Frost Giants Multi) Divine Favor experience.<br>Unlocked at 100% citizenship studied.
+            Pray to the gods to grant you their favor.<br>Increases the number of soulstones earned from all actions.<br>Can only have 1 Seek Blessing action.<br>Requires a pegasus.<br>Gives Divine Favor experience based on Frost Giants Defeated Multiplier.<br>Unlocked at 100% citizenship studied.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </seek_blessing>
@@ -2143,7 +2149,7 @@
             <tooltip><![CDATA[
             You realize now that you've forgotten the joy of food, after having gone for so "long" without needing to eat anything. It's about time for a feast of grand proportions. Unfortunately, all the catering services here only accepts payments in soulstones.<br>
             Permanently increases self combat.<br>
-            Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Requires 100 reputation.<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
+            Progress is based on Practical Magic Skill.<br>Can only have 1 Great Feast action.<br>Requires 100 reputation.<br>Sacrifices 5000 soulstones per Feast completed. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
              soulstones.
@@ -2197,7 +2203,7 @@
         <raise_zombie>
             <label>Raise Zombie</label>
             <tooltip><![CDATA[
-            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds (dark magic / 2) to your team combat.<br>Unlocked at 1000 dark magic.
+            Upon stumbling by the local cemetery, you realize that those numerous tombstones could perhaps benefit you in a meaningful way. With your knowledge of dark magic, and a hint of troll's blood, you might just be able to raise a zombie of your very own!<br>Costs 1 blood.<br>Each zombie adds to your team combat based on Dark Magic Skill.<br>Unlocked at 1000 dark magic.
         ]]></tooltip>
         </raise_zombie>
         <dark_sacrifice>
@@ -2212,10 +2218,10 @@
             <label_complete>Completed</label_complete>
             <label_part>The Spire</label_part>
             <tooltip><![CDATA[
-            Standing tall in the dead center of the town is the towering spire. Surrounded by a storm, and almost emanating gloom. This is surely your greatest task yet.<br>Gives (team combat) * (1 + main stat / 100) * sqrt(1 + times floor completed / 200) * (original mana cost / actual mana cost) progress points per mana.<br>Progress scaling per floor is reduced by 0.1x per pylon disabled.<br>Unlocked at 20% Rumors Heard.<br>Gives 100 soulstones per completion - hover over Looted for info.
+            Standing tall in the dead center of the town is the towering spire. Surrounded by a storm, and almost emanating gloom. This is surely your greatest task yet.<br>Progress is based on Team Combat and number of times a floor has been completed.<br>Gives 100 soulstones per completion - hover over Looted for info.
         ]]></tooltip>
             <completed_tooltip><![CDATA[
-            Each soulstone improves a random stat's exp gain by (1+(soulstones)^.8/30).<br>Each floor has 100 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
+            Each soulstone improves a random stat's exp gain.<br>Each floor has 100 soulstones that, when received, reduces the chance you'll get the next one by 2%.<br>Chance to receive a soulstone recovers per floor at 0.00001% per mana.<br>
         ]]></completed_tooltip>
             <chance_label>Chance</chance_label>
             <last_stat_label>Last</last_stat_label>
@@ -2249,7 +2255,7 @@
             <label_done>Creatures Defeated</label_done>
             <tooltip><![CDATA[
             Even the basic creatures here are terrifying.<br>
-            Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>
+            Progress is based on Self Combat and number of times completed.<br>
             Gives 1 hide per segment completed.
         ]]></tooltip>
         </fight_jungle_monsters>
@@ -2258,7 +2264,7 @@
             <label_done>Explored</label_done>
             <tooltip><![CDATA[
             It would be easier to explore here if something didn't jump out at you from behind every tree.<br>
-            Gives progress based on Jungle Creatures Defeated.<br>
+            Progress is based on Jungle Creatures Defeated.<br>
             Gives 1 herb.
         ]]></tooltip>
         </explore_jungle>
@@ -2267,7 +2273,7 @@
             <label_done>Saved</label_done>
             <label_part>Survivor</label_part>
             <tooltip><![CDATA[
-            There are people lost wandering the jungle. If you can find them, you can patch them up and bring them back to camp.<br>Gives (magic skill) * (restoration skill / 100) * (1 + main stat / 100) * sqrt(1 + times completed / 100) * (original mana cost / actual mana cost) * (Jungle Explored %) progress points per mana.<br>Rescued survivors give 4 reputation.
+            There are people lost wandering the jungle. If you can find them, you can patch them up and bring them back to camp.<br>Progress is based on Jungle Exporation, Magic Skill, Restoration Skill, and number of times completed.<br>Rescued survivors give 4 reputation.
         ]]></tooltip>
             <segment_names>
                 <name>Find</name>
@@ -2280,7 +2286,7 @@
             <tooltip><![CDATA[
             It's not quite the same as making potions, but you can use your alchemy skills to prepare food for the gathered group.<br>
             Costs 10 herbs and a hide.<br>
-            Gives Gluttony exp equal to (Rescued Survivors * 5).
+            Gives Gluttony exp based on Rescued Survivors.
         ]]></tooltip>
         </prepare_buffet>
         <totem>
@@ -2332,7 +2338,13 @@
             <label>Thieves Guild</label>
             <label_done>Pursestrings Cut</label_done>
             <tooltip><![CDATA[
-            Learn to transfer wealth to those most in need. You, mostly.<br>Take their tests and get a rank!<br>Requires negative reputation.<br>You can only join 1 guild at a time (including from Merchanton), and only try once.<br>Gives 10 gold per segment completed.<br>Gives ((practical magic skill) + (thievery skill)) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Gives Thievery exp upon segment completion, rather than upon action completion.
+            Learn to transfer wealth to those most in need. You, mostly.<br>
+            Take their tests and get a rank!<br>
+            Requires negative reputation.<br>
+            You can only join 1 guild at a time (including from Merchanton), and only try once.<br>
+            Gives 10 gold per segment completed.<br>
+            Progress is based on Practical Magic Skill, Thievery Skill, and number of times completed.<br>
+            Gives Thievery exp upon segment completion, rather than upon action completion.
         ]]></tooltip>
         </thieves_guild>
         <pick_pockets>
@@ -2412,7 +2424,7 @@
             <tooltip><![CDATA[
             Resets all talent levels, soulstones, imbue mind and imbue body. Other skills and buffs are unchanged.<br>
             Requires 500 Imbue Mind and Body.<br>
-            (Temporary - may change later)Raises all action speeds by 50%.
+            Raises all action speeds by 50%.
         ]]></tooltip>
         </imbue_soul>
         <build_tower>

@@ -4,8 +4,9 @@ window.Localization = {
     debug: false,
     defaultLang: "en-EN",
     supportedLang: {
-        "en-EN": "English",
-        "fr-FR": "Français",
+        "en-EN": "English (Advanced Tooltips)",
+        "en-EN-Simple": "English (Simple Tooltips)"
+        //"fr-FR": "Français",
     },
     // key used in the get parameter of the URL to set a specific language
     getKey: "lg",

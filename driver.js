@@ -344,6 +344,7 @@ function adjustAll() {
     adjustPockets();
     adjustWarehouses();
     adjustInsurance();
+    adjustAllRocks();
     view.adjustManaCost("Continue On");
 }
 

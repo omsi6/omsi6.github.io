@@ -156,6 +156,8 @@ function Actions() {
             }
         }
         guild = "";
+        portalUsed = false;
+        stoneLoc = 0;
         if (options.keepCurrentList) {
             this.currentPos = 0;
             this.completedTicks = 0;
