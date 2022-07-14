@@ -376,7 +376,7 @@ function load() {
     }
     actions.nextLast = copyObject(actions.next);
     if (toLoad.loadouts) {
-        for (let i = 0; i < toLoad.loadouts.length; i++) {
+        for (let i = 0; i < loadouts.length; i++) {
             if (!toLoad.loadouts[i]) {
                 continue;
             }
@@ -401,6 +401,9 @@ function load() {
             }
         }
     }
+    for (let i = 0; i < loadoutnames.length; i++) {
+        loadoutnames[i] = "Loadout " + (i + 1);
+    }
     if (toLoad.loadoutnames) {
         for (let i = 0; i < loadoutnames.length; i++) {
             if(toLoad.loadoutnames[i] != undefined && toLoad.loadoutnames != "")
@@ -409,11 +412,6 @@ function load() {
                 loadoutnames[i] = "Loadout " + (i + 1);
         }
     }
-    else
-        for (let i = 0; i < loadoutnames.length; i++) {
-            loadoutnames[i] = "Loadout " + (i + 1);
-        }
-
     curLoadout = toLoad.curLoadout;
     const elem = document.getElementById(`load${curLoadout}`);
     if (elem) {
