@@ -21,6 +21,7 @@
 ==New Resource==
     Add to resources list in saving.js
     Add resource section of game.xml files
+    Resources are automatically reset on new loops by the game code
 
 ==New Trial==
 
