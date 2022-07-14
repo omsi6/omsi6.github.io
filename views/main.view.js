@@ -706,7 +706,7 @@ function View() {
     };
 
     this.updateLoadout = function(num) {
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 16; i++) {
             const elem = document.getElementById(`load${i}`);
             if (elem) {
                 addClassToDiv(elem, "unused");
@@ -719,8 +719,8 @@ function View() {
     };
 
     this.updateLoadoutNames = function() {
-        for (let i = 0; i < 5; i++) {
-            document.getElementById(`load${i + 1}name`).textContent = loadoutnames[i];
+        for (let i = 0; i < loadoutnames.length; i++) {
+            document.getElementById(`load${i + 1}`).textContent = loadoutnames[i];
         }
     };
 

@@ -14,12 +14,12 @@ function cheat() {
     else gameSpeed = 1;
 }
 
-function bonusCheat()
+function cheatBonus()
 {
     totalOfflineMs = 1000000000000000;
 }
 
-function surveyCheat()
+function cheatSurvey()
 {
     for(i= 0; i<9; i++)
     {
@@ -28,6 +28,31 @@ function surveyCheat()
         view.updateProgressAction(varName, towns[i]);
     }
 }
+
+function cheatProgress()
+{
+    for (const action of totalActionList)
+    {
+        if (action.type == "progress")
+        {
+            towns[action.townNum][`exp${action.varName}`] = 505000;
+            view.updateProgressAction(action.varName, towns[action.townNum]);
+        }
+    }
+}
+
+function cheatTalent(stat, targetTalentLevel) 
+{
+    stats[stat].talent = getExpOfLevel(targetTalentLevel);
+    view.updateStats();
+}
+
+function cheatSoulstone(stat, targetSS)
+{
+    stats[stat].soulstone = targetSS;
+    view.updateSoulstones();
+}
+
 
 let mainTickLoop;
 const saveName = "idleLoops1";
@@ -82,8 +107,9 @@ const resourcesTemplate = copyObject(resources);
 // eslint-disable-next-line prefer-const
 let guild = "";
 let curLoadout = 0;
-let loadouts = [];
-let loadoutnames = ["1", "2", "3", "4", "5"];
+let loadouts = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+let loadoutnames = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+//let loadoutnames = ["1", "2", "3", "4", "5"];
 const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark", "Chronomancy", "Pyromancy", "Restoration", "Spatiomancy", "Mercantilism", "Divine", "Commune", "Wunderkind", "Gluttony", "Thievery"];
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Heroism", "Imbuement3"];
@@ -349,16 +375,13 @@ function load() {
         }
     }
     actions.nextLast = copyObject(actions.next);
-    loadouts = [[], [], [], [], [], []];
     if (toLoad.loadouts) {
         for (let i = 0; i < toLoad.loadouts.length; i++) {
             if (!toLoad.loadouts[i]) {
                 continue;
             }
+            //Translates old actions that no longer exist
             for (const action of toLoad.loadouts[i]) {
-                if (action.name === "Guided Tour") {
-                    continue;
-                }
                 if (action.name === "Sell Gold") {
                     action.name = "Buy Mana";
                 }
@@ -379,12 +402,18 @@ function load() {
         }
     }
     if (toLoad.loadoutnames) {
-        for (let i = 0; i < 5; i++) {
-            loadoutnames[i] = toLoad.loadoutnames[i];
+        for (let i = 0; i < loadoutnames.length; i++) {
+            if(toLoad.loadoutnames[i] != undefined && toLoad.loadoutnames != "")
+                loadoutnames[i] = toLoad.loadoutnames[i];
+            else
+                loadoutnames[i] = "Loadout " + (i + 1);
         }
-    } else {
-        loadoutnames = ["1", "2", "3", "4", "5"];
     }
+    else
+        for (let i = 0; i < loadoutnames.length; i++) {
+            loadoutnames[i] = "Loadout " + (i + 1);
+        }
+
     curLoadout = toLoad.curLoadout;
     const elem = document.getElementById(`load${curLoadout}`);
     if (elem) {

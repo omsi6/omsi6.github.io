@@ -2916,7 +2916,6 @@ Action.HeroesTrial = new TrialAction("Heroes Trial", 0, {
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001 - 1);
-        console.log(curFloor);
         trials[this.trialNum][curFloor].completed++;
         if (curFloor >= getBuffLevel("Heroism")) addBuffAmt("Heroism", 1);
         if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;

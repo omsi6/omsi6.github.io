@@ -6,6 +6,11 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.6"><![CDATA[
+            <b> July 12th, 2022</b>
+            • Change: Reworked Loadouts, allowing up to 15 to be saved<br>
+            • Bugfix: Restoration skill was applying to self combat instead of team combat<br>
+            ]]></version>
             <version verNum="1.5"><![CDATA[
             <b> July 13th, 2022</b>
             • New Action Type: Trial - Trials are longer form dungeons, but without the soulstone gain<br>
@@ -745,8 +750,8 @@
             <current_list_active>Keep current list active</current_list_active>
             <repeat_last_action>Repeat last action on list</repeat_last_action>
             <add_action_top>Add action to top of list</add_action_top>
-            <save_loadout>Save List</save_loadout>
-            <load_loadout>Load Selected List</load_loadout>
+            <save_loadout>Save To List</save_loadout>
+            <load_loadout>Load From List</load_loadout>
             <clear_list>Clear List</clear_list>
             <higher_done_percent_benefic>You can find more stuff with higher %.</higher_done_percent_benefic>
             <progress_label>Progress</progress_label>

@@ -308,26 +308,46 @@
                     <label for="addActionsToTopInput" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
                 <div style="margin-left:-4px;text-align:right;width:50%;">
-                    <div class="bold localized" style="margin-top:3px;" data-lockey="actions>title_loadout"></div>
-                    <div class="button unused showthat" id="load1" onclick="selectLoadout(1)">1
-                        <div id="load1name" class='showthisname'></div>
+                    <div class="showthatloadout">Manage Loadouts
+                        <div class="showthisloadout">
+                            <div class="loadoutbutton unused" id="load1" onclick="selectLoadout(1)" style="width:200px">Loadout 1</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load2" onclick="selectLoadout(2)" style="width:200px">Loadout 2</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load3" onclick="selectLoadout(3)" style="width:200px">Loadout 3</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load4" onclick="selectLoadout(4)" style="width:200px">Loadout 4</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load5" onclick="selectLoadout(5)" style="width:200px">Loadout 5</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load6" onclick="selectLoadout(6)" style="width:200px">Loadout 6</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load7" onclick="selectLoadout(7)" style="width:200px">Loadout 7</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load8" onclick="selectLoadout(8)" style="width:200px">Loadout 8</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load9" onclick="selectLoadout(9)" style="width:200px">Loadout 9</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load10" onclick="selectLoadout(10)" style="width:200px">Loadout 10</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load11" onclick="selectLoadout(11)" style="width:200px">Loadout 11</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load12" onclick="selectLoadout(12)" style="width:200px">Loadout 12</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load13" onclick="selectLoadout(13)" style="width:200px">Loadout 13</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load14" onclick="selectLoadout(14)" style="width:200px">Loadout 14</div>
+                            <br>
+                            <div class="loadoutbutton unused" id="load15" onclick="selectLoadout(15)" style="width:200px">Loadout 15</div>
+                            <br>
+                            <div class="loadoutbutton localized" style="margin-bottom:5px;margin-top:3px;" onclick="saveList()" data-lockey="actions>tooltip>save_loadout"></div>
+                            <div class="loadoutbutton localized" style="margin-bottom:5px;" onclick="loadList()" data-lockey="actions>tooltip>load_loadout"></div>
+                            <br>
+                            <input id="renameLoadout" value="Loadout Name" style="width: 100px; height: 16px; border: 1px solid black; margin-left: 5px; margin-bottom: 2px;">
+                            <div class="loadoutbutton" style="margin-bottom:5px;margin-top:3px;margin-right:-4px;" onclick="nameList(true)">Rename</div>
+                        </div>
                     </div>
-                    <div class="button unused showthat" id="load2" onclick="selectLoadout(2)">2
-                        <div id="load2name" class='showthisname'></div>
-                    </div>
-                    <div class="button unused showthat" id="load3" onclick="selectLoadout(3)">3
-                        <div id="load3name" class='showthisname'></div>
-                    </div>
-                    <div class="button unused showthat" id="load4" onclick="selectLoadout(4)">4
-                        <div id="load4name" class='showthisname'></div>
-                    </div>
-                    <div class="button unused showthat" id="load5" style="margin-right: -4px;" onclick="selectLoadout(5)">5
-                        <div id="load5name" class='showthisname'></div>
-                    </div>
-                    <br>
-                    <div class="button localized" style="margin-bottom:5px;margin-top:3px;margin-right:-4px;" onclick="saveList()" data-lockey="actions>tooltip>save_loadout"></div><br>
-                    <div class="button localized" style="margin-bottom:5px;margin-right:-4px;" onclick="loadList()" data-lockey="actions>tooltip>load_loadout"></div><br>
-                    <div class="button localized" style="margin-right:-4px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
+                    <div class="loadoutbutton localized" style="margin-right:-4px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
                 </div>
             </div>
         </div>

@@ -128,11 +128,11 @@ function getArmorLevel() {
 }
 
 function getSelfCombat() {
-    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5 + getSkillLevel("Restoration") * 2) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
+    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
 }
 
 function getTeamCombat() {
-    return getSelfCombat("Combat") + (getSkillLevel("Dark") * resources.zombie / 2) + getSkillLevel("Combat") * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
+    return getSelfCombat() + (getSkillLevel("Dark") * resources.zombie / 2) + (getSkillLevel("Combat") + getSkillLevel("Restoration") * 2) * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
 }
 
 function getPrcToNextSkillLevel(skill) {

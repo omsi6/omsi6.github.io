@@ -24,10 +24,15 @@ body {
 .showthatO {
     position:relative;
 }
-.showthatH:hover .showthisH {
+.showthatH:hover .showthisH{
     display: block;
 }
-.showthat:hover .showthis, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisstory {
+.showthatloadout:hover .showthisloadout, .showthisloadout:hover
+{
+    display: block;
+}
+.showthat:hover .showthis, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisstory
+{
     display: block;
 }
 
@@ -87,6 +92,38 @@ body {
     z-index: 999999;
     text-align: left;
     margin-left: -5px;
+    white-space: nowrap;
+}
+.showthatloadout {
+    padding: 1px 5px;
+    text-align: center;
+    min-width: 20px;
+    cursor: pointer;
+    outline: none;
+    color: #e1e1e1;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 3px #999;
+    transform: translateY(-2px);
+    z-index: 999;
+    margin-bottom:2px;
+}
+.showthisloadout {
+    display:none;
+    position:absolute;
+    height: 425px;
+    width: 215px;
+    color: black;
+    background-color: #c0e4c7;
+    border:1px solid;
+    padding:3px 5px;
+    border-radius:4px;
+    margin-top: -450px;
+    margin-bottom: 20px;
+    z-index: 999999;
+    text-align: left;
+    margin-left: -110px;
     white-space: nowrap;
 }
 
@@ -221,7 +258,7 @@ input[type="number"] {
 /*}*/
 
 
-.button {
+.button, .loadoutbutton{
     padding: 1px 5px;
     text-align: center;
     min-width: 9px;
@@ -237,12 +274,16 @@ input[type="number"] {
     margin-bottom:2px;
 }
 
-.button:hover {background-color: #3e8e41}
+.button:hover, .loadoutbutton:hover {background-color: #3e8e41}
 
-.button:active {
+.button:active, .loadoutbutton:hover {
     background-color: #3e8e41;
     box-shadow: 0 1px #666;
     transform: translateY(0px);
+}
+
+.loadoutbutton {
+    margin: 3px;
 }
 
 .unused {

@@ -254,6 +254,7 @@ function selectLoadout(num) {
     } else {
         curLoadout = num;
     }
+    document.getElementById("renameLoadout").value = loadoutnames[curLoadout - 1];
     view.updateLoadout(curLoadout);
 }
 
@@ -269,29 +270,32 @@ function saveList() {
         save();
         return;
     }
+    nameList(false);
+    loadouts[curLoadout] = copyArray(actions.next);
+    save();
+    if ((document.getElementById("renameLoadout").value !== "Saved!")) globalCustomInput = document.getElementById("renameLoadout").value;
+    document.getElementById("renameLoadout").value = "Saved!";
+    setTimeout(() => {
+        document.getElementById("renameLoadout").value = globalCustomInput;
+    }, 2000);
+}
+
+function nameList(saveGame) {
     // if the loadout has already been saved under a non-numeric name
     // and the user tries to save under a numeric name, the loadout will
     // be saved under an old name
     // if both the old AND the new names are numeric, then we insist on a non-numeric name
-    if (isNaN(document.getElementById("amountCustom").value)) {
-        if (document.getElementById("amountCustom").value.length > 30) {
-            document.getElementById("amountCustom").value = "30 Letter Max";
-        } else if (document.getElementById("amountCustom").value !== "Saved!") {
-            loadoutnames[curLoadout - 1] = document.getElementById("amountCustom").value;
+    if (isNaN(document.getElementById("renameLoadout").value)) {
+        if (document.getElementById("renameLoadout").value.length > 30) {
+            document.getElementById("renameLoadout").value = "30 Letter Max";
+        } else if (document.getElementById("renameLoadout").value !== "Saved!") {
+            loadoutnames[curLoadout - 1] = document.getElementById("renameLoadout").value;
         }
     } else if (!isNaN(loadoutnames[curLoadout - 1])) {
-        document.getElementById("amountCustom").value = "Enter a name!";
+        document.getElementById("renameLoadout").value = "Enter a name!";
     }
-    loadouts[curLoadout] = copyArray(actions.next);
-    save();
-    if ((document.getElementById("amountCustom").value !== "Saved!")) globalCustomInput = document.getElementById("amountCustom").value;
-    document.getElementById("amountCustom").value = "Saved!";
-    setTimeout(() => {
-        document.getElementById("amountCustom").value = globalCustomInput;
-    }, 1000);
-    for (let i = 0; i < 5; i++) {
-        document.getElementById(`load${i + 1}name`).textContent = loadoutnames[i];
-    }
+    document.getElementById(`load${curLoadout}`).textContent = loadoutnames[curLoadout -1];
+    if (saveGame) save();
 }
 
 function loadList() {
