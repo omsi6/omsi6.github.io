@@ -4701,7 +4701,7 @@ Action.ManaWell = new Action("Mana Well", {
     },
     finish() {
         towns[5].finishRegular(this.varName, 100, () => {
-        let wellMana = Math.min(5000 - Math.floor(10 * effectiveTime), 0);
+        let wellMana = Math.max(5000 - Math.floor(10 * effectiveTime), 0);
         addMana(wellMana);
         return wellMana;
         });
