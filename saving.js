@@ -118,7 +118,7 @@ const skillList = ["Combat", "Magic", "Practical", "Alchemy", "Crafting", "Dark"
 const skills = {};
 const buffList = ["Ritual", "Imbuement", "Imbuement2", "Feast", "Aspirant", "Heroism", "Imbuement3"];
 const dungeonFloors = [6, 9, 20];
-const trialFloors = [50, 100, 7, 1000];
+const trialFloors = [50, 100, 7, 1000, 25];
 const buffHardCaps = {
     Ritual: 666,
     Imbuement: 500,

@@ -6,6 +6,12 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.8"><![CDATA[
+            <b> July 14th, 2022</b>
+            • New Trial: Trial of the Dead (Startington) - Basely soley off your Zombie contributions to team combat, completing floors rewards even more zombies<br>
+            • Bugfix: Swapped the Clear List and Manage Loadout buttons so the loadout popup would be less likely to get in the way when editing action amounts<br>
+            • Bugfix: Added survey icon to new actions added by survey so they are easier to notice
+            ]]></version>
             <version verNum="1.7"><![CDATA[
             <b> July 14th, 2022</b>
             Endgame content complete!<br>
@@ -2238,6 +2244,17 @@
             Prepare to move on.<br>Costs 500 gold.<br>This merchant doesn't seem to be willing to haggle with you though.<br>You only need one set of supplies.<br>Unlocked at a combined Combat and Magic skill of 35.
         ]]></tooltip>
         </purchase_supplies>
+        <dead_trial>
+            <label>Trial of the Dead</label>
+            <label_done>Corpses Liberated</label_done>
+            <label_part>Necropolis</label_part>
+            <label_complete>Grave Defiled</label_complete>
+            <tooltip><![CDATA[
+            You've found an old necropolis. It's way too haunted for you and your party, but you could probably send some zombies in to look for more bodies.<br>
+            Progress is based on (Dark Magic Skill * Zombies / 2)<br>
+            Rewards 1 Zombie per floor completion.
+        ]]></tooltip>
+        </dead_trial>
         <journey_forth>
             <label>Journey Forth</label>
             <tooltip><![CDATA[

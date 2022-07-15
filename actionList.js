@@ -243,6 +243,7 @@ function RuinsAction(townNum) {
         manaCost() {
             return 100000;
         },
+        affectedBy: ["SurveyZ1"],
         visible() {
             return towns[this.townNum].getLevel("Survey") >= 100;
         },
@@ -288,6 +289,7 @@ function HaulAction(townNum) {
             Str: 0.4,
             Con: 0.6,
         },
+        affectedBy: ["SurveyZ1"],
         canStart() {
             return !resources.stone;
         },
@@ -498,6 +500,7 @@ Action.FoundGlasses = new Action("Found Glasses", {
     townNum: 0,
     stats: {
     },
+    affectedBy: ["SurveyZ1"],
     allowed() {
         return 1;
     },
@@ -3007,7 +3010,7 @@ Action.HeroesTrial = new TrialAction("Heroes Trial", 0, {
         const curFloor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
         if (curFloor >= getBuffLevel("Heroism")) addBuffAmt("Heroism", 1);
-        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
     },
     visible() {
@@ -4887,6 +4890,60 @@ Action.PurchaseSupplies = new Action("Purchase Supplies", {
     },
 });
 
+Action.DeadTrial = new TrialAction("Dead Trial", 4, {
+    type: "multipart",
+    expMult: 0.25,
+    townNum: 5,
+    stats: {
+        Cha: 0.25,
+        Int: 0.25,
+        Luck: 0.25,
+        Soul: 0.25
+    },
+    loopStats: ["Cha", "Int", "Luck", "Soul"],
+    affectedBy: ["RaiseZombie"],
+    floorScaling: 2, //Difficulty is raised to this exponent each floor
+    baseScaling: 1e9, //Difficulty is multiplied by this number each floor
+    manaCost() {
+        return 100000;
+    },
+    baseProgress() {
+        //Determines what skills give progress to the trial
+        return getSkillLevel("Dark") * resources.zombie / 2;
+    },
+    floorReward() {
+        //Rewards given per floor
+        addResource("zombie", 1);
+    },
+    canStart() {
+        const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
+        return curFloor < trialFloors[this.trialNum];
+    },
+    loopCost(segment) {
+        return precision3(Math.pow(this.floorScaling, Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + segment) / this.segments + 0.0000001)) * this.baseScaling);
+    },
+    tickProgress(offset) {
+        const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
+        return this.baseProgress() *
+            (1 + getLevel(this.loopStats[(towns[this.townNum][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
+            Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
+    },
+    loopsFinished() {
+        const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001 - 1);
+        trials[this.trialNum][curFloor].completed++;
+        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        view.updateTrialInfo(this.trialNum, curFloor + 1);
+        this.floorReward();
+    },
+    visible() {
+        return towns[this.townNum].getLevel("Survey") >= 100;
+    },
+    unlocked() {
+        return towns[this.townNum].getLevel("Survey") >= 100;
+    },
+    finish() {
+    },
+});
 
 Action.JourneyForth = new Action("Journey Forth", {
     type: "normal",
@@ -5653,7 +5710,7 @@ Action.SecretTrial = new TrialAction("Secret Trial", 3, {
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].STrialLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
-        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
     },
     visible() {
@@ -5825,7 +5882,7 @@ Action.GodsTrial = new TrialAction("Gods Trial", 1, {
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].GTrialLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
-        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
         if (curFloor + 1 === 100) addResource("power", 1);
     },
@@ -5880,7 +5937,7 @@ Action.ChallengeGods = new TrialAction("Challenge Gods", 2, {
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].GFightLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
-        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
         addResource("power", 1);
     },

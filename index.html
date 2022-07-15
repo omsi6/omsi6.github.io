@@ -308,6 +308,7 @@
                     <label for="addActionsToTopInput" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
                 <div style="margin-left:-4px;text-align:right;width:50%;">
+                    <div class="loadoutbutton localized" style="margin-right:0px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
                     <div class="showthatloadout">Manage Loadouts
                         <div class="showthisloadout">
                             <div class="loadoutbutton unused" id="load1" onclick="selectLoadout(1)" style="width:200px">Loadout 1</div>
@@ -347,7 +348,6 @@
                             <div class="loadoutbutton" style="margin-bottom:5px;margin-top:3px;margin-right:-4px;" onclick="nameList(true)">Rename</div>
                         </div>
                     </div>
-                    <div class="loadoutbutton localized" style="margin-right:-4px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
                 </div>
             </div>
         </div>
@@ -439,7 +439,7 @@
     <script>
         let totalActionList = [];
         let dungeons = [[], [], []];
-        let trials = [[], [], [], []];
+        let trials = [[], [], [], [], []];
         let initInterval = setInterval(() => {
             if (locCheck) {
                 clearInterval(initInterval);

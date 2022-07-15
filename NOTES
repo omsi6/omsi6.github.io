@@ -26,6 +26,7 @@
 ==New Trial==
 
     Increase the length of trials[] at the end of index.hmtl
+    Add the number of floors to trialfloors in saving.js
     Create a new action in the action list based on the template below
     Other general new action stuff
 
@@ -63,18 +64,18 @@ Action.Trial = new TrialAction("TrialName", trialNum, {
         return curFloor < trialFloors[this.trialNum];
     },
     loopCost(segment) {
-        return precision3(Math.pow(this.floorScaling, Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + segment) / this.segments + 0.0000001)) * baseScaling);
+        return precision3(Math.pow(this.floorScaling, Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + segment) / this.segments + 0.0000001)) * this.baseScaling);
     },
     tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
-        return baseProgress() *
+        return this.baseProgress() *
             (1 + getLevel(this.loopStats[(towns[this.townNum][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
             Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
     },
     loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
-        if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
+        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
         this.floorReward();
     },
