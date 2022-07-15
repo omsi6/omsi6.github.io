@@ -291,7 +291,7 @@ function HaulAction(townNum) {
         },
         affectedBy: ["SurveyZ1"],
         canStart() {
-            return !resources.stone;
+            return !resources.stone && stonesUsed[this.townNum] < 250;
         },
         manaCost() {
             return 50000;
