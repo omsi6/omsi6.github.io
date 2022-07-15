@@ -177,7 +177,7 @@ function TrialAction(name, trialNum, extras) {
 TrialAction.prototype = Object.create(MultipartAction.prototype);
 TrialAction.prototype.constructor = TrialAction;
 TrialAction.prototype.completedTooltip = function() {
-    return this.name + `- Highest Floor: <div id='trial${this.trialNum}HighestFloor'>0</div><br>
+    return this.name + ` Highest Floor: <div id='trial${this.trialNum}HighestFloor'>0</div><br>
     Current Floor: <div id='trial${this.trialNum}CurFloor'>0</div> - Completed <div id='trial${this.trialNum}CurFloorCompleted'>x</div> times<br>
     Last Floor: <div id='trial${this.trialNum}LastFloor'>N/A</div> - Completed <div id='trial${this.trialNum}LastFloorCompleted'>N/A</div> times<br>`;
 }
@@ -185,6 +185,24 @@ TrialAction.prototype.getPartName = function() {
     const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + 0.0001) / this.segments + 1);
     return `${_txt(`actions>${getXMLName(this.name)}>label_part`)} ${floor <= trials[this.trialNum].length ? numberToWords(floor) : _txt(`actions>${getXMLName(this.name)}>label_complete`)}`;
 };
+TrialAction.prototype.currentFloor = function() {
+    return Math.floor(towns[this.townNum][`${this.varName}LoopCounter`] / this.segments + 0.0000001);
+}
+TrialAction.prototype.loopCost = function(segment) {
+    return precision3(Math.pow(this.floorScaling, Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + segment) / this.segments + 0.0000001)) * this.baseScaling);
+}
+TrialAction.prototype.tickProgress = function(offset) {
+    return this.baseProgress() *
+        (1 + getLevel(this.loopStats[(towns[this.townNum][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
+        Math.sqrt(1 + trials[this.trialNum][this.currentFloor()].completed / 200);
+}
+TrialAction.prototype.loopsFinished = function() {
+    const curFloor = this.currentFloor();
+    trials[this.trialNum][curFloor].completed++;
+    if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor;
+    view.updateTrialInfo(this.trialNum, curFloor);
+    this.floorReward();
+}
 
 //====================================================================================================
 //Survery Actions (All Zones)
@@ -2990,29 +3008,36 @@ Action.HeroesTrial = new TrialAction("Heroes Trial", 0, {
     },
     loopStats: ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"],
     affectedBy: ["Team"],
+    floorScaling: 2,
+    baseScaling: 1e8,
     manaCost() {
         return 100000;
     },
     canStart() {
-        const curFloor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001);
-        return curFloor < trialFloors[this.trialNum];
+        return this.currentFloor() < trialFloors[this.trialNum];
     },
-    loopCost(segment) {
+    /*loopCost(segment) {
         return precision3(Math.pow(2, Math.floor((towns[this.townNum].HTrialLoopCounter + segment) / this.segments + 0.0000001)) * 1e8);
+    },*/
+    baseProgress() {
+        return getTeamCombat();
     },
-    tickProgress(offset) {
+    floorReward() {
+        if (this.currentFloor() >= getBuffLevel("Heroism")) addBuffAmt("Heroism", 1);
+    },
+    /*tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001);
         return getTeamCombat() *
             (1 + getLevel(this.loopStats[(towns[this.townNum].HTrialLoopCounter + offset) % this.loopStats.length]) / 100) *
             Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
-    },
-    loopsFinished() {
-        const curFloor = Math.floor((towns[this.townNum].HTrialLoopCounter) / this.segments + 0.0000001 - 1);
+    },*/
+    /*loopsFinished() {
+        const curFloor = this.currentFloor();
         trials[this.trialNum][curFloor].completed++;
         if (curFloor >= getBuffLevel("Heroism")) addBuffAmt("Heroism", 1);
         if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
-        view.updateTrialInfo(this.trialNum, curFloor + 1);
-    },
+        view.updateTrialInfo(this.trialNum, curFloor);
+    },*/
     visible() {
         return towns[this.townNum].getLevel("Survey") >= 100;
     },
@@ -4916,25 +4941,24 @@ Action.DeadTrial = new TrialAction("Dead Trial", 4, {
         addResource("zombie", 1);
     },
     canStart() {
-        const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
-        return curFloor < trialFloors[this.trialNum];
+        return this.currentFloor() < trialFloors[this.trialNum];
     },
-    loopCost(segment) {
+    /*loopCost(segment) {
         return precision3(Math.pow(this.floorScaling, Math.floor((towns[this.townNum][`${this.varName}LoopCounter`] + segment) / this.segments + 0.0000001)) * this.baseScaling);
-    },
-    tickProgress(offset) {
+    },*/
+    /*tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001);
         return this.baseProgress() *
             (1 + getLevel(this.loopStats[(towns[this.townNum][`${this.varName}LoopCounter`] + offset) % this.loopStats.length]) / 100) *
             Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
-    },
-    loopsFinished() {
+    },*/
+    /*loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum][`${this.varName}LoopCounter`]) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
         if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
         this.floorReward();
-    },
+    },*/
     visible() {
         return towns[this.townNum].getLevel("Survey") >= 100;
     },
@@ -5691,28 +5715,35 @@ Action.SecretTrial = new TrialAction("Secret Trial", 3, {
     },
     loopStats: ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"],
     affectedBy: ["Team"],
+    floorScaling: 1.25,
+    baseScaling: 1e10,
     manaCost() {
         return 100000;
     },
     canStart() {
-        const curFloor = Math.floor((towns[this.townNum].STrialLoopCounter) / this.segments + 0.0000001);
-        return curFloor < trialFloors[this.trialNum];
+        return currentFloor() < trialFloors[this.trialNum];
     },
-    loopCost(segment) {
+    baseProgress() {
+        return getTeamCombat();
+    },
+    /*loopCost(segment) {
         return precision3(Math.pow(1.25, Math.floor((towns[this.townNum].STrialLoopCounter + segment) / this.segments + 0.0000001)) * 1e10);
-    },
-    tickProgress(offset) {
+    },*/
+    /*tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].STrialLoopCounter) / this.segments + 0.0000001);
         return getTeamCombat() *
             (1 + getLevel(this.loopStats[(towns[this.townNum].STrialLoopCounter + offset) % this.loopStats.length]) / 100) *
             Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
+    },*/
+    floorReward() {
+        //None
     },
-    loopsFinished() {
+    /*loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].STrialLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
         if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
-    },
+    },*/
     visible() {
         return goldInvested === 999999999999;
     },
@@ -5864,29 +5895,36 @@ Action.GodsTrial = new TrialAction("Gods Trial", 1, {
     },
     loopStats: ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"],
     affectedBy: ["Team"],
+    floorScaling: 1.3,
+    baseScaling: 1e7,
     manaCost() {
         return 50000;
     },
     canStart() {
-        const curFloor = Math.floor((towns[this.townNum].GTrialLoopCounter) / this.segments + 0.0000001);
-        return curFloor < trialFloors[this.trialNum] && resources.power < 7;
+        return this.currentFloor() < trialFloors[this.trialNum] && resources.power < 7;
     },
-    loopCost(segment) {
+    baseProgress() {
+        return getTeamCombat();
+    },
+    floorReward() {
+        if (this.currentFloor() === trialFloors[this.trialNum] - 1) addResource("power", 1);
+    },
+    /*loopCost(segment) {
         return precision3(Math.pow(1.3, Math.floor((towns[this.townNum].GTrialLoopCounter + segment) / this.segments + 0.0000001)) * 1e7);
-    },
-    tickProgress(offset) {
+    },*/
+    /*tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].GTrialLoopCounter) / this.segments + 0.0000001);
         return getTeamCombat() *
             (1 + getLevel(this.loopStats[(towns[this.townNum].GTrialLoopCounter + offset) % this.loopStats.length]) / 100) *
             Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
-    },
-    loopsFinished() {
+    },*/
+    /*loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].GTrialLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
         if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
         if (curFloor + 1 === 100) addResource("power", 1);
-    },
+    },*/
     visible() {
         return towns[this.townNum].getLevel("BuildTower") >= 100;
     },
@@ -5919,29 +5957,36 @@ Action.ChallengeGods = new TrialAction("Challenge Gods", 2, {
         Combat: 500,
     },
     loopStats: ["Dex", "Str", "Con", "Spd", "Per", "Cha", "Int", "Luck", "Soul"],
+    floorScaling: 2,
+    baseScaling: 1e16,
     manaCost() {
         return 50000;
     },
     canStart() {
-        const curFloor = Math.floor((towns[this.townNum].GFightLoopCounter) / this.segments + 0.0000001);
-        return curFloor < trialFloors[this.trialNum] && resources.power > 0 && resources.power < 8;
+        return this.currentFloor() < trialFloors[this.trialNum] && resources.power > 0 && resources.power < 8;
     },
-    loopCost(segment) {
+    baseProgress() {
+        return getSelfCombat();
+    },
+    floorReward() {
+        addResource("power", 1);
+    },
+    /*loopCost(segment) {
         return precision3(Math.pow(2, Math.floor((towns[this.townNum].GFightLoopCounter + segment) / this.segments + 0.0000001)) * 1e16);
-    },
-    tickProgress(offset) {
+    },*/
+    /*tickProgress(offset) {
         const floor = Math.floor((towns[this.townNum].GFightLoopCounter) / this.segments + 0.0000001);
         return getSelfCombat() *
             (1 + getLevel(this.loopStats[(towns[this.townNum].GFightLoopCounter + offset) % this.loopStats.length]) / 100) *
             Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
-    },
-    loopsFinished() {
+    },*/
+    /*loopsFinished() {
         const curFloor = Math.floor((towns[this.townNum].GFightLoopCounter) / this.segments + 0.0000001 - 1);
         trials[this.trialNum][curFloor].completed++;
         if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
         view.updateTrialInfo(this.trialNum, curFloor + 1);
         addResource("power", 1);
-    },
+    },*/
     visible() {
         return towns[this.townNum].getLevel("BuildTower") >= 100;
     },

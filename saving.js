@@ -452,9 +452,11 @@ function load() {
     if(toLoad.trials === undefined) toLoad.trials = copyArray(trials);
     for (let i = 0; i < trials.length; i++) {
         floors = trialFloors[i];
+        trials[i].highestFloor = 0;
         for (let j = 0; j < floors; j++) {
             if (toLoad.trials[i] != undefined && toLoad.trials && toLoad.trials[i][j]) {
                 trials[i][j] = toLoad.trials[i][j];
+                if (trials[i][j].completed > 0) trials[i].highestFloor = j;
             } else {
                 trials[i][j] = copyArray(trialLevel);
             }

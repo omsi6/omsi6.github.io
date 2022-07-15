@@ -999,16 +999,16 @@ function View() {
     this.updateTrials = function() {
         for(let i = 0; i < trials.length; i++)
         {
-            this.updateTrialInfo(i,1);
+            this.updateTrialInfo(i,0);
         }
     };
 
     this.updateTrialInfo = function(trialNum, curFloor) {
         const trial = trials[trialNum];
-            document.getElementById(`trial${trialNum}HighestFloor`).textContent = trial.highestFloor;
+            document.getElementById(`trial${trialNum}HighestFloor`).textContent = trial.highestFloor + 1;
             document.getElementById(`trial${trialNum}CurFloor`).textContent = "" + (curFloor + 1);
-            document.getElementById(`trial${trialNum}CurFloorCompleted`).textContent = trial[curFloor - 1].completed;
-            if (curFloor > 1) {
+            document.getElementById(`trial${trialNum}CurFloorCompleted`).textContent = trial[curFloor].completed;
+            if (curFloor > 0) {
                 document.getElementById(`trial${trialNum}LastFloor`).textContent = curFloor;
                 document.getElementById(`trial${trialNum}LastFloorCompleted`).textContent = trial[curFloor - 1].completed;
             }
