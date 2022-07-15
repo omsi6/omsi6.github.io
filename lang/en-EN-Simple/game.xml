@@ -10,7 +10,8 @@
             <b> July 14th, 2022</b>
             • New Trial: Trial of the Dead (Startington) - Basely soley off your Zombie contributions to team combat, completing floors rewards even more zombies<br>
             • Bugfix: Swapped the Clear List and Manage Loadout buttons so the loadout popup would be less likely to get in the way when editing action amounts<br>
-            • Bugfix: Added survey icon to new actions added by survey so they are easier to notice
+            • Bugfix: Added survey icon to new actions added by survey so they are easier to notice<br>
+            • Bugfix: Haul wasn't being properly capped per zone, allowing stones to become negative
             ]]></version>
             <version verNum="1.7"><![CDATA[
             <b> July 14th, 2022</b>
@@ -2449,7 +2450,8 @@
             <label_done>Tower Progress</label_done>
             <tooltip><![CDATA[
             You've hit rock bottom and now there's nowhere to go but up. If only you had some way to climb back to Valhalla.<br>
-            Requires a Temporal Stone.
+            Requires a Temporal Stone.<br>
+            Hauling and Building persist through loops. Each stone used to build removes one from the pile in those ruins.
         ]]></tooltip>
         </build_tower>
         <gods_trial>
