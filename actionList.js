@@ -2107,7 +2107,7 @@ function checkSoulstoneSac(amount) {
 
 function sacrificeSoulstones(amount) {
     let batch;
-    amount > 9000 ? batch = 1000 : amount > 900 ? batch = 100 : batch = 10;
+    amount > 9000 ? batch = 1000 : amount > 900 ? batch = 100 : amount > 90 ? batch = 10 : batch = 1;
     while (amount > 0)
     {
         let highestSoulstoneStat = "";
