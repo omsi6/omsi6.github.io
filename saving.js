@@ -140,7 +140,7 @@ const buffCaps = {
 };
 const buffs = {};
 let goldInvested = 0;
-let stonesUsed = {1:0, 3:0, 5:0, 6:0};
+let stonesUsed;
 // eslint-disable-next-line prefer-const
 let townShowing = 0;
 // eslint-disable-next-line prefer-const
@@ -361,7 +361,7 @@ function load() {
     actionTownNum = toLoad.actionTownNum === undefined ? 0 : toLoad.actionTownNum;
     trainingLimits = 10 + getBuffLevel("Imbuement");
     goldInvested = toLoad.goldInvested === undefined ? 0 : toLoad.goldInvested;
-    if (toLoad.stonesUsed) stonesUsed = toLoad.stonesUsed;
+    stonesUsed = toLoad.stonesUsed === undefined ? {1:0, 3:0, 5:0, 6:0} : toLoad.stonesUsed;
 
     actions.next = [];
     if (toLoad.nextList) {
