@@ -3663,6 +3663,7 @@ Action.ImbueMind = new MultipartAction("Imbue Mind", {
     },
     finish() {
         view.updateBuff("Imbuement");
+        if (options.autoMaxTraining) capAllTraining();
         if (towns[3].ImbueMindLoopCounter >= 0) unlockStory("imbueMindThirdSegmentReached");
     },
 });

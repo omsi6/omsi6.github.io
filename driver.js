@@ -375,6 +375,17 @@ function capTraining(index) {
     view.updateLockedHidden();
 }
 
+function capAllTraining() {
+    for (const [index,action] of actions.next.entries())
+    {
+        if (trainingActions.includes(action.name)) {
+            //console.log("Training Action on list: " + action.name);
+            capTraining(index);
+        }
+    }
+
+}
+
 function addLoop(index) {
     actions.nextLast = copyObject(actions.next);
     const action = actions.next[index];

@@ -6,6 +6,14 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="1.9"><![CDATA[
+            <b> July 16th, 2022</b>
+            • Change: Added "Max Training" button to bottom of action list that will cap all training actions present on the list. This button only appears after players have completed their first imbue mind to reduce clutter<br>
+            • Change: Completing the "Imbue Mind" action will automatically cap any training actions on the list. This can be disabled in the options menu<br>
+            • Bugfix: StonesUsed from Haul was not properly resetting on clearing saves<br>
+            • Bugfix: Off-by-One error in final trial was preventing players from being able to finish<br>
+            • Bugfix: Trial tooltips were displaying incorrect floor numbers
+            ]]></version>
             <version verNum="1.8"><![CDATA[
             <b> July 14th, 2022</b>
             • New Trial: Trial of the Dead (Startington) - Basely soley off your Zombie contributions to team combat, completing floors rewards even more zombies<br>
@@ -247,6 +255,7 @@
             <adblock_warning>WARNING: For some reason, Adblock Plus can cause massive lag. This game won't ever have ads, so if your game is freezing frequently, please disable it on this page.
             </adblock_warning>
             <pause_audio_cue>Ping on pause</pause_audio_cue>
+            <auto_max_training>Max All Training Actions on Training cap increase</auto_max_training>
             <hotkeys>Hotkeys</hotkeys>
             <hotkeys_tooltip><![CDATA[
                 Spacebar: Pause/play<br>
@@ -811,6 +820,7 @@
             <save_loadout>Save To List</save_loadout>
             <load_loadout>Load From List</load_loadout>
             <clear_list>Clear List</clear_list>
+            <max_training>Max Training</max_training>
             <higher_done_percent_benefic>You can find more stuff with higher %.</higher_done_percent_benefic>
             <progress_label>Progress</progress_label>
             <total_found>Total Found</total_found>
@@ -2016,7 +2026,7 @@
             <label_done>Tidied</label_done>
             <label_part>Mess</label_part>
 			<tooltip><![CDATA[
-			Tidy up the place.<br>Gives 5 gold and 1 reputation.
+			Tidy up the place.<br>Progress is based on Practical Magic Skill and total completions.<br>Gives 5 gold and 1 reputation.
 		]]></tooltip>
 			<segment_names>
                 <name>Temp1</name>

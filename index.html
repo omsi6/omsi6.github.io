@@ -308,7 +308,8 @@
                     <label for="addActionsToTopInput" class="localized" data-lockey="actions>tooltip>add_action_top"></label>
                 </div>
                 <div style="margin-left:-4px;text-align:right;width:50%;">
-                    <div class="loadoutbutton localized" style="margin-right:0px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
+                    <div id="maxTraining" class="button localized" style="margin-right:0px;display:none" onclick="capAllTraining()" data-lockey="actions>tooltip>max_training"></div>
+                    <div class="button localized" style="margin-right:0px;" onclick="clearList()" data-lockey="actions>tooltip>clear_list"></div>
                     <div class="showthatloadout">Manage Loadouts
                         <div class="showthisloadout">
                             <div class="loadoutbutton unused" id="load1" onclick="selectLoadout(1)" style="width:200px">Loadout 1</div>

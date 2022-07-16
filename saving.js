@@ -39,6 +39,7 @@ function cheatProgress()
             view.updateProgressAction(action.varName, towns[action.townNum]);
         }
     }
+    stonesUsed = {1:250, 3:250, 5:250, 6:250};
 }
 
 function cheatTalent(stat, targetTalentLevel) 
@@ -246,6 +247,7 @@ const options = {
     pauseBeforeRestart: false,
     pauseOnFailedLoop: false,
     pingOnPause: false,
+    autoMaxTraining: false,
     hotkeys: true,
     updateRate: 50
 };
@@ -468,6 +470,7 @@ function load() {
         options.theme = toLoad.currentTheme === undefined ? "normal" : toLoad.currentTheme;
         options.repeatLastAction = toLoad.repeatLast;
         options.pingOnPause = toLoad.pingOnPause === undefined ? false : toLoad.pingOnPause;
+        options.autoMaxTraining = toLoad.autoMaxTraining === undefined ? true : toLoad.autoMaxTraining;
         options.hotkeys = toLoad.hotkeys === undefined ? true : toLoad.hotkeys;
         options.updateRate = toLoad.updateRate === undefined ? 50 : toLoad.updateRate;
     } else {

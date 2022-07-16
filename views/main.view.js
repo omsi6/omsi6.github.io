@@ -1057,6 +1057,7 @@ function View() {
                 trainingDiv.textContent = trainingLimits;
             }
         }
+        if (getBuffLevel("Imbuement") > 0 || getBuffLevel("Imbuement3") > 0) document.getElementById("maxTraining").style.display = "";
     };
 
     // when you mouseover Story
