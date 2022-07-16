@@ -197,10 +197,11 @@ TrialAction.prototype.tickProgress = function(offset) {
         Math.sqrt(1 + trials[this.trialNum][this.currentFloor()].completed / 200);
 }
 TrialAction.prototype.loopsFinished = function() {
-    const curFloor = this.currentFloor();
-    trials[this.trialNum][curFloor].completed++;
-    if (curFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor;
-    view.updateTrialInfo(this.trialNum, curFloor);
+    const finishedFloor = this.currentFloor() - 1;
+    //console.log("Finished floor: " + finishedFloor + " Current Floor: " + this.currentFloor());
+    trials[this.trialNum][finishedFloor].completed++;
+    if (finishedFloor > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = finishedFloor;
+    view.updateTrialInfo(this.trialNum, this.currentFloor());
     this.floorReward();
 }
 
