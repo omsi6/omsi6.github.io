@@ -3508,6 +3508,9 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
         addResource("blood", 1);
         if (resources.blood >= 10) unlockStory("slay10TrollsInALoop");
     },
+    segmentFinished() {
+        handleSkillExp(this.skills);
+    },
     getPartName() {
         return "Hunt Troll";
     },
@@ -3518,7 +3521,7 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
         return towns[3].getLevel("Cavern") >= 50;
     },
     finish() {
-        handleSkillExp(this.skills);
+        //handleSkillExp(this.skills);
     },
 });
 
@@ -4541,10 +4544,11 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
             Math.sqrt(1 + towns[4][`total${this.varName}`] / 1000));
     },
     loopsFinished() {
-        // empty.
+        handleSkillExp(this.skills);
     },
     segmentFinished() {
         curFightFrostGiantsSegment++;
+        handleSkillExp(this.skills);
         // Additional thing?
     }, 
     getPartName() {
@@ -4560,7 +4564,6 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
         return towns[4].getLevel("Citizen") >= 100;
     },
     finish() {
-        handleSkillExp(this.skills);
     },
 });
 function getFrostGiantsRank(offset) {
@@ -5062,7 +5065,10 @@ Action.FightJungleMonsters = new MultipartAction("Fight Jungle Monsters", {
             Math.sqrt(1 + towns[6][`total${this.varName}`] / 1000));
     },
     loopsFinished() {
-        // empty.
+        handleSkillExp(this.skills);
+    },
+    segmentFinished() {
+        handleSkillExp(this.skills);
     },
     segmentFinished() {
         curFightJungleMonstersSegment++;
@@ -5082,7 +5088,6 @@ Action.FightJungleMonsters = new MultipartAction("Fight Jungle Monsters", {
         return true;
     },
     finish() {
-        handleSkillExp(this.skills);
     },
 });
 function getFightJungleMonstersRank(offset) {

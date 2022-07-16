@@ -12,7 +12,8 @@
             • Change: Completing the "Imbue Mind" action will automatically cap any training actions on the list. This can be disabled in the options menu<br>
             • Bugfix: StonesUsed from Haul was not properly resetting on clearing saves<br>
             • Bugfix: Off-by-One error in final trial was preventing players from being able to finish<br>
-            • Bugfix: Trial tooltips were displaying incorrect floor numbers
+            • Bugfix: Trial tooltips were displaying incorrect floor numbers<br>
+            • Bugfix: Trolls, Frost Giants, and Jungle Monsters were giving combat exp per action rather than per kill. These actions will likely need significant combat skill exp buffs after to compensate for this fix
             ]]></version>
             <version verNum="1.8"><![CDATA[
             <b> July 14th, 2022</b>
