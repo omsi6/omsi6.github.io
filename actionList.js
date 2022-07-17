@@ -554,7 +554,7 @@ Action.BuyManaZ1 = new Action("Buy Mana Z1", {
         return 100;
     },
     visible() {
-        return towns[0].getLevel("Wander") >= 3;
+        return towns[0].getLevel("Wander") >= 3 && challenge != 1;
     },
     unlocked() {
         return towns[0].getLevel("Wander") >= 20;
@@ -565,6 +565,37 @@ Action.BuyManaZ1 = new Action("Buy Mana Z1", {
     finish() {
         addMana(resources.gold * this.goldCost());
         resetResource("gold");
+    },
+});
+
+Action.BuyManaChallenge = new Action("Buy Mana Challenge", {
+    type: "normal",
+    expMult: 1,
+    townNum: 0,
+    stats: {
+        Cha: 0.7,
+        Int: 0.2,
+        Luck: 0.1
+    },
+    manaCost() {
+        return 100;
+    },
+    allowed() {
+        return 1
+    },
+    visible() {
+        return towns[0].getLevel("Wander") >= 3 && challenge === 1;
+    },
+    unlocked() {
+        return towns[0].getLevel("Wander") >= 20;
+    },
+    goldCost() {
+        return 25;
+    },
+    finish() {
+        let spendGold = Math.min(resources.gold, 200);
+        addMana(spendGold * this.goldCost());
+        addResource("gold", -spendGold);
     },
 });
 
@@ -2332,7 +2363,7 @@ Action.BuyManaZ3 = new Action("Buy Mana Z3", {
         return !portalUsed;
     },
     visible() {
-        return true;
+        return challenge != 1;
     },
     unlocked() {
         return true;
@@ -3984,7 +4015,7 @@ Action.BuyManaZ5 = new Action("Buy Mana Z5", {
         return 100;
     },
     canStart() {
-        return !portalUsed;
+        return !portalUsed && challenge!=1;
     },
     visible() {
         return true;

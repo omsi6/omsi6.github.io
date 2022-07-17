@@ -6,6 +6,7 @@ Views.registerView("menu", {
         html += Views.menu.htmlSaveMenu();
         html += Views.menu.htmlFAQMenu();
         html += Views.menu.htmlOptionsMenu();
+        html += Views.menu.htmlChallengeMenu();
         return html;
     },
     versions() {
@@ -121,6 +122,34 @@ Views.registerView("menu", {
             html += `<option value='${themeList[index]}'>${$(theme).find(themeList[index]).text()}</option>`;
         });
         html += "</select><br>";
+        return html;
+    },
+    htmlChallengeMenu() {
+        const html = 
+        `<div style='display:inline-block;height:30px;margin-left:10px;' class='showthatH'>
+            ${_txt("menu>challenges>meta>title")}
+            <div class='showthisH'>
+                ${this.challenges()}
+            </div>
+        </div>`;
+        return html;
+    },
+    challenges() {
+        let html = 
+        `<div>Challenges are special modes that impose special conditions and heavy restrictions.<br> 
+            They give no rewards ard are just here for fun.<br>
+            It is only recommended to try them after beating the main game.<br>
+            Please export and save your data locally before starting.<br>
+            <b>Beginning a challenge will permanently delete your current save.</b><br>
+            `;
+        html += 
+        `<div class='button showthat control' style='margin-top: 2px;' onclick='beginChallenge(1)'>Mana Drought 
+            <div class='showthis' style='color:black;width:230px;margin-left:100px;'>${_txt("menu>challenges>mana_drought")}</div>
+        </div><br>
+        <div class='button showthat control' style='margin-top: 2px;' onclick='beginChallenge(2)'>Noodle Arms
+            <div class='showthis' style='color:black;width:230px;margin-left:100px;'>${_txt("menu>challenges>noodle_arms")}</div>
+        </div><br>`
+        html += `</div>`
         return html;
     }
 });

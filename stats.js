@@ -128,7 +128,8 @@ function getArmorLevel() {
 }
 
 function getSelfCombat() {
-    return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
+    if (challenge === 2) return 0;
+    else return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
 }
 
 function getTeamCombat() {

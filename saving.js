@@ -221,6 +221,7 @@ const storyReqs = {
 };
 
 const curDate = new Date();
+let challenge = 0;
 let totalOfflineMs = 0;
 // eslint-disable-next-line prefer-const
 let bonusSpeed = 1;
@@ -519,6 +520,7 @@ function load() {
     storyShowing = toLoad.storyShowing === undefined ? 0 : toLoad.storyShowing;
     storyMax = toLoad.storyMax === undefined ? 0 : toLoad.storyMax;
 
+    challenge = toLoad.challenge === undefined ? 0 : toLoad.challenge;
     totalOfflineMs = toLoad.totalOfflineMs === undefined ? 0 : toLoad.totalOfflineMs;
     // capped at 1 month of gain
     addOffline(Math.min(Math.floor((new Date() - new Date(toLoad.date)) * offlineRatio), 2678400000));
@@ -593,6 +595,7 @@ function save() {
     //toSave.buffCaps = buffCaps;
 
     toSave.date = new Date();
+    toSave.challenge = challenge;
     toSave.totalOfflineMs = totalOfflineMs;
 
     window.localStorage[saveName] = JSON.stringify(toSave);
@@ -655,4 +658,18 @@ function importCurrentList() {
         }
     }
     view.updateNextActions();
+}
+
+function beginChallenge(challengeNum) {
+    if (confirm("Beginning a new challenge will delete your current save. Are you sure you have an export saved to your computer?")) {
+        clearSave();
+        actions.next = [];
+        actions.current = [];
+        load();
+        challenge = challengeNum;
+        pauseGame();
+        restart();
+    } else {
+        return;
+    }
 }
