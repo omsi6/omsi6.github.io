@@ -4639,7 +4639,7 @@ function getFrostGiantsRank(offset) {
 
 Action.SeekBlessing = new Action("Seek Blessing", {
     type: "normal",
-    expMult: 1,
+    expMult: 5,
     townNum: 4,
     stats: {
         Cha: 0.5,
