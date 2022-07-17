@@ -158,6 +158,7 @@ function Actions() {
         guild = "";
         portalUsed = false;
         stoneLoc = 0;
+        totalMerchantMana = 5000;
         if (options.keepCurrentList) {
             this.currentPos = 0;
             this.completedTicks = 0;

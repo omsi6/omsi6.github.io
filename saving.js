@@ -221,11 +221,13 @@ const storyReqs = {
 };
 
 const curDate = new Date();
-let challenge = 0;
 let totalOfflineMs = 0;
 // eslint-disable-next-line prefer-const
 let bonusSpeed = 1;
 const offlineRatio = 1;
+
+let challenge = 0;
+let totalMerchantMana = 5000;
 
 // eslint-disable-next-line prefer-const
 let curAdvGuildSegment = 0;

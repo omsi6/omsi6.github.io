@@ -577,11 +577,11 @@ Action.BuyManaChallenge = new Action("Buy Mana Challenge", {
         Int: 0.2,
         Luck: 0.1
     },
+    canStart() {
+        return totalMerchantMana > 0;
+    },
     manaCost() {
         return 100;
-    },
-    allowed() {
-        return 1
     },
     visible() {
         return towns[0].getLevel("Wander") >= 3 && challenge === 1;
@@ -594,7 +594,9 @@ Action.BuyManaChallenge = new Action("Buy Mana Challenge", {
     },
     finish() {
         let spendGold = Math.min(resources.gold, 200);
-        addMana(spendGold * this.goldCost());
+        let buyMana = Math.min(spendGold * this.goldCost(), totalMerchantMana);
+        addMana(buyMana);
+        totalMerchantMana -= buyMana;
         addResource("gold", -spendGold);
     },
 });
