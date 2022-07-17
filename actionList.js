@@ -5785,10 +5785,10 @@ Action.SecretTrial = new TrialAction("Secret Trial", 3, {
         view.updateTrialInfo(this.trialNum, curFloor + 1);
     },*/
     visible() {
-        return goldInvested === 999999999999;
+        return storyMax >= 3 && getBuffLevel("Imbuement3") >= 7;
     },
     unlocked() {
-        return goldInvested === 999999999999;
+        return storyMax >= 3 && getBuffLevel("Imbuement3") >= 7;
     },
     finish() {
     },
