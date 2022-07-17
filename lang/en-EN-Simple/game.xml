@@ -6,6 +6,12 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="2.0"><![CDATA[
+            <b> July 16th, 2022</b>
+            Added Challenges!<br>
+            Challenges are super hard modifications to the base game with extra restrictions in place.<br>
+            These are only for fun and do not give any rewards.<br>
+            ]]></version>
             <version verNum="1.9"><![CDATA[
             <b> July 16th, 2022</b>
             • Change: Added "Max Training" button to bottom of action list that will cap all training actions present on the list. This button only appears after players have completed their first imbue mind to reduce clutter<br>
