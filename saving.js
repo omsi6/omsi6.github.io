@@ -523,6 +523,8 @@ function load() {
     storyMax = toLoad.storyMax === undefined ? 0 : toLoad.storyMax;
 
     challenge = toLoad.challenge === undefined ? 0 : toLoad.challenge;
+    if (challenge === 1) gameSpeed = 2;
+
     totalOfflineMs = toLoad.totalOfflineMs === undefined ? 0 : toLoad.totalOfflineMs;
     // capped at 1 month of gain
     addOffline(Math.min(Math.floor((new Date() - new Date(toLoad.date)) * offlineRatio), 2678400000));
@@ -669,6 +671,7 @@ function beginChallenge(challengeNum) {
         actions.current = [];
         load();
         challenge = challengeNum;
+        totalOfflineMs = 1000000;
         pauseGame();
         restart();
     } else {
