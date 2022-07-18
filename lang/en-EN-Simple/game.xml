@@ -15,6 +15,7 @@
             • Bugfix: Troll's blood still said it did nothing<br>
             • Bugfix: Reduce the amount of time "Saved" appear on loadouts from 2s -> 1s<br>
             • Bugfix: Secret trial couldn't be started<br>
+            • Bugfix: Soulstone display wasn't being updated after imbue soul<br>
             • Change: The game will now persist any current options set when starting a new game or beginning a challenge<br>
             ]]></version>
             <version verNum="2.0"><![CDATA[

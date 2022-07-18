@@ -5854,6 +5854,7 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
         addBuffAmt("Imbuement3", 1);
         view.updateBuffs();
         view.updateStats();
+        view.updateSoulstones();
     },
     getPartName() {
         return "Imbue Soul";
