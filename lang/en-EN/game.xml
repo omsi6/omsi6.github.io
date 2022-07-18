@@ -2359,7 +2359,7 @@
         <escape>
             <label>Escape</label>
             <tooltip><![CDATA[
-            The jungle seems to grow ever larger with every moment that passes. You'll have to get out of here fast.<br>Must be completed within 60 seconds of the loop (hover Mana Used for effective time).
+            The jungle seems to grow ever larger with every moment that passes. You'll have to get out of here fast.<br>Must be started within 60 seconds of the loop (hover Mana Used for effective time).
         ]]></tooltip>
         </escape>
         <open_portal>
