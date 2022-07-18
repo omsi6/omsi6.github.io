@@ -755,7 +755,7 @@
         <imbue_soul>
             <label>Imbue Soul</label>
             <desc><![CDATA[(Incomplete) Sacrifice everything for the ultimate power.<br>
-            Increases all action speed by 50% per level (additively).
+            Increases the exp multiplier of training actions by 100% and raises all action speeds by 50% per level additively.
             ]]></desc>
         </imbue_soul>
         <tooltip>
