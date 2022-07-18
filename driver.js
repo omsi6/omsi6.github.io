@@ -277,7 +277,7 @@ function saveList() {
     document.getElementById("renameLoadout").value = "Saved!";
     setTimeout(() => {
         document.getElementById("renameLoadout").value = globalCustomInput;
-    }, 2000);
+    }, 1000);
 }
 
 function nameList(saveGame) {
@@ -345,6 +345,7 @@ function adjustAll() {
     adjustWarehouses();
     adjustInsurance();
     adjustAllRocks();
+    adjustTrainingExpMult();
     view.adjustManaCost("Continue On");
 }
 

@@ -6,6 +6,17 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="2.1"><![CDATA[
+            <b> July 18th, 2022</b>
+            • Balance: Imbue soul now adds +100% exp mult to training actions per level<br>
+            • Balance: Reducted Alchemy Skill requirement of Looping potion from 500 to 200<br>
+            • Balance: Jungle Escape now only needs to be started within 60s, not completed within 60s<br>
+            • Bugfix: Excursion was requiring the player to have more gold than the cost rather than more or equal<br>
+            • Bugfix: Troll's blood still said it did nothing<br>
+            • Bugfix: Reduce the amount of time "Saved" appear on loadouts from 2s -> 1s<br>
+            • Bugfix: Secret trial couldn't be started<br>
+            • Change: The game will now persist any current options set when starting a new game or beginning a challenge<br>
+            ]]></version>
             <version verNum="2.0"><![CDATA[
             <b> July 16th, 2022</b>
             Added Challenges!<br>
@@ -1991,7 +2002,7 @@
             With your new knowledge, you believe you can also use the lake to renforce your body across time. Each imbuement will increase starting stats by 1.<br>Progress is based on Magic Skill.<br>Can only have 1 Imbue Body action.<br>Level is limited by imbue mind rank.<br>Sacrifices a level of talent per Imbue Body completion. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
-             levels of talent.
+             levels of talent from each stat.
         ]]></tooltip2>
             <segment_names>
                 <name>Submerge youself</name>
@@ -2476,7 +2487,7 @@
             <tooltip><![CDATA[
             Resets all talent levels, soulstones, imbue mind and imbue body. Other skills and buffs are unchanged.<br>
             Requires 500 Imbue Mind and Body.<br>
-            Raises all action speeds by 50%.
+            Increases the exp multiplier of training actions by 100% and raises all action speeds by 50% per level.
         ]]></tooltip>
         </imbue_soul>
         <build_tower>

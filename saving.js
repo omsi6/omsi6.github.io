@@ -108,10 +108,13 @@ let resources = {
     stone: false
 };
 const resourcesTemplate = copyObject(resources);
+//Temp variables
 // eslint-disable-next-line prefer-const
 let guild = "";
+let escapeStarted = false;
 let portalUsed = false;
 let stoneLoc = 0;
+
 let curLoadout = 0;
 let loadouts;
 let loadoutnames;
@@ -470,12 +473,12 @@ function load() {
     }
 
     if (toLoad.options === undefined) {
-        options.theme = toLoad.currentTheme === undefined ? "normal" : toLoad.currentTheme;
+        options.theme = toLoad.currentTheme === undefined ? options.theme : toLoad.currentTheme;
         options.repeatLastAction = toLoad.repeatLast;
-        options.pingOnPause = toLoad.pingOnPause === undefined ? false : toLoad.pingOnPause;
-        options.autoMaxTraining = toLoad.autoMaxTraining === undefined ? true : toLoad.autoMaxTraining;
-        options.hotkeys = toLoad.hotkeys === undefined ? true : toLoad.hotkeys;
-        options.updateRate = toLoad.updateRate === undefined ? 50 : toLoad.updateRate;
+        options.pingOnPause = toLoad.pingOnPause === undefined ? options.pingOnPause : toLoad.pingOnPause;
+        options.autoMaxTraining = toLoad.autoMaxTraining === undefined ? options.autoMaxTraining : toLoad.autoMaxTraining;
+        options.hotkeys = toLoad.hotkeys === undefined ? options.hotkeys : toLoad.hotkeys;
+        options.updateRate = toLoad.updateRate === undefined ? options.updateRate : toLoad.updateRate;
     } else {
         for (const option in toLoad.options) {
             options[option] = toLoad.options[option];

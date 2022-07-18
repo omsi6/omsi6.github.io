@@ -3362,7 +3362,7 @@ Action.LoopingPotion = new Action("Looping Potion", {
         return getSkillLevel("Spatiomancy") >= 1;
     },
     unlocked() {
-        return getSkillLevel("Alchemy") >= 500;
+        return getSkillLevel("Alchemy") >= 200;
     },
     finish() {
         addResource("loopingPotion", true);
@@ -5283,7 +5283,12 @@ Action.Escape = new Action("Escape", {
         return 1;
     },
     canStart() {
-        return effectiveTime < 60;
+        if (escapeStarted) return true;
+        else if (effectiveTime < 60) {
+            escapeStarted = true;
+            return true;
+        }
+        else return false;
     },
     manaCost() {
         return 50000;
@@ -5349,7 +5354,7 @@ Action.Excursion = new Action("Excursion", {
         return 25000;
     },
     canStart() {
-        return resources.gold > this.goldCost();
+        return resources.gold >= this.goldCost();
     },
     visible() {
         return true;
@@ -5761,29 +5766,14 @@ Action.SecretTrial = new TrialAction("Secret Trial", 3, {
         return 100000;
     },
     canStart() {
-        return currentFloor() < trialFloors[this.trialNum];
+        return this.currentFloor() < trialFloors[this.trialNum];
     },
     baseProgress() {
         return getTeamCombat();
     },
-    /*loopCost(segment) {
-        return precision3(Math.pow(1.25, Math.floor((towns[this.townNum].STrialLoopCounter + segment) / this.segments + 0.0000001)) * 1e10);
-    },*/
-    /*tickProgress(offset) {
-        const floor = Math.floor((towns[this.townNum].STrialLoopCounter) / this.segments + 0.0000001);
-        return getTeamCombat() *
-            (1 + getLevel(this.loopStats[(towns[this.townNum].STrialLoopCounter + offset) % this.loopStats.length]) / 100) *
-            Math.sqrt(1 + trials[this.trialNum][floor].completed / 200);
-    },*/
     floorReward() {
         //None
     },
-    /*loopsFinished() {
-        const curFloor = Math.floor((towns[this.townNum].STrialLoopCounter) / this.segments + 0.0000001 - 1);
-        trials[this.trialNum][curFloor].completed++;
-        if (curFloor + 1 > trials[this.trialNum].highestFloor || trials[this.trialNum].highestFloor === undefined) trials[this.trialNum].highestFloor = curFloor + 1;
-        view.updateTrialInfo(this.trialNum, curFloor + 1);
-    },*/
     visible() {
         return storyMax >= 3 && getBuffLevel("Imbuement3") >= 7;
     },
@@ -5878,6 +5868,15 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
         view.updateBuff("Imbuement3");
     },
 });
+
+function adjustTrainingExpMult() {
+    for (let actionName of trainingActions)
+    {
+        actionName = withoutSpaces(actionName);
+        Action[actionName].expMult = 4 + getBuffLevel("Imbuement3");
+        view.adjustExpMult(actionName);
+    }
+}
 
 Action.BuildTower = new Action("Build Tower", {
     type: "progress",

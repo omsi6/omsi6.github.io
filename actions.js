@@ -156,6 +156,7 @@ function Actions() {
             }
         }
         guild = "";
+        escapeStarted = false;
         portalUsed = false;
         stoneLoc = 0;
         totalMerchantMana = 5000;
