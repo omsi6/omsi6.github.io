@@ -6,6 +6,16 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="2.2"><![CDATA[
+            <b> July 19th, 2022</b>
+            • New Skill: Leadership - Increases your max follower count by 1 for every 100 levels and increases their contribution to team combat<br>
+            • New Action (Commerceville): Motivational Seminar - Get advice from the head of a totally-not-an-MLM to learn how to be a better leader<br> 
+            • Balance: Zombie Strength is now increased by Dark Ritual / 100(min 1x, up to 6.66x increase)<br>
+            • Balance: Fight Jungle Monsters now rewards blood instead of hides. Prepare Buffet is now made of blood instead of hide. Still gross.<br>
+            Note - We'll have to see how these changes land. It may end up being that now Team Combat is too strong compared to self combat. Also, trials will almost certainly need rebalancing.<br>
+            • Bugfix: Fight actions were giving exp on segment in addition to completion. Increased combat exp of frost/giants & jungle monsters to compensate<br>
+            • Bugfix: Explorer's guild was not reducing the cost of excursion
+            ]]></version>
             <version verNum="2.1"><![CDATA[
             <b> July 18th, 2022</b>
             • Balance: Imbue soul now adds +100% exp mult to training actions per level<br>
@@ -593,7 +603,7 @@
         </scombat>
         <tcombat>
             <label>Team Combat</label>
-            <desc>Team Combat = Self Combat + (Combat Skill + Restoration skill * 2) * (Team Members / 2) * Adventure Guild Multiplier</desc>
+            <desc>Team Combat = Self Combat + (Combat Skill + Restoration skill * 2) * (Team Members / 2) * Adventure Guild Multiplier * Leadership Bonus + Dark Magic Skill * Zombies / 2 * Dark Ritural / 100.</desc>
         </tcombat>
         <combat>
             <label>Combat</label>
@@ -699,6 +709,12 @@
             <desc2><![CDATA[Increases gold gain from Pick Locks, Gamble, and Thieving Guild actions by (1 + level / 60) ^ 0.25.<br>
             Currently granting <div id='skillBonusThievery'></div>x increased gold.]]></desc2>
         </thievery>
+        <leadership>
+            <label>Leadership</label>
+            <desc>You're ready to start your own cult!</desc>
+            <desc2><![CDATA[Increases the number of followers you can recruit for every 100 levels. Increases your follower's contributions to team combat by (1 + level / 60) ^ 0.25.<br>
+            Currently granting <div id='skillBonusLeadership'></div>x increased follower strength.]]></desc2>
+        </leadership>
         <tooltip>
             <level>Level:</level>
             <level_exp>Level Exp:</level_exp>
@@ -1684,7 +1700,7 @@
         <gather_team>
             <label>Gather Team</label>
             <tooltip><![CDATA[
-            You don't have to take them on by yourself.<br>Max 5 other team members.<br>Costs <div id='teamCost'></div>
+            You don't have to take them on by yourself.<br>Max 5 other team members, plus 1 for each 100 levels of Leadership.<br>Costs <div id='teamCost'></div>
             gold, and the cost goes up by 100 gold per member.<br>Each member adds (Adventure Guild Multiplier) * (Combat Skill / 2) to your Team Combat.<br>Requires Adventure Guild.<br>Has 3x exp/talent gain.<br>Unlocked at 20% Rumors Heard.
         ]]></tooltip>
 			<story_1><![CDATA[<b>Teammate gathered:</b>⮀ Cassandra, self-professed expert spell-slinger, makes no attempt to hide her suspicion of the newcomer who's insisting on an expedition the same day they joined the guild. Still, you're paying the asking price, so she grudgingly accepts. You can tell that she won't be a pleasant companion, though.]]></story_1>
@@ -2314,7 +2330,7 @@
             <tooltip><![CDATA[
             Even the basic creatures here are terrifying.<br>
             Gives (self combat) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>
-            Gives 1 hide per segment completed.
+            Gives 1 blood per segment completed.
         ]]></tooltip>
         </fight_jungle_monsters>
         <explore_jungle>
@@ -2343,7 +2359,7 @@
             <label>Prepare Buffet</label>
             <tooltip><![CDATA[
             It's not quite the same as making potions, but you can use your alchemy skills to prepare food for the gathered group.<br>
-            Costs 10 herbs and a hide.<br>
+            Costs 10 herbs and a blood.<br>
             Gives Gluttony exp equal to (Rescued Survivors * 5).
         ]]></tooltip>
         </prepare_buffet>
@@ -2447,6 +2463,13 @@
             Current interest: <div id='bankInterest'></div>
         ]]></tooltip>
         </collect_interest>
+        <seminar>
+            <label>Seminar</label>
+            <tooltip><![CDATA[
+            You can buy entrance to a motivational seminar - learn to be the best you and make people love you. You're pretty sure turning back time is the only way you can get off these people's list.<br>Costs
+        ]]></tooltip>
+        <tooltip2>gold.</tooltip2>
+        </seminar>
         <purchase_key>
             <label>Purchase Key</label>
             <tooltip><![CDATA[

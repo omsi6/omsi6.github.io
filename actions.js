@@ -205,6 +205,7 @@ function Actions() {
         view.requestUpdate("updateMultiPartActions");
         view.requestUpdate("updateNextActions");
         view.requestUpdate("updateTime");
+        view.updateActionTooltips();
     };
 
     this.adjustTicksNeeded = function() {

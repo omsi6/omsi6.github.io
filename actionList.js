@@ -2545,7 +2545,7 @@ Action.GatherTeam = new Action("Gather Team", {
     },
     affectedBy: ["Adventure Guild"],
     allowed() {
-        return 5;
+        return 5 + Math.floor(getSkillLevel("Leadership") / 100);
     },
     canStart() {
         return guild === "Adventure" && resources.gold >= (resources.teamMembers + 1) * 100;
@@ -3542,7 +3542,6 @@ Action.HuntTrolls = new MultipartAction("Hunt Trolls", {
         if (resources.blood >= 10) unlockStory("slay10TrollsInALoop");
     },
     segmentFinished() {
-        handleSkillExp(this.skills);
     },
     getPartName() {
         return "Hunt Troll";
@@ -4556,7 +4555,7 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
         Per: 0.2,
     },
     skills: {
-        Combat: 1250
+        Combat: 1500
     },
     loopStats: ["Per", "Con", "Str"],
     manaCost() {
@@ -4581,7 +4580,6 @@ Action.FightFrostGiants = new MultipartAction("Fight Frost Giants", {
     },
     segmentFinished() {
         curFightFrostGiantsSegment++;
-        handleSkillExp(this.skills);
         // Additional thing?
     }, 
     getPartName() {
@@ -5080,7 +5078,7 @@ Action.FightJungleMonsters = new MultipartAction("Fight Jungle Monsters", {
         Per: 0.4,
     },
     skills: {
-        Combat: 1500
+        Combat: 2000
     },
     loopStats: ["Dex", "Str", "Per"],
     manaCost() {
@@ -5101,11 +5099,10 @@ Action.FightJungleMonsters = new MultipartAction("Fight Jungle Monsters", {
         handleSkillExp(this.skills);
     },
     segmentFinished() {
-        handleSkillExp(this.skills);
     },
     segmentFinished() {
         curFightJungleMonstersSegment++;
-        addResource("hide", 1);
+        addResource("blood", 1);
         // Additional thing?
     }, 
     getPartName() {
@@ -5218,11 +5215,11 @@ Action.PrepareBuffet = new Action("Prepare Buffet", {
         Gluttony: 5
     },
     canStart() {
-        return resources.herbs >= 10 && resources.hide > 0;
+        return resources.herbs >= 10 && resources.blood > 0;
     },
     cost() {
         addResource("herbs", -10);
-        addResource("hide", -1);
+        addResource("blood", -1);
     },
     manaCost() {
         return 30000;
@@ -5367,7 +5364,7 @@ Action.Excursion = new Action("Excursion", {
     },
     finish() {
         towns[7].finishProgress(this.varName, 50 * (resources.glasses ? 2 : 1));
-        addResource("gold", guild === "Thieves" ? -2 : -10);
+        addResource("gold", -1 * this.goldCost());
     }
 });
 function adjustPockets() {
@@ -5704,6 +5701,41 @@ Action.CollectInterest = new Action("Collect Interest", {
         let interestGold = Math.floor(goldInvested * .001);
         addResource("gold", interestGold);
         return interestGold;
+    },
+});
+
+Action.Seminar = new Action("Seminar", {
+    type: "normal",
+    expMult: 1,
+    townNum: 7,
+    stats: {
+        Cha: 0.8,
+        Luck: 0.1,
+        Soul: 0.1
+    },
+    skills: {
+        Leadership: 200
+    },
+    manaCost() {
+        return 20000;
+    },
+    canStart() {
+        return resources.gold >= 1000;
+    },
+    cost() {
+        addResource("gold", -1000);
+    },
+    visible() {
+        return towns[this.townNum].getLevel("Survey") >= 100;
+    },
+    unlocked() {
+        return towns[this.townNum].getLevel("Survey") >= 100;
+    },
+    goldCost() {
+        return 1000;
+    },
+    finish() {
+        handleSkillExp(this.skills);
     },
 });
 

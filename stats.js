@@ -94,7 +94,7 @@ function getSkillLevel(skill) {
 
 function getSkillBonus(skill) {
     let change;
-    if (skill === "Dark" || skill === "Chronomancy" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Thievery") change = "increase";
+    if (skill === "Dark" || skill === "Chronomancy" || skill === "Mercantilism" || skill === "Divine" || skill === "Wunderkind" || skill === "Thievery" || skill === "Leadership") change = "increase";
     else if (skill === "Practical" || skill === "Spatiomancy" || skill === "Commune" || skill === "Gluttony") change = "decrease";
     else console.log("Skill not found:" + skill);
 
@@ -132,8 +132,16 @@ function getSelfCombat() {
     else return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
 }
 
+function getZombieStrength() {
+    return getSkillLevel("Dark") * resources.zombie / 2 * Math.min(getBuffLevel("Ritual") / 100, 1);
+}
+
+function getTeamStrength() {
+    return (getSkillLevel("Combat") + getSkillLevel("Restoration") * 2) * (resources.teamMembers / 2) * getAdvGuildRank().bonus * getSkillBonus("Leadership");
+}
+
 function getTeamCombat() {
-    return getSelfCombat() + (getSkillLevel("Dark") * resources.zombie / 2) + (getSkillLevel("Combat") + getSkillLevel("Restoration") * 2) * (resources.teamMembers / 2) * getAdvGuildRank().bonus;
+    return getSelfCombat() + getZombieStrength() + getTeamStrength();
 }
 
 function getPrcToNextSkillLevel(skill) {

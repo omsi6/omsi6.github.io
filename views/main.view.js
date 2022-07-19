@@ -219,6 +219,8 @@ function View() {
                 document.getElementById("skillBonusGluttony").textContent = getSkillBonus("Gluttony").toFixed(3).replace(/(\.\d*?[1-9])0+$/gu, "$1");
             } else if (skill === "Thievery") {
                 document.getElementById("skillBonusThievery").textContent = intToString(getSkillBonus("Thievery"), 4);
+            } else if (skill === "Leadership") {
+                document.getElementById("skillBonusLeadership").textContent = intToString(getSkillBonus("Leadership"), 4);
             }
         }
     };
