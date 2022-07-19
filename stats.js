@@ -128,7 +128,7 @@ function getArmorLevel() {
 }
 
 function getSelfCombat() {
-    if (challenge === 2) return 0;
+    if (challenge === 2) return Math.max(getZombieStrength(), getTeamStrength()) / 2;
     else return (getSkillLevel("Combat") + getSkillLevel("Pyromancy") * 5) * getArmorLevel() * (1 + getBuffLevel("Feast") * .05);
 }
 
@@ -141,7 +141,8 @@ function getTeamStrength() {
 }
 
 function getTeamCombat() {
-    return getSelfCombat() + getZombieStrength() + getTeamStrength();
+    if (challenge === 2) return getZombieStrength() + getTeamStrength();
+    else return getSelfCombat() + getZombieStrength() + getTeamStrength();
 }
 
 function getPrcToNextSkillLevel(skill) {

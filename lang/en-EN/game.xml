@@ -309,7 +309,7 @@
                 <title>Challenges</title>
             </meta>
             <mana_drought>The mana merchant in Beginnersville only has 5k mana to sell, and they're charging double the usual price. No other mana merchants exist.</mana_drought>
-            <noodle_arms>You have no Self-Combat ability. All combat is based on followers.</noodle_arms>
+            <noodle_arms>You have no base Self-Combat ability. All combat is based on followers. Self combat is half of your team member or zombie strength (whichever is higher).</noodle_arms>
         </challenges>
     </menu>
     <tutorial><![CDATA[
