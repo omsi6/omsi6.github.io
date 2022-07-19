@@ -1139,7 +1139,7 @@
             1 gold = 
         ]]></tooltip>
             <tooltip2><![CDATA[
-            mana. Buys all the mana you can.<br>The merchant only has 5000 mana to sell, though.<br>Unlocked at 20% Explored.
+            mana. Buys all the mana you can.<br>The merchant only has 7500 mana to sell, though.<br>Unlocked at 20% Explored.
         ]]></tooltip2>
             <!--TODO: give this action story-->
         </buy_mana_challenge>
