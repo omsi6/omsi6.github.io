@@ -134,6 +134,20 @@ function View() {
         this.updateTime();
     };
 
+
+    this.adjustTooltipPosition = function(tooltipDiv) {
+        let parent = tooltipDiv.parentNode;
+        let y = parent.getBoundingClientRect().y;
+        let windowHeight = window.innerHeight;
+        let windowScrollY = window.scrollY;
+        let border = (windowHeight / 2) + windowScrollY;
+        if (y > border) {
+            tooltipDiv.classList.add("showthisOver");
+        } else {
+            tooltipDiv.classList.remove("showthisOver");
+        }
+    }
+
     this.showStat = function(stat) {
         statShowing = stat;
         if (stat !== undefined) this.updateStat(stat);
@@ -184,7 +198,8 @@ function View() {
             document.getElementById(`skill${skill}Container`).style.display = "none";
             return;
         }
-        document.getElementById(`skill${skill}Container`).style.display = "inline-block";
+        let container = document.getElementById(`skill${skill}Container`);
+        container.style.display = "inline-block";
         if (skill === "Combat" || skill === "Pyromancy" || skill === "Restoration") {
             this.updateTeamCombat();
         }
@@ -223,6 +238,7 @@ function View() {
                 document.getElementById("skillBonusLeadership").textContent = intToString(getSkillBonus("Leadership"), 4);
             }
         }
+        this.adjustTooltipPosition(container.querySelector("div.showthis"));
     };
 
     this.updateSkills = function() {
@@ -231,16 +247,23 @@ function View() {
         }
     };
 
+    this.showBuff = function(buff) {
+        buffShowing = buff;
+        if (buff !== undefined) this.updateBuff(buff);
+    };
+
     this.updateBuff = function(buff) {
         if (buffs[buff].amt === 0) {
             document.getElementById(`buff${buff}Container`).style.display = "none";
             return;
         }
-        document.getElementById(`buff${buff}Container`).style.display = "flex";
+        let container = document.getElementById(`buff${buff}Container`);
+        container.style.display = "flex";
         document.getElementById(`buff${buff}Level`).textContent = `${getBuffLevel(buff)}/`;
         if (buff === "Imbuement") {
             this.updateTrainingLimits();
         }
+        this.adjustTooltipPosition(container.querySelector("div.showthis"));
     };
 
     this.updateBuffs = function() {
@@ -798,6 +821,8 @@ function View() {
                 ondragstart='handleDirectActionDragStart(event, "${action.name}", ${action.townNum}, "${action.varName}", false)'
                 ondragend='handleDirectActionDragEnd("${action.varName}")'
                 onclick='addActionToList("${action.name}", ${action.townNum})'
+                onmouseover='view.updateAction("${action.varName}")'
+                onmouseout='view.updateAction(undefined)'
             >
                 ${action.label}<br>
                 <div style='position:relative'>
@@ -855,6 +880,12 @@ function View() {
             actionStoriesTown[action.townNum].appendChild(storyDiv);
         }
     };
+
+    this.updateAction = function(action) {
+        if (action === undefined) return
+        let container = document.getElementById(`container${action}`);
+        this.adjustTooltipPosition(container.querySelector("div.showthis"));
+    }
 
     this.adjustManaCost = function(actionName) {
         const action = translateClassNames(actionName);

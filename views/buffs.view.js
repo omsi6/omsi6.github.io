@@ -16,7 +16,7 @@ Views.registerView("buffsContainer", {
             const XMLName = getXMLName(fullName);
             const desc2 = _txtsObj(`buffs>${XMLName}`)[0].innerHTML.includes("desc2");
             html +=
-                `<div class="buffContainer showthat" id="buff${buff}Container">
+                `<div class="buffContainer showthat" id="buff${buff}Container" onmouseover="view.showBuff('${buff}')" onmouseout="view.showBuff(undefined)">
                     <div class="buffNameContainer">
                         <img class="buffIcon" src="img/${camelize(fullName)}.svg">
                         <div class="skillLabel medium bold">${_txt(`buffs>${XMLName}>label`)}</div>
