@@ -152,6 +152,7 @@ let actionStoriesShowing = false;
 let townsUnlocked = [];
 let statShowing;
 let skillShowing;
+let buffShowing;
 let curActionShowing;
 let dungeonShowing;
 let actionTownNum;
