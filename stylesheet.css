@@ -31,7 +31,7 @@ body {
 {
     display: block;
 }
-.showthat:hover .showthis, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisstory
+.showthat:hover .showthis, .showthat:hover .showthisOver, .showthatO:hover .showthis, .showthatO:hover .showthisH, .showthat:hover .showthisname, .showthat:hover .showthisstory
 {
     display: block;
 }
@@ -50,6 +50,8 @@ body {
 
 .showthis, .showthis2, .showthisH {
     display:none;
+    width: max-content;
+    max-width: 400px;
     position:absolute;
     color: black;
     background-color: #c0e4c7;
@@ -59,6 +61,9 @@ body {
     margin-top:5px;
     z-index: 999999;
     text-align:left;
+}
+.showthisOver {
+    bottom:100%;
 }
 
 .showthat2 {
@@ -429,6 +434,7 @@ input[type="number"] {
 
 .actionContainer {
     cursor:pointer;
+    position: relative;
     width:102px;
     height:50px;
     vertical-align:top;
@@ -463,6 +469,7 @@ input[type="number"] {
 
 .travelContainer {
     cursor:pointer;
+    position: relative;
     display:block;
     width:205px;
     height:50px;
