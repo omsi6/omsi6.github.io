@@ -593,7 +593,7 @@ Action.BuyManaChallenge = new Action("Buy Mana Challenge", {
         return 25;
     },
     finish() {
-        let spendGold = Math.min(resources.gold, 200);
+        let spendGold = Math.min(resources.gold, 300);
         let buyMana = Math.min(spendGold * this.goldCost(), totalMerchantMana);
         addMana(buyMana);
         totalMerchantMana -= buyMana;
