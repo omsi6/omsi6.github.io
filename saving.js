@@ -310,13 +310,15 @@ function load() {
 
     for (const property in toLoad.stats) {
         if (toLoad.stats.hasOwnProperty(property)) {
-            stats[property].talent = toLoad.stats[property].talent;
-            stats[property].soulstone = toLoad.stats[property].soulstone;
+            stats[property].talent =  toLoad.stats[property].talent > 0 ? toLoad.stats[property].talent : 0;
+            stats[property].soulstone = toLoad.stats[property].soulstone > 0 ? toLoad.stats[property].soulstone : 0;
         }
     }
+
+
     for (const property in toLoad.skills) {
         if (toLoad.skills.hasOwnProperty(property)) {
-            skills[property].exp = toLoad.skills[property].exp;
+            skills[property].exp = toLoad.skills[property].exp > 0 ? toLoad.skills[property].exp : toLoad.skills[property].exp;
         }
     }
 
@@ -327,14 +329,14 @@ function load() {
         }
     }
 
-    /*if (toLoad.buffCaps !== undefined) {
+    if (toLoad.buffCaps !== undefined) {
         for (const property in buffCaps) {
             if (toLoad.buffCaps.hasOwnProperty(property)) {
                 buffCaps[property] = toLoad.buffCaps[property];
                 document.getElementById(`buff${property}Cap`).value = buffCaps[property];
             }
         }
-    }*/
+    }
 
     if (toLoad.storyReqs !== undefined) {
         for (const property in storyReqs) {
@@ -390,6 +392,8 @@ function load() {
             if (action.name === "Purchase Mana") {
                 action.name = "Buy Mana Z3";
             }
+            if (action.name === undefined)
+                continue;
             actions.next.push(action);
         }
     }
@@ -417,6 +421,8 @@ function load() {
                 if (action.name === "Purchase Mana") {
                     action.name = "Buy Mana Z3";
                 }
+                if (action.name === undefined)
+                    continue;
                 loadouts[i].push(action);
             }
         }

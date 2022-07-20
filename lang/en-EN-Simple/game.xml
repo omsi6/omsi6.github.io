@@ -6,6 +6,13 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="2.3"><![CDATA[
+            <b> July 19th, 2022</b>
+            • Bugfix: With thanks to Kallious from the Discord, we've finally fixed the bug sometimes making soulstones go negative on DR/IM/GF<br>
+            • Bugfix: Added additonal error checks to loading save files to autofix some of the common error states<br>
+            • Bugfix: Trial of dead was not using updated zombie strength formula<br>
+            • Bugfix: Imbue Soul was not updating training tooltips until next restart
+            ]]></version>
             <version verNum="2.2"><![CDATA[
             <b> July 19th, 2022</b>
             • New Skill: Leadership - Increases your max follower count by 1 for every 100 levels and increases their contribution to team combat<br>
