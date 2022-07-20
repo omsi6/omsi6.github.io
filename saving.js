@@ -392,9 +392,8 @@ function load() {
             if (action.name === "Purchase Mana") {
                 action.name = "Buy Mana Z3";
             }
-            if (action.name === undefined)
-                continue;
-            actions.next.push(action);
+            if(totalActionList.some(x => x.name === action.name))
+                actions.next.push(action);
         }
     }
     actions.nextLast = copyObject(actions.next);
@@ -421,9 +420,8 @@ function load() {
                 if (action.name === "Purchase Mana") {
                     action.name = "Buy Mana Z3";
                 }
-                if (action.name === undefined)
-                    continue;
-                loadouts[i].push(action);
+                if(totalActionList.some(x => x.name === action.name))
+                    loadouts[i].push(action);
             }
         }
     }
