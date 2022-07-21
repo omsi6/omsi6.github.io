@@ -133,11 +133,11 @@ function getSelfCombat() {
 }
 
 function getZombieStrength() {
-    return getSkillLevel("Dark") * resources.zombie / 2 * Math.max(getBuffLevel("Ritual") / 100, 1);
+    return getSkillLevel("Dark") * resources.zombie / 2 * Math.max(getBuffLevel("Ritual") / 100, 1) * (1 + getBuffLevel("Feast") * .05);
 }
 
 function getTeamStrength() {
-    return (getSkillLevel("Combat") + getSkillLevel("Restoration") * 4) * (resources.teamMembers / 2) * getAdvGuildRank().bonus * getSkillBonus("Leadership");
+    return (getSkillLevel("Combat") + getSkillLevel("Restoration") * 4) * (resources.teamMembers / 2) * getAdvGuildRank().bonus * getSkillBonus("Leadership") * (1 + getBuffLevel("Feast") * .05);
 }
 
 function getTeamCombat() {

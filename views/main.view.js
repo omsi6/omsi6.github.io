@@ -96,6 +96,11 @@ function View() {
         }
 
         statContainer.innerHTML = totalStatDiv;
+
+        if (options.statColors)
+            Array.from(document.getElementsByClassName("statLevelBar")).forEach((div, index) => {
+                addStatColors(div, statList[index]);
+            });
     };
 
     // requests are properties, where the key is the function name,

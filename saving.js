@@ -260,6 +260,7 @@ const options = {
     pauseBeforeRestart: false,
     pauseOnFailedLoop: false,
     pauseOnComplete: false,
+    statColors: false,
     pingOnPause: false,
     autoMaxTraining: false,
     hotkeys: true,
