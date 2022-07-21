@@ -11,6 +11,7 @@
             • Balance: Team combat buffs! Restoration now contributes 4x its level instead of 2x to team member strength<br>
             We'll see how this feels, and can revisit and improve leadership, too, if needed<br>
             • New Option: Players can now enable a setting to have the game automatically pause when a progress action reaches 100% so they can accrue bonus seconds rather than waste time on a loop making little progress<br>
+            • Tooltip Updates: Many thanks to MakroCZ from the discord for tireless work on a fix for tooltip placement<br>
             • Tooltip Updates: Kallious from the discord has helped clarify a number of unlock conditions and tided up the tidy up action in Valhalla<br>
             • Bugfix: Imbue Soul could be started at max buff rank, reseting all progress for no reward<br>
             ]]></version>
