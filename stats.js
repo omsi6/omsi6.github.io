@@ -133,7 +133,7 @@ function getSelfCombat() {
 }
 
 function getZombieStrength() {
-    return getSkillLevel("Dark") * resources.zombie / 2 * Math.min(getBuffLevel("Ritual") / 100, 1);
+    return getSkillLevel("Dark") * resources.zombie / 2 * Math.max(getBuffLevel("Ritual") / 100, 1);
 }
 
 function getTeamStrength() {
