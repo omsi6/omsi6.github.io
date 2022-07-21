@@ -5830,7 +5830,7 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
         return 1;
     },
     canStart() {
-        return towns[8].ImbueSoulLoopCounter === 0 && getBuffLevel("Imbuement") > 499 && getBuffLevel("Imbuement2") > 499;
+        return towns[8].ImbueSoulLoopCounter === 0 && getBuffLevel("Imbuement") > 499 && getBuffLevel("Imbuement2") > 499 && getBuffLevel("Imbuement3") < 7;
     },
     loopCost(segment) {
         return 100000000 * (segment * 5 + 1);

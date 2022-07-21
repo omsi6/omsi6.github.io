@@ -29,7 +29,10 @@ function Town(index) {
 
     this.finishProgress = function(varName, expGain) {
         // return if capped, for performance
-        if (this[`exp${varName}`] === 505000) return;
+        if (this[`exp${varName}`] === 505000) {
+            if (options.pauseOnComplete) pauseGame();
+            else return;
+        }
 
         const prevLevel = this.getLevel(varName);
         if (this[`exp${varName}`] + expGain > 505000) {

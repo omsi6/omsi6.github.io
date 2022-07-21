@@ -44,13 +44,19 @@ function cheatProgress()
 
 function cheatTalent(stat, targetTalentLevel) 
 {
-    stats[stat].talent = getExpOfLevel(targetTalentLevel);
+    if (stat === "all" || stat === "All")
+        for (const stat in stats)
+        stats[stat].talent = getExpOfLevel(targetTalentLevel);
+    else stats[stat].talent = getExpOfLevel(targetTalentLevel);
     view.updateStats();
 }
 
 function cheatSoulstone(stat, targetSS)
 {
-    stats[stat].soulstone = targetSS;
+    if (stat === "all" || stat === "All")
+        for (const stat in stats)
+            stats[stat].soulstone = targetSS;
+    else stats[stat].soulstone = targetSS;
     view.updateSoulstones();
 }
 
@@ -253,6 +259,7 @@ const options = {
     addActionsToTop: false,
     pauseBeforeRestart: false,
     pauseOnFailedLoop: false,
+    pauseOnComplete: false,
     pingOnPause: false,
     autoMaxTraining: false,
     hotkeys: true,
