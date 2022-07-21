@@ -2066,15 +2066,14 @@
             <label>Canvass</label>
             <label_done>Houses Canvassed</label_done>
             <tooltip><![CDATA[
-            The city has a local charity that's looking for volunteers to canvass around for potential benefactors. Maybe if you know the information of some of said people, it could be helpful.<br>
-            Unlocked at 10% of city toured.
+            The city has a local charity that's looking for volunteers to canvass around for potential benefactors. Maybe if you know the information of some of said people, it could be helpful.<br>Unlocked at 10% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </canvass>
         <donate>
             <label>Donate</label>
             <tooltip><![CDATA[
-            You can donate to the charity yourself if you'd like.<br>Costs 20 gold.<br>Gives 1 reputation.
+            You can donate to the charity yourself if you'd like.<br>Costs 20 gold.<br>Gives 1 reputation.<br>Unlocked at 5% of houses canvassed.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </donate>
@@ -2085,7 +2084,7 @@
             <info_text2>Meaningful donations total</info_text2>
             <info_text3>Donations to check for value</info_text3>
             <tooltip><![CDATA[
-            After doing some canvassing for the local charity, you're now able to accept some donations on their behalf, since you know the routine.<br>Costs 1 reputation.<br>Requires a reputation above 0.<br>Meaningful donations are worth 20 gold each.<br>Every 5 donations is worth a meaningful amount. 
+            After doing some canvassing for the local charity, you're now able to accept some donations on their behalf, since you know the routine.<br>Costs 1 reputation.<br>Requires a reputation above 0.<br>Meaningful donations are worth 20 gold each.<br>Every 5 donations is worth a meaningful amount.<br>Unlocked at 5% of houses canvassed.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </accept_donations>
@@ -2094,7 +2093,7 @@
             <label_done>Tidied</label_done>
             <label_part>Mess</label_part>
 			<tooltip><![CDATA[
-			Tidy up the place.<br>Progress is based on Practical Magic Skill and total completions.<br>Gives 5 gold and 1 reputation.
+			Tidy up the place.<br>Progress is based on Practical Magic Skill and total completions.<br>Gives 5 gold and 1 reputation per mess cleaned.<br>Unlocked at 30% of houses canvassed.
 		]]></tooltip>
 			<segment_names>
                 <name>Temp1</name>
@@ -2116,35 +2115,35 @@
 		<sell_artifact>
 			<label>Sell Artifact</label>
 			<tooltip><![CDATA[
-			Sell one of the artifacts you found on Mt. Olympus as a priceless ancient heirloom.<br>Costs one artifact.<br>Gives 50 gold.
+			Sell one of the artifacts you found on Mt. Olympus as a priceless ancient heirloom.<br>Costs one artifact.<br>Gives 50 gold.<br>Unlocked at 20% of city toured.
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</sell_artifact>
 		<gift_artifact>
 			<label>Donate Artifact</label>
 			<tooltip><![CDATA[
-			Donate a precious artifact to the museum of heroes. It's okay - with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.
+			Donate a precious artifact to the museum of heroes. It's okay - with each act of generosity you earn friends in high places.<br>Costs one artifact.<br>Gives one favor.<br>Unlocked at 20% of city toured.
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</gift_artifact>
         <mercantilism>
             <label>Mercantilism</label>
             <tooltip><![CDATA[
-            Practice your merchandising skills, which are sorely lacking considering how poor of a deal you're getting from those mana merchants.<br>Costs 1 reputation.<br>Requires positive reputation.
+            Practice your merchandising skills, which are sorely lacking considering how poor of a deal you're getting from those mana merchants.<br>Costs 1 reputation.<br>Requires positive reputation.<br>Unlocked at 30% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </mercantilism>
         <charm_school>
             <label>Charm School</label>
             <tooltip><![CDATA[
-            Learn to make people love you!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitCha'></div> times per reset.
+            Learn to make people love you!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitCha'></div> times per reset.<br>Unlocked at 30% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </charm_school>
 		<enchant_armor>
 			<label>Enchant Armor</label>
 			<tooltip><![CDATA[
-			Pull some strings to convince a divine blacksmith to enchant your armor.<br>Costs one favor and one armor.<br>Gives one enchanted armor.<br>Enchanted armor is three times as effective as normal armor.
+			Pull some strings to convince a divine blacksmith to enchant your armor.<br>Costs one favor and one armor.<br>Gives one enchanted armor.<br>Enchanted armor is three times as effective as normal armor.<br>Unlocked at 40% of city toured.
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</enchant_armor>
@@ -2152,14 +2151,14 @@
             <label>Wizard College</label>
             <label_done>Spontaneously Combusted From Wonder</label_done>
             <tooltip><![CDATA[
-            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.
+            The wizard college is the finest school in all of the realms, you're lucky to be afforded a chance to get in. Although, it will cost you a small fortune in tuition.<br>Take their tests and get a grade!<br>Can only have 1 Wizard College action.<br>Costs 500 gold and 10 favors.<br>Gives (all schools of magic skills) * (1 + main stat / 100) * sqrt(1 + times completed / 1000) * (original mana cost / actual mana cost) progress points per mana.<br>Unlocked at 60% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </wizard_college>
         <restoration>
             <label>Restoration</label>
             <tooltip><![CDATA[
-            You've gone all this way without learning how to use your magic to heal people, or even yourself. You should probably get around to learning that.<br>Mana cost is reduced by Wizard College Grade.
+            You've gone all this way without learning how to use your magic to heal people, or even yourself. You should probably get around to learning that.<br>Mana cost is reduced by Wizard College Grade.<br>Unlocked at 60% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </restoration>
@@ -2167,7 +2166,7 @@
             <label>Spatiomancy</label>
             <tooltip><![CDATA[
             Learn how to control space and matter. Turns out making big changes is <i>hard</i>, but even small changes might allow you to get more done each loop.
-            <br>Mana cost is reduced by Wizard College Grade.
+            <br>Mana cost is reduced by Wizard College Grade.<br>Unlocked at 60% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </spatiomancy>
@@ -2175,7 +2174,7 @@
             <label>Seek Citizenship</label>
 			<label_done>Citizenship Exam Studied</label_done>
             <tooltip><![CDATA[
-            Right now, you're just visiting.  If you want to be accepted into their ranks for real, you'll need to study and pass a rigorous exam on Valhallan history and culture.
+            Right now, you're just visiting.  If you want to be accepted into their ranks for real, you'll need to study and pass a rigorous exam on Valhallan history and culture.<br>Unlocked at 80% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </seek_citizenship>
@@ -2196,14 +2195,14 @@
         <oracle>
             <label>Oracle</label>
             <tooltip><![CDATA[
-            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitLuck'></div> times per reset.
+            Peer into the future to better your fortune!<br>Has 4x exp/talent gain, and can only be done <div id='trainingLimitLuck'></div> times per reset.<br>Unlocked at 40% of city toured.
         ]]></tooltip>
             <!--TODO: give this action story-->
         </oracle>
 		<pegasus>
 			<label>Pegasus</label>
 			<tooltip><![CDATA[
-			Valhalla has its share of wonders. Amongst them are the Pegasi; mythical winged steeds, only available to the finest of citizens. If you wish to get your hands on one you'll need to convince a local to guide you to one of their meeting grounds, and then prove yourself to it. Swift on land and sky, it takes more than just gold to own a creature like this.<br>Allows access to special fights.<br>Costs 200 gold and 20 favors.
+			Valhalla has its share of wonders. Amongst them are the Pegasi; mythical winged steeds, only available to the finest of citizens. If you wish to get your hands on one you'll need to convince a local to guide you to one of their meeting grounds, and then prove yourself to it. Swift on land and sky, it takes more than just gold to own a creature like this.<br>Allows access to special fights.<br>Costs 200 gold and 20 favors.<br>Unlocked at 90% of city toured.
 		]]></tooltip>
             <!--TODO: give this action story-->
 		</pegasus>
@@ -2231,7 +2230,7 @@
             Gives (practical magic skill) * (1 + main stat / 100) * (original mana cost / actual mana cost) progress points per mana.<br>Can only have 1 Great Feast action.<br>Requires 100 reputation.<br>Sacrifices (5,000 * (feasts+1)) soulstones. Currently sacrificing 
         ]]></tooltip>
             <tooltip2><![CDATA[
-             soulstones.
+             soulstones.<br>Unlocked at 100% of city toured.
         ]]></tooltip2>
             <segment_names>
                 <name>Explain Your Order</name>
