@@ -4,9 +4,11 @@ let screenSize;
 
 function View() {
     this.initalize = function() {
+        this.createTravelMenu();
         this.createStats();
         this.updateStats();
         this.updateSkills();
+        this.adjustDarkRitualText();
         this.updateBuffs();
         this.updateTime();
         this.updateNextActions();
@@ -1159,6 +1161,24 @@ function View() {
         options.theme = document.getElementById("themeInput").value;
         document.getElementById("theBody").className = `t-${options.theme}`;
     };
+
+    this.createTravelMenu = function() {
+        let travelMenu = document.getElementById("travelMenu");
+        travelMenu.innerHTML = "";
+        townNames.forEach((town, index) => {
+            if (townsUnlocked.includes(index))
+                travelMenu.innerHTML += `<div id='travelButton`+index+`' class='button showthat control' onClick='view.showTown(`+index+`)'>`+town+`</div><br>`;
+        });
+    }
+
+    this.adjustDarkRitualText = function() {
+        let DRdesc = document.getElementById("DRText");
+        DRdesc.innerHTML = `Actions are:<br>`;
+        townsUnlocked.forEach(townNum => {
+            DRdesc.innerHTML += DarkRitualDescription[townNum];
+        });
+        if(getBuffLevel("Ritual") > 200) DRdesc.innerHTML += DarkRitualDescription[9];
+    }
 }
 
 function unlockGlobalStory(num) {
@@ -1277,3 +1297,15 @@ function cumulativeOffset(element) {
         bottom: bottom
     };
 }
+
+const DarkRitualDescription = [
+    `10% faster in Beginnersville per ritual from 1-20<br>`,
+    `5% faster in the Forest Path per ritual from 21-40<br>`,
+    `2.5% faster in Merchanton per ritual from 41-60<br>`,
+    `1.5% faster in Mt. Olympus per ritual from 61-80<br>`,
+    `1.0% faster in Valhalla per ritual from 81-100<br>`,
+    `0.5% faster in Startington per ritual from 101-150<br>`,
+    `0.5% faster in Jungle Path per ritual from 151-200<br>`,
+    `0.5% faster in Commerceville per ritual from 201-250<br>`,
+    `0.5% faster in Valley of Olympus per ritual from 251-300<br>`,
+    `0.1% faster globally per ritual from 301-666`];

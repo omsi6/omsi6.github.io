@@ -6,6 +6,11 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="2.6"><![CDATA[
+            <b> July 20th, 2022</b>
+            • Added Quick Travel Menu to better navigate all the zones<br>
+            • Dark Ritual now only shows speed increases for unlocked zones
+            ]]></version>
             <version verNum="2.5"><![CDATA[
             <b> July 19th, 2022</b>
             • New Option: Stat Colors - Changes stat menu bars to be the same colors used in multipart action bars<br>
@@ -751,16 +756,7 @@
         <dark_ritual>
             <label>Dark Ritual</label>
             <desc>The witch appreciates your dedication to the dark arts. +1% to Dark Magic exp gain from the Dark Magic action (rounded down) per ritual.</desc>
-            <desc2><![CDATA[<br>Actions are 10% faster in Beginnersville per ritual from 1-20.<br>
-            Actions are 5% faster in the Forest Path per ritual from 21-40.<br>
-            Actions are 2.5% faster in Merchanton per ritual from 41-60.<br>
-            Actions are 1.5% faster in Mt. Olympus per ritual from 61-80.<br>
-            Actions are 1.0% faster in Valhalla per ritual from 81-100.<br>
-            Actions are 0.5% faster in Startington per ritual from 101-150.<br>
-            Actions are 0.5% faster in Jungle Path per ritual from 151-200.<br>
-            Actions are 0.5% faster in Commerceville per ritual from 201-250.<br>
-            Actions are 0.5% faster in Valley of Olympus per ritual from 251-300.<br>
-            Actions are 0.1% faster globally per ritual from 301-666.<br>
+            <desc2><![CDATA[<div id='DRText'></div>
             ]]></desc2>
         </dark_ritual>
         <imbue_mind>

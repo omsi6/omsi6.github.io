@@ -309,6 +309,7 @@ function loadList() {
         actions.next = [];
     }
     view.updateNextActions();
+    view.adjustDarkRitualText();
 }
 
 function clearList() {
@@ -323,6 +324,7 @@ function unlockTown(townNum) {
         // refresh current
         view.showTown(townNum);
     }
+    view.createTravelMenu();
     curTown = townNum;
 }
 
