@@ -5421,15 +5421,17 @@ function exchangeMap() {
     towns.forEach((town, index) => {
         if (town.getLevel("Survey") < 100) unfinishedSurveyZones.push(index);
     });
-    console.log(unfinishedSurveyZones);
     while (resources.completedMap > 0 && unfinishedSurveyZones.length > 0) {
         let rand = Math.floor(Math.random() * unfinishedSurveyZones.length);
-        towns[rand].finishProgress("SurveyZ"+rand, getExploreSkill() * 2);
-        if (towns[rand].getLevel("Survey") === 100) {
+        let name = "expSurveyZ"+rand;
+        towns[rand][name] += getExploreSkill() * 2;
+        if (towns[rand][name] >= 505000) {
+            towns[rand][name] = 505000;
             for(var i = 0; i < unfinishedSurveyZones.length; i++)
                 if ( unfinishedSurveyZones[i] === rand) 
                     unfinishedSurveyZones.splice(i, 1); 
         }
+        view.updateProgressAction("SurveyZ"+rand, towns[rand]);
         addResource("completedMap", -1);
     }
 }
