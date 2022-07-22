@@ -15,15 +15,6 @@ function translateClassNames(name) {
 }
 
 const limitedActions = [
-    "SurveyZ0",
-    "SurveyZ1",
-    "SurveyZ2",
-    "SurveyZ3",
-    "SurveyZ4",
-    "SurveyZ5",
-    "SurveyZ6",
-    "SurveyZ7",
-    "SurveyZ8",
     "Smash Pots",
     "Pick Locks",
     "Short Quest",
@@ -218,8 +209,8 @@ function SurveyAction(townNum) {
             Con: 0.2,
             Luck: 0.2
         },
-        allowed() {
-            return 500 - getOtherSurveysOnList(this.varName);
+        canStart() {
+            return resources.map > 0 && towns[this.townNum].getLevel("Survey") < 100;
         },
         manaCost() {
             return 10000 * (this.townNum + 1);
@@ -231,6 +222,8 @@ function SurveyAction(townNum) {
             return getExploreProgress() > 0;
         },
         finish() {
+            addResource("map", -1);
+            addResource("completedMap", 1);
             towns[this.townNum].finishProgress(this.varName, getExploreSkill());
         }
     }
@@ -340,6 +333,36 @@ Action.HaulZ6 = new Action("HaulZ6", HaulAction(6));
 //====================================================================================================
 //Zone 1 - Beginnersville
 //====================================================================================================
+Action.Map = new Action("Map", {
+    type: "normal",
+    expMult: 1,
+    townNum: 0,
+    stats: {
+        Cha: 0.8,
+        Luck: 0.1,
+        Soul: 0.1
+    },
+    manaCost() {
+        return 200;
+    },
+    canStart() {
+        return resources.gold >= 15;
+    },
+    visible() {
+        return getExploreProgress() > 0;
+    },
+    unlocked() {
+        return getExploreProgress() > 0;
+    },
+    goldCost() {
+        return 15;
+    },
+    finish() {
+        addResource("gold", -this.goldCost());
+        addResource("map", 1);
+    },
+}); 
+
 Action.Wander = new Action("Wander", {
     type: "progress",
     expMult: 1,
@@ -2884,6 +2907,7 @@ Action.Mason = new Action("Mason", {
     finish() {
         towns[2].finishProgress(this.varName, 20 * getCraftGuildRank().bonus);
         handleSkillExp(this.skills);
+        view.adjustExpGain(Action.Mason);
     },
 });
 
@@ -2936,6 +2960,7 @@ Action.Architect = new Action("Architect", {
     finish() {
         towns[2].finishProgress(this.varName, 10 * getCraftGuildRank().bonus);
         handleSkillExp(this.skills);
+        view.adjustExpGain(Action.Architect);
     },
 });
 
@@ -5374,6 +5399,8 @@ Action.ExplorersGuild = new Action("Explorers Guild", {
     },
     finish() {
         if (getExploreSkill() == 0) towns[this.townNum].finishProgress("SurveyZ"+this.townNum, 100);
+        if (resources.map === 0) addResource("map", 30);
+        if (resources.completedMap > 0) exchangeMap();
         guild = "Explorer";
         view.adjustGoldCost("Excursion", Action.Excursion.goldCost());
     }
@@ -5388,6 +5415,23 @@ function getExploreProgress() {
 }
 function getExploreSkill() {
     return Math.floor(Math.sqrt(getExploreProgress()));
+}
+function exchangeMap() {
+    let unfinishedSurveyZones = [];
+    towns.forEach((town, index) => {
+        if (town.getLevel("Survey") < 100) unfinishedSurveyZones.push(index);
+    });
+    console.log(unfinishedSurveyZones);
+    while (resources.completedMap > 0 && unfinishedSurveyZones.length > 0) {
+        let rand = Math.floor(Math.random() * unfinishedSurveyZones.length);
+        towns[rand].finishProgress("SurveyZ"+rand, getExploreSkill() * 2);
+        if (towns[rand].getLevel("Survey") === 100) {
+            for(var i = 0; i < unfinishedSurveyZones.length; i++)
+                if ( unfinishedSurveyZones[i] === rand) 
+                    unfinishedSurveyZones.splice(i, 1); 
+        }
+        addResource("completedMap", -1);
+    }
 }
 
 Action.ThievesGuild = new MultipartAction("Thieves Guild", {
@@ -5863,6 +5907,7 @@ Action.ImbueSoul = new MultipartAction("Imbue Soul", {
     },
     finish() {
         view.updateBuff("Imbuement3");
+        capAllTraining();
         adjustTrainingExpMult();
     },
 });

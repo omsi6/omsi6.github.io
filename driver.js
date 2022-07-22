@@ -355,8 +355,9 @@ function capAmount(index, townNum) {
     const action = actions.next[index];
     const varName = `good${translateClassNames(action.name).varName}`;
     let alreadyExisting;
-    if (action.name.startsWith("Survey")) alreadyExisting = getOtherSurveysOnList("") + (action.disabled ? action.loops : 0);
-    else alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
+    //if (action.name.startsWith("Survey")) alreadyExisting = getOtherSurveysOnList("") + (action.disabled ? action.loops : 0);
+    //else 
+    alreadyExisting = getNumOnList(action.name) + (action.disabled ? action.loops : 0);
     let newLoops;
     if (action.name.startsWith("Survey")) newLoops = 500 - alreadyExisting;
     else newLoops = towns[townNum][varName] - alreadyExisting;

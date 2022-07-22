@@ -6,6 +6,11 @@
                 <title>Changelog</title>
                 <version_prefix>Version</version_prefix>
             </meta>
+            <version verNum="2.7"><![CDATA[
+            <b> July 20th, 2022</b>
+            • Survey Update! Survey is now completed using maps purchased in Beginnersville. Completed maps can be returned to the explorer's guild for extra progress in a random uncompleted area.<br>
+            • A few minor bugfixes
+            ]]></version>
             <version verNum="2.6"><![CDATA[
             <b> July 20th, 2022</b>
             • Added Quick Travel Menu to better navigate all the zones<br>
@@ -437,6 +442,16 @@
             <desc>A shambling pile of deceased flesh. Super gross.</desc>
         </resource>
         <resource initially_hidden="true">
+            <title>Maps:</title>
+            <id>map</id>
+            <desc>A cartographer's kit that can be used to survey areas and discover new secrets.</desc>
+        </resource>
+        <resource initially_hidden="true">
+            <title>Finished Maps:</title>
+            <id>completedMap</id>
+            <desc>You've mapped out some more of the world. The Explorer's guild would happily trade you for this knowledge.</desc>
+        </resource>
+        <resource initially_hidden="true">
             <title>Meat:</title>
             <id>meat</id>
             <desc>Powers of the gods.</desc>
@@ -679,7 +694,7 @@
         <restoration>
             <label>Restoration</label>
             <desc>From healing cantrips to mass resurrection, you'll be sure to make good use of these spells.</desc>
-            <desc2><![CDATA[Increases team combat with 2x the efficiency of the combat skill and improves the Heal the Sick action.]]></desc2>
+            <desc2><![CDATA[Increases team combat with 4x the efficiency of the combat skill and improves the Heal the Sick action.]]></desc2>
         </restoration>
         <spatiomancy>
             <label>Spatiomancy</label>
@@ -922,7 +937,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ0>
@@ -932,7 +948,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ1>
@@ -942,7 +959,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ2>
@@ -952,7 +970,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ3>
@@ -962,7 +981,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ4>
@@ -972,7 +992,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ5>
@@ -982,7 +1003,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ6>
@@ -992,7 +1014,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ7>
@@ -1002,7 +1025,8 @@
             <tooltip><![CDATA[
             The explorers guild has taught you to find what most would miss.<br>
             Gives progress equal to the square root of average survey progress across all zones.<br>
-            Can only be completed <div class='surveyLimit'>500</div> times per loop.<br>
+            Cannot re-survey completed zones.<br>
+            Requires a map for each action.<br>
             Currently granting <div class='surveySkill'></div> exp per action.
             ]]></tooltip>
         </surveyZ8>
@@ -1084,6 +1108,12 @@
         ]]></tooltip>
         </haulZ6>
         <!--town 1-->
+        <map>
+            <label>Purchase Map</label>
+            <tooltip><![CDATA[The explorer's guild has taught you how to use cartographer's kits to map where you're going. This will let you keep track of things better and find all sorts of new secrets.<br>
+            There's a shop here in Beginnersville that will sell them for just ]]></tooltip>
+            <tooltip2>gold each.</tooltip2>
+        </map>
         <wander>
             <label>Wander</label>
             <label_done>Explored</label_done>
@@ -2424,6 +2454,8 @@
             Ever feel like there's more stuff out there that you're missing? The explorer's guild knows it! Learn to find more of everything, and with enough standing even new ways to move about the world.<br>
             You can only join 1 guild at a time (including from Merchanton), and only try once.<br>
             Unlocks the Survey action in other zones based on world survey progress.<br>
+            If you bring completed maps, they'll trade 2x knowledge with you on areas you haven't surveyed.<br>
+            If you have no maps, they'll give you a few to help you get started.<br>
             Unlocks new shortcuts for every 25% world survey progress<br>
             Current world survey progress: <div id='totalSurveyProgress'></div>%.
         ]]></tooltip>

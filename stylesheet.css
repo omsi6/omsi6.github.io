@@ -265,6 +265,8 @@ input[type="number"] {
 
 .button, .loadoutbutton{
     padding: 1px 5px;
+    font-family:Arial, Helvetica, serif;
+    font-weight: normal;
     text-align: center;
     min-width: 9px;
     cursor: pointer;

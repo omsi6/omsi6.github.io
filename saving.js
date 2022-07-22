@@ -103,6 +103,8 @@ let resources = {
     pylons: 0,
     zombie: 0,
     meat: 0,
+    map: 0,
+    completedMap: 0,
     power: 0,
     glasses: false,
     supplies: false,
