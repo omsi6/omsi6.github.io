@@ -797,6 +797,7 @@ function View() {
 		townInfos[townNum].style.display                = "block";
 		document.getElementById("townName").textContent = _txt(`towns>town${townNum}>name`);
 		document.getElementById("townDesc").textContent = _txt(`towns>town${townNum}>desc`);
+		document.getElementById("townDesc").style.right = '0';
 		townShowing                                     = townNum;
 	};
 	
@@ -1289,7 +1290,6 @@ function View() {
 							  "statRegularContainer");
 				node.children[0].style.display = "inline-block";
 			}
-			document.getElementById("statsColumn").style.width = "316px";
 		} else {
 			document.getElementById("radarChart").style.display = "inline-block";
 			statContainer.style.position                        = "absolute";
@@ -1300,7 +1300,6 @@ function View() {
 								   "statRegularContainer");
 				node.children[0].style.display = "none";
 			}
-			document.getElementById("statsColumn").style.width = "410px";
 			statGraph.update();
 		}
 	};
