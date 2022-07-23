@@ -49,21 +49,33 @@ body {
 }
 
 .showthis, .showthis2, .showthisH {
-    display:none;
-    width: max-content;
-    max-width: 400px;
-    position:absolute;
-    color: black;
-    background-color: #c0e4c7;
-    border:1px solid;
-    padding:3px 5px;
-    border-radius:4px;
-    margin-top:5px;
-    z-index: 999999;
-    text-align:left;
+	display:none;
+	width: max-content;
+	max-width: 400px;
+	position:absolute;
+	color: black;
+	background-color: #c0e4c7;
+	border:1px solid;
+	padding:3px 5px;
+	border-radius:4px;
+	margin-top:5px;
+	z-index: 999999;
+	text-align:left;
 }
 .showthisOver {
-    bottom:100%;
+	bottom:100%;
+}
+.showthisR {
+	right: 0;
+}
+.showthisB {
+	bottom: 0;
+}
+.showthisL {
+	left: 0;
+}
+.showthisT {
+	top: 0;
 }
 
 .showthat2 {
