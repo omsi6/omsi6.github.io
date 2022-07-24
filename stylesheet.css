@@ -527,7 +527,7 @@ input[type="number"] {
 }
 .nextActionContainer {
     justify-content: space-between;
-    width: 205px;
+    width: 90%;
     height: 20px;
 }
 .curActionContainer {

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/omsi-loops.iml" filepath="$PROJECT_DIR$/.idea/omsi-loops.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/omsi-loops-lloyds.iml" filepath="$PROJECT_DIR$/.idea/omsi-loops-lloyds.iml" />
     </modules>
   </component>
 </project>
