@@ -1423,10 +1423,10 @@ function deleteHeirloomPopup() {
 }
 
 function getHeirloomNullifiumRatio() {
-    if (inputs.scruffyL15) return 0.8;
-    if (save.talents.heirloom2.purchased) return 0.7;
-    if (save.talents.heirloom.purchased) return 0.6;
-    return 0.5;
+    if (inputs.scruffyL15) return 1.5;
+    if (save.talents.heirloom2.purchased) return 1.2;
+    if (save.talents.heirloom.purchased) return 1.1;
+    return 1.0;
 }
 
 function getEffectiveNullifium() {
