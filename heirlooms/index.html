@@ -13,7 +13,7 @@
 	<div id="content-text">
 		Paste your save into the box below to get recommendations for heirloom upgrades.
 		<div class="help">
-			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, and every core mod. (also Trimp Health/Prismatic in U2) If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
+			<p>Currently the only mods this will recommend upgrading are Trimp Attack, Crit Chance, Crit Damage, Plaguebringer, Void Map Drop Chance, Gamma Burst, Fluffy Exp, Miner Efficiency, Parity Power, and every core mod. (also Trimp Health/Prismatic/Inequality in U2) If you have other useful mods on your heirlooms (such as Explorer Efficiency or Fragment Drop Rate), you'll have to upgrade them based on feel, as they're very difficult to weigh.
 				<br><br>
 				Additionally, this will not recommend replacing mods with stronger ones, nor adding mods in empty slots, nor equipping a better heirloom from your carried ones, nor saving spirestones for additional floors. But you probably shouldn't spend spirestones until you have a quite a few floors, or have a replacement core so you can recycle your current to afford the next floor.
 				<br><br>
@@ -41,6 +41,9 @@
 					<input placeholder="Weapon levels (90)" id="weaponLevelsInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('weaponLevels')"></input>
 					<input placeholder="Daily crit chance bonus (0)" id="dailyCritInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('dailyCrit')"></input>
 				</div>
+				<div id="equalityTargetInputContainer" style="display: none;">
+					<input placeholder="Equality target (100)" id="equalityTargetInput" type="number" spellcheck="false" autocomplete="off" oninput="updateInput('equalityTarget')"></input>
+				</div>
 				<div id="fluffyCheckboxesContainer" class="checkboxesContainer" style="display: none;">
 					<div class="checkboxContainer">
 						Fluffy E4L10:
@@ -51,18 +54,34 @@
 						<input id="fluffyE5L10Input" type="checkbox" onchange="updateInput('fluffyE5L10')">
 					</div>
 				</div>
-				<div id="scruffyCheckboxesContainer" class="checkboxesContainer" style="display: none;">
-					<div class="checkboxContainer">
-						Scruffy E0L2:
-						<input id="scruffyE0L2Input" type="checkbox" onchange="updateInput('scruffyE0L2')">
+				<div id="scruffyCheckboxesContainer" class="checkboxesContainer" style="display: none; flex-direction: column; height: 3.5rem;">
+					<div style="display: flex; flex-direction: row;">
+						<div class="checkboxContainer">
+							Scruffy L2:
+							<input id="scruffyL2Input" type="checkbox" onchange="updateInput('scruffyL2')">
+						</div>
+						<div class="checkboxContainer">
+							Scruffy L3:
+							<input id="scruffyL3Input" type="checkbox" onchange="updateInput('scruffyL3')">
+						</div>
+						<div class="checkboxContainer">
+							Scruffy L7:
+							<input id="scruffyL7Input" type="checkbox" onchange="updateInput('scruffyL7')">
+						</div>
 					</div>
-					<div class="checkboxContainer">
-						Scruffy E0L3:
-						<input id="scruffyE0L3Input" type="checkbox" onchange="updateInput('scruffyE0L3')">
-					</div>
-					<div class="checkboxContainer">
-						Scruffy E0L7:
-						<input id="scruffyE0L7Input" type="checkbox" onchange="updateInput('scruffyE0L7')">
+					<div style="display: flex; flex-direction: row;">
+						<div class="checkboxContainer">
+							Scruffy L12:
+							<input id="scruffyL12Input" type="checkbox" onchange="updateInput('scruffyL12')">
+						</div>
+						<div class="checkboxContainer">
+							Scruffy L13:
+							<input id="scruffyL13Input" type="checkbox" onchange="updateInput('scruffyL13')">
+						</div>
+						<div class="checkboxContainer">
+							Scruffy L15:
+							<input id="scruffyL15Input" type="checkbox" onchange="updateInput('scruffyL15')">
+						</div>
 					</div>
 				</div>
 				<div class="checkboxesContainer">
@@ -130,6 +149,11 @@
 				<span id="shieldOldMod5Notification">•</span>
 				<span id="shieldOldMod5" class="heirloomMod">???</span>
 			</div>
+			<div id="shieldOldModContainer6">
+				<span id="shieldOldMod6Notification">•</span>
+				<span id="shieldOldMod6" class="heirloomMod">???</span>
+			</div>
+			<div id="shieldOldInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="staffOldContainer" class="heirloomContainer">
 			<div class="heirloomContainerTopRow">
@@ -173,6 +197,11 @@
 				<span id="staffOldMod5Notification">•</span>
 				<span id="staffOldMod5" class="heirloomMod">???</span>
 			</div>
+			<div id="staffOldModContainer6">
+				<span id="staffOldMod6Notification">•</span>
+				<span id="staffOldMod6" class="heirloomMod">???</span>
+			</div>
+			<div id="staffOldInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="coreOldContainer" class="heirloomContainer" style="display: none">
 			<div class="heirloomContainerTopRow">
@@ -215,6 +244,10 @@
 			<div id="coreOldModContainer5">
 				<span id="coreOldMod5Notification">•</span>
 				<span id="coreOldMod5" class="heirloomMod">???</span>
+			</div>
+			<div id="coreOldModContainer6">
+				<span id="coreOldMod6Notification">•</span>
+				<span id="coreOldMod6" class="heirloomMod">???</span>
 			</div>
 		</div>
 	</div>
@@ -267,6 +300,12 @@
 				<span id="shieldNewMod5" class="heirloomMod">???</span>
 				<span id="shieldNewMod5Plus">+?</span>
 			</div>
+			<div id="shieldNewModContainer6">
+				<span id="shieldNewMod6Notification">•</span>
+				<span id="shieldNewMod6" class="heirloomMod">???</span>
+				<span id="shieldNewMod6Plus">+?</span>
+			</div>
+			<div id="shieldNewInnate" class="heirloomInnate"></div>
 		</div>
 		<div id="staffNewContainer" class="heirloomContainer" style="opacity: 0;">
 			<div class="heirloomContainerTopRow">
@@ -316,8 +355,14 @@
 				<span id="staffNewMod5" class="heirloomMod">???</span>
 				<span id="staffNewMod5Plus">+?</span>
 			</div>
+			<div id="staffNewModContainer6">
+				<span id="staffNewMod6Notification">•</span>
+				<span id="staffNewMod6" class="heirloomMod">???</span>
+				<span id="staffNewMod6Plus">+?</span>
+			</div>
+			<div id="staffNewInnate" class="heirloomInnate"></div>
 		</div>
-		<div id="coreNewContainer" class="heirloomContainer" style="display: none; z-index: 1;">
+		<div id="coreNewContainer" class="heirloomContainer" style="display: none;">
 			<div class="heirloomContainerTopRow">
 				<div class="heirloomIconContainer">
 					<span id="coreNewIcon" class="glyphicon glyphicon-adjust"></span>
@@ -330,8 +375,8 @@
 				<span class="heirloomEquipped" id="coreNewEquipped">Equipped</span>
 				<span class="heirloomSpent" id="coreNewSpent">??? / ??? Ss Spent</span>
 			</div>
-			<div class="?Container" style="z-index: 1;">
-				<div class="help" id="coreNew?">
+			<div class="?Container">
+				<div class="help" id="coreNew?" style="z-index: 1;">
 					<p id="coreNewInfo"></p>
 				</div>
 			</div>
@@ -364,6 +409,11 @@
 				<span id="coreNewMod5Notification">•</span>
 				<span id="coreNewMod5" class="heirloomMod">???</span>
 				<span id="coreNewMod5Plus">+?</span>
+			</div>
+			<div id="coreNewModContainer6">
+				<span id="coreNewMod6Notification">•</span>
+				<span id="coreNewMod6" class="heirloomMod">???</span>
+				<span id="coreNewMod6Plus">+?</span>
 			</div>
 		</div>
 	</div>

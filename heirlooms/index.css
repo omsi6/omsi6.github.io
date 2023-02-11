@@ -4,7 +4,8 @@ body {
 	display: flex;
 	flex-direction: column;
     justify-content: center;
-    align-items: center;
+	align-items: center;
+	position: relative;
     font-family: sans-serif;
 	background: #212121;
 	color: #bbb;
@@ -38,7 +39,7 @@ p {
 	align-items: center;
 }
 
-#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #dailyCritInput {
+#saveInput, #calculateButton, #VMWeightInput, #XPWeightInput, #HPWeightInput, #weaponLevelsInput, #dailyCritInput, #equalityTargetInput {
 	color: black;
 	border: 0.1rem solid black;
 	margin-bottom: -0.1rem;
@@ -46,18 +47,18 @@ p {
 
 #saveInput {
 	height: 2.6rem;
-	width: 31.1rem;
+	width: 31.075rem;
 	min-height: 2.6rem;
 	max-height: 30rem;
-	min-width: 31.1rem;
-	max-width: 31.1rem;
+	min-width: 31.075rem;
+	max-width: 31.075rem;
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
 
 #calculateButton {
 	height: 2.4rem;
-	width: 31.1rem;
+	width: 31.075rem;
 	background: white;
 }
 
@@ -86,6 +87,12 @@ p {
 	margin-left: -0.5rem;
 }
 
+#equalityTargetInput {
+    font-size: 1.1rem;
+    width: 31.1rem;
+	height: 2.6rem;
+}
+
 .checkboxesContainer {
 	display: flex;
 	flex-direction: row;
@@ -97,10 +104,10 @@ p {
 }
 
 #heirloomInventory {
-	height: 18.5rem;
+	height: 20.4rem;
 	margin: 0;
 	margin-left: 1.9rem;
-	padding: 1rem;
+	padding: 0.8rem 2rem;
 	flex-direction: row;
 }
 
@@ -211,7 +218,7 @@ a:hover, a:active {
 }
 
 #footer {
-	position: absolute;
+	position: sticky;
 	z-index: 0;
 	bottom: 1rem;
 	right: 1rem;
@@ -255,7 +262,7 @@ a:hover, a:active {
 .heirloomContainer {
 	display: flex;
 	flex-direction: column;
-	height: 31rem;
+	height: 37rem;
 	width: 39rem;
 	font-size: 1.8rem;
 	margin: 1rem;
@@ -296,9 +303,16 @@ a:hover, a:active {
 	white-space: nowrap;
 }
 
+.heirloomInnate {
+	display: flex;
+    justify-content: center;
+	font-size: 1.3rem;
+}
+
 .nextUpgradesContainer {
 	width: 31.1rem;
-    height: 7rem;
+	height: 7rem;
+	margin-top: 0.2rem;
     font-size: 1.2rem;
     line-height: 1.4rem;
     border: 0.3rem solid #555;
@@ -352,8 +366,8 @@ a:hover, a:active {
 }
 
 .inventoryHeirloom {
-	display:flex;
-	height:2rem;
+	display: flex;
+	height: 2rem;
 	width: 17.5rem;
 }
 
@@ -367,84 +381,88 @@ a:hover, a:active {
 	margin-right:0.3rem;
 }
 
+.noShadows {
+	text-shadow: none !important;
+}
+
 .heirloomRare0{
 	color: #888888;
 }
 
-.heirloomRare0 .heirloomMod:hover,.heirloomRare0.rarityBdBox{
-	border: 0.2rem solid #888;
+.heirloomRare0 .heirloomMod:hover {
+	border-color: #888888;
 }
 
-.heirloomRare1{
+.heirloomRare1 {
 	color: #1f7e1f;
 }
 
-.heirloomRare1 .heirloomMod:hover, .heirloomRare1.rarityBdBox{
-	border: 0.2rem solid #1f7e1f;
+.heirloomRare1 .heirloomMod:hover {
+	border-color: #1f7e1f;
 }
 
-.heirloomRare2{
+.heirloomRare2 {
 	color: #2b2bce;
 }
 
-.heirloomRare2 .heirloomMod:hover, .heirloomRare2.rarityBdBox{
-	border: 0.2rem solid #2b2bce;
+.heirloomRare2 .heirloomMod:hover {
+	border-color: #2b2bce;
 }
 
-.heirloomRare3{
+.heirloomRare3 {
 	color: #7e1f7e;
 }
 
-.heirloomRare3 .heirloomMod:hover, .heirloomRare3.rarityBdBox{
-	border: 0.2rem solid #7e1f7e;
+.heirloomRare3 .heirloomMod:hover {
+	border-color: #7e1f7e;
 }
 
-.heirloomRare4{
+.heirloomRare4 {
 	color: #e2722e;
 }
 
-.heirloomRare4 .heirloomMod:hover, .heirloomRare4.rarityBdBox{
-	border: 0.2rem solid #e2722e;
+.heirloomRare4 .heirloomMod:hover {
+	border-color: #e2722e;
 }
 
-.heirloomRare5{
+.heirloomRare5 {
 	color: #b92727;
 }
 
-.heirloomRare5 .heirloomMod:hover, .heirloomRare5.rarityBdBox{
-	border: 0.2rem solid #b92727;
+.heirloomRare5 .heirloomMod:hover {
+	border-color: #b92727;
 }
 
-.heirloomRare6{
+.heirloomRare6 {
 	color: #2693ff;
-		text-shadow:
-	 -0.15rem -0.15rem 0.2rem #5000ba,  
-	  0.15rem -0.15rem 0.25rem #5b00d3,
-	 -0.15rem 0.15rem 0.2rem #6600ec,
-	  0.15rem 0.15rem 0.3rem #2f006d;
+	text-shadow:
+		-0.15rem -0.15rem 0.2rem #5000ba,  
+		0.15rem -0.15rem 0.25rem #5b00d3,
+		-0.15rem 0.15rem 0.2rem #6600ec,
+		0.15rem 0.15rem 0.3rem #2f006d;
 	background: -moz-linear-gradient(-45deg,  #000b38 0%, #280021 50%, #000b38 100%); 
 	background: -webkit-linear-gradient(-45deg,  #000b38 0%,#280021 50%,#000b38 100%); 
 	background: linear-gradient(135deg,  #000b38 0%,#280021 50%,#000b38 100%); 
 }
 
 .heirloomRare6 .heirloomMod:hover {
-	border: 0.2rem solid #2693ff;
+	border-color: #2693ff;
 }
 
-.heirloomRare6 .heirloomMod{
+.heirloomRare6 .heirloomMod {
 	background-color: initial;
 }
 
 .heirloomRare7, .heirloomRare7Anim {
 	color: #730000;
 	text-shadow: 
-			0.1rem 0.1rem 0.2rem #ff9326, 
-			0 0 2.5rem #ff4000, 
-			0 0 0.5rem #f37900, 
-			-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
-			  0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
-			 -0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
-			  0.17rem 0.17rem 0.3rem rgba(89,0,0,0.72);	
+		0.1rem 0.1rem 0.2rem #ff9326, 
+		0 0 2.5rem #ff4000, 
+		0 0 0.5rem #f37900, 
+		-0.17rem -0.17rem 0.17rem rgba(140,35,0,0.8),  
+		0.17rem -0.17rem 0.17rem rgba(89,0,0,0.72),
+		-0.17rem 0.17rem 0.17rem rgba(102,0,0,0.58),
+		0.17rem 0.17rem 0.3rem rgba(89,0,0,0.72);	
 	background: linear-gradient(135deg,  #000000 0%, #400000 50%, #100000 100%); 
 }
 
@@ -454,19 +472,19 @@ a:hover, a:active {
 }
 
 .heirloomRare7 .heirloomMod:hover, .heirloomRare7Anim .heirloomMod:hover {
-	border: 0.2rem solid #8c0000;
+	border-color: #8c0000;
 }
 
-.heirloomRare7 .heirloomMod{
+.heirloomRare7 .heirloomMod, .heirloomRare7Anim .heirloomMod {
 	background-color: initial;
 }
 
 .heirloomRare8, .heirloomRare8Anim {
 	color: #0e5a07;
 	text-shadow: 
-			0.1rem 0.1rem 0.2rem rgba(15, 158, 74, 0.6), 
-			0 0 2.5rem rgba(43, 64, 185, 0.6), 
-			0 0 0.5rem rgba(33, 114, 51, 0.6);
+		0.1rem 0.1rem 0.2rem rgba(15, 158, 74, 0.6), 
+		0 0 2.5rem rgba(43, 64, 185, 0.6), 
+		0 0 0.5rem rgba(33, 114, 51, 0.6);
 }
 
 .heirloomRare8 .heirloomIconContainer {
@@ -478,20 +496,16 @@ a:hover, a:active {
 	animation: heirloomRare8Animated 30s infinite;
 }
 
-.heirloomRare8 .heirloomMod:hover, .heirloomRare8Anim .heirloomMod:hover, .heirloomRare8.rarityBdBox{
-	border: 0.2rem solid #0e5a07;
-}
-
-.heirloomRare8 .heirloomMod{
-	background-color: initial;
+.heirloomRare8 .heirloomMod:hover, .heirloomRare8Anim .heirloomMod:hover {
+	border-color: #0e5a07;
 }
 
 .heirloomRare9, .heirloomRare9Anim {
     color: #5f39e6;
 	text-shadow:
-			0.1rem 0.1rem 0.2rem rgba(11, 2, 138, 0.6),
-			0 0 2.5rem rgba(3, 110, 17, 0.6),
-			0 0 0.5rem rgba(38, 28, 128, 0.6);
+		0.1rem 0.1rem 0.2rem rgba(11, 2, 138, 0.6),
+		0 0 2.5rem rgba(3, 110, 17, 0.6),
+		0 0 0.5rem rgba(38, 28, 128, 0.6);
 }
 
 .heirloomRare9 .heirloomIconContainer {
@@ -503,11 +517,62 @@ a:hover, a:active {
     animation: heirloomRare9Animated 7s infinite;
 }
 
-.heirloomRare9 .heirloomMod:hover, .heirloomRare9Anim .heirloomMod:hover, .heirloomRare9.rarityBdBox{
-	border: 0.2rem solid #15025a;
+.heirloomRare9 .heirloomMod:hover, .heirloomRare9Anim .heirloomMod:hover {
+	border-color: #15025a;
 }
 
-.heirloomRare9 .heirloomMod{
+.heirloomRare10, .heirloomRare10Anim {
+	color: #ffa229;
+	text-shadow:
+		0.05rem 0.05rem 0.05rem #400549,
+		-0.05rem 0.05rem 0.05rem #400549,
+		0.05rem -0.05rem 0.05rem #400549,
+		-0.05rem -0.05rem 0.05rem #400549,
+		0.15rem 0.15rem 0.15rem #bf0000,
+		-0.15rem 0.15rem 0.15rem #bf0000,
+		0.15rem -0.15rem 0.15rem #bf0000,
+		-0.15rem -0.15rem 0.15rem #bf0000,
+		0.5rem 0.5rem 1.4rem black,
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
+}
+
+.heirloomRare10Anim .heirloomIconContainer {
+	animation: heirloomRare10Animated 6s infinite;
+}
+
+.heirloomRare10 .heirloomMod:hover, .heirloomRare10Anim .heirloomMod:hover {
+	border-color: #ffa229;
+}
+
+.heirloomRare11, .heirloomRare11Anim {
+    color: #1989d4;
+	text-shadow:
+		0.05rem 0.05rem 0.05rem #050c49,
+		-0.05rem 0.05rem 0.05rem #050c49,
+		0.05rem -0.05rem 0.05rem #050c49,
+		-0.05rem -0.05rem 0.05rem #050c49,
+		0.15rem 0.15rem 0.15rem #5f0468,
+		-0.15rem 0.15rem 0.15rem #5f0468,
+		0.15rem -0.15rem 0.15rem #5f0468,
+		-0.15rem -0.15rem 0.15rem #5f0468,
+		0.5rem 0.5rem 1.4rem black, 
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
+	background: linear-gradient(15deg,  #000 0%, #050c49 25%, #000 50%, #af00bf 75%,#000b38 100%); 
+}
+
+.heirloomRare11Anim .heirloomIconContainer {
+	animation: heirloomRare11Animated 60s infinite;
+}
+
+.heirloomRare11 .heirloomMod:hover, .heirloomRare11Anim .heirloomMod:hover {
+	border-color: #1989d4;
+}
+
+.heirloomRare11 .heirloomMod, .heirloomRare11Anim .heirloomMod {
 	background-color: initial;
 }
 
@@ -535,7 +600,7 @@ a:hover, a:active {
 		animation-timing-function: ease-out;
 	}
 	100% {
-	text-shadow: 
+		text-shadow: 
 			0.1rem 0.1rem 0.2rem #ff9326, 
 			0 0 2.5rem #ff4000, 
 			0 0 0.5rem #f37900, 
@@ -572,7 +637,7 @@ a:hover, a:active {
 		transform: rotate(180deg);
 	}
 	100% {
-	text-shadow: 
+		text-shadow: 
 			0.1rem 0.1rem 0.2rem #0f9e4a, 
 			0 0 2.5rem #2a40bb, 
 			0 0 0.5rem #217233, 
@@ -616,6 +681,175 @@ a:hover, a:active {
 			0.17rem -0.17rem 0.17rem rgba(13, 0, 89, 0.72),
 			-0.17rem 0.17rem 0.17rem rgba(5, 44, 1, 0.58),
 			0.17rem 0.17rem 0.3rem rgba(24, 0, 89, 0.72);		
+	}
+}
+
+@keyframes heirloomRare10Animated{
+	0% {
+		text-shadow:
+			0.05rem 0.05rem 0.05rem #9b980c,
+			-0.05rem 0.05rem 0.05rem #9b980c,
+			0.05rem -0.05rem 0.05rem #9b980c,
+			-0.05rem -0.05rem 0.05rem #9b980c,
+			0.15rem 0.15rem 0.15rem #bf0000,
+			-0.15rem 0.15rem 0.15rem #bf0000,
+			0.15rem -0.15rem 0.15rem #bf0000,
+			-0.15rem -0.15rem 0.15rem #bf0000,
+			0.5rem 0.5rem 1.4rem black,
+			0.5rem -0.5rem 1.4rem black,
+			-0.5rem 0.5rem 1.4rem black,
+			-0.5rem -0.5rem 1.4rem black;
+	}
+	25% {
+		text-shadow:
+			0.05rem 0.05rem 0.05rem #bf0000,
+			-0.05rem 0.05rem 0.05rem #bf0000,
+			0.05rem -0.05rem 0.05rem #bf0000,
+			-0.05rem -0.05rem 0.05rem #bf0000,
+			0.15rem 0.15rem 0.15rem #bf0000,
+			-0.15rem 0.15rem 0.15rem #bf0000,
+			0.15rem -0.15rem 0.15rem #bf0000,
+			-0.15rem -0.15rem 0.15rem #bf0000,
+			0.5rem 0.5rem 1.4rem black,
+			0.5rem -0.5rem 1.4rem black,
+			-0.5rem 0.5rem 1.4rem black,
+			-0.5rem -0.5rem 1.4rem black;
+	}
+	50% {
+		text-shadow:
+			0.05rem 0.05rem 0.05rem #4a0555,
+			-0.05rem 0.05rem 0.05rem #4a0555,
+			0.05rem -0.05rem 0.05rem #4a0555,
+			-0.05rem -0.05rem 0.05rem #4a0555,
+			0.15rem 0.15rem 0.15rem #bf0000,
+			-0.15rem 0.15rem 0.15rem #bf0000,
+			0.15rem -0.15rem 0.15rem #bf0000,
+			-0.15rem -0.15rem 0.15rem #bf0000,
+			0.5rem 0.5rem 1.4rem black,
+			0.5rem -0.5rem 1.4rem black,
+			-0.5rem 0.5rem 1.4rem black,
+			-0.5rem -0.5rem 1.4rem black;
+	}
+	75% {
+		text-shadow:
+			0.05rem 0.05rem 0.05rem #bf0000,
+			-0.05rem 0.05rem 0.05rem #bf0000,
+			0.05rem -0.05rem 0.05rem #bf0000,
+			-0.05rem -0.05rem 0.05rem #bf0000,
+			0.15rem 0.15rem 0.15rem #bf0000,
+			-0.15rem 0.15rem 0.15rem #bf0000,
+			0.15rem -0.15rem 0.15rem #bf0000,
+			-0.15rem -0.15rem 0.15rem #bf0000,
+			0.5rem 0.5rem 1.4rem black,
+			0.5rem -0.5rem 1.4rem black,
+			-0.5rem 0.5rem 1.4rem black,
+			-0.5rem -0.5rem 1.4rem black;
+	}
+	100% {
+		text-shadow:
+			0.05rem 0.05rem 0.05rem #9b980c,
+			-0.05rem 0.05rem 0.05rem #9b980c,
+			0.05rem -0.05rem 0.05rem #9b980c,
+			-0.05rem -0.05rem 0.05rem #9b980c,
+			0.15rem 0.15rem 0.15rem #bf0000,
+			-0.15rem 0.15rem 0.15rem #bf0000,
+			0.15rem -0.15rem 0.15rem #bf0000,
+			-0.15rem -0.15rem 0.15rem #bf0000,
+			0.5rem 0.5rem 1.4rem black,
+			0.5rem -0.5rem 1.4rem black,
+			-0.5rem 0.5rem 1.4rem black,
+			-0.5rem -0.5rem 1.4rem black;
+	}
+}
+
+@keyframes heirRare11Animated{
+	0% {
+		text-shadow:
+			0.05rem 0.05rem 0.05rem #abd6da,
+			-0.05rem 0.05rem 0.05rem #abd6da,
+			0.05rem -0.05rem 0.05rem #abd6da,
+			-0.05rem -0.05rem 0.05rem #abd6da, 
+			0.15rem 0.15rem 0.15rem #abd6da,
+			-0.15rem 0.15rem 0.15rem #abd6da,
+			0.15rem -0.15rem 0.15rem #abd6da,
+			-0.15rem -0.15rem 0.15rem #abd6da,
+			0.5rem 0.5rem 1.4rem black,
+			0.5rem -0.5rem 1.4rem black,
+			-0.5rem 0.5rem 1.4rem black,
+			-0.5rem -0.5rem 1.4rem black;
+	}
+	20% {
+		text-shadow:
+		0.05rem 0.05rem 0.05rem #af00bf,
+		-0.05rem 0.05rem 0.05rem #af00bf,
+		0.05rem -0.05rem 0.05rem #af00bf,
+		-0.05rem -0.05rem 0.05rem #af00bf,
+		0.15rem 0.15rem 0.15rem #af00bf,
+		-0.15rem 0.15rem 0.15rem #af00bf,
+		0.15rem -0.15rem 0.15rem #af00bf,
+		-0.15rem -0.15rem 0.15rem #af00bf,
+		0.5rem 0.5rem 1.4rem black,
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
+	}
+	40% {
+		text-shadow:
+		0.05rem 0.05rem 0.05rem #af00bf, 
+		-0.05rem 0.05rem 0.05rem #af00bf,
+		0.05rem -0.05rem 0.05rem #af00bf,
+		-0.05rem -0.05rem 0.05rem #af00bf,
+		0.15rem 0.15rem 0.15rem #091374,
+		-0.15rem 0.15rem 0.15rem #091374,
+		0.15rem -0.15rem 0.15rem #091374,
+		-0.15rem -0.15rem 0.15rem #091374,
+		0.5rem 0.5rem 1.4rem black,
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
+	}
+	60% {
+		text-shadow:
+		0.05rem 0.05rem 0.05rem #091374,
+		-0.05rem 0.05rem 0.05rem #091374,
+		0.05rem -0.05rem 0.05rem #091374,
+		-0.05rem -0.05rem 0.05rem #091374,
+		0.15rem 0.15rem 0.15rem #af00bf,
+		-0.15rem 0.15rem 0.15rem #af00bf,
+		0.15rem -0.15rem 0.15rem #af00bf,
+		-0.15rem -0.15rem 0.15rem #af00bf,
+		0.5rem 0.5rem 1.4rem black,
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
+	}
+	80% {
+		text-shadow: 0.05rem 0.05rem 0.05rem #091374,
+		-0.05rem 0.05rem 0.05rem #091374,
+		0.05rem -0.05rem 0.05rem #091374,
+		-0.05rem -0.05rem 0.05rem #091374,
+		0.15rem 0.15rem 0.15rem #091374,
+		-0.15rem 0.15rem 0.15rem #091374,
+		0.15rem -0.15rem 0.15rem #091374,
+		-0.15rem -0.15rem 0.15rem #091374,
+		0.5rem 0.5rem 1.4rem black,
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
+	}
+	100% {
+		text-shadow: 0.05rem 0.05rem 0.05rem #abd6da,
+		-0.05rem 0.05rem 0.05rem #abd6da,
+		0.05rem -0.05rem 0.05rem #abd6da,
+		-0.05rem -0.05rem 0.05rem #abd6da,
+		0.15rem 0.15rem 0.15rem #abd6da,
+		-0.15rem 0.15rem 0.15rem #abd6da,
+		0.15rem -0.15rem 0.15rem #abd6da,
+		-0.15rem -0.15rem 0.15rem #abd6da,
+		0.5rem 0.5rem 1.4rem black,
+		0.5rem -0.5rem 1.4rem black,
+		-0.5rem 0.5rem 1.4rem black,
+		-0.5rem -0.5rem 1.4rem black;
 	}
 }
 

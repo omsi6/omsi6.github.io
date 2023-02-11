@@ -174,15 +174,16 @@ const traps = {
         level: 1,
         maxLevel: 6,
         fireIncrease: 1.25,
-        dmgs: [0, 10, 50, 500, 2500, 5000, 25000],
-        slows: [0, 3, 4, 4, 4, 4, 5],
+        dmgs: [0, 10, 50, 500, 2500, 5000, 25000, 50000, 10000],
+        slows: [0, 3, 4, 4, 4, 4, 5, 5, 5],
+        runestones: [0, 0, 0, 0, 0, 0.02, 0.02, 0.04, 0.06]
     },
     poison: {
         locked: true,
         defaultStack: 5,
         level: 1,
         maxLevel: 7,
-        stacks: [0, 5, 10, 10, 20, 40, 80, 160],
+        stacks: [0, 5, 10, 10, 20, 40, 80, 160, 480, 1920],
         coreMult: 1
     },
     lightning: {
@@ -713,7 +714,7 @@ function getRsReward(health, threat) {
         reward *= 1.2;
     }
     if (traps.frost.level >= 5) {
-        reward *= 1 + (ticks - trapLayout.length) * 0.02;
+        reward *= 1 + (ticks - trapLayout.length) * traps.frost.runestones[traps.frost.level];
     }
     return reward;
 }
