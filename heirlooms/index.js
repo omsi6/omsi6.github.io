@@ -12,6 +12,7 @@
 
 /*
 
+v1.45 fix missing inequality hardcap, change text for "core core upgrade at x more spirestones"
 v1.44 support for v5.9.0 heirloom changes (nu amount and spirestones working like nu), and new spire upgrades
 v1.43 update engimatic crit damage softcap and step
 v1.42 support for weighing parity power and inequality (ty surstromming for the math)
@@ -62,7 +63,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.44;
+const globalVersion = 1.45;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -118,7 +119,7 @@ if (localStorage.getItem("heirloomsInputs") !== null) {
             document.getElementById("nextUpgradesContainer").innerHTML =
                 `You have ??? Nullifium and ??? Spirestones.
                 <br>
-                Your next upgrades should be ??? at ??? more Nullifium, ??? at ??? more Nullifium, and ??? at ??? Spirestones.`;
+                Your next upgrades should be ??? at ??? more Nullifium, ??? at ??? more Nullifium, and ??? at ??? more Spirestones.`;
         } else if (input === "universe2Unlocked" && savedInputs[input]) {
             document.getElementById("universe2CheckboxContainer").style.display = "flex";
             if (savedInputs.universe2 && document.getElementById("fluffyCheckboxesContainer").style.display !== "flex") document.getElementById("scruffyCheckboxesContainer").style.display = "flex";
@@ -154,8 +155,8 @@ function updateVersion() {
         inputs.equalityTarget = 100;
         inputs.version = 1.42;
     }
-    if (inputs.version < 1.44) {
-        inputs.version = 1.44;
+    if (inputs.version < 1.45) {
+        inputs.version = 1.45;
     }
 }
 
@@ -350,6 +351,7 @@ const mods = {
         get weighable() { return inputs.universe2; },
         stepAmounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.25],
         softCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200],
+        hardCaps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400],
     },
 
     DragimpSpeed: {
@@ -920,7 +922,7 @@ class Heirloom {
         }
 
         const nextCost = (heirloom.isCore)
-            ? Math.floor((cost - (currency - heirloom.getTotalSpent())))
+            ? Math.floor((cost - (save.playerSpire.main.spirestones - heirloom.getTotalSpent())))
             : Math.floor((cost - (getEffectiveNullifium() - heirloom.getTotalSpent())) / getHeirloomNullifiumRatio());
         heirloom.paid = paid;
         heirloom.next = { name, cost: nextCost };
