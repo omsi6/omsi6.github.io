@@ -162,8 +162,8 @@ const traps = {
         locked: false,
         damage: 50,
         level: 1,
-        maxLevel: 10,
-        dmgs: [0, 50, 500, 2500, 5e3, 10e3, 10e4, 10e5, 10e7, 10e9, 10e11],
+        maxLevel: 8,
+        dmgs: [0, 50, 500, 2500, 5e3, 10e3, 10e4, 10e5, 10e7],
         coreMult: 1
     },
     frost: {
@@ -193,10 +193,10 @@ const traps = {
         length: 1,
         damageBuff: 2,
         level: 1,
-        maxLevel: 7,
-        dmgs: [0, 50, 500, 5000, 5000, 5e4, 5e5, 5e5],
-        dmgbuffs: [0, 2, 2, 4, 4, 4, 8, 8],
-        lengths: [0, 1, 2, 2, 2, 3, 3, 3],
+        maxLevel: 6,
+        dmgs: [0, 50, 500, 5000, 5000, 5e4, 5e5],
+        dmgbuffs: [0, 2, 2, 4, 4, 4, 8],
+        lengths: [0, 1, 2, 2, 2, 3, 3],
         coreMult: 1
     },
     strength: {
@@ -711,8 +711,7 @@ function getRsReward(health, threat) {
     reward += threat / 20;
     reward *= Math.pow(1.00116, threat);
     if (detailed[trapLayout.length - 1].type === "Fire" && traps.fire.level >= 7) {
-        if (traps.fire.level >= 9) reward *= 1.5;
-        else reward *= 1.2;
+        reward *= 1.2;
     }
     if (traps.frost.level >= 5) {
         reward *= 1 + (ticks - trapLayout.length) * traps.frost.runestones[traps.frost.level];
@@ -762,7 +761,6 @@ function getLightningMultiplier(length, times, type) {
 }
 
 function lightColMult(cell) {
-    if (traps.lightning.level >= 7) return (1 + 0.2 * lightColStacks[cell % 5] * traps.lightning.coreMult);
     return traps.lightning.level >= 4 ? (1 + 0.1 * lightColStacks[cell % 5] * traps.lightning.coreMult) : 1;
 }
 

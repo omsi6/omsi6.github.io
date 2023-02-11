@@ -12,7 +12,6 @@
 
 /*
 
-v1.44 support for v5.9.0 heirloom changes (nu amount and spirestones working like nu), and new spire upgrades
 v1.43 update engimatic crit damage softcap and step
 v1.42 support for weighing parity power and inequality (ty surstromming for the math)
 v1.41 support for new 5.6.0 heirloom tier and 7 mods per heirloom, css cleanup
@@ -62,7 +61,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.44;
+const globalVersion = 1.43;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -154,8 +153,8 @@ function updateVersion() {
         inputs.equalityTarget = 100;
         inputs.version = 1.42;
     }
-    if (inputs.version < 1.44) {
-        inputs.version = 1.44;
+    if (inputs.version < 1.43) {
+        inputs.version = 1.43;
     }
 }
 
@@ -880,7 +879,7 @@ class Heirloom {
     calculatePurchases() {
         if (this.isEmpty()) return new Heirloom();
         const heirloom = new Heirloom(deepClone(this));
-        let currency = (this.isCore) ? save.playerSpire.main.spirestones - this.getTotalSpent() : getEffectiveNullifium() - this.getTotalSpent();
+        let currency = (this.isCore) ? save.playerSpire.main.spirestones : getEffectiveNullifium() - this.getTotalSpent();
         let efficiency = 1;
         let paid = 0;
         let cost = 0;
@@ -920,7 +919,7 @@ class Heirloom {
         }
 
         const nextCost = (heirloom.isCore)
-            ? Math.floor((cost - (currency - heirloom.getTotalSpent())))
+            ? Math.floor(cost - currency)
             : Math.floor((cost - (getEffectiveNullifium() - heirloom.getTotalSpent())) / getHeirloomNullifiumRatio());
         heirloom.paid = paid;
         heirloom.next = { name, cost: nextCost };
@@ -1352,8 +1351,7 @@ function updateModContainer(divName, heirloom, spirestones) {
 
         if (!save.global.heirloomsCarried.filter(loom => loom.repSeed === inputs[`preferred${heirloom.type}`]).length > 0) document.getElementById(`${divName}Equipped`).style.display = "flex";
         else document.getElementById(`${divName}Equipped`).style.display = "none";
-        if (heirloom.isCore) document.getElementById(`${divName}Spent`).textContent =
-            `${prettify(heirloomValue)} / ${prettify(save.playerSpire.main.spirestones)} Ss Spent - ${prettify(save.playerSpire.main.spirestones - heirloomValue)} Unspent`;
+        if (heirloom.isCore) document.getElementById(`${divName}Spent`).textContent = `${prettify(heirloomValue)} Ss Spent`;
         else document.getElementById(`${divName}Spent`).textContent =
             `${prettify(heirloomValue)} / ${prettify(getEffectiveNullifium())} Nu Spent - ${prettify(getEffectiveNullifium() - heirloomValue)} Unspent`;
         if (heirloom.rarity >= 10) {
@@ -1399,9 +1397,7 @@ function createHeirloomPopup(num) {
             </div>
         </div>
         <div class="heirloomSpentContainer">
-            <span class="heirloomSpent" id="heirloomPopupSpent">${prettify(heirloomValue)} ${heirloom.isCore
-    ? `/ ${prettify(save.playerSpire.main.spirestones)} Ss spent`
-    : `/ ${prettify(getEffectiveNullifium())} Nu Spent`}</span>
+            <span class="heirloomSpent" id="heirloomPopupSpent">${prettify(heirloomValue)} ${heirloom.isCore ? "Ss spent" : `/ ${prettify(getEffectiveNullifium())} Nu Spent`}</span>
         </div>`;
     for (const mod of heirloom.mods) {
         totalDiv +=
@@ -1427,10 +1423,10 @@ function deleteHeirloomPopup() {
 }
 
 function getHeirloomNullifiumRatio() {
-    if (inputs.scruffyL15) return 1.5;
-    if (save.talents.heirloom2.purchased) return 1.2;
-    if (save.talents.heirloom.purchased) return 1.1;
-    return 1;
+    if (inputs.scruffyL15) return 0.8;
+    if (save.talents.heirloom2.purchased) return 0.7;
+    if (save.talents.heirloom.purchased) return 0.6;
+    return 0.5;
 }
 
 function getEffectiveNullifium() {
