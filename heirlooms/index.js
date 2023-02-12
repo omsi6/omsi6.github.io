@@ -12,6 +12,7 @@
 
 /*
 
+v1.46 fix display logic for "!" on core upgrades
 v1.45 fix missing inequality hardcap, change text for "core core upgrade at x more spirestones"
 v1.44 support for v5.9.0 heirloom changes (nu amount and spirestones working like nu), and new spire upgrades
 v1.43 update engimatic crit damage softcap and step
@@ -63,7 +64,7 @@ v1.00: release
 
 let save;
 let time;
-const globalVersion = 1.45;
+const globalVersion = 1.46;
 document.getElementById("versionNumber").textContent = globalVersion;
 
 const checkboxNames = ["fluffyE4L10", "fluffyE5L10", "chargedCrits", "universe2", "scruffyL2", "scruffyL3", "scruffyL7", "scruffyL12", "scruffyL13", "scruffyL15"];
@@ -155,8 +156,8 @@ function updateVersion() {
         inputs.equalityTarget = 100;
         inputs.version = 1.42;
     }
-    if (inputs.version < 1.45) {
-        inputs.version = 1.45;
+    if (inputs.version < 1.46) {
+        inputs.version = 1.46;
     }
 }
 
@@ -1298,7 +1299,7 @@ function updateModContainer(divName, heirloom, spirestones) {
             if (heirloom.getModEfficiency(mod[0]) > bestEfficiency) bestEfficiency = heirloom.getModEfficiency(mod[0]);
         }
 
-        const heirloomToSpend = heirloom.isCore ? spirestones : getEffectiveNullifium() - heirloom.getTotalSpent();
+        const heirloomToSpend = heirloom.isCore ? spirestones - heirloom.getTotalSpent() : getEffectiveNullifium() - heirloom.getTotalSpent();
         for (let i = 0; i < 7; i++) {
             const mod = heirloom.mods[i];
             if (mod) {
