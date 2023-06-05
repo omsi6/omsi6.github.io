@@ -193,6 +193,12 @@ function closeTutorial() {
 
 function clearSave() {
     window.localStorage[saveName] = "";
+
+    // clear out zombie storyReqs, since  
+    // load on empty won't reset them.
+    for (prop in storyReqs) {
+        storyReqs[prop] = false;
+    }
 }
 
 function loadDefaults() {
