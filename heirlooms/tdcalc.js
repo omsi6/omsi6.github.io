@@ -343,7 +343,15 @@ function imAnEnemy(health = 0) {
         // turn new stacks into old stacks
         poisonStack += addStack;
         addStack = 0;
-        ticks += 1;
+        ticks += 1;        
+
+		// add additional ticks to account for frost traps runestone buff
+		if (detailed[p].chilled && detailed[p].type != "Knowledge" && detailed[p].type != "Frost") {
+			ticks += 1;
+		}
+		if (detailed[p].frozen && detailed[p].type != "Frost") {
+			ticks += 2;
+		}
 
         // damage
         damageTaken += addDamage;
